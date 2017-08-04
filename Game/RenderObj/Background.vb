@@ -7,26 +7,31 @@
 Public Class BackgroundRender
     Inherits RenderObject
 
-    Public Overrides Property RenderImage As Image
+    Public Overrides Property RenderImage As Image = New Bitmap(ScreenGridWidth, ScreenGridHeight)
+    Private backgroundNeedsUpdate As Boolean = True
+
 
     Public ActualImage As Image
-
-    Private PreviousFrame As Image
 
     Private levelWidth As Integer
     Private levelHeight As Integer
 
-    Public Overrides Sub BeforeRender()
-        Me.RenderImage.Dispose()
-        Me.RenderImage = Crop(ActualImage, Me.Location, ScreenGridWidth, ScreenGridHeight)
-    End Sub
+    
+    Public Overrides Sub Render(g As Graphics)
+        ' Overriding the background Render() func for optimization
 
-    Public Overrides Sub Render(g as graphics)
-        Dim x = Crop(ActualImage, Me.Location, ScreenGridWidth, ScreenGridHeight)
-        g.DrawImage(x, New Point(0, -toolBarOffSet))
-        x.Dispose()
-    End Sub
+        ' update RenderImage if it needs to
+        if backgroundNeedsUpdate
+            Using gfx=Graphics.FromImage(RenderImage)
+                ' Interpolation and Alpha values dont matter
+                gfx.CompositingMode = CompositingMode.SourceCopy
+                gfx.InterpolationMode = InterpolationMode.NearestNeighbor
+                Crop(ActualImage, gfx, Me.Location, ScreenGridWidth, ScreenGridHeight)
+            End Using
+        End If
 
+        g.DrawImage(RenderImage, New Point(0, -toolBarOffSet))
+    End Sub
 
 
 
@@ -42,11 +47,13 @@ Public Class BackgroundRender
 
         DbShowImage(ActualImage)
 
-        DbShowImage(Crop(ActualImage, New Point(0, 0), Helper.ScreenGridWidth, Helper.ScreenGridHeight, False))
+        DbShowImage(Crop(ActualImage, New Point(0, 0), Helper.ScreenGridWidth, Helper.ScreenGridHeight))
         BeforeRender()
         Dim y = RenderImage.Clone()
         DbShowImage(y)
-        ' resizes 
+
+
+        ' resizes given image and stores in RenderImage
         Using g As Graphics = Graphics.FromImage(RenderImage)
             g.SmoothingMode = SmoothingMode.None
             g.InterpolationMode = InterpolationMode.NearestNeighbor
@@ -83,6 +90,7 @@ Public Class BackgroundRender
             Location = New Point(Location.X + amount, Location.Y)
             screenLocation = location
         End If
+        backgroundNeedsUpdate = True
         Return canScroll
     End Function
 
@@ -92,6 +100,7 @@ Public Class BackgroundRender
             Location = New Point(Location.X, Location.Y+amount)
             screenLocation = location
         End If
+        backgroundNeedsUpdate = True
         Return canScroll
     End Function
 

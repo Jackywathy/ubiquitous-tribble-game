@@ -24,26 +24,27 @@ Partial Class MainGame
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Me.GameLoop = New System.Windows.Forms.Timer(Me.components)
-        Me.SuspendLayout()
+        Me.SuspendLayout
         '
         'GameLoop
         '
-        Me.GameLoop.Enabled = True
-        Me.GameLoop.Interval = 16
+        Me.GameLoop.Enabled = true
+        Me.GameLoop.Interval = 10
         '
         'MainGame
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.ClientSize = New System.Drawing.Size(1264, 681)
-        Me.KeyPreview = True
+        Me.KeyPreview = true
         Me.MaximumSize = New System.Drawing.Size(1280, 720)
         Me.MinimumSize = New System.Drawing.Size(1280, 720)
         Me.Name = "MainGame"
         Me.Text = "Mario123"
-        Me.ResumeLayout(False)
+        Me.ResumeLayout(false)
 
-    End Sub
+End Sub
+
     Friend WithEvents GameLoop As Timer
 End Class
