@@ -10,16 +10,21 @@ Public Class BackgroundRender
     Public Overrides Property RenderImage As Image
 
     Public ActualImage As Image
-    Public x As Image
+
+    Private PreviousFrame As Image
 
     Private levelWidth As Integer
     Private levelHeight As Integer
 
-
-
     Public Overrides Sub BeforeRender()
         Me.RenderImage.Dispose()
         Me.RenderImage = Crop(ActualImage, Me.Location, ScreenGridWidth, ScreenGridHeight)
+    End Sub
+
+    Public Overrides Sub Render(g as graphics)
+        Dim x = Crop(ActualImage, Me.Location, ScreenGridWidth, ScreenGridHeight)
+        g.DrawImage(x, New Point(0, -toolBarOffSet))
+        x.Dispose()
     End Sub
 
 

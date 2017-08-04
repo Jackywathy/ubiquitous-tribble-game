@@ -1,7 +1,7 @@
 ﻿Public MustInherit Class RenderObject
     Public Property Width As Integer
     Public Property Height As Integer
-    Private Shared toolBarOffSet As Integer = 29
+    Friend Shared toolBarOffSet As Integer = 29
 
 
 
