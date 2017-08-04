@@ -13,8 +13,8 @@ Public Class BackgroundRender
 
     Public ActualImage As Image
 
-    Private levelWidth As Integer
-    Private levelHeight As Integer
+    Private ReadOnly levelWidth As Integer
+    Private ReadOnly levelHeight As Integer
 
     
     Public Overrides Sub Render(g As Graphics)
@@ -24,9 +24,11 @@ Public Class BackgroundRender
         if backgroundNeedsUpdate
             Using gfx=Graphics.FromImage(RenderImage)
                 ' Interpolation and Alpha values dont matter
+                gfx.SmoothingMode = SmoothingMode.None
                 gfx.CompositingMode = CompositingMode.SourceCopy
                 gfx.InterpolationMode = InterpolationMode.NearestNeighbor
                 Crop(ActualImage, gfx, Me.Location, ScreenGridWidth, ScreenGridHeight)
+                backgroundNeedsUpdate = False
             End Using
         End If
 
@@ -40,26 +42,13 @@ Public Class BackgroundRender
         Me.levelWidth = levelWidth
         me.levelHeight = levelHeight
         ActualImage = New Bitmap(levelWidth, levelHeight)
+
+
         Using g=Graphics.FromImage(ActualImage)
             g.DrawImage(backgroundImage, 0, 0, levelWidth, levelHeight)
         End Using
-        
-
         DbShowImage(ActualImage)
 
-        DbShowImage(Crop(ActualImage, New Point(0, 0), Helper.ScreenGridWidth, Helper.ScreenGridHeight))
-        BeforeRender()
-        Dim y = RenderImage.Clone()
-        DbShowImage(y)
-
-
-        ' resizes given image and stores in RenderImage
-        Using g As Graphics = Graphics.FromImage(RenderImage)
-            g.SmoothingMode = SmoothingMode.None
-            g.InterpolationMode = InterpolationMode.NearestNeighbor
-
-            g.DrawImage(backgroundImage, 0, 0, levelWidth, levelHeight)
-        End Using
     End Sub
 
     Public Function CanScrollHorizontal(Optional amount As Integer = 0) As Boolean

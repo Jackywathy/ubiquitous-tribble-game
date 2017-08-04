@@ -1,10 +1,12 @@
 ﻿Imports System.Drawing.Drawing2D
 
 Public Module Helper
-    Public ScreenGridWidth As Integer = 1280
-    Public ScreenGridHeight As Integer = 720
-    Public TotalGridWidth As Integer = 2000
+    Public Const ScreenGridWidth As Integer = 1280
+    Public Const ScreenGridHeight As Integer = 720
+    Public TotalGridWidth As Integer = 4000
     Public TotalGridHeight As Integer = 1000
+    Public MarioWidth As Integer = 32
+    Public MarioHeight As Integer = 32
 End Module
 
 Module Debug

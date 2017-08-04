@@ -122,7 +122,7 @@
 
     Sub New(width As Integer, height As Integer, location As Point, sprite As Image)
         MyBase.New(width, height, location)
-        Me.RenderImage = sprite
+        Me.RenderImage = Resize(sprite, width, height)
     End Sub
 
     Public Sub Move()
