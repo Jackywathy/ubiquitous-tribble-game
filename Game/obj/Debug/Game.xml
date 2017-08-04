@@ -1,0 +1,91 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+Game
+</name>
+</assembly>
+<members>
+<member name="T:Game.My.Resources.Resources">
+<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member>
+<member name="P:Game.My.Resources.Resources.ResourceManager">
+<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member>
+<member name="P:Game.My.Resources.Resources.Culture">
+<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member>
+<member name="P:Game.My.Resources.Resources.background">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Game.My.Resources.Resources.brick">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Game.My.Resources.Resources.mario_small_1">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Game.My.Resources.Resources.mario_small_2">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Game.My.Resources.Resources.mario_small_3">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Game.My.Resources.Resources.mario_small_4">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Game.My.Resources.Resources.placeholderLevel">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Game.My.Resources.Resources.platform">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="T:Game.BackgroundRender">
+ <summary>
+ This class represents the background image (just decoration)
+ NO Bricks, players, items, enemies etc, are drawn on (this should just be a backgroud image)
+ </summary>
+</member>
+<member name="F:Game.RenderObject.screenLocation">
+ <summary>
+ Holds the current screen location, shared by RENDER OBJECT and all subclasses
+ </summary>
+</member>
+<member name="P:Game.RenderObject.Location">
+ <summary>
+ Location of object from the very bottom left (0,0)
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Game.RenderObject.#ctor(System.Int32,System.Int32,System.Drawing.Point)">
+ <summary>
+ Base class
+ </summary>
+ <param name="width">Width, in grid units</param>
+ <param name="height">Height, in grid units</param>
+ <param name="location">Location, a point of grid units</param>
+</member>
+</members>
+</doc>

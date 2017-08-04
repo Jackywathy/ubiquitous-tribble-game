@@ -1,0 +1,72 @@
+\\SR8137CF01-FS02\StudentUsers\2018\432223442\Desktop\Game\Game\bin\Debug\Game.exe.config
+\\SR8137CF01-FS02\StudentUsers\2018\432223442\Desktop\Game\Game\bin\Debug\Game.exe
+\\SR8137CF01-FS02\StudentUsers\2018\432223442\Desktop\Game\Game\bin\Debug\Game.pdb
+\\SR8137CF01-FS02\StudentUsers\2018\432223442\Desktop\Game\Game\bin\Debug\Game.xml
+\\SR8137CF01-FS02\StudentUsers\2018\432223442\Desktop\Game\Game\obj\Debug\Game.vbprojResolveAssemblyReference.cache
+\\SR8137CF01-FS02\StudentUsers\2018\432223442\Desktop\Game\Game\obj\Debug\Game.Resources.resources
+\\SR8137CF01-FS02\StudentUsers\2018\432223442\Desktop\Game\Game\obj\Debug\Game.vbproj.GenerateResource.Cache
+\\SR8137CF01-FS02\StudentUsers\2018\432223442\Desktop\Game\Game\obj\Debug\Game.exe
+\\SR8137CF01-FS02\StudentUsers\2018\432223442\Desktop\Game\Game\obj\Debug\Game.xml
+\\SR8137CF01-FS02\StudentUsers\2018\432223442\Desktop\Game\Game\obj\Debug\Game.pdb
+C:\Users\Jack Jiang\Desktop\Game\Game\bin\Debug\Game.exe.config
+C:\Users\Jack Jiang\Desktop\Game\Game\obj\Debug\Game.exe
+C:\Users\Jack Jiang\Desktop\Game\Game\obj\Debug\Game.xml
+C:\Users\Jack Jiang\Desktop\Game\Game\obj\Debug\Game.pdb
+C:\Users\Jack Jiang\Desktop\Game\Game\bin\Debug\Game.exe
+C:\Users\Jack Jiang\Desktop\Game\Game\bin\Debug\Game.pdb
+C:\Users\Jack Jiang\Desktop\Game\Game\bin\Debug\Game.xml
+C:\Users\Jack Jiang\Desktop\Game\Game\obj\Debug\Game.vbprojResolveAssemblyReference.cache
+C:\Users\Jack Jiang\Desktop\Game\Game\obj\Debug\Game.Resources.resources
+C:\Users\Jack Jiang\Desktop\Game\Game\obj\Debug\Game.vbproj.GenerateResource.Cache
+C:\Users\Jack Jiang\Desktop\Game\Game\obj\Debug\Game.TestImage.resources
+C:\Users\Jacky\Desktop\game\Game\bin\Debug\Game.exe.config
+C:\Users\Jacky\Desktop\game\Game\obj\Debug\Game.exe
+C:\Users\Jacky\Desktop\game\Game\obj\Debug\Game.xml
+C:\Users\Jacky\Desktop\game\Game\obj\Debug\Game.pdb
+C:\Users\Jacky\Desktop\game\Game\bin\Debug\Game.exe
+C:\Users\Jacky\Desktop\game\Game\bin\Debug\Game.pdb
+C:\Users\Jacky\Desktop\game\Game\bin\Debug\Game.xml
+C:\Users\Jacky\Desktop\game\Game\obj\Debug\Game.vbprojResolveAssemblyReference.cache
+C:\Users\Jacky\Desktop\game\Game\obj\Debug\Game.Resources.resources
+C:\Users\Jacky\Desktop\game\Game\obj\Debug\Game.TestImage.resources
+C:\Users\Jacky\Desktop\game\Game\obj\Debug\Game.vbproj.GenerateResource.Cache
+\\SR8137CF01-FS02\StudentUsers\2018\432223442\Desktop\game2\Game\bin\Debug\Game.exe.config
+\\SR8137CF01-FS02\StudentUsers\2018\432223442\Desktop\game2\Game\obj\Debug\Game.exe
+\\SR8137CF01-FS02\StudentUsers\2018\432223442\Desktop\game2\Game\obj\Debug\Game.xml
+\\SR8137CF01-FS02\StudentUsers\2018\432223442\Desktop\game2\Game\obj\Debug\Game.pdb
+\\SR8137CF01-FS02\StudentUsers\2018\432223442\Desktop\game2\Game\bin\Debug\Game.exe
+\\SR8137CF01-FS02\StudentUsers\2018\432223442\Desktop\game2\Game\bin\Debug\Game.pdb
+\\SR8137CF01-FS02\StudentUsers\2018\432223442\Desktop\game2\Game\bin\Debug\Game.xml
+\\SR8137CF01-FS02\StudentUsers\2018\432223442\Desktop\game2\Game\obj\Debug\Game.vbprojResolveAssemblyReference.cache
+\\SR8137CF01-FS02\StudentUsers\2018\432223442\Desktop\game2\Game\obj\Debug\Game.Form1.resources
+\\SR8137CF01-FS02\StudentUsers\2018\432223442\Desktop\game2\Game\obj\Debug\Game.Resources.resources
+\\SR8137CF01-FS02\StudentUsers\2018\432223442\Desktop\game2\Game\obj\Debug\Game.TestImage.resources
+\\SR8137CF01-FS02\StudentUsers\2018\432223442\Desktop\game2\Game\obj\Debug\Game.vbproj.GenerateResource.Cache
+C:\Users\Jack Jiang\Desktop\Game\Game\obj\Debug\Game.MainGame.resources
+L:\Downloads\ubiquitous-tribble-game-veryunstable\ubiquitous-tribble-game-veryunstable\Game\bin\Debug\Game.exe.config
+L:\Downloads\ubiquitous-tribble-game-veryunstable\ubiquitous-tribble-game-veryunstable\Game\obj\Debug\Game.exe
+L:\Downloads\ubiquitous-tribble-game-veryunstable\ubiquitous-tribble-game-veryunstable\Game\obj\Debug\Game.xml
+L:\Downloads\ubiquitous-tribble-game-veryunstable\ubiquitous-tribble-game-veryunstable\Game\obj\Debug\Game.pdb
+L:\Downloads\ubiquitous-tribble-game-veryunstable\ubiquitous-tribble-game-veryunstable\Game\bin\Debug\Game.exe
+L:\Downloads\ubiquitous-tribble-game-veryunstable\ubiquitous-tribble-game-veryunstable\Game\bin\Debug\Game.pdb
+L:\Downloads\ubiquitous-tribble-game-veryunstable\ubiquitous-tribble-game-veryunstable\Game\bin\Debug\Game.xml
+L:\Downloads\ubiquitous-tribble-game-veryunstable\ubiquitous-tribble-game-veryunstable\Game\obj\Debug\Game.vbprojResolveAssemblyReference.cache
+L:\Downloads\ubiquitous-tribble-game-veryunstable\ubiquitous-tribble-game-veryunstable\Game\obj\Debug\Game.MainGame.resources
+L:\Downloads\ubiquitous-tribble-game-veryunstable\ubiquitous-tribble-game-veryunstable\Game\obj\Debug\Game.Resources.resources
+L:\Downloads\ubiquitous-tribble-game-veryunstable\ubiquitous-tribble-game-veryunstable\Game\obj\Debug\Game.TestImage.resources
+L:\Downloads\ubiquitous-tribble-game-veryunstable\ubiquitous-tribble-game-veryunstable\Game\obj\Debug\Game.vbproj.GenerateResource.Cache
+C:\Users\Jack Jiang\Desktop\ubiquitous-tribble-game-veryunstable\ubiquitous-tribble-game-veryunstable\Game\bin\Debug\Game.exe.config
+C:\Users\Jack Jiang\Desktop\ubiquitous-tribble-game-veryunstable\ubiquitous-tribble-game-veryunstable\Game\obj\Debug\Game.exe
+C:\Users\Jack Jiang\Desktop\ubiquitous-tribble-game-veryunstable\ubiquitous-tribble-game-veryunstable\Game\obj\Debug\Game.xml
+C:\Users\Jack Jiang\Desktop\ubiquitous-tribble-game-veryunstable\ubiquitous-tribble-game-veryunstable\Game\obj\Debug\Game.pdb
+C:\Users\Jack Jiang\Desktop\ubiquitous-tribble-game-veryunstable\ubiquitous-tribble-game-veryunstable\Game\bin\Debug\Game.exe
+C:\Users\Jack Jiang\Desktop\ubiquitous-tribble-game-veryunstable\ubiquitous-tribble-game-veryunstable\Game\bin\Debug\Game.pdb
+C:\Users\Jack Jiang\Desktop\ubiquitous-tribble-game-veryunstable\ubiquitous-tribble-game-veryunstable\Game\bin\Debug\Game.xml
+C:\Users\Jack Jiang\Desktop\ubiquitous-tribble-game-veryunstable\ubiquitous-tribble-game-veryunstable\Game\obj\Debug\Game.vbprojResolveAssemblyReference.cache
+C:\Users\Jack Jiang\Desktop\ubiquitous-tribble-game-veryunstable\ubiquitous-tribble-game-veryunstable\Game\obj\Debug\Game.MainGame.resources
+C:\Users\Jack Jiang\Desktop\ubiquitous-tribble-game-veryunstable\ubiquitous-tribble-game-veryunstable\Game\obj\Debug\Game.Resources.resources
+C:\Users\Jack Jiang\Desktop\ubiquitous-tribble-game-veryunstable\ubiquitous-tribble-game-veryunstable\Game\obj\Debug\Game.TestImage.resources
+C:\Users\Jack Jiang\Desktop\ubiquitous-tribble-game-veryunstable\ubiquitous-tribble-game-veryunstable\Game\obj\Debug\Game.vbproj.GenerateResource.Cache
+\\SR8137CF01-FS02\StudentUsers\2018\432223442\Desktop\Game\Game\obj\Debug\Game.MainGame.resources
+\\SR8137CF01-FS02\StudentUsers\2018\432223442\Desktop\Game\Game\obj\Debug\Game.TestImage.resources
+C:\Users\Jacky\Desktop\Game\Game\obj\Debug\Game.MainGame.resources
