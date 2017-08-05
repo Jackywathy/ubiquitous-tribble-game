@@ -3,8 +3,6 @@
     Public Property Height As Integer
     Friend Shared toolBarOffSet As Integer = 29
 
-
-
     Private Shared _idCount As Integer
     
     Private Shared Function GetNewID() As Integer
@@ -14,8 +12,6 @@
     End Function
 
     Public Property ID As Integer = GetNewId()
-
-
 
     Public MustOverride Property RenderImage As Image
     ''' <summary>
@@ -49,7 +45,7 @@
 
     Public Overridable Sub Render(g As Graphics)
         BeforeRender()
-        g.DrawImage(RenderImage, New Point(Location.X - screenLocation.X, Helper.ScreenGridHeight - Height - Location.Y + screenLocation.Y - toolBarOffSet))
+        g.DrawImage(RenderImage, New Point(Location.X - screenLocation.X, Dimensions.ScreenGridHeight - Height - Location.Y + screenLocation.Y - toolBarOffSet))
     End Sub
 
     Public Overridable Function InScene()
@@ -59,12 +55,12 @@
             ' if most right point of block < most left point of screen
             ' left of the screen
             Return False
-        Else If Me.Location.X > screenLocation.X + Helper.ScreenGridWidth
+        ElseIf Me.Location.X > screenLocation.X + Dimensions.ScreenGridWidth Then
             ' if msot left of block > most right of screen
             ' it is to the right of the scene
             Return False
 
-        Else If Me.Location.Y > screenLocation.Y + Helper.ScreenGridHeight Then
+        ElseIf Me.Location.Y > screenLocation.Y + Dimensions.ScreenGridHeight Then
             ' if lowest bit of block > highest bit of screen
             ' it is above scene
             Return False
@@ -76,8 +72,11 @@
         Return True
     End Function
 
-
-
-
-
 End Class
+' ===========================
+' Entities
+' ---------------------------
+
+Public Module Entities
+    Public player As New Entity(32, 32, New Point(0, 50), Sprites.player)
+End Module

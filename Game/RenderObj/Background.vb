@@ -38,7 +38,7 @@ Public Class BackgroundRender
 
 
     Sub New(levelWidth As Integer, levelHeight As Integer, backgroundImage As Image)
-        MyBase.New(Helper.ScreenGridWidth, Helper.ScreenGridHeight, New Point(0, 0))
+        MyBase.New(Dimensions.ScreenGridWidth, Dimensions.ScreenGridHeight, New Point(0, 0))
         Me.levelWidth = levelWidth
         me.levelHeight = levelHeight
         ActualImage = New Bitmap(levelWidth, levelHeight)
@@ -52,7 +52,7 @@ Public Class BackgroundRender
     End Sub
 
     Public Function CanScrollHorizontal(Optional amount As Integer = 0) As Boolean
-        If Me.Location.X + amount + Helper.ScreenGridWidth >= levelWidth Then
+        If Me.Location.X + amount + Dimensions.ScreenGridWidth >= levelWidth Then
             ' it went to the right of the screen
             Return False
         ElseIf Me.Location.X + amount < 0 Then
@@ -63,7 +63,7 @@ Public Class BackgroundRender
     End Function
 
     Public Function CanScrollVertical(Optional amount As Integer = 0) As Boolean
-        If Me.Location.Y + amount + Helper.screenGridHeight >= levelHeight Then
+        If Me.Location.Y + amount + Dimensions.screenGridHeight >= levelHeight Then
             ' when above max levelHeight
             Return False
         ElseIf Me.Location.Y + amount < 0 Then

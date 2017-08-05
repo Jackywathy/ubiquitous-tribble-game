@@ -29,22 +29,19 @@
             KeyHelp(key, False)
         End Sub
 
-        Public Shared Sub Reset
+        Public Shared Sub Reset()
             MoveRight = False
             MoveLeft = False
             MoveUp = False
             MoveDown = False
         End Sub
-
     End Class
 
     Private Background As BackgroundRender
 
     Private lastFrame As DateTime = DateTime.Now()
 
-
-    Private player As New Entity(MarioWidth, MarioHeight, New Point(0, 50), My.Resources.mario_small_1)
-
+    Private player = Entities.player
 
     Private brick As New Block(100, 100, New Point(10, 300))
     Private Platform As New Platform(TotalGridWidth, 50, New Point(0, 0), My.Resources.platform)
@@ -62,27 +59,15 @@
 
     End Sub
 
-
-
-
-   
-
     Protected Overrides Sub OnPaint(e As PaintEventArgs)
         MyBase.OnPaint(e)
         Dim g As Graphics = e.Graphics
-
         Background.Render(g)
         Platform.Render(g)
-
-        brick.render(g)
-
+        brick.Render(g)
         player.Render(g)
-
         DrawFps(g)
-
-        
     End Sub
-
 
     Private numFrames As Integer = 0
     Private FPS As Integer = 0
@@ -103,8 +88,7 @@
 
     Private Sub GameLoop_Tick(sender As Object, e As EventArgs) Handles GameLoop.Tick
         handleInput()
-        player.move()
-
+        player.Move(numFrames)
 
         Me.Refresh()
     End Sub
@@ -120,10 +104,17 @@
             player.accelerateX(-player.moveSpeed.x)
         End If
         If KeyHandler.MoveRight Then
-            player.accelerateX(player.moveSpeed.x)
+            player.AccelerateX(player.moveSpeed.x)
+
         End If
 
-        player.applyConstantForces()
+        player.ApplyConstantForces()
+
+        ' Temporary "Ground"
+        If player.Location.Y < 50 Then
+            player.Location = New Point(player.Location.X, 50)
+            player.isGrounded = True
+        End If
 
     End Sub
 

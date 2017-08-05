@@ -1,12 +1,37 @@
-﻿Public Class Entity
+﻿' ===========================
+' Physics 
+' ---------------------------
+
+Public Module Forces
+    ' may need to tweak
+    ' CANNOT exceed moveSpeed values of any entity otherwise it will not be able to move
+    Public Const gravity = 0.98
+    Public Const friction = 1.5
+    Public Const airResist = 1.5
+End Module
+
+Public Structure Velocity
+    Dim x As Double
+    Dim y As Double
+    Sub New(x As Double, y As Double)
+        Me.x = x
+        Me.y = y
+    End Sub
+End Structure
+
+Public Class Entity
     Inherits RenderObject
 
     Public veloc = New Velocity(0, 0)
-    Public moveSpeed = New Velocity(2, 20)
+    Public moveSpeed = New Velocity(2, 15)
     Private ReadOnly maxVeloc = New Velocity(10, -15)
 
     Public isGrounded = True
     Public isJumping = False
+    Public isFacingForward = True
+
+    ' list of frames to use in animating ground movement
+    Public groundAnimation As List(Of Image)
 
     Private lastGroundObject As RenderObject
 
@@ -120,29 +145,71 @@
 
     Public Overrides Property RenderImage As Image
 
-    Sub New(width As Integer, height As Integer, location As Point, sprite As Image)
+    Sub New(width As Integer, height As Integer, location As Point, spriteSet As SpriteSet)
         MyBase.New(width, height, location)
-        Me.RenderImage = Resize(sprite, width, height)
+        Me.RenderImage = Resize(spriteSet.idle, width, height)
+        Me.groundAnimation = spriteSet.ground
     End Sub
 
-    Public Sub Move()
+
+    Public Sub Move(numFrames As Integer)
         Me.Location = New Point(Me.Location.X + Me.veloc.x, Me.Location.Y + Me.veloc.y)
+
+        ' Animate
+        ' new sub for this?
+
+        Dim imageToDraw As Image
+
+        If isGrounded Then
+
+            ' Check direction
+            If veloc.x < 0 And isFacingForward Then
+                isFacingForward = False
+
+            ElseIf veloc.x > 0 And Not isFacingForward Then
+                isFacingForward = True
+            End If
+
+            ' Re-animate every 5 frames
+            If veloc.x <> 0 And numFrames Mod 5 = 0 Then
+
+                ' Must be cloned, otherwise the resource image itself gets flipped (an unfortunate side effect of classes being passed by reference...)
+                imageToDraw = groundAnimation(0).Clone
+
+                ' Cycle through the list, moving the last element to the first
+                ' I miss being able to use a pop function
+                groundAnimation.Insert(0, groundAnimation.Last)
+                groundAnimation.RemoveAt(groundAnimation.Count - 1)
+
+            ElseIf veloc.x = 0 Then
+                imageToDraw = My.Resources.mario_small_1
+
+            End If
+
+        Else
+            imageToDraw = My.Resources.mario_small_jump
+        End If
+
+#Disable Warning BC42104 ' Variable is used before it has been assigned a value
+        ' stupid compiler, I'm checking if its null
+        If imageToDraw IsNot Nothing Then
+#Enable Warning BC42104 ' Variable is used before it has been assigned a value
+            If Not isFacingForward Then
+                imageToDraw.RotateFlip(RotateFlipType.RotateNoneFlipX)
+            End If
+            RenderImage = imageToDraw
+        End If
+
     End Sub
 End Class
 
-Public Structure Velocity
-    Dim x As Double
-    Dim y As Double
-    Sub New(x As Double, y As Double)
-        Me.x = x
-        Me.y = y
-    End Sub
-End Structure
+' ===========================
+' Entities
+' ---------------------------
 
-Public Module Forces
-    ' should tweak
-    ' CANNOT exceed self.moveSpeed values otherwise entity will not move
-    Public Const gravity = 1.5
-    Public Const friction = 1.5
-    Public Const airResist = 2.0
+Public Module Entities
+    Public player As New Entity(32, 32, New Point(0, 50), Sprites.player)
 End Module
+
+
+

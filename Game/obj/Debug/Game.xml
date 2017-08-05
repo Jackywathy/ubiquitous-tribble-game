@@ -52,6 +52,11 @@ Game
   Looks up a localized resource of type System.Drawing.Bitmap.
 </summary>
 </member>
+<member name="P:Game.My.Resources.Resources.mario_small_jump">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
 <member name="P:Game.My.Resources.Resources.placeholderLevel">
 <summary>
   Looks up a localized resource of type System.Drawing.Bitmap.

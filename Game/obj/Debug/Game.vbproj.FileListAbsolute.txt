@@ -70,3 +70,15 @@ C:\Users\Jack Jiang\Desktop\ubiquitous-tribble-game-veryunstable\ubiquitous-trib
 \\SR8137CF01-FS02\StudentUsers\2018\432223442\Desktop\Game\Game\obj\Debug\Game.MainGame.resources
 \\SR8137CF01-FS02\StudentUsers\2018\432223442\Desktop\Game\Game\obj\Debug\Game.TestImage.resources
 C:\Users\Jacky\Desktop\Game\Game\obj\Debug\Game.MainGame.resources
+C:\Users\Vincent Liu\Downloads\ubiquitous-tribble-game-master\ubiquitous-tribble-game-master\Game\bin\Debug\Game.exe.config
+C:\Users\Vincent Liu\Downloads\ubiquitous-tribble-game-master\ubiquitous-tribble-game-master\Game\bin\Debug\Game.exe
+C:\Users\Vincent Liu\Downloads\ubiquitous-tribble-game-master\ubiquitous-tribble-game-master\Game\bin\Debug\Game.pdb
+C:\Users\Vincent Liu\Downloads\ubiquitous-tribble-game-master\ubiquitous-tribble-game-master\Game\bin\Debug\Game.xml
+C:\Users\Vincent Liu\Downloads\ubiquitous-tribble-game-master\ubiquitous-tribble-game-master\Game\obj\Debug\Game.vbprojResolveAssemblyReference.cache
+C:\Users\Vincent Liu\Downloads\ubiquitous-tribble-game-master\ubiquitous-tribble-game-master\Game\obj\Debug\Game.MainGame.resources
+C:\Users\Vincent Liu\Downloads\ubiquitous-tribble-game-master\ubiquitous-tribble-game-master\Game\obj\Debug\Game.Resources.resources
+C:\Users\Vincent Liu\Downloads\ubiquitous-tribble-game-master\ubiquitous-tribble-game-master\Game\obj\Debug\Game.TestImage.resources
+C:\Users\Vincent Liu\Downloads\ubiquitous-tribble-game-master\ubiquitous-tribble-game-master\Game\obj\Debug\Game.vbproj.GenerateResource.Cache
+C:\Users\Vincent Liu\Downloads\ubiquitous-tribble-game-master\ubiquitous-tribble-game-master\Game\obj\Debug\Game.exe
+C:\Users\Vincent Liu\Downloads\ubiquitous-tribble-game-master\ubiquitous-tribble-game-master\Game\obj\Debug\Game.xml
+C:\Users\Vincent Liu\Downloads\ubiquitous-tribble-game-master\ubiquitous-tribble-game-master\Game\obj\Debug\Game.pdb

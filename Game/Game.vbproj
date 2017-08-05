@@ -144,6 +144,7 @@
     <Content Include="images\mario_small_2.png" />
     <Content Include="images\mario_small_3.png" />
     <Content Include="images\mario_small_4.png" />
+    <Content Include="images\mario_small_jump.png" />
     <Content Include="images\placeholderLevel.png" />
     <Content Include="images\platform.png" />
     <None Include="images\mario_small_1.png" />
