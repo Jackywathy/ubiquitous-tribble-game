@@ -1,4 +1,4 @@
-﻿Imports System.Drawing.Drawing2D
+﻿Imports System.Windows.Media
 
 Public Module Dimensions
     Public Const ScreenGridWidth As Integer = 1280
@@ -50,10 +50,8 @@ Public Module ImageManipulation
 
 End Module
 
-
-
-
-
-
-
-
+Public NotInheritable Class MusicPlayer
+    Private Shared backgroundPlayer As New MediaPlayer()
+    Public Shared Sub PlaySound()
+        Dim x As New MediaPlayer()
+End Class
