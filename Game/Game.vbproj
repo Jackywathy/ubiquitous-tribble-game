@@ -101,9 +101,10 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="renderObj\Block.vb" />
+    <Compile Include="renderObj\Entities.vb" />
     <Compile Include="renderObj\Platform.vb" />
-    <Compile Include="renderObj\Entity.vb" />
     <Compile Include="renderObj\Render.vb" />
+    <Compile Include="renderObj\Sprites.vb" />
     <Compile Include="TestImage.Designer.vb">
       <DependentUpon>TestImage.vb</DependentUpon>
     </Compile>
@@ -126,7 +127,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram1.cd" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>

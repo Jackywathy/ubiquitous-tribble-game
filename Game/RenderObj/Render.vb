@@ -77,6 +77,6 @@ End Class
 ' Entities
 ' ---------------------------
 
-Public Module Entities
-    Public player As New Entity(32, 32, New Point(0, 50), Sprites.player)
-End Module
+'Public Module Entities
+'    Public player As New Entity(32, 32, New Point(0, 50), Sprites.player)
+'End Module

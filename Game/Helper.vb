@@ -54,4 +54,12 @@ Public NotInheritable Class MusicPlayer
     Private Shared backgroundPlayer As New MediaPlayer()
     Public Shared Sub PlaySound()
         Dim x As New MediaPlayer()
+
+    End Sub
 End Class
+
+Public Module UriCreator
+    Public Function ImageUri(name As String) As URI
+        Return new URI("pack://application:,,,/translatornamespace;component/images/" + name)
+    End Function
+End Module
