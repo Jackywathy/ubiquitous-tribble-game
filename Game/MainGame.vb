@@ -10,6 +10,7 @@ Public Class MainGame
         Private Shared Sub KeyHelp(key as Keys, vset As boolean)
             if key = keys.Right Or Key = Keys.D
                 MoveRight = vset
+                
             End if
             if key = keys.Left Or key = Keys.A
                 moveLeft = vset
@@ -59,11 +60,11 @@ Public Class MainGame
         SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
         SetStyle(ControlStyles.AllPaintingInWmPaint, True)
 
-        MusicPlayer.PlayBackground("overworld")
-        MusicPlayer.PlayBackground("underground")
-
+        MusicPlayer.PlayBackground(BackgroundMusic.Overworld)
 
     End Sub
+
+    Private JumpEffect As New MusicPlayer("jump")
 
     Protected Overrides Sub OnPaint(e As PaintEventArgs)
         MyBase.OnPaint(e)
@@ -126,15 +127,22 @@ Public Class MainGame
 
     Private Sub MainGame_KeyUp(sender As Object, e As KeyEventArgs) Handles MyBase.KeyUp
         KeyHandler.KeyUp(e.KeyCode)
+        
     End Sub
 
     Private Sub MainGame_Resize(sender As Object, e As EventArgs) Handles MyBase.Resize
         KeyHandler.Reset()
     End Sub
 
+    Dim y As MusicPlayer()
     Private Sub MainGame_KeyDown(sender As Object, e As KeyEventArgs) Handles MyBase.KeyDown
         Dim key As Keys = e.KeyData
         KeyHandler.KeyDown(key)
+        If key = Keys.W Or key = Keys.Up
+            JumpEffect.Play(True)
+        End If
+        
+
     End Sub
 
     Private Sub MainGame_Load(sender As Object, e As EventArgs) Handles MyBase.Load

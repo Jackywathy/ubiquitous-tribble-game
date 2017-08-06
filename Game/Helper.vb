@@ -1,6 +1,5 @@
 ﻿
 Imports System.IO
-Imports System.Windows.Media
 Imports NAudio.Wave
 
 Public Module Dimensions
@@ -57,37 +56,95 @@ End Module
 Public Enum BackgroundMusic
     Overworld
     Underground
+End Enum
+
+Public Enum SoundEffects
+    Jump
 
 End Enum
 
 Public NotInheritable Class MusicPlayer
-    Private Shared backgroundPlayer As New MediaPlayer()
-    Dim Shared x As New MediaPlayer()
-    
+    Implements IDisposable
+    Private Shared backgroundPlayer As MusicPlayer
 
-    Public Shared Sub PlaySound()
-        
+    Private reader As WaveFileReader
+    Private volume As WaveChannel32
+    Private player As WaveOutEvent
 
+    Private Shared Function getEffect(effect As SoundEffects) As String
+        Dim out as String
+        Select case effect
+            Case SoundEffects.Jump
+                out = "jump"
+            Case Else:
+                Throw New ArgumentException()
+        End Select
+        Return out
+    End Function
+
+    Public Sub New(effect As SoundEffects)
+        Me.New(getEffect(effect))
     End Sub
 
+    ''' <summary>
+    ''' A wrapper allowing sound to be played.
+    ''' </summary>
+    ''' <param name="name"></param>
+    Public Sub New(name As String) 
+        Me.New(My.Resources.ResourceManager.GetStream(name))
+    End Sub 
+
+    
+
+    Public Sub New(stream As Stream)
+        reader = New WaveFileReader(stream) 
+        volume = New WaveChannel32(reader) 
+        player = New WaveOutEvent() 
+        player.Init(volume)
+        MsgBox(String.Format("Audio length: {0}", reader.Length)) 
+    End Sub
+
+    Public Sub Play(Optional fromStart As Boolean = False)
+        If fromStart
+
+            reader.CurrentTime = TimeSpan.Zero
+            End If
+        ' go to beginning
+        '
+        player.Play()
+    End Sub
+
+    Public Sub Pause()
+        player.Stop()
+
+    End Sub
 
 
     Public Shared Sub PlayBackground(name As String)
-        Dim meWave As New WaveFileReader(My.Resources.ResourceManager.GetStream(name))
-        Dim volume As New WaveChannel32(meWave)
-        Dim player As New WaveOutEvent()
-        MsgBox(String.Format("Audio length: {0}",meWave.Length))
-        player.Init(volume)
-        player.Play()
-        
-        
-      
+        if backgroundPlayer IsNot Nothing
+            backgroundPlayer.Dispose()
+        End if
+        backgroundPlayer = New MusicPlayer(name)
+        backgroundPlayer.Play()
     End Sub
 
-    Public Shared Sub Media_Repeat(sender As MediaPlayer, e As EventArgs)
+    Public Shared Sub PlayBackground(music As BackgroundMusic)
+        Select Case music
+            Case BackgroundMusic.Overworld
+                PlayBackground("overworld")
+            Case BackgroundMusic.Underground
+                PlayBackground("underground")
+        End Select
+    End Sub
 
-        sender.Position = TimeSpan.Zero
-        sender.Play()
+    Public Shared Sub Media_Repeat(sender As MusicPlayer, e As EventArgs)
+        sender.Play(fromStart := True)
+    End Sub
+
+    Public Sub Dispose() Implements IDisposable.Dispose
+        reader.Dispose()
+        volume.Dispose()
+        player.Dispose()
     End Sub
 End Class
 
@@ -97,5 +154,4 @@ Friend Module UriCreator
     
 
 
-    Private init =System.IO.Packaging.PackUriHelper.UriSchemePack
 End Module
