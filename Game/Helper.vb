@@ -1,4 +1,7 @@
-﻿Imports System.Windows.Media
+﻿
+Imports System.IO
+Imports System.Windows.Media
+Imports NAudio.Wave
 
 Public Module Dimensions
     Public Const ScreenGridWidth As Integer = 1280
@@ -50,16 +53,49 @@ Public Module ImageManipulation
 
 End Module
 
+
+Public Enum BackgroundMusic
+    Overworld
+    Underground
+
+End Enum
+
 Public NotInheritable Class MusicPlayer
     Private Shared backgroundPlayer As New MediaPlayer()
-    Public Shared Sub PlaySound()
-        Dim x As New MediaPlayer()
+    Dim Shared x As New MediaPlayer()
+    
 
+    Public Shared Sub PlaySound()
+        
+
+    End Sub
+
+
+
+    Public Shared Sub PlayBackground(name As String)
+        Dim meWave As New WaveFileReader(My.Resources.ResourceManager.GetStream(name))
+        Dim volume As New WaveChannel32(meWave)
+        Dim player As New WaveOutEvent()
+        MsgBox(String.Format("Audio length: {0}",meWave.Length))
+        player.Init(volume)
+        player.Play()
+        
+        
+      
+    End Sub
+
+    Public Shared Sub Media_Repeat(sender As MediaPlayer, e As EventArgs)
+
+        sender.Position = TimeSpan.Zero
+        sender.Play()
     End Sub
 End Class
 
-Public Module UriCreator
-    Public Function ImageUri(name As String) As URI
-        Return new URI("pack://application:,,,/translatornamespace;component/images/" + name)
-    End Function
+Friend Module UriCreator
+    
+
+    
+
+
+    Private init =System.IO.Packaging.PackUriHelper.UriSchemePack
 End Module

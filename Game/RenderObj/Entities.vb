@@ -193,12 +193,13 @@ Public Class Entity
 #Disable Warning BC42104 ' Variable is used before it has been assigned a value
         ' stupid compiler, I'm checking if its null
         If imageToDraw IsNot Nothing Then
-#Enable Warning BC42104 ' Variable is used before it has been assigned a value
             If Not isFacingForward Then
                 imageToDraw.RotateFlip(RotateFlipType.RotateNoneFlipX)
             End If
             RenderImage = imageToDraw
         End If
+#Enable Warning BC42104 ' Variable is used before it has been assigned a value
+
 
     End Sub
 End Class

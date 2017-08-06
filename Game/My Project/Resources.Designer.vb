@@ -39,7 +39,7 @@ Namespace My.Resources
         Friend ReadOnly Property ResourceManager() As Global.System.Resources.ResourceManager
             Get
                 If Object.ReferenceEquals(resourceMan, Nothing) Then
-                    Dim temp As Global.System.Resources.ResourceManager = New Global.System.Resources.ResourceManager("Game.Resources", GetType(Resources).Assembly)
+                    Dim temp As Global.System.Resources.ResourceManager = New Global.System.Resources.ResourceManager("WinGame.Resources", GetType(Resources).Assembly)
                     resourceMan = temp
                 End If
                 Return resourceMan
@@ -77,6 +77,35 @@ Namespace My.Resources
             Get
                 Dim obj As Object = ResourceManager.GetObject("brick", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        '''</summary>
+        Friend ReadOnly Property icon() As System.Drawing.Icon
+            Get
+                Dim obj As Object = ResourceManager.GetObject("icon", resourceCulture)
+                Return CType(obj,System.Drawing.Icon)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        '''</summary>
+        Friend ReadOnly Property icon1() As System.Drawing.Icon
+            Get
+                Dim obj As Object = ResourceManager.GetObject("icon1", resourceCulture)
+                Return CType(obj,System.Drawing.Icon)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        '''</summary>
+        Friend ReadOnly Property jump() As System.IO.UnmanagedMemoryStream
+            Get
+                Return ResourceManager.GetStream("jump", resourceCulture)
             End Get
         End Property
         
@@ -131,6 +160,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        '''</summary>
+        Friend ReadOnly Property overworld() As System.IO.UnmanagedMemoryStream
+            Get
+                Return ResourceManager.GetStream("overworld", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
         Friend ReadOnly Property placeholderLevel() As System.Drawing.Bitmap
@@ -147,6 +185,24 @@ Namespace My.Resources
             Get
                 Dim obj As Object = ResourceManager.GetObject("platform", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        '''</summary>
+        Friend ReadOnly Property start() As System.IO.UnmanagedMemoryStream
+            Get
+                Return ResourceManager.GetStream("start", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        '''</summary>
+        Friend ReadOnly Property underground() As System.IO.UnmanagedMemoryStream
+            Get
+                Return ResourceManager.GetStream("underground", resourceCulture)
             End Get
         End Property
     End Module

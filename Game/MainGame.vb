@@ -1,4 +1,6 @@
-﻿Public Class MainGame
+﻿Imports System.IO
+
+Public Class MainGame
     Private NotInheritable Class KeyHandler
         Public Shared MoveRight As Boolean
         Public Shared MoveLeft As Boolean
@@ -56,6 +58,10 @@
         SetStyle(ControlStyles.UserPaint, True)
         SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
         SetStyle(ControlStyles.AllPaintingInWmPaint, True)
+
+        MusicPlayer.PlayBackground("overworld")
+        MusicPlayer.PlayBackground("underground")
+
 
     End Sub
 
