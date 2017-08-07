@@ -1,5 +1,6 @@
 ﻿
 Imports System.IO
+Imports System.Security.Permissions
 Imports NAudio.Wave
 
 Public Module Dimensions
@@ -69,7 +70,7 @@ Public NotInheritable Class MusicPlayer
 
     Private reader As WaveFileReader
     Private volume As WaveChannel32
-    Private player As WaveOutEvent
+    Private player As DirectSoundOut
 
     Private Shared Function getEffect(effect As SoundEffects) As String
         Dim out as String
@@ -99,7 +100,7 @@ Public NotInheritable Class MusicPlayer
     Public Sub New(stream As Stream)
         reader = New WaveFileReader(stream) 
         volume = New WaveChannel32(reader) 
-        player = New WaveOutEvent() 
+        player = New DirectSoundOut(50)
         player.Init(volume)
         MsgBox(String.Format("Audio length: {0}", reader.Length)) 
     End Sub
