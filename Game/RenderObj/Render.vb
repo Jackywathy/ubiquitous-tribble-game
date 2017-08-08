@@ -72,11 +72,20 @@
         Return True
     End Function
 
+    Public Overridable Sub Collision(sender As RenderObject, dir As Directions)
+
+    End Sub
 End Class
+Public Enum Directions
+    Top
+    Bottom
+    Left
+    Right
+End Enum
 ' ===========================
 ' Entities
 ' ---------------------------
 
 'Public Module Entities
-'    Public player As New Entity(32, 32, New Point(0, 50), Sprites.player)
+'    Public player1 As New Entity(32, 32, New Point(0, 50), Sprites.player1)
 'End Module

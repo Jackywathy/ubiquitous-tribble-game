@@ -40,28 +40,27 @@ Public Class MainGame
         End Sub
     End Class
 
-    Private Background As BackgroundRender
+    Private Property SceneController As New Scene
 
-    Private lastFrame As DateTime = DateTime.Now()
 
-    Private player = Entities.player
-
-    Private brick As New Block(100, 100, New Point(10, 300))
-    Private Platform As New Platform(TotalGridWidth, 50, New Point(0, 0), My.Resources.platform)
+   
+    
 
     Sub New()
         ' This call is required by the designer.
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
-        Background = New BackgroundRender(TotalGridWidth, TotalGridHeight, My.Resources.placeholderLevel)
+        
         DoubleBuffered = True
         SetStyle(ControlStyles.UserPaint, True)
         SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
         SetStyle(ControlStyles.AllPaintingInWmPaint, True)
 
-        MusicPlayer.PlayBackground(BackgroundMusic.Overworld)
+        SceneController.LoadTestLevel()
 
+
+        MusicPlayer.PlayBackground(BackgroundMusic.Overworld)
     End Sub
 
     Private JumpEffect As New MusicPlayer("jump")
@@ -69,10 +68,9 @@ Public Class MainGame
     Protected Overrides Sub OnPaint(e As PaintEventArgs)
         MyBase.OnPaint(e)
         Dim g As Graphics = e.Graphics
-        Background.Render(g)
-        Platform.Render(g)
-        brick.Render(g)
-        player.Render(g)
+        For each item as RenderObject In SceneController.GetObjInScene()
+            item.Render(g)
+        Next
         DrawFps(g)
     End Sub
 
@@ -80,6 +78,7 @@ Public Class MainGame
     Private FPS As Integer = 0
     Private ReadOnly fpsFont as New Font("Arial", 20)
     Private ReadOnly fpsBrush As New SolidBrush(Color.Black)
+    Private lastFrame As DateTime = DateTime.Now()
 
     Private Sub DrawFps(g As Graphics)
         Dim now = DateTime.Now()
@@ -95,32 +94,32 @@ Public Class MainGame
 
     Private Sub GameLoop_Tick(sender As Object, e As EventArgs) Handles GameLoop.Tick
         handleInput()
-        player.Move(numFrames)
+        Entities.player1.Move(numFrames)
 
         Me.Refresh()
     End Sub
 
     Private Sub handleInput()
         If KeyHandler.MoveUp Then
-            player.accelerateY(player.moveSpeed.y)
+            Entities.player1.accelerateY(Entities.player1.moveSpeed.y)
         End If
         If KeyHandler.MoveDown Then
 
         End If
         If KeyHandler.MoveLeft Then
-            player.accelerateX(-player.moveSpeed.x)
+            Entities.player1.accelerateX(-Entities.player1.moveSpeed.x)
         End If
         If KeyHandler.MoveRight Then
-            player.AccelerateX(player.moveSpeed.x)
+            Entities.player1.AccelerateX(Entities.player1.moveSpeed.x)
 
         End If
 
-        player.ApplyConstantForces()
+        Entities.player1.ApplyConstantForces()
 
         ' Temporary "Ground"
-        If player.Location.Y < 50 Then
-            player.Location = New Point(player.Location.X, 50)
-            player.isGrounded = True
+        If Entities.player1.Location.Y < 50 Then
+            Entities.player1.Location = New Point(Entities.player1.Location.X, 50)
+            Entities.player1.isGrounded = True
         End If
 
     End Sub

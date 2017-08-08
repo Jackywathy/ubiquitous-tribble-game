@@ -83,11 +83,11 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Helper.vb" />
-    <Compile Include="MainGame.vb">
+    <Compile Include="main\Helper.vb" />
+    <Compile Include="main\MainGame.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainGame.Designer.vb">
+    <Compile Include="main\MainGame.Designer.vb">
       <DependentUpon>MainGame.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
@@ -107,20 +107,22 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="renderObj\Block.vb" />
+    <Compile Include="renderObj\blocks\Block.vb" />
+    <Compile Include="renderObj\blocks\BreakableBrick.vb" />
     <Compile Include="renderObj\Entities.vb" />
     <Compile Include="renderObj\Platform.vb" />
     <Compile Include="renderObj\Render.vb" />
     <Compile Include="renderObj\Sprites.vb" />
-    <Compile Include="TestImage.Designer.vb">
+    <Compile Include="main\Scene.vb" />
+    <Compile Include="debug\TestImage.Designer.vb">
       <DependentUpon>TestImage.vb</DependentUpon>
     </Compile>
-    <Compile Include="TestImage.vb">
+    <Compile Include="debug\TestImage.vb">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="MainGame.resx">
+    <EmbeddedResource Include="main\MainGame.resx">
       <DependentUpon>MainGame.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
@@ -129,7 +131,7 @@
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestImage.resx">
+    <EmbeddedResource Include="debug\TestImage.resx">
       <DependentUpon>TestImage.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>

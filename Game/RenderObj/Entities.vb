@@ -209,7 +209,7 @@ End Class
 ' ---------------------------
 
 Public Module Entities
-    Public player As New Entity(32, 32, New Point(0, 50), Sprites.player)
+    Public player1 As New Entity(32, 32, New Point(0, 50), Sprites.player)
 End Module
 
 

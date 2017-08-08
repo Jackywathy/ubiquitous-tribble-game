@@ -1,6 +1,5 @@
 ﻿
 Imports System.IO
-Imports System.Security.Permissions
 Imports NAudio.Wave
 
 Public Module Dimensions
@@ -70,7 +69,7 @@ Public NotInheritable Class MusicPlayer
 
     Private reader As WaveFileReader
     Private volume As WaveChannel32
-    Private player As DirectSoundOut
+    Private player As IWavePlayer
 
     Private Shared Function getEffect(effect As SoundEffects) As String
         Dim out as String
@@ -91,16 +90,17 @@ Public NotInheritable Class MusicPlayer
     ''' A wrapper allowing sound to be played.
     ''' </summary>
     ''' <param name="name"></param>
-    Public Sub New(name As String) 
-        Me.New(My.Resources.ResourceManager.GetStream(name))
+    Public Sub New(name As String, Optional useWaveOut As Boolean = False) 
+        Me.New(My.Resources.ResourceManager.GetStream(name), useWaveOut)
     End Sub 
 
     
 
-    Public Sub New(stream As Stream)
+    Public Sub New(stream As Stream, Optional useWaveOut As Boolean = False)
         reader = New WaveFileReader(stream) 
         volume = New WaveChannel32(reader) 
-        player = New DirectSoundOut(50)
+        player = New DirectSoundOut()
+        
         player.Init(volume)
         MsgBox(String.Format("Audio length: {0}", reader.Length)) 
     End Sub
@@ -125,7 +125,7 @@ Public NotInheritable Class MusicPlayer
         if backgroundPlayer IsNot Nothing
             backgroundPlayer.Dispose()
         End if
-        backgroundPlayer = New MusicPlayer(name)
+        backgroundPlayer = New MusicPlayer(name, True)
         backgroundPlayer.Play()
     End Sub
 
