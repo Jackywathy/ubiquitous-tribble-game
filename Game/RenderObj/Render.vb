@@ -72,16 +72,30 @@
         Return True
     End Function
 
-    Public Overridable Sub Collision(sender As RenderObject, dir As Directions)
-
+    Public Overridable Sub CollisionBottom(sender As Entity)
+        ' default behaviour = stop player
+        Sender.veloc.y = 0
     End Sub
+    Public Overridable Sub CollisionTop(sender As Entity)
+        Sender.veloc.y = 0
+    End Sub
+    Public Overridable Sub CollisionLeft(sender As Entity)
+        Sender.veloc.x = 0
+    End Sub
+    Public Overridable Sub CollisionRight(sender As Entity)
+        Sender.veloc.x = 0
+    End Sub
+
+
+    Public Shared Operator =(left as RenderObject, right as RenderObject)
+        return left.ID = right.ID
+    End Operator
+    Public Shared Operator <>(left as RenderObject, right As RenderObject)
+        return left.ID <> right.ID
+    End Operator
+
 End Class
-Public Enum Directions
-    Top
-    Bottom
-    Left
-    Right
-End Enum
+
 ' ===========================
 ' Entities
 ' ---------------------------

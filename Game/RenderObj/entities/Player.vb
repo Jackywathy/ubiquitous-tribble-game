@@ -19,13 +19,14 @@ Public Class  Player
 
 
     Private Shared _coins as integer = 0
+
     Public Shared Property Coins
         Get
             return _coins
         End Get
         Set(value)
-            If _coins + value > CoinsToLives
-                _coins = (_coins+value)-CoinsToLives
+            If value >= CoinsToLives
+                _coins = value - CoinsToLives
             Else
                 _coins += 1
             End If
@@ -36,4 +37,6 @@ Public Class  Player
     Sub New(width as integer, height as integer, location as Point, sprites As spriteset)
         MyBase.New(width, height, location, sprites)
     End Sub
+
+
 End Class

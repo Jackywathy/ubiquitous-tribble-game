@@ -35,7 +35,7 @@ Public Class Entity
 
     Private lastGroundObject As RenderObject
 
-    Public Sub CheckCollision(ByRef obj As RenderObject)
+    Public Sub CheckCollision(ByRef sender As RenderObject)
 
         Dim selfCentre = New Point((Me.Location.X + 0.5 * Me.Width), (Me.Location.Y + 0.5 * Me.Height))
 
@@ -44,10 +44,10 @@ Public Class Entity
         Dim selfUppermost = Me.Location.Y + Me.Height
         Dim selfLowermost = Me.Location.Y
 
-        Dim blockRightmost = obj.Location.X + obj.Width
-        Dim blockLeftmost = obj.Location.X
-        Dim blockUppermost = obj.Location.Y + obj.Height
-        Dim blockLowermost = obj.Location.Y
+        Dim blockRightmost = sender.Location.X + sender.Width
+        Dim blockLeftmost = sender.Location.X
+        Dim blockUppermost = sender.Location.Y + sender.Height
+        Dim blockLowermost = sender.Location.Y
 
         Dim insideFromLeft = selfRightmost > blockLeftmost
         Dim insideFromRight = selfLeftmost < blockRightmost
@@ -61,37 +61,43 @@ Public Class Entity
         ' X <------ from here
         '
 
-        '     NORTH
+        '     
 
+        ' entity is hitting sender from bottom
         If (selfLowermost + (0.1 * Me.Height)) > blockUppermost And insideFromAbove And insideFromLeft And insideFromRight Then
             isGrounded = True
-            lastGroundObject = obj
+            lastGroundObject = sender
             Me.Location = New Point(Me.Location.X, blockUppermost)
-            Me.veloc.y = 0
+            'Me.veloc.y = 0
+            ' NOTE - LET THE RenderObject being collided with deal with changing Entities' speed
+            ' For example, collision with a platform from below != veloc = 0, mario passes through the platform
+            ' Moved it into CollisionBottom for RenderObject 
+            sender.CollisionBottom(Me)
 
-            ' SOUTH
-
+         
+        ' entity is hitting sender From the top (probably stand on it)
         ElseIf Me.veloc.y > 0 And selfCentre.Y < blockLowermost And (selfUppermost + (0.05 * Me.Height)) > blockLowermost Then
             Me.Location = New Point(Me.Location.X, blockLowermost - Me.Height) ' - 0.2 * c ?
-            Me.veloc.y = 0
+            sender.CollisionTop(Me)
 
             ' WEST
 
         ElseIf selfCentre.X < blockLeftmost And insideFromLeft And insideFromAbove And insideFromBelow Then
             Me.Location = New Point(blockLeftmost, Me.Location.Y)
-            Me.veloc.x = 0
+            sender.CollisionLeft(Me)
 
             ' EAST
 
         ElseIf selfCentre.X > blockRightmost And insideFromRight And insideFromAbove And insideFromBelow Then
             Me.Location = New Point(blockRightmost - Me.Width, Me.Location.Y)
-            Me.veloc.x = 0
+            sender.CollisionRight(Me)
 
             ' Check for falling off platform
 
-        ElseIf obj.ID = Me.lastGroundObject.ID And Not (insideFromLeft And insideFromRight) Then
-            isGrounded = False
-
+        ElseIf lastGroundObject IsNot Nothing
+            if sender = Me.lastGroundObject And Not (insideFromLeft And insideFromRight) Then
+                isGrounded = False
+            End if
         End If
 
     End Sub
