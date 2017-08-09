@@ -68,7 +68,7 @@ Public Class Entity
         ' AND    entity intersects inside from top
         ' AND    entity intersect inside from left
         ' AND    entity intersects inside from right
-        If (selfLowermost + (0.1 * Me.Height)) > blockUppermost And insideFromAbove And insideFromLeft And insideFromRight Then
+        If insideFromAbove And insideFromLeft And insideFromRight Then
             isGrounded = True
             lastGroundObject = sender
             Me.Location = New Point(Me.Location.X, blockUppermost)

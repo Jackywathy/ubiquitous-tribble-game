@@ -48,6 +48,7 @@ Public Class MainGame
     
 
     Sub New()
+
         ' This call is required by the designer.
         InitializeComponent()
 
@@ -72,12 +73,21 @@ Public Class MainGame
         g.InterpolationMode = InterpolationMode.NearestNeighbor
         SceneController.RenderScene(g)
         DrawFps(g)
+        DrawLocation(g, "Mario: ", player1.Location, 36)
+        DrawLocation(g, "Platform: ", SceneController.AllItems(2).Location, 54)
+    End Sub
+
+    Public Sub DrawLocation(g As Graphics, str As String, loc As Point, height As Integer)
+        ' height is the dist from top of screen
+        Dim out = String.Format("{0}: {1}, {2}", str, loc.X, loc.Y)
+        Dim offset = ScreenGridWidth - (g.MeasureString(out, fpsFont)).Width - 15
+        g.DrawString(out, fpsFont, fpsBrush, offset, height)
     End Sub
 
     Private numFrames As Integer = 0
     Private FPS As Integer = 0
     Private ReadOnly fpsFont as New Font("Arial", 20)
-    Private ReadOnly fpsBrush As New SolidBrush(Color.Black)
+    Private ReadOnly fpsBrush As New SolidBrush(Color.Red)
     Private lastFrame As DateTime = DateTime.Now()
 
     Private Sub DrawFps(g As Graphics)
@@ -116,12 +126,6 @@ Public Class MainGame
 
         Entities.player1.ApplyConstantForces()
 
-        ' Temporary "Ground"
-        If Entities.player1.Location.Y < 50 Then
-            Entities.player1.Location = New Point(Entities.player1.Location.X, 50)
-            Entities.player1.isGrounded = True
-        End If
-
     End Sub
 
     Private Sub MainGame_KeyUp(sender As Object, e As KeyEventArgs) Handles MyBase.KeyUp
@@ -145,6 +149,8 @@ Public Class MainGame
     End Sub
 
     Private Sub MainGame_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
+        
     End Sub
+
+
 End Class

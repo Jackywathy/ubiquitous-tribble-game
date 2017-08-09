@@ -1,5 +1,5 @@
 ﻿Public Class Scene
-    Private AllItems As New List(Of RenderObject)
+    Public AllItems As New List(Of RenderObject)
 
     Private InSceneItems As New List(Of RenderObject)
     
@@ -27,7 +27,7 @@
     Dim temp
     Sub LoadTestLevel()
         Dim background = New BackgroundRender(TotalGridWidth, TotalGridHeight, My.Resources.placeholderLevel)
-        Dim brick As New BreakableBrick(100, 100, New Point(10, 300))
+        Dim brick As New BreakableBrick(32, 32, New Point(0, 64))
         Dim platform As New Platform(TotalGridWidth, 50, New Point(0, 0), My.Resources.platform)
         temp = platform
         ' the items added later are rendered later!
