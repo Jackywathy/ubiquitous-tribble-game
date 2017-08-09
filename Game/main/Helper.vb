@@ -7,11 +7,13 @@ Public Module Dimensions
     Public Const ScreenGridHeight As Integer = 720
     Public TotalGridWidth As Integer = 4000
     Public TotalGridHeight As Integer = 1000
+    Public MarioWidth = 32
+    Public MarioHeight = 32
 End Module
 
 Module Debug
     Public Sub DbShowImage(image As Image)
-        Dim x = (new TestImage(image))
+        Dim x = (new    TestImage(image))
         x.Show()
     End Sub
 End Module

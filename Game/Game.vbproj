@@ -83,6 +83,12 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="main\TestImage.designer.vb">
+      <DependentUpon>TestImage.vb</DependentUpon>
+    </Compile>
+    <Compile Include="main\TestImage.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="main\Helper.vb" />
     <Compile Include="main\MainGame.vb">
       <SubType>Form</SubType>
@@ -109,19 +115,17 @@
     </Compile>
     <Compile Include="renderObj\blocks\Block.vb" />
     <Compile Include="renderObj\blocks\BreakableBrick.vb" />
-    <Compile Include="renderObj\Entities.vb" />
+    <Compile Include="renderObj\entities\Entity.vb" />
+    <Compile Include="renderObj\entities\Player.vb" />
     <Compile Include="renderObj\Platform.vb" />
     <Compile Include="renderObj\Render.vb" />
     <Compile Include="renderObj\Sprites.vb" />
     <Compile Include="main\Scene.vb" />
-    <Compile Include="debug\TestImage.Designer.vb">
-      <DependentUpon>TestImage.vb</DependentUpon>
-    </Compile>
-    <Compile Include="debug\TestImage.vb">
-      <SubType>Form</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="main\TestImage.resx">
+      <DependentUpon>TestImage.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="main\MainGame.resx">
       <DependentUpon>MainGame.vb</DependentUpon>
     </EmbeddedResource>
@@ -130,9 +134,6 @@
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="debug\TestImage.resx">
-      <DependentUpon>TestImage.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -176,6 +177,7 @@
     </Content>
     <None Include="images\mario_small_1.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

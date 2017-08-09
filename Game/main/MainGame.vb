@@ -68,9 +68,8 @@ Public Class MainGame
     Protected Overrides Sub OnPaint(e As PaintEventArgs)
         MyBase.OnPaint(e)
         Dim g As Graphics = e.Graphics
-        For each item as RenderObject In SceneController.GetObjInScene()
-            item.Render(g)
-        Next
+
+        SceneController.RenderScene(g)
         DrawFps(g)
     End Sub
 

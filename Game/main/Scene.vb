@@ -33,4 +33,9 @@
 
         Me.Add(Background, brick, Platform, Player)
     End Sub
+    Sub RenderScene(g As Graphics)
+        for each item as RenderObject in GetObjInScene()
+            item.Render(g)
+        Next
+    End Sub
 End Class
