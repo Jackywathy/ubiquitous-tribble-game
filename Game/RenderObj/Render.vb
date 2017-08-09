@@ -1,4 +1,6 @@
-﻿Public MustInherit Class RenderObject
+﻿Imports System.Drawing.Drawing2D
+
+Public MustInherit Class RenderObject
     Public Property Width As Integer
     Public Property Height As Integer
     Friend Shared toolBarOffSet As Integer = 29
@@ -45,6 +47,7 @@
 
     Public Overridable Sub Render(g As Graphics)
         BeforeRender()
+       
         g.DrawImage(RenderImage, New Point(Location.X - screenLocation.X, Dimensions.ScreenGridHeight - Height - Location.Y + screenLocation.Y - toolBarOffSet))
     End Sub
 

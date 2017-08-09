@@ -16,6 +16,9 @@ Module Debug
         Dim x = (new    TestImage(image))
         x.Show()
     End Sub
+    Public Sub Print(str As String)
+        Console.Out.WriteLine(str)
+    End Sub
 End Module
 
 Public Module ImageManipulation

@@ -1,4 +1,5 @@
-﻿Imports System.IO
+﻿Imports System.Drawing.Drawing2D
+Imports System.IO
 
 Public Class MainGame
     Private NotInheritable Class KeyHandler
@@ -68,7 +69,7 @@ Public Class MainGame
     Protected Overrides Sub OnPaint(e As PaintEventArgs)
         MyBase.OnPaint(e)
         Dim g As Graphics = e.Graphics
-
+        g.InterpolationMode = InterpolationMode.NearestNeighbor
         SceneController.RenderScene(g)
         DrawFps(g)
     End Sub

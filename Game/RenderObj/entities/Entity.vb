@@ -63,7 +63,11 @@ Public Class Entity
 
         '     
 
-        ' entity is hitting sender from bottom
+        ' entity is above the block, on TOP of block
+        ' if the lowest part + a bit > highest bit of block
+        ' AND    entity intersects inside from top
+        ' AND    entity intersect inside from left
+        ' AND    entity intersects inside from right
         If (selfLowermost + (0.1 * Me.Height)) > blockUppermost And insideFromAbove And insideFromLeft And insideFromRight Then
             isGrounded = True
             lastGroundObject = sender
@@ -72,13 +76,14 @@ Public Class Entity
             ' NOTE - LET THE RenderObject being collided with deal with changing Entities' speed
             ' For example, collision with a platform from below != veloc = 0, mario passes through the platform
             ' Moved it into CollisionBottom for RenderObject 
-            sender.CollisionBottom(Me)
+            sender.CollisionTop(Me)
 
          
-        ' entity is hitting sender From the top (probably stand on it)
+        ' entity is underneath block, on BOTTOM of block
+        
         ElseIf Me.veloc.y > 0 And selfCentre.Y < blockLowermost And (selfUppermost + (0.05 * Me.Height)) > blockLowermost Then
             Me.Location = New Point(Me.Location.X, blockLowermost - Me.Height) ' - 0.2 * c ?
-            sender.CollisionTop(Me)
+            sender.CollisionBottom(Me)
 
             ' WEST
 
