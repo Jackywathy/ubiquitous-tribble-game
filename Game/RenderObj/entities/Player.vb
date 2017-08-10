@@ -13,19 +13,19 @@ Friend Enum PlayerStates
 End Enum
 
 
-Public Class  Player
+Public Class Player
     Inherits Entity
     Public Shared Property Lives = StartLives
+    Public allowJump = True
 
-
-    Private Shared _coins as integer = 0
+    Private Shared _coins As Integer = 0
 
     Public Shared Property Coins
         Get
-            return _coins
+            Return _coins
         End Get
         Set(value)
-            If value >= CoinsToLives
+            If value >= CoinsToLives Then
                 _coins = value - CoinsToLives
             Else
                 _coins += 1
@@ -34,7 +34,7 @@ Public Class  Player
         End Set
     End Property
 
-    Sub New(width as integer, height as integer, location as Point, sprites As spriteset)
+    Sub New(width As Integer, height As Integer, location As Point, sprites As SpriteSet)
         MyBase.New(width, height, location, sprites)
     End Sub
 

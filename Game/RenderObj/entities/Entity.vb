@@ -68,7 +68,14 @@ Public Class Entity
         ' AND    entity intersects inside from top
         ' AND    entity intersect inside from left
         ' AND    entity intersects inside from right
-        If selfLowermost + (0.1 * Me.Height) > blockUppermost And insideFromAbove And insideFromLeft And insideFromRight Then
+
+        If selfLowermost = 50 And player1.veloc.y < 0 Then
+            selfLowermost += 0
+        End If
+
+
+        ' NORTH
+        If Me.veloc.y < 0 And selfCentre.Y > blockUppermost And insideFromAbove And insideFromLeft And insideFromRight Then
             isGrounded = True
             lastGroundObject = sender
             Me.Location = New Point(Me.Location.X, blockUppermost)
@@ -80,7 +87,7 @@ Public Class Entity
 
 
             ' entity is underneath block, on BOTTOM of block
-
+            'SOUTH
         ElseIf Me.veloc.y > 0 And selfCentre.Y < blockLowermost And (selfUppermost + (0.05 * Me.Height)) > blockLowermost And insideFromLeft And insideFromRight Then
             Me.Location = New Point(Me.Location.X, blockLowermost - Me.Height) ' - 0.2 * c ?
             sender.CollisionBottom(Me)
@@ -88,13 +95,13 @@ Public Class Entity
             ' WEST
 
         ElseIf selfCentre.X < blockLeftmost And insideFromLeft And insideFromAbove And insideFromBelow Then
-            Me.Location = New Point(blockLeftmost, Me.Location.Y)
+            Me.Location = New Point(blockLeftmost - Me.Width, Me.Location.Y)
             sender.CollisionLeft(Me)
 
             ' EAST
 
         ElseIf selfCentre.X > blockRightmost And insideFromRight And insideFromAbove And insideFromBelow Then
-            Me.Location = New Point(blockRightmost - Me.Width, Me.Location.Y)
+            Me.Location = New Point(blockRightmost, Me.Location.Y)
             sender.CollisionRight(Me)
 
             ' Check for falling off platform
@@ -152,6 +159,9 @@ Public Class Entity
         Else
             AccelerateY(-Forces.gravity)
             DecreaseMagnitude(Me.veloc.x, Forces.airResist)
+        End If
+        If Not Player1.isGrounded And player1.veloc.y < 0 Then
+            player1.veloc.y += 0
         End If
     End Sub
 
@@ -221,7 +231,7 @@ End Class
 ' ---------------------------
 
 Public Module Entities
-    Public player1 As New Entity(32, 32, New Point(0, 50), Sprites.player)
+    Public player1 As New Player(32, 32, New Point(0, 50), Sprites.player)
 End Module
 
 

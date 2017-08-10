@@ -43,17 +43,13 @@ Public Class MainGame
 
     Private Property SceneController As New Scene
 
-
-   
-    
-
     Sub New()
 
         ' This call is required by the designer.
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
-        
+
         DoubleBuffered = True
         SetStyle(ControlStyles.UserPaint, True)
         SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
@@ -108,8 +104,11 @@ Public Class MainGame
     End Sub
 
     Private Sub handleInput()
-        If KeyHandler.MoveUp Then
-            Entities.player1.accelerateY(Entities.player1.moveSpeed.y)
+        If KeyHandler.MoveUp And player1.allowJump = True Then
+            Entities.player1.AccelerateY(Entities.player1.moveSpeed.y)
+            player1.allowJump = False
+        ElseIf KeyHandler.MoveUp = False Then
+            player1.allowJump = True
         End If
         If KeyHandler.MoveDown Then
 
