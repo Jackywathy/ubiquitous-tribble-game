@@ -62,10 +62,8 @@ Public Class MainGame
         SceneController.LoadTestLevel()
 
 
-        MusicPlayer.PlayBackground(BackgroundMusic.Overworld)
+        MusicPlayer.PlayBackground("ground_theme")
     End Sub
-
-    Private JumpEffect As New MusicPlayer("jump")
 
     Protected Overrides Sub OnPaint(e As PaintEventArgs)
         MyBase.OnPaint(e)
@@ -137,14 +135,13 @@ Public Class MainGame
         KeyHandler.Reset()
     End Sub
 
-    Dim y As MusicPlayer()
+    Dim jump as New MusicPlayer("jump")
     Private Sub MainGame_KeyDown(sender As Object, e As KeyEventArgs) Handles MyBase.KeyDown
         Dim key As Keys = e.KeyData
         KeyHandler.KeyDown(key)
-        If key = Keys.W Or key = Keys.Up
-            JumpEffect.Play(True)
+        If key=Keys.W Or key=keys.Up
+            jump.Play(fromStart := True)
         End If
-        
 
     End Sub
 

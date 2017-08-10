@@ -68,7 +68,7 @@ Public Class Entity
         ' AND    entity intersects inside from top
         ' AND    entity intersect inside from left
         ' AND    entity intersects inside from right
-        If insideFromAbove And insideFromLeft And insideFromRight Then
+        If selfLowermost + (0.1 * Me.Height) > blockUppermost And insideFromAbove And insideFromLeft And insideFromRight Then
             isGrounded = True
             lastGroundObject = sender
             Me.Location = New Point(Me.Location.X, blockUppermost)
@@ -78,10 +78,10 @@ Public Class Entity
             ' Moved it into CollisionBottom for RenderObject 
             sender.CollisionTop(Me)
 
-         
-        ' entity is underneath block, on BOTTOM of block
-        
-        ElseIf Me.veloc.y > 0 And selfCentre.Y < blockLowermost And (selfUppermost + (0.05 * Me.Height)) > blockLowermost Then
+
+            ' entity is underneath block, on BOTTOM of block
+
+        ElseIf Me.veloc.y > 0 And selfCentre.Y < blockLowermost And (selfUppermost + (0.05 * Me.Height)) > blockLowermost And insideFromLeft And insideFromRight Then
             Me.Location = New Point(Me.Location.X, blockLowermost - Me.Height) ' - 0.2 * c ?
             sender.CollisionBottom(Me)
 
@@ -99,8 +99,9 @@ Public Class Entity
 
             ' Check for falling off platform
 
-        ElseIf lastGroundObject IsNot Nothing
-            if sender = Me.lastGroundObject And Not (insideFromLeft And insideFromRight) Then
+        ElseIf lastGroundObject IsNot Nothing Then
+
+            If sender = Me.lastGroundObject And Not (insideFromLeft And insideFromRight) Then
                 isGrounded = False
             End if
         End If
