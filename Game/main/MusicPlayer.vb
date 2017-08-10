@@ -6,7 +6,7 @@ Public NotInheritable Class MusicPlayer
     Private Shared backgroundPlayer As MusicPlayer
 
     Private reader As WaveStream
-    Private volume As WaveChannel32
+    Private volume As WaveStream
     Private player As IWavePlayer
 
     Private Shared Function getEffect(effect As SoundEffects) As String
@@ -36,7 +36,7 @@ Public NotInheritable Class MusicPlayer
 
     Public Sub New(stream As Stream)
         reader = New Mp3FileReader(stream) 
-        volume = New WaveChannel32(reader) 
+        volume = New WaveChannel32(reader)
         player = New DirectSoundOut()
         
         player.Init(volume)
