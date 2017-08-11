@@ -6,8 +6,8 @@ Public Module Forces
     ' may need to tweak
     ' CANNOT exceed moveSpeed values of any entity otherwise it will not be able to move
     Public Const gravity = 0.98
-    Public Const friction = 1.5
-    Public Const airResist = 1.5
+    Public Const friction = 0.5
+    Public Const airResist = 0.5
 End Module
 
 Public Structure Velocity
@@ -19,13 +19,14 @@ Public Structure Velocity
     End Sub
 End Structure
 
-Public Class Entity
+Public MustInherit Class Entity
+
     Inherits RenderObject
-
     Public veloc = New Velocity(0, 0)
-    Public moveSpeed = New Velocity(2, 15)
-    Private ReadOnly maxVeloc = New Velocity(10, -15)
 
+    Public MustOverride Property moveSpeed As Velocity
+    Public MustOverride ReadOnly Property maxVeloc As Velocity
+    '8, -15
     Public isGrounded = True
     Public isJumping = False
     Public isFacingForward = True
@@ -110,7 +111,7 @@ Public Class Entity
 
             If sender = Me.lastGroundObject And Not (insideFromLeft And insideFromRight) Then
                 isGrounded = False
-            End if
+            End If
         End If
 
     End Sub
@@ -123,7 +124,7 @@ Public Class Entity
             Me.veloc.x += magnitude - (magnitude / Math.Abs(magnitude)) * reduction
         End If
 
-        If Math.Abs(Me.veloc.x) > Me.maxVeloc.X Then
+        If Math.Abs(Me.veloc.x) > Me.maxVeloc.x Then
             Me.veloc.x = (Me.veloc.x / Math.Abs(Me.veloc.x)) * Me.maxVeloc.x
         End If
     End Sub
@@ -160,70 +161,22 @@ Public Class Entity
             AccelerateY(-Forces.gravity)
             DecreaseMagnitude(Me.veloc.x, Forces.airResist)
         End If
-        If Not Player1.isGrounded And player1.veloc.y < 0 Then
+        If Not player1.isGrounded And player1.veloc.y < 0 Then
             player1.veloc.y += 0
         End If
     End Sub
 
     Public Overrides Property RenderImage As Image
 
-    Sub New(width As Integer, height As Integer, location As Point, spriteSet As SpriteSet)
+    Sub New(width As Integer, height As Integer, location As Point)
         MyBase.New(width, height, location)
-        Me.RenderImage = Resize(spriteSet.idle, width, height)
-        Me.groundAnimation = spriteSet.ground
     End Sub
 
 
-    Public Sub Move(numFrames As Integer)
+    Public Overridable Sub Move(numFrames As Integer)
         Me.Location = New Point(Me.Location.X + Me.veloc.x, Me.Location.Y + Me.veloc.y)
-
-        ' Animate
-        ' new sub for this?
-
-        Dim imageToDraw As Image
-
-        If isGrounded Then
-
-            ' Check direction
-            If veloc.x < 0 And isFacingForward Then
-                isFacingForward = False
-
-            ElseIf veloc.x > 0 And Not isFacingForward Then
-                isFacingForward = True
-            End If
-
-            ' Re-animate every 5 frames
-            If veloc.x <> 0 And numFrames Mod 5 = 0 Then
-
-                ' Must be cloned, otherwise the resource image itself gets flipped (an unfortunate side effect of classes being passed by reference...)
-                imageToDraw = groundAnimation(0).Clone
-
-                ' Cycle through the list, moving the last element to the first
-                ' I miss being able to use a pop function
-                groundAnimation.Insert(0, groundAnimation.Last)
-                groundAnimation.RemoveAt(groundAnimation.Count - 1)
-
-            ElseIf veloc.x = 0 Then
-                imageToDraw = My.Resources.mario_small_1
-
-            End If
-
-        Else
-            imageToDraw = My.Resources.mario_small_jump
-        End If
-
-#Disable Warning BC42104 ' Variable is used before it has been assigned a value
-        ' stupid compiler, I'm checking if its null
-        If imageToDraw IsNot Nothing Then
-            If Not isFacingForward Then
-                imageToDraw.RotateFlip(RotateFlipType.RotateNoneFlipX)
-            End If
-            RenderImage = imageToDraw
-        End If
-#Enable Warning BC42104 ' Variable is used before it has been assigned a value
-
-
     End Sub
+
 End Class
 
 ' ===========================
