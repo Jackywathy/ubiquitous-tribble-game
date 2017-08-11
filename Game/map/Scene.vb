@@ -1,26 +1,28 @@
-﻿Public Class Scene
+﻿Imports Newtonsoft.Json
+
+Public Class Scene
     Public AllItems As New List(Of RenderObject)
 
     Private InSceneItems As New List(Of RenderObject)
-    
+
 
     Public Function GetObjInScene() As List(Of RenderObject)
         InSceneItems.Clear()
-        For each item As RenderObject In AllItems
-            If item.InScene()
+        For Each item As RenderObject In AllItems
+            If item.InScene() Then
                 InSceneItems.Add(item)
             End If
         Next
         Return InSceneItems
     End Function
     Sub New(ByVal ParamArray args() As RenderObject)
-        For each item As RenderObject In args
+        For Each item As RenderObject In args
             AllItems.Add(item)
         Next
     End Sub
 
-    Sub Add(ByVal ParamArray args() as RenderObject)
-        For each item As RenderObject In args
+    Sub Add(ByVal ParamArray args() As RenderObject)
+        For Each item As RenderObject In args
             AllItems.Add(item)
         Next
     End Sub
@@ -42,7 +44,7 @@
 
         Dim brick4 As New BreakableBrick(New Point(396, 100))
 
-        DIm question As New ItemBlock(New Point(428, 100))
+        Dim question As New ItemBlock(New Point(428, 100))
 
         Me.Add(brick, platform, brick1, brick2, brick3, brick4, question)
         ReadMapFromResource("testmap")
@@ -65,8 +67,24 @@
     End Sub
 
     Public Sub ReadMapFromResource(name As String)
-        DIm str = System.Text.Encoding.Default.GetString(CType(My.Resources.ResourceManager.GetObject(name), Byte))
+        Dim byteArray = CType(My.Resources.ResourceManager.GetObject(name), Byte())
+        If byteArray(0) = 239 And byteArray(1) = 187 And byteArray(2) = 191 Then
+            byteArray = byteArray.Skip(3).Take(byteArray.Length - 2).ToArray()
+        End If
+        Dim str = System.Text.Encoding.UTF8.GetString(byteArray)
 
-        Console.Out.Write("hioi!")
+
+        Console.Out.Write(str)
+        Dim MapObject As MapObject = JsonConvert.DeserializeObject(Of MapObject)(str)
+
+
     End Sub
+End Class
+
+Public Class MapObject
+    Public Property map_name As String
+    Public Property blocks As Dictionary(Of String, IList(Of Integer()))
+
+
+
 End Class
