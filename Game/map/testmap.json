@@ -1,6 +1,6 @@
 ﻿{
   "map_name": "test",
-  "items": {
+  "blocks": {
     "bbrick": [
       [ 100, 150 ],
       [ 300, 100 ],

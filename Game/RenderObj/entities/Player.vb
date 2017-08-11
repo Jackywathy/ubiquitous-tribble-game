@@ -1,4 +1,6 @@
-﻿Friend Module PlayerConst
+﻿Imports WinGame
+
+Friend Module PlayerConst
     Public Const CoinsToLives = 100
     Public Const StartLives = 5
 End Module
@@ -9,14 +11,18 @@ Friend Enum PlayerStates
     Big = 2
     Fire = 4
     Ice = 8
-    
+
 End Enum
 
 
 Public Class Player
     Inherits Entity
+
     Public Shared Property Lives = StartLives
     Public allowJump = True
+
+    Public Overrides Property moveSpeed As Velocity = New Velocity(1, 15)
+    Public Overrides ReadOnly Property maxVeloc As Velocity = New Velocity(8, -15)
 
     Private Shared _coins As Integer = 0
 
@@ -34,8 +40,54 @@ Public Class Player
         End Set
     End Property
 
-    Sub New(width As Integer, height As Integer, location As Point, sprites As SpriteSet)
-        MyBase.New(width, height, location, sprites)
+    Public Overrides Sub Move(numFrames As Integer)
+
+        ' Move sprite
+        Me.Location = New Point(Me.Location.X + Me.veloc.x, Me.Location.Y + Me.veloc.y)
+
+        ' Animate
+        Dim imageToDraw As Image
+        If isGrounded Then
+            ' Check direction
+            If veloc.x < 0 And isFacingForward Then
+                isFacingForward = False
+            ElseIf veloc.x > 0 And Not isFacingForward Then
+                isFacingForward = True
+            End If
+
+            ' Re-animate every 5 frames
+            If veloc.x <> 0 And numFrames Mod 5 = 0 Then
+                ' Must be cloned, otherwise the resource image itself gets flipped (an unfortunate side effect of classes being passed by reference...)
+                imageToDraw = groundAnimation(0).Clone
+                ' Cycle through the list, moving the last element to the first
+                ' I miss being able to use a pop function
+                groundAnimation.Insert(0, groundAnimation.Last)
+                groundAnimation.RemoveAt(groundAnimation.Count - 1)
+            ElseIf veloc.x = 0 Then
+                imageToDraw = My.Resources.mario_small_1
+            End If
+        Else
+            imageToDraw = My.Resources.mario_small_jump
+        End If
+
+#Disable Warning BC42104 ' Variable is used before it has been assigned a value
+        ' stupid compiler, I'm checking if its null
+        If imageToDraw IsNot Nothing Then
+            If Not isFacingForward Then
+                imageToDraw.RotateFlip(RotateFlipType.RotateNoneFlipX)
+            End If
+            RenderImage = imageToDraw
+        End If
+#Enable Warning BC42104 ' Variable is used before it has been assigned a value
+
+    End Sub
+
+    Sub New(width As Integer, height As Integer, location As Point, spriteSet As SpriteSet)
+
+        MyBase.New(width, height, location)
+        Me.RenderImage = Resize(spriteSet.allSprites(1)(0), width, height)
+        Me.groundAnimation = spriteSet.allSprites(0)
+
     End Sub
 
 
