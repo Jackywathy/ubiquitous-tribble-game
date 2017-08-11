@@ -146,7 +146,7 @@
     <Compile Include="renderObj\Platform.vb" />
     <Compile Include="renderObj\Render.vb" />
     <Compile Include="renderObj\Sprites.vb" />
-    <Compile Include="main\Scene.vb" />
+    <Compile Include="map\Scene.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="main\TestImage.resx">
@@ -165,7 +165,7 @@
   <ItemGroup>
     <None Include="fonts\NES+.ttf" />
     <None Include="fonts\SuperMario256.ttf" />
-    <None Include="map\test.json" />
+    <None Include="map\testmap.json" />
     <None Include="My Project\app.manifest">
       <SubType>Designer</SubType>
     </None>

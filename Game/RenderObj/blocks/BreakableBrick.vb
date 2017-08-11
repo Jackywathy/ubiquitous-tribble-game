@@ -2,7 +2,6 @@
     Inherits Block
     
 
-
     Public Sub New(location As Point)
         MyBase.New(blockWidth, blockHeight, location, My.Resources.brick)
     End Sub

@@ -45,6 +45,7 @@
         DIm question As New ItemBlock(New Point(428, 100))
 
         Me.Add(brick, platform, brick1, brick2, brick3, brick4, question)
+        ReadMapFromResource("testmap")
     End Sub
 
     Sub RenderScene(g As Graphics)
@@ -61,5 +62,11 @@
         Next
 
         Entities.player1.Render(g)
+    End Sub
+
+    Public Sub ReadMapFromResource(name As String)
+        DIm str = System.Text.Encoding.Default.GetString(CType(My.Resources.ResourceManager.GetObject(name), Byte))
+
+        Console.Out.Write("hioi!")
     End Sub
 End Class
