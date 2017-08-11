@@ -30,6 +30,7 @@ Public NotInheritable Class MusicPlayer
     ''' <param name="name"></param>
     Public Sub New(name As String) 
         Me.New(New MemoryStream(CType(My.Resources.ResourceManager.GetObject(name), Byte())))
+        
     End Sub 
 
     

@@ -32,16 +32,19 @@
     Sub LoadTestLevel()
         Background = New BackgroundRender(TotalGridWidth, TotalGridHeight, My.Resources.placeholderLevel)
 
-        Dim brick As New BreakableBrick(32, 32, New Point(100, 150))
         Dim platform As New Platform(TotalGridWidth, 50, New Point(0, 0), My.Resources.platform)
         ' the items added later are rendered later!
 
-        Dim brick1 As New BreakableBrick(32, 32, New Point(300, 100))
-        Dim brick2 As New BreakableBrick(32, 32, New Point(332, 100))
-        Dim brick3 As New BreakableBrick(32, 32, New Point(364, 100))
+        Dim brick As New BreakableBrick(New Point(100, 150))
+        Dim brick1 As New BreakableBrick(New Point(300, 100))
+        Dim brick2 As New BreakableBrick(New Point(332, 100))
+        Dim brick3 As New BreakableBrick(New Point(364, 100))
 
+        Dim brick4 As New BreakableBrick(New Point(396, 100))
 
-        Me.Add(brick, platform, brick1, brick2, brick3)
+        DIm question As New ItemBlock(New Point(428, 100))
+
+        Me.Add(brick, platform, brick1, brick2, brick3, brick4, question)
     End Sub
 
     Sub RenderScene(g As Graphics)
