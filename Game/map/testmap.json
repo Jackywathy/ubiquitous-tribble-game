@@ -7,6 +7,7 @@
       [ 324, 100 ],
       [ 346, 100 ],
       [ 358, 100 ]
-    ] 
-  }   
+    ]
+  },
+  "background" :  "placeholderLevel" 
 }
