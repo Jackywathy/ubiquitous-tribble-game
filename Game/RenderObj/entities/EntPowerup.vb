@@ -28,6 +28,7 @@ Public MustInherit Class EntPowerup
         If sender.GetType = GetType(EntPlayer) Then
             Dim player As EntPlayer = sender
             player.changeState(Me.state)
+            Sounds.MushroomPickup.Play()
 
             TO_DO__DELETE.Disappear(Me)
         End If

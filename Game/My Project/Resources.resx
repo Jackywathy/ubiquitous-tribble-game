@@ -139,6 +139,12 @@
   <data name="blockQuestionUsed" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\blocks\blockquestionused.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="brick_smash" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\sounds\sfx\brick_smash.mp3;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="coin_pickup" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\sounds\sfx\coin_pickup.mp3;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="f_flower_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\powerups\fireflower\f_flower_1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -173,16 +179,19 @@
     <value>..\images\powerups\fireflower\f_flower_s7.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ground_theme" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\sounds\ground_theme.mp3;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\sounds\background_music\ground_theme.mp3;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\icon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="icon1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\images\icon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="jump" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\sounds\jump.mp3;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\sounds\sfx\jump.mp3;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="map_startmap" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\map\map_startmap.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="map_testmap" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\map\map_testmap.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="mario_big_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\player\big\mario_big_1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -217,6 +226,9 @@
   <data name="mushroom" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\powerups\mushroom\mushroom.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="mushroom_pickup" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\sounds\sfx\mushroom_pickup.mp3;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="mushroom_s1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\powerups\mushroom\mushroom_s1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -246,8 +258,5 @@
   </data>
   <data name="platform" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\other\platform.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="testmap" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\map\testmap.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

@@ -15,6 +15,7 @@
             Dim player As EntPlayer = sender
             If player.state > 0 Then
                 TO_DO__DELETE.Disappear(Me)
+                Sounds.BrickSmash.Play()
             Else
                 ' could not break
             End If

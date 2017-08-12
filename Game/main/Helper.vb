@@ -63,15 +63,6 @@ Public Module ImageManipulation
 End Module
 
 
-Public Enum BackgroundMusic
-    Overworld
-    Underground
-End Enum
-
-Public Enum SoundEffects
-    Jump
-
-End Enum
 
 
 Friend Module UriCreator

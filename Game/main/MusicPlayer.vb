@@ -3,47 +3,48 @@ Imports NAudio.Wave
 
 Public NotInheritable Class MusicPlayer
     Implements IDisposable
-    Private Shared backgroundPlayer As MusicPlayer
+    Private Shared Property backgroundPlayer As MusicPlayer
 
     Private reader As WaveStream
-    Private volume As WaveStream
+    Private channel As WaveStream
     Private player As IWavePlayer
 
-    Private Shared Function getEffect(effect As SoundEffects) As String
-        Dim out as String
-        Select case effect
-            Case SoundEffects.Jump
-                out = "jump"
-            Case Else:
-                Throw New ArgumentException()
-        End Select
-        Return out
-    End Function
-
-    Public Sub New(effect As SoundEffects)
-        Me.New(getEffect(effect))
+    Public Shared Sub PlayBackground(music As MusicPlayer)
+       backgroundPlayer = music
+       backgroundPlayer.DoLoop(True)
     End Sub
+
+ 
 
     ''' <summary>
     ''' A wrapper allowing sound to be played.
     ''' </summary>
     ''' <param name="name"></param>
-    Public Sub New(name As String) 
-        Me.New(New MemoryStream(CType(My.Resources.ResourceManager.GetObject(name), Byte())))
+    Public Sub New(name As String, Optional volume As Single=1.0f)
+        Me.New(New MemoryStream(CType(My.Resources.ResourceManager.GetObject(name), Byte())), volume)
         
     End Sub 
 
-    
-
-    Public Sub New(stream As Stream)
-        reader = New Mp3FileReader(stream) 
-        volume = New WaveChannel32(reader)
-        player = New DirectSoundOut()
-        
-        player.Init(volume)
+    Public Sub DoLoop(optional enable as boolean=True)
+        AddHandler player.PlaybackStopped, AddressOf Repeat_audio
     End Sub
 
-    Public Sub Play(Optional fromStart As Boolean = False)
+    Private sub Repeat_audio(sender As Object, e As EventArgs)
+        Me.Play()
+    End sub
+
+    Public Sub New(stream As Stream, Optional volume As Single=1.0f)
+        reader = New Mp3FileReader(stream) 
+       
+        channel = New WaveChannel32(reader, volume, 0)
+       
+        player = New DirectSoundOut()
+        
+        
+        player.Init(channel)
+    End Sub
+
+    Public Sub Play(Optional fromStart As Boolean = True)
         If fromStart
 
             reader.CurrentTime = TimeSpan.Zero
@@ -67,14 +68,7 @@ Public NotInheritable Class MusicPlayer
         backgroundPlayer.Play()
     End Sub
 
-    Public Shared Sub PlayBackground(music As BackgroundMusic)
-        Select Case music
-            Case BackgroundMusic.Overworld
-                PlayBackground("overworld")
-            Case BackgroundMusic.Underground
-                PlayBackground("underground")
-        End Select
-    End Sub
+    
 
     Public Shared Sub Media_Repeat(sender As MusicPlayer, e As EventArgs)
         sender.Play(fromStart := True)
@@ -82,7 +76,18 @@ Public NotInheritable Class MusicPlayer
 
     Public Sub Dispose() Implements IDisposable.Dispose
         reader.Dispose()
-        volume.Dispose()
+        channel.Dispose()
         player.Dispose()
     End Sub
 End Class
+
+Public Module Sounds
+    Public Jump As New MusicPlayer("jump", 0.6)
+    Public CoinPickup As New MusicPlayer("coin_pickup")
+    Public MushroomPickup As New MusicPlayer("mushroom_pickup")
+    Public BrickSmash As New MusicPlayer("brick_smash", 10)
+End Module
+
+Public Module BackgroundMusic
+    Public GroundTheme As New MusicPlayer("ground_theme")
+End Module

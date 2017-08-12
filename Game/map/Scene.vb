@@ -112,6 +112,7 @@ Public Class Scene
 
 
     Public Shared Function ReadMapFromResource(jsonName As String) As Scene
+        
         Dim byteArray = CType(My.Resources.ResourceManager.GetObject(jsonName), Byte())
         If byteArray(0) = 239 And byteArray(1) = 187 And byteArray(2) = 191 Then
             byteArray = byteArray.Skip(3).Take(byteArray.Length - 2).ToArray()

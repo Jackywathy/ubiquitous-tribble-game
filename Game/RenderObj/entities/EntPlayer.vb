@@ -1,6 +1,4 @@
-﻿Imports WinGame
-
-Friend Enum PlayerStates
+﻿Friend Enum PlayerStates
     Small = 0
     Big = 1
     Fire = 2

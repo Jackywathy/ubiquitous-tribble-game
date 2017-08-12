@@ -172,8 +172,8 @@
   <ItemGroup>
     <None Include="fonts\NES+.ttf" />
     <None Include="fonts\SuperMario256.ttf" />
-    <None Include="map\start.json" />
-    <None Include="map\testmap.json" />
+    <None Include="map\map_startmap.json" />
+    <None Include="map\map_testmap.json" />
     <None Include="My Project\app.manifest">
       <SubType>Designer</SubType>
     </None>
@@ -192,6 +192,8 @@
     <None Include="swift\[Physics] player.swift" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="sounds\sfx\brick_smash.mp3" />
+    <Content Include="sounds\sfx\mushroom_pickup.mp3" />
     <None Include="FodyWeavers.xml" />
     <Content Include="images\backgrounds\background.jpg" />
     <Content Include="images\blocks\blockBrick.png" />
@@ -232,8 +234,9 @@
     <Content Include="images\other\pipe.png" />
     <Content Include="images\backgrounds\placeholderLevel.png" />
     <Content Include="images\other\platform.png" />
-    <Content Include="sounds\ground_theme.mp3" />
-    <Content Include="sounds\jump.mp3" />
+    <Content Include="sounds\sfx\coin_pickup.mp3" />
+    <Content Include="sounds\background_music\ground_theme.mp3" />
+    <Content Include="sounds\sfx\jump.mp3" />
     <None Include="images\player\small\mario_small_1.png" />
   </ItemGroup>
   <ItemGroup>

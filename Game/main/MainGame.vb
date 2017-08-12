@@ -55,10 +55,10 @@ Public Class MainGame
         SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
         SetStyle(ControlStyles.AllPaintingInWmPaint, True)
 
-        SceneController = Scene.ReadMapFromResource("testmap")
+        SceneController = Scene.ReadMapFromResource("map_testmap")
 
 
-        MusicPlayer.PlayBackground("ground_theme")
+        MusicPlayer.PlayBackground(BackgroundMusic.GroundTheme)
     End Sub
 
     Protected Overrides Sub OnPaint(e As PaintEventArgs)
@@ -149,13 +149,12 @@ Public Class MainGame
         KeyHandler.Reset()
     End Sub
 
-    Dim jump as New MusicPlayer("jump")
 
     Private Sub MainGame_KeyDown(sender As Object, e As KeyEventArgs) Handles MyBase.KeyDown
         Dim key As Keys = e.KeyData
         KeyHandler.KeyDown(key)
         If key=Keys.W Or key=keys.Up
-            jump.Play(fromStart := True)
+            Sounds.jump.Play(fromStart := True)
         End If
 
     End Sub
