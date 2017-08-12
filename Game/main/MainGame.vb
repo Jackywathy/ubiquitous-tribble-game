@@ -1,5 +1,4 @@
 ﻿Imports System.Drawing.Drawing2D
-Imports System.IO
 
 Public Class MainGame
     Private NotInheritable Class KeyHandler
@@ -40,6 +39,7 @@ Public Class MainGame
             MoveDown = False
         End Sub
     End Class
+    
 
     Public Property SceneController As Scene
 
@@ -63,28 +63,46 @@ Public Class MainGame
 
     Protected Overrides Sub OnPaint(e As PaintEventArgs)
         MyBase.OnPaint(e)
-        Dim g =e.Graphics
-            g.InterpolationMode = InterpolationMode.NearestNeighbor
-            SceneController.RenderScene(g)
-            DrawFps(g)
-            DrawLocation(g, "Mario: ", player1.Location, 36)
-            DrawLocation(g, "Platform: ", SceneController.AllObjects(2).Location, 54)
+        Dim g = e.Graphics
+        g.InterpolationMode = InterpolationMode.NearestNeighbor
+        SceneController.RenderScene(g)
+        UpdateFPS()
+
+        if isDebug
+            AddStringBuffer(String.Format("fps: {0}", FPS))
+            AddStringBuffer(String.Format("Mario Location: {0}, {1}", player1.Location.X, player1.Location.Y))
+
+            DrawStringBuffer(g)
+        End if
     End Sub
 
-    Public Sub DrawLocation(g As Graphics, str As String, loc As Point, height As Integer)
-        ' height is the dist from top of screen
-        Dim out = String.Format("{0}: {1}, {2}", str, loc.X, loc.Y)
-        Dim offset = ScreenGridWidth - (g.MeasureString(out, fpsFont)).Width - 15
-        g.DrawString(out, fpsFont, fpsBrush, offset, height)
+    Private strBuffer As New List(Of String)
+    Public Sub AddStringBuffer(str As String)
+        strBuffer.Add(str)
     End Sub
+
+
+    Const WidthError = 5
+    Public Sub DrawStringBuffer(g As Graphics)
+        Dim height as Integer = 0
+        For each str As String In strBuffer
+            Dim size = TextRenderer.MeasureText(str, fpsFont)
+            Dim offset = ScreenGridWidth - size.Width - WidthError
+            g.DrawString(str, fpsFont, fpsBrush,offset , height)
+            height += size.Height
+        Next
+        strBuffer.Clear()
+    End Sub
+
 
     Private numFrames As Integer = 0
     Private FPS As Integer = 0
     Private ReadOnly fpsFont as New Font("Arial", 20)
     Private ReadOnly fpsBrush As New SolidBrush(Color.Red)
     Private lastFrame As DateTime = DateTime.Now()
+    
 
-    Private Sub DrawFps(g As Graphics)
+    Private Sub UpdateFPS()
         Dim now = DateTime.Now()
         If (Now-lastFrame).Seconds >= 1 Then
             fps = numFrames
@@ -92,8 +110,6 @@ Public Class MainGame
             lastFrame = now
         End If
         numFrames += 1
-        Dim framesString = String.Format("{0}", FPS)
-        g.DrawString(framesString, fpsFont, fpsBrush, ScreenGridWidth-50,18)
     End Sub
 
     Private Sub GameLoop_Tick(sender As Object, e As EventArgs) Handles GameLoop.Tick
