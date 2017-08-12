@@ -143,7 +143,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="renderObj\blocks\Block.vb" />
-    <Compile Include="renderObj\blocks\BreakableBrick.vb" />
+    <Compile Include="renderObj\blocks\BrickBlock.vb" />
     <Compile Include="renderObj\blocks\ItemBlock.vb" />
     <Compile Include="renderObj\BrickPlatform.vb" />
     <Compile Include="renderObj\entities\Entity.vb" />
@@ -221,6 +221,17 @@
     <None Include="Resources\f_flower_s4.png" />
     <None Include="Resources\f_flower_s5.png" />
     <None Include="Resources\f_flower_s6.png" />
+    <None Include="Resources\blk_brick.png" />
+    <None Include="Resources\blk_used.png" />
+    <None Include="Resources\mario_big_2.png" />
+    <None Include="Resources\mario_big_3.png" />
+    <None Include="Resources\mario_big_4.png" />
+    <None Include="Resources\mario_big_1.png" />
+    <None Include="Resources\mario_big_jump.png" />
+    <None Include="Resources\blk_item.png" />
+    <None Include="Resources\blk_item_3.png" />
+    <None Include="Resources\blk_item_1.png" />
+    <None Include="Resources\blk_item_2.png" />
     <Content Include="sounds\ground_theme.mp3" />
     <Content Include="sounds\jump.mp3" />
     <None Include="images\mario_small_1.png" />

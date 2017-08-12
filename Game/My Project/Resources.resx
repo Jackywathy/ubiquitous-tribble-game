@@ -121,8 +121,20 @@
   <data name="background" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\background.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="brick" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\images\brick.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="blk_brick" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\blk_brick.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="blk_item_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\blk_item.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="blk_item_2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\blk_item_2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="blk_item_3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\blk_item_3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="blk_used" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\blk_used.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="f_flower_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\f_flower_1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -166,11 +178,23 @@
   <data name="icon1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\icon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="itemblock" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\images\itemblock.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="jump" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\sounds\jump.mp3;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="mario_big_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\mario_big_1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mario_big_2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\mario_big_2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mario_big_3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\mario_big_3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mario_big_4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\mario_big_4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mario_big_jump" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\mario_big_jump.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="mario_small_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\mario_small_1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

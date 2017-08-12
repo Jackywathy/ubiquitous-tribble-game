@@ -31,18 +31,31 @@ End Class
 ' ---------------------------
 
 Public Module Sprites
-    Public player = New SpriteSet(
+    Public playerSmall = New SpriteSet(
         New List(Of List(Of Image)) From {
             New List(Of Image) From {My.Resources.mario_small_1, My.Resources.mario_small_2, My.Resources.mario_small_3, My.Resources.mario_small_4},
             New List(Of Image) From {My.Resources.mario_small_1},
             New List(Of Image) From {My.Resources.mario_small_jump}
         },
         MarioWidth,
-        MarioHeight
+        MarioHeightS
     )
-    ' 1 - Ground animation (4)
-    ' 2 - Idle sprite (1)
-    ' 3 - Jump sprite (1)
+    ' 0 - Ground animation (4)
+    ' 1 - Idle sprite (1)
+    ' 2 - Jump sprite (1)
+
+    Public playerBig = New SpriteSet(
+        New List(Of List(Of Image)) From {
+            New List(Of Image) From {My.Resources.mario_big_1, My.Resources.mario_big_2, My.Resources.mario_big_3, My.Resources.mario_big_4},
+            New List(Of Image) From {My.Resources.mario_big_1},
+            New List(Of Image) From {My.Resources.mario_big_jump}
+        },
+        MarioWidth,
+        MarioHeightS * 2
+    )
+    ' 0 - Ground animation (4)
+    ' 1 - Idle sprite (1)
+    ' 2 - Jump sprite (1)
 
     Public f_flower = New SpriteSet(
         New List(Of List(Of Image)) From {
@@ -51,11 +64,11 @@ Public Module Sprites
             New List(Of Image) From {My.Resources.f_flower_1, My.Resources.f_flower_2, My.Resources.f_flower_3, My.Resources.f_flower_4}
         },
         MarioWidth,
-        MarioHeight
+        MarioHeightS
     )
-    ' 1 - Spawn animation (7)
-    ' 2 - Single frame (1)
-    ' 3 - Idle animation (4)
+    ' 0 - Spawn animation (7)
+    ' 1 - Single frame (1)
+    ' 2 - Idle animation (4)
 
     Public mushroom = New SpriteSet(
         New List(Of List(Of Image)) From {
@@ -63,8 +76,28 @@ Public Module Sprites
             New List(Of Image) From {My.Resources.mushroom}
         },
         MarioWidth,
-        MarioHeight
+        MarioHeightS
     )
-    ' 1 - Spawn animation (7)
-    ' 2 - Single frame (1)
+    ' 0 - Spawn animation (7)
+    ' 1 - Single frame (1)
+
+    Public itemBlock = New SpriteSet(
+        New List(Of List(Of Image)) From {
+            New List(Of Image) From {My.Resources.blk_item_1, My.Resources.blk_item_2, My.Resources.blk_item_3},
+            New List(Of Image) From {My.Resources.blk_item_1}
+        },
+        MarioWidth,
+        MarioHeightS
+    )
+    ' 0 - Constant animation
+    ' 1 - Idle (unused?)
+
+    Public brickBlock = New SpriteSet(
+        New List(Of List(Of Image)) From {
+            New List(Of Image) From {My.Resources.blk_brick}
+        },
+        MarioWidth,
+        MarioHeightS
+    )
+    ' 0 - Constant
 End Module

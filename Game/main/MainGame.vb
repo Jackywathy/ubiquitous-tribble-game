@@ -41,7 +41,7 @@ Public Class MainGame
         End Sub
     End Class
 
-    Private Property SceneController As Scene
+    Public Property SceneController As Scene
 
     Sub New()
 
@@ -99,7 +99,6 @@ Public Class MainGame
     Private Sub GameLoop_Tick(sender As Object, e As EventArgs) Handles GameLoop.Tick
         handleInput()
         SceneController.UpdatePhysics(numFrames)
-
         Me.Refresh()
     End Sub
 

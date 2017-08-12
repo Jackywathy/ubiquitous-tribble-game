@@ -2,13 +2,21 @@
 Imports System.IO
 Imports NAudio.Wave
 
+Public Module TO_DO__DELETE
+    Public Sub Disappear(ByRef sender As RenderObject)
+        sender.Location = New Point(-32, -32)
+    End Sub
+End Module
+
 Public Module Dimensions
     Public Const ScreenGridWidth As Integer = 1280
     Public Const ScreenGridHeight As Integer = 720
     Public TotalGridWidth As Integer = 4000
     Public TotalGridHeight As Integer = 1000
     Public MarioWidth = 32
-    Public MarioHeight = 32
+    Public MarioHeightS = 32
+    Public MarioHeightB = 64
+    Public GroundHeight = 64
 End Module
 
 Module Debug

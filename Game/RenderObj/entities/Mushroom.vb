@@ -4,17 +4,34 @@ Public Class Mushroom
     Inherits Powerup
 
     Public Overrides Property spriteSet As SpriteSet = Sprites.mushroom
-
+    Private spawnCounter = 0
     Public Overrides Property state As UInt16 = 1
-    Public Overrides Property moveSpeed As Velocity = New Velocity(5, 0)
-    Public Overrides ReadOnly Property maxVeloc As Velocity = New Velocity(8, Forces.terminalVeloc)
+    Public Overrides Property moveSpeed As Velocity = New Velocity(1, 0)
+    Public Overrides ReadOnly Property maxVeloc As Velocity = New Velocity(1.5, Forces.terminalVeloc)
 
-    Public Sub Spawn(location As Point)
-
+    Public Overrides Sub Animate(numFrames As Integer)
+        If isSpawning And numFrames Mod 5 = 0 Then
+            If spawnCounter = 6 Then
+                isSpawning = False
+                RenderImage = spriteSet.allSprites(1)(0)
+            Else
+                RenderImage = spriteSet.allSprites(0)(spawnCounter).Clone
+                spawnCounter += 1
+            End If
+        End If
     End Sub
 
-    Sub New(width As Integer, height As Integer, location As Point)
+    Public Overrides Sub UpdatePos()
+        If Not isSpawning Then
+            Me.AccelerateX(moveSpeed.x)
+            Me.ApplyConstantForces()
+        End If
+        MyBase.UpdatePos()
+    End Sub
+
+    Sub New(width As Integer, height As Integer, location As Point, spawnBlock As RenderObject)
         MyBase.New(width, height, location)
+        Me.spriteSet = Sprites.mushroom
     End Sub
 
 End Class

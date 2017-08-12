@@ -10,7 +10,8 @@ Public MustInherit Class RenderObject
     Private Shared Function GetNewID() As Integer
         Dim temp = _idCount
         _idCount += 1
-        return temp
+
+        Return temp
     End Function
 
     Public Property ID As Integer = GetNewId()
@@ -47,7 +48,7 @@ Public MustInherit Class RenderObject
 
     Public Overridable Sub Render(g As Graphics)
         BeforeRender()
-       
+
         g.DrawImage(RenderImage, New Point(Location.X - screenLocation.X, Dimensions.ScreenGridHeight - Height - Location.Y + screenLocation.Y - toolBarOffSet))
     End Sub
 
@@ -89,6 +90,9 @@ Public MustInherit Class RenderObject
         Sender.veloc.x = 0
     End Sub
 
+    Public Overridable Sub Animate(numFrames As Integer)
+        ' nothing by default
+    End Sub
 
     Public Shared Operator =(left as RenderObject, right as RenderObject)
         return left.ID = right.ID

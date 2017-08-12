@@ -2,6 +2,8 @@
 ' Physics 
 ' ---------------------------
 
+Imports WinGame
+
 Public Module Forces
     ' may need to tweak
     ' CANNOT exceed moveSpeed values of any entity otherwise it will not be able to move
@@ -27,15 +29,17 @@ Public MustInherit Class Entity
 
     Public MustOverride Property moveSpeed As Velocity
     Public MustOverride ReadOnly Property maxVeloc As Velocity
-    '8, -15
+
     Public isGrounded = True
     Public isJumping = False
     Public isFacingForward = True
+    Public didJumpAndNotFall = True
+
 
     ' animation sprites
     Public MustOverride Property spriteSet As SpriteSet
 
-    Private lastGroundObject As RenderObject
+    Public currentGroundObjects As New List(Of RenderObject)
 
     Public Sub CheckCollision(ByRef sender As RenderObject)
 
@@ -75,24 +79,37 @@ Public MustInherit Class Entity
             selfLowermost += 0
         End If
 
+        ' COLLISION FROM:
 
         ' NORTH
         If Me.veloc.y < 0 And selfCentre.Y > blockUppermost And insideFromAbove And insideFromLeft And insideFromRight Then
             isGrounded = True
-            lastGroundObject = sender
             Me.Location = New Point(Me.Location.X, blockUppermost)
-            'Me.veloc.y = 0
+
             ' NOTE - LET THE RenderObject being collided with deal with changing Entities' speed
+            ' Me.veloc.y = 0
+
             ' For example, collision with a platform from below != veloc = 0, mario passes through the platform
             ' Moved it into CollisionBottom for RenderObject 
             sender.CollisionTop(Me)
 
+            ' SOUTH
+        ElseIf selfCentre.Y < blockLowermost And (selfUppermost + (0.05 * Me.Height)) > blockLowermost And insideFromLeft And insideFromRight Then
 
-            ' entity is underneath block, on BOTTOM of block
-            'SOUTH
-        ElseIf Me.veloc.y > 0 And selfCentre.Y < blockLowermost And (selfUppermost + (0.05 * Me.Height)) > blockLowermost And insideFromLeft And insideFromRight Then
-            Me.Location = New Point(Me.Location.X, blockLowermost - Me.Height) ' - 0.2 * c ?
-            sender.CollisionBottom(Me)
+            If Me.veloc.y = 0 And sender.GetType.IsSubclassOf(GetType(Entity)) Then
+
+                ' NO entity's collisionBottom() should set veloc.y of sender to 0!
+                sender.CollisionBottom(Me)
+
+            ElseIf Me.veloc.y > 0 Then
+                ' only triggers with positive veloc; necessary to stop infinite loop since veloc.y is set to 0 after collision
+                If sender.ID = 9 Then
+                    player1.ID += 0
+                End If
+                Me.Location = New Point(Me.Location.X, blockLowermost - Me.Height) ' - 0.2 * c ?
+                sender.CollisionBottom(Me)
+
+            End If
 
             ' WEST
 
@@ -108,10 +125,35 @@ Public MustInherit Class Entity
 
             ' Check for falling off platform
 
-        ElseIf lastGroundObject IsNot Nothing Then
+        End If
 
-            If sender = Me.lastGroundObject And Not (insideFromLeft And insideFromRight) Then
+        'Just in case
+
+        'If lastGroundObject IsNot Nothing Then
+        'If sender = Me.lastGroundObject And isGrounded And Not (insideFromLeft And insideFromRight) Then
+        'isGrounded = False
+        'didJumpAndNotFall = False
+        'End If
+        'End If
+
+        ' Handle falling off ledges and setting of didJumpAndNotFall
+
+        If selfCentre.Y > blockUppermost And selfLowermost <= blockUppermost And insideFromLeft And insideFromRight And Not currentGroundObjects.Contains(sender) Then
+            currentGroundObjects.Add(sender)
+            'Console.WriteLine("Added")
+            'Console.WriteLine(currentGroundObjects.Count)
+
+        End If
+
+        If (Not (insideFromLeft And insideFromRight) Or selfLowermost > blockUppermost) And currentGroundObjects.Contains(sender) Then
+            currentGroundObjects.RemoveAt(currentGroundObjects.IndexOf(sender))
+            'Console.WriteLine("Removed")
+            'Console.WriteLine(currentGroundObjects.Count)
+            If currentGroundObjects.Count = 0 Then
                 isGrounded = False
+                If Me.veloc.y <= 0 Then
+                    didJumpAndNotFall = False
+                End If
             End If
         End If
 
@@ -135,10 +177,11 @@ Public MustInherit Class Entity
             Me.veloc.y += magnitude
             isJumping = True
             isGrounded = False
+            didJumpAndNotFall = True
+
         ElseIf magnitude < 0 Then
             Me.veloc.y += magnitude
         End If
-
         If Me.veloc.y < Me.maxVeloc.y Then
             Me.veloc.y = Me.maxVeloc.y
         End If
@@ -173,10 +216,12 @@ Public MustInherit Class Entity
         MyBase.New(width, height, location)
     End Sub
 
-
-    Public Overridable Sub UpdatePos(numFrames As Integer)
+    ' Handles movement
+    Public Overridable Sub UpdatePos()
         Me.Location = New Point(Me.Location.X + Me.veloc.x, Me.Location.Y + Me.veloc.y)
     End Sub
+
+
 
 End Class
 
@@ -185,7 +230,7 @@ End Class
 ' ---------------------------
 
 Public Module Entities
-    Public player1 As New Player(32, 32, New Point(0, 50), Sprites.player)
+    Public player1 As New Player(32, 32, New Point(0, GroundHeight), Sprites.playerSmall)
 End Module
 
 
