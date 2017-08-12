@@ -1,8 +1,4 @@
-﻿
-Imports System.IO
-Imports NAudio.Wave
-
-Public Module TO_DO__DELETE
+﻿Public Module TO_DO__DELETE
     Public Sub Disappear(ByRef sender As RenderObject)
         sender.Location = New Point(-32, -32)
     End Sub

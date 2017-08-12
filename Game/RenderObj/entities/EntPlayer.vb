@@ -8,7 +8,7 @@ Friend Enum PlayerStates
 End Enum
 
 
-Public Class Player
+Public Class EntPlayer
     Inherits Entity
 
     Public Const CoinsToLives = 100

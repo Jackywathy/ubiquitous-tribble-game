@@ -11,8 +11,8 @@
 
     Public Overrides Sub CollisionBottom(sender As Entity)
         MyBase.CollisionBottom(sender)
-        If sender.GetType = GetType(Player) Then
-            Dim player As Player = sender
+        If sender.GetType = GetType(EntPlayer) Then
+            Dim player As EntPlayer = sender
             If player.state > 0 Then
                 TO_DO__DELETE.Disappear(Me)
             Else

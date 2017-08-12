@@ -230,7 +230,7 @@ End Class
 ' ---------------------------
 
 Public Module Entities
-    Public player1 As New Player(32, 32, New Point(0, GroundHeight), Sprites.playerSmall)
+    Public player1 As New EntPlayer(32, 32, New Point(0, GroundHeight), Sprites.playerSmall)
 End Module
 
 

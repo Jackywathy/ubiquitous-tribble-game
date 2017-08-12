@@ -100,4 +100,11 @@ Public Module Sprites
         MarioHeightS
     )
     ' 0 - Constant
+    Public BrickMetalSprite = New SpriteSet(
+        New List(Of List(Of Image)) From {
+            New List(Of Image) From {My.Resources.blockMetal}
+        },
+        MarioWidth,
+        MarioHeightS
+        )
 End Module

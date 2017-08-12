@@ -1,6 +1,6 @@
 ﻿Imports WinGame
 
-Public MustInherit Class Powerup
+Public MustInherit Class EntPowerup
     Inherits Entity
 
     Public isSpawning = True
@@ -25,8 +25,8 @@ Public MustInherit Class Powerup
     End Sub
 
     Public Sub TryActivate(sender As Entity)
-        If sender.GetType = GetType(Player) Then
-            Dim player As Player = sender
+        If sender.GetType = GetType(EntPlayer) Then
+            Dim player As EntPlayer = sender
             player.changeState(Me.state)
 
             TO_DO__DELETE.Disappear(Me)

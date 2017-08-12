@@ -1,7 +1,5 @@
-﻿Imports WinGame
-
-Public Class Mushroom
-    Inherits Powerup
+﻿Public Class Mushroom
+    Inherits EntPowerup
 
     Public Overrides Property spriteSet As SpriteSet = Sprites.mushroom
     Private spawnCounter = 0
