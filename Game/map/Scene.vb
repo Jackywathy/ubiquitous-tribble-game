@@ -53,31 +53,13 @@ Public Class Scene
     Public Background As BackgroundRender
     Public Player1 = Entities.player1
 
-    Sub LoadTestLevel()
-        Background = New BackgroundRender(TotalGridWidth, TotalGridHeight, My.Resources.placeholderLevel)
-
-        Dim platform As New BrickPlatform(TotalGridWidth, 50, New Point(0, 0))
-        ' the items added later are rendered later!
-
-        Dim brick As New BreakableBrick(New Point(100, 150))
-        Dim brick1 As New BreakableBrick(New Point(300, 100))
-        Dim brick2 As New BreakableBrick(New Point(332, 100))
-        Dim brick3 As New BreakableBrick(New Point(364, 100))
-
-        Dim brick4 As New BreakableBrick(New Point(396, 100))
-
-        Dim question As New ItemBlock(New Point(428, 100))
-
-        Me.Add(brick, platform, brick1, brick2, brick3, brick4, question)
-        ReadMapFromResource("testmap")
-    End Sub
 
    
 
     Sub UpdatePhysics(numframes As integer)
         ' update each entity's position
         For each item in AllEntites
-            Entities.player1.UpdatePos(numFrames)
+            item.UpdatePos(numFrames)
         Next
         if player1.Location.X - RenderObject.screenLocation.X  > (ScreenGridWidth  /4 * 3)
             ' on right 1/4

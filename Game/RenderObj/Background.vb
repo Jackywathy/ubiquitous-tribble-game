@@ -36,7 +36,6 @@ Public Class BackgroundRender
     End Sub
 
 
-
     Sub New(levelWidth As Integer, levelHeight As Integer, backgroundImage As Image)
         MyBase.New(Dimensions.ScreenGridWidth, Dimensions.ScreenGridHeight, New Point(0, 0))
         Me.levelWidth = levelWidth
@@ -47,8 +46,6 @@ Public Class BackgroundRender
         Using g=Graphics.FromImage(ActualImage)
             g.DrawImage(backgroundImage, 0, 0, levelWidth, levelHeight)
         End Using
-        DbShowImage(ActualImage)
-
     End Sub
 
     Public Function CanScrollHorizontal(Optional amount As Integer = 0) As Boolean

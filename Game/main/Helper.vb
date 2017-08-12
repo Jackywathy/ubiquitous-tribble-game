@@ -19,6 +19,7 @@ Module Debug
     Public Sub Print(str As String)
         Console.Out.WriteLine(str)
     End Sub
+    Public isDebug = True
 End Module
 
 Public Module ImageManipulation
