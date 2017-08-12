@@ -145,6 +145,7 @@
     <Compile Include="renderObj\blocks\Block.vb" />
     <Compile Include="renderObj\blocks\BrickBlock.vb" />
     <Compile Include="renderObj\blocks\ItemBlock.vb" />
+    <Compile Include="renderObj\blocks\MetalBlock.vb" />
     <Compile Include="renderObj\BrickPlatform.vb" />
     <Compile Include="renderObj\entities\Entity.vb" />
     <Compile Include="renderObj\entities\Mushroom.vb" />
