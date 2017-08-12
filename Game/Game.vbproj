@@ -145,11 +145,11 @@
     <Compile Include="renderObj\blocks\Block.vb" />
     <Compile Include="renderObj\blocks\BreakableBrick.vb" />
     <Compile Include="renderObj\blocks\ItemBlock.vb" />
+    <Compile Include="renderObj\BrickPlatform.vb" />
     <Compile Include="renderObj\entities\Entity.vb" />
     <Compile Include="renderObj\entities\Mushroom.vb" />
     <Compile Include="renderObj\entities\Player.vb" />
     <Compile Include="renderObj\entities\Powerup.vb" />
-    <Compile Include="renderObj\Platform.vb" />
     <Compile Include="renderObj\Render.vb" />
     <Compile Include="renderObj\Sprites.vb" />
     <Compile Include="map\Scene.vb" />

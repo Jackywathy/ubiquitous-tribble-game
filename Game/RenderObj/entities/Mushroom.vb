@@ -3,7 +3,7 @@
 Public Class Mushroom
     Inherits Powerup
 
-    Public Overrides Property spriteSet As List(Of Image) = Sprites.mushroom
+    Public Overrides Property spriteSet As SpriteSet = Sprites.mushroom
 
     Public Overrides Property state As UInt16 = 1
     Public Overrides Property moveSpeed As Velocity = New Velocity(5, 0)

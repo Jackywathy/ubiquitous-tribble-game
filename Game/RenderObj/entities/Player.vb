@@ -57,11 +57,11 @@ Public Class Player
             ' Re-animate every 5 frames
             If veloc.x <> 0 And numFrames Mod 5 = 0 Then
                 ' Must be cloned, otherwise the resource image itself gets flipped (an unfortunate side effect of classes being passed by reference...)
-                imageToDraw = spriteSet(0).Clone
+                imageToDraw = spriteSet.allSprites(0)(0).Clone
                 ' Cycle through the list, moving the last element to the first
                 ' I miss being able to use a pop function
-                spriteSet.Insert(0, spriteSet.Last)
-                spriteSet.RemoveAt(spriteSet.Count - 1)
+                spriteSet.allSprites(0).Insert(0, spriteSet.allSprites(0).Last)
+                spriteSet.allSprites(0).RemoveAt(spriteSet.allSprites(0).Count - 1)
             ElseIf veloc.x = 0 Then
                 imageToDraw = My.Resources.mario_small_1
             End If
@@ -85,7 +85,7 @@ Public Class Player
 
         MyBase.New(width, height, location)
         Me.RenderImage = Resize(spriteSet.allSprites(1)(0), width, height)
-        Me.spriteSet = spriteSet.allSprites(0)
+        Me.spriteSet = spriteSet
 
     End Sub
 
