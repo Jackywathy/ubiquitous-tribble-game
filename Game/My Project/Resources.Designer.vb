@@ -293,6 +293,16 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
+        Friend ReadOnly Property metalblock() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("metalblock", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
         Friend ReadOnly Property mushroom() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("mushroom", resourceCulture)
@@ -366,6 +376,16 @@ Namespace My.Resources
         Friend ReadOnly Property mushroom_s7() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("mushroom_s7", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property pipe() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("pipe", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property

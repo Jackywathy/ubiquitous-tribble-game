@@ -53,7 +53,6 @@ Public Class Scene
     Public Background As BackgroundRender
     Public Player1 = Entities.player1
 
-
    
 
     Sub UpdatePhysics(numframes As integer)
