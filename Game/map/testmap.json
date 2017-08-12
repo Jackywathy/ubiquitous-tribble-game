@@ -1,13 +1,17 @@
 ﻿{
   "map_name": "test",
-  "blocks": {
-    "bbrick": [
+  "objects": {
+    "breakablebrick": [
       [ 100, 150 ],
       [ 300, 100 ],
-      [ 324, 100 ],
-      [ 346, 100 ],
-      [ 358, 100 ]
-    ]
+      [ 332, 100 ],
+      [ 364, 100 ],
+      [ 396, 100 ],
+      [ 428, 100 ]
+    ],
+    "brickplatform": [
+      [ 4000, 50, 0, 0]
+    ] 
   },
   "background" :  "placeholderLevel" 
 }

@@ -38,7 +38,7 @@ Public Class Scene
     Sub LoadTestLevel()
         Background = New BackgroundRender(TotalGridWidth, TotalGridHeight, My.Resources.placeholderLevel)
 
-        Dim platform As New Platform(TotalGridWidth, 50, New Point(0, 0), My.Resources.platform)
+        Dim platform As New BrickPlatform(TotalGridWidth, 50, New Point(0, 0))
         ' the items added later are rendered later!
 
         Dim brick As New BreakableBrick(New Point(100, 150))
@@ -73,7 +73,7 @@ Public Class Scene
 
 
 
-    Public Shared Sub ReadMapFromResource(jsonName As String)
+    Public Shared Function ReadMapFromResource(jsonName As String) As Scene
         Dim byteArray = CType(My.Resources.ResourceManager.GetObject(jsonName), Byte())
         If byteArray(0) = 239 And byteArray(1) = 187 And byteArray(2) = 191 Then
             byteArray = byteArray.Skip(3).Take(byteArray.Length - 2).ToArray()
@@ -89,16 +89,15 @@ Public Class Scene
         outScene.SetBackground(mapObject.background)
 
         ' add all blocks
-        For each pair as KeyValuePair(Of String, Ilist(OF Integer())) in mapObject.blocks
+        For each pair as KeyValuePair(Of String, Ilist(Of Integer())) in mapObject.objects
             Dim name = pair.Key
             For each params As Integer() In pair.Value
                 outScene.Add(outScene.RenderItemFactory(name, params))
             Next
         Next
-        Print("HI!")
         
-
-    End Sub
+        Return outScene
+    End Function
     
     Private Sub AssertLength(type As String, expected As Integer, given As Integer, array As Integer())
         if expected <> given
@@ -110,11 +109,12 @@ Public Class Scene
     Private Function RenderItemFactory(name As String, params As Integer()) As RenderObject
         Dim out as RenderObject
         Select Case name
-            Case "bbrick"
+            Case "breakablebrick"
                 AssertLength("bbrick", 2, params.Length, params)
                 out = New BreakableBrick(New Point(params(0), params(1)))
             Case "brickplatform"
-
+               AssertLength("brickplatform", 4, params.Length, params)
+                out = New BrickPlatform(params(0), params(1), New Point(params(2), params(3)))
             Case Else
                 Throw New Exception(String.Format("No object with name {0}", name))
         End Select
@@ -133,7 +133,7 @@ End Class
 <JsonObject(ItemRequired:= Required.Always)>
 Public Class MapObject
     Public Property map_name As String
-    Public Property blocks As Dictionary(Of String, IList(Of Integer()))
+    Public Property objects As Dictionary(Of String, IList(Of Integer()))
     Public Property background As String
 
 
