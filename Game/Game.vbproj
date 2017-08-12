@@ -199,6 +199,7 @@
     <Content Include="images\mario_small_3.png" />
     <Content Include="images\mario_small_4.png" />
     <Content Include="images\mario_small_jump.png" />
+    <Content Include="images\pipe.png" />
     <Content Include="images\placeholderLevel.png" />
     <Content Include="images\platform.png" />
     <None Include="Resources\f_flower_4.png" />

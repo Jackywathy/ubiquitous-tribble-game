@@ -63,12 +63,12 @@ Public Class MainGame
 
     Protected Overrides Sub OnPaint(e As PaintEventArgs)
         MyBase.OnPaint(e)
-        Dim g As Graphics = e.Graphics
-        g.InterpolationMode = InterpolationMode.NearestNeighbor
-        SceneController.RenderScene(g)
-        DrawFps(g)
-        DrawLocation(g, "Mario: ", player1.Location, 36)
-        DrawLocation(g, "Platform: ", SceneController.AllItems(2).Location, 54)
+        Dim g =e.Graphics
+            g.InterpolationMode = InterpolationMode.NearestNeighbor
+            SceneController.RenderScene(g)
+            DrawFps(g)
+            DrawLocation(g, "Mario: ", player1.Location, 36)
+            DrawLocation(g, "Platform: ", SceneController.AllObjects(2).Location, 54)
     End Sub
 
     Public Sub DrawLocation(g As Graphics, str As String, loc As Point, height As Integer)
@@ -98,16 +98,7 @@ Public Class MainGame
 
     Private Sub GameLoop_Tick(sender As Object, e As EventArgs) Handles GameLoop.Tick
         handleInput()
-        Entities.player1.UpdatePos(numFrames)
-
-        if player1.Location.X - RenderObject.screenLocation.X  > (ScreenGridWidth  /4 * 3)
-            ' on right 1/4
-            SceneController.Background.ScrollHorizontal(10)
-
-        Else if player1.Location.X - RenderObject.screenLocation.X < (ScreenGridWidth  /4)
-            ' on left 1/4
-            SceneController.Background.ScrollHorizontal(-10)
-        End If
+        SceneController.UpdatePhysics(numFrames)
 
         Me.Refresh()
     End Sub

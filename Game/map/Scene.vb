@@ -1,30 +1,48 @@
 ﻿Imports Newtonsoft.Json
 
 Public Class Scene
-    Public AllItems As New List(Of RenderObject)
+    ' Contains all objects (no entityes)
+    Public AllObjects As New List(Of RenderObject)
+    ' Contains all entityes (no objects)
+    Public AllEntites As New List(Of Entity)
+    ' contains everything
+    Public AllObjAndEnt As New List(Of RenderObject)
+
 
     Private InSceneItems As New List(Of RenderObject)
 
     Public Function GetObjInScene() As List(Of RenderObject)
         InSceneItems.Clear()
-        For Each item As RenderObject In AllItems
+        For Each item As RenderObject In AllObjects
             If item.InScene() Then
                 InSceneItems.Add(item)
             End If
         Next
         Return InSceneItems
     End Function
+
     Sub New(ByVal ParamArray args() As RenderObject)
         For Each item As RenderObject In args
-            AllItems.Add(item)
+            AllObjects.Add(item)
+            AllObjAndEnt.Add(item)
         Next
     End Sub
 
     Sub Add(ByVal ParamArray args() As RenderObject)
         For Each item As RenderObject In args
-            AllItems.Add(item)
+            AllObjects.Add(item)
+            AllObjAndEnt.Add(item)
         Next
     End Sub
+
+    Public Sub AddEntity(ByVal ParamArray args() As Entity)
+        For Each item As Entity In args
+            AllEntites.Add(item)
+            AllObjAndEnt.Add(item)
+        Next
+    End Sub
+
+
     Sub SetBackground(name As String)
         Me.Background = New BackgroundRender(TotalGridWidth, TotalGridHeight, My.Resources.ResourceManager.GetObject(name))
     End Sub
@@ -54,21 +72,44 @@ Public Class Scene
         ReadMapFromResource("testmap")
     End Sub
 
+   
+
+    Sub UpdatePhysics(numframes As integer)
+        ' update each entity's position
+        For each item in AllEntites
+            Entities.player1.UpdatePos(numFrames)
+        Next
+        if player1.Location.X - RenderObject.screenLocation.X  > (ScreenGridWidth  /4 * 3)
+            ' on right 1/4
+            Me.Background.ScrollHorizontal(10)
+
+        Else if player1.Location.X - RenderObject.screenLocation.X < (ScreenGridWidth  /4)
+            ' on left 1/4
+            Me.Background.ScrollHorizontal(-10)
+        End If
+    End Sub
+
     Sub RenderScene(g As Graphics)
         
         Background.Render(g)
-        ' check collision before rending object
+        
         Dim objects = GetObjInScene()
 
-        For Each item As RenderObject In objects
-            Entities.player1.CheckCollision(item)
+        ' check collision of all entitys with all other obj, including entities
+        For each entity As Entity in AllEntites
+            For each obj As RenderObject In AllObjAndEnt
+                entity.CheckCollision(obj)
+            Next
         Next
 
+        ' render objects
         For Each item As RenderObject In objects
             item.Render(g)
         Next
-
-        Entities.player1.Render(g)
+        ' render entities
+        For each item in AllEntites
+            item.Render(g)
+        Next
     End Sub
 
 
@@ -95,7 +136,7 @@ Public Class Scene
                 outScene.Add(outScene.RenderItemFactory(name, params))
             Next
         Next
-        
+        outScene.AddEntity(Entities.player1)
         Return outScene
     End Function
     
@@ -115,9 +156,13 @@ Public Class Scene
             Case "brickplatform"
                AssertLength("brickplatform", 4, params.Length, params)
                 out = New BrickPlatform(params(0), params(1), New Point(params(2), params(3)))
+            Case "itemblock"
+                AssertLength("itemblock", 2, params.Length, params)
+                out = New ItemBlock(New Point(params(0), params(1)))
             Case Else
                 Throw New Exception(String.Format("No object with name {0}", name))
         End Select
+
         Return out
         
     End Function

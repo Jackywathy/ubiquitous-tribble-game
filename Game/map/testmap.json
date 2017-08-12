@@ -10,8 +10,12 @@
       [ 428, 100 ]
     ],
     "brickplatform": [
-      [ 4000, 50, 0, 0]
-    ] 
+      [ 4000, 50, 0, 0 ]
+    ],
+    "itemblock": [
+      [460, 100]
+    ]
+
   },
   "background" :  "placeholderLevel" 
 }
