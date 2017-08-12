@@ -40,7 +40,31 @@ Public Module Sprites
         MarioWidth,
         MarioHeight
     )
-    ' 1 - Ground animation
-    ' 2 - Idle
-    ' 3 - Jump
+    ' 1 - Ground animation (4)
+    ' 2 - Idle sprite (1)
+    ' 3 - Jump sprite (1)
+
+    Public f_flower = New SpriteSet(
+        New List(Of List(Of Image)) From {
+            New List(Of Image) From {My.Resources.f_flower_s1, My.Resources.f_flower_s2, My.Resources.f_flower_s3, My.Resources.f_flower_s4, My.Resources.f_flower_s5, My.Resources.f_flower_s6, My.Resources.f_flower_s7},
+            New List(Of Image) From {My.Resources.f_flower_1},
+            New List(Of Image) From {My.Resources.f_flower_1, My.Resources.f_flower_2, My.Resources.f_flower_3, My.Resources.f_flower_4}
+        },
+        MarioWidth,
+        MarioHeight
+    )
+    ' 1 - Spawn animation (7)
+    ' 2 - Single frame (1)
+    ' 3 - Idle animation (4)
+
+    Public mushroom = New SpriteSet(
+        New List(Of List(Of Image)) From {
+            New List(Of Image) From {My.Resources.mushroom_s1, My.Resources.mushroom_s2, My.Resources.mushroom_s3, My.Resources.mushroom_s4, My.Resources.mushroom_s5, My.Resources.mushroom_s6, My.Resources.mushroom_s7},
+            New List(Of Image) From {My.Resources.mushroom}
+        },
+        MarioWidth,
+        MarioHeight
+    )
+    ' 1 - Spawn animation (7)
+    ' 2 - Single frame (1)
 End Module

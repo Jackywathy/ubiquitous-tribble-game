@@ -8,6 +8,7 @@ Public Module Forces
     Public Const gravity = 0.98
     Public Const friction = 0.5
     Public Const airResist = 0.5
+    Public Const terminalVeloc = -15.0
 End Module
 
 Public Structure Velocity
@@ -31,8 +32,8 @@ Public MustInherit Class Entity
     Public isJumping = False
     Public isFacingForward = True
 
-    ' list of frames to use in animating ground movement
-    Public groundAnimation As List(Of Image)
+    ' animation sprites
+    Public MustOverride Property spriteSet As SpriteSet
 
     Private lastGroundObject As RenderObject
 
@@ -173,7 +174,7 @@ Public MustInherit Class Entity
     End Sub
 
 
-    Public Overridable Sub Move(numFrames As Integer)
+    Public Overridable Sub UpdatePos(numFrames As Integer)
         Me.Location = New Point(Me.Location.X + Me.veloc.x, Me.Location.Y + Me.veloc.y)
     End Sub
 

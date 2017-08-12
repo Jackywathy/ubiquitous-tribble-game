@@ -5,7 +5,6 @@ Public Class Scene
 
     Private InSceneItems As New List(Of RenderObject)
 
-
     Public Function GetObjInScene() As List(Of RenderObject)
         InSceneItems.Clear()
         For Each item As RenderObject In AllItems

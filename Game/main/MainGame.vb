@@ -98,7 +98,7 @@ Public Class MainGame
 
     Private Sub GameLoop_Tick(sender As Object, e As EventArgs) Handles GameLoop.Tick
         handleInput()
-        Entities.player1.Move(numFrames)
+        Entities.player1.UpdatePos(numFrames)
 
         Me.Refresh()
     End Sub

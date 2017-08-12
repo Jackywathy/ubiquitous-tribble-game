@@ -1,25 +1,24 @@
 ﻿Imports WinGame
 
-Friend Module PlayerConst
-    Public Const CoinsToLives = 100
-    Public Const StartLives = 5
-End Module
-
-
 Friend Enum PlayerStates
-    Small = 1
-    Big = 2
-    Fire = 4
-    Ice = 8
-
+    Small = 0
+    Big = 1
+    Fire = 2
+    'Ice = 4
 End Enum
 
 
 Public Class Player
     Inherits Entity
 
-    Public Shared Property Lives = StartLives
+    Public Const CoinsToLives = 100
+
+    Public Shared Property Lives = 5
     Public allowJump = True
+    Public state As UInt16 = 0
+
+    ' This is set when New() is called
+    Public Overrides Property spriteSet As SpriteSet = Nothing
 
     Public Overrides Property moveSpeed As Velocity = New Velocity(1, 15)
     Public Overrides ReadOnly Property maxVeloc As Velocity = New Velocity(8, -15)
@@ -40,7 +39,7 @@ Public Class Player
         End Set
     End Property
 
-    Public Overrides Sub Move(numFrames As Integer)
+    Public Overrides Sub UpdatePos(numFrames As Integer)
 
         ' Move sprite
         Me.Location = New Point(Me.Location.X + Me.veloc.x, Me.Location.Y + Me.veloc.y)
@@ -58,11 +57,11 @@ Public Class Player
             ' Re-animate every 5 frames
             If veloc.x <> 0 And numFrames Mod 5 = 0 Then
                 ' Must be cloned, otherwise the resource image itself gets flipped (an unfortunate side effect of classes being passed by reference...)
-                imageToDraw = groundAnimation(0).Clone
+                imageToDraw = spriteSet(0).Clone
                 ' Cycle through the list, moving the last element to the first
                 ' I miss being able to use a pop function
-                groundAnimation.Insert(0, groundAnimation.Last)
-                groundAnimation.RemoveAt(groundAnimation.Count - 1)
+                spriteSet.Insert(0, spriteSet.Last)
+                spriteSet.RemoveAt(spriteSet.Count - 1)
             ElseIf veloc.x = 0 Then
                 imageToDraw = My.Resources.mario_small_1
             End If
@@ -86,7 +85,7 @@ Public Class Player
 
         MyBase.New(width, height, location)
         Me.RenderImage = Resize(spriteSet.allSprites(1)(0), width, height)
-        Me.groundAnimation = spriteSet.allSprites(0)
+        Me.spriteSet = spriteSet.allSprites(0)
 
     End Sub
 
