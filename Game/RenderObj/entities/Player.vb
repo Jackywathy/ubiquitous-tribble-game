@@ -78,7 +78,7 @@ Public Class Player
             RenderImage = imageToDraw
         End If
 #Enable Warning BC42104 ' Variable is used before it has been assigned a value
-
+        imageToDraw.Dispose()
     End Sub
 
     Sub New(width As Integer, height As Integer, location As Point, spriteSet As SpriteSet)
