@@ -53,25 +53,6 @@ Public Class Scene
     Public Background As BackgroundRender
     Public Player1 = Entities.player1
 
-    Sub LoadTestLevel()
-        Background = New BackgroundRender(TotalGridWidth, TotalGridHeight, My.Resources.placeholderLevel)
-
-        Dim platform As New BrickPlatform(TotalGridWidth, 50, New Point(0, 0))
-        ' the items added later are rendered later!
-
-        Dim brick As New BrickBlock(New Point(100, 150))
-        Dim brick1 As New BrickBlock(New Point(300, 100))
-        Dim brick2 As New BrickBlock(New Point(332, 100))
-        Dim brick3 As New BrickBlock(New Point(364, 100))
-
-        Dim brick4 As New BrickBlock(New Point(396, 100))
-
-        Dim question As New ItemBlock(New Point(428, 100))
-
-        Me.Add(brick, platform, brick1, brick2, brick3, brick4, question)
-        ReadMapFromResource("testmap")
-    End Sub
-
 
 
     Sub UpdatePhysics(numframes As Integer)
@@ -168,13 +149,13 @@ Public Class Scene
         Select Case name
             Case "breakablebrick"
                 AssertLength("bbrick", 2, params.Length, params)
-                out = New BrickBlock(New Point(params(0), params(1)))
+                out = New BlockBreakableBrick(New Point(params(0), params(1)))
             Case "brickplatform"
                AssertLength("brickplatform", 4, params.Length, params)
                 out = New BrickPlatform(params(0), params(1), New Point(params(2), params(3)))
             Case "itemblock"
                 AssertLength("itemblock", 2, params.Length, params)
-                out = New ItemBlock(New Point(params(0), params(1)))
+                out = New BlockQuestion(New Point(params(0), params(1)))
             Case Else
                 Throw New Exception(String.Format("No object with name {0}", name))
         End Select

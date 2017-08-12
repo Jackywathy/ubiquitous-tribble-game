@@ -143,8 +143,8 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="renderObj\blocks\Block.vb" />
-    <Compile Include="renderObj\blocks\BrickBlock.vb" />
-    <Compile Include="renderObj\blocks\ItemBlock.vb" />
+    <Compile Include="renderObj\blocks\BlockBreakableBrick.vb" />
+    <Compile Include="renderObj\blocks\BlockQuestion.vb" />
     <Compile Include="renderObj\blocks\MetalBlock.vb" />
     <Compile Include="renderObj\BrickPlatform.vb" />
     <Compile Include="renderObj\entities\Entity.vb" />
@@ -172,6 +172,7 @@
   <ItemGroup>
     <None Include="fonts\NES+.ttf" />
     <None Include="fonts\SuperMario256.ttf" />
+    <None Include="map\start.json" />
     <None Include="map\testmap.json" />
     <None Include="My Project\app.manifest">
       <SubType>Designer</SubType>
@@ -192,50 +193,48 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="FodyWeavers.xml" />
-    <Content Include="images\background.jpg" />
-    <Content Include="images\brick.png" />
+    <Content Include="images\backgrounds\background.jpg" />
+    <Content Include="images\blocks\blockBrick.png" />
+    <Content Include="images\blocks\blockQuestion1.png" />
+    <Content Include="images\blocks\blockQuestion2.png" />
+    <Content Include="images\blocks\blockQuestion3.png" />
+    <Content Include="images\blocks\blockQuestionUsed.png" />
+    <Content Include="images\player\big\mario_big_1.png" />
+    <Content Include="images\player\big\mario_big_2.png" />
+    <Content Include="images\player\big\mario_big_3.png" />
+    <Content Include="images\player\big\mario_big_4.png" />
+    <Content Include="images\player\big\mario_big_jump.png" />
+    <Content Include="images\powerups\fireflower\f_flower_1.png" />
+    <Content Include="images\powerups\fireflower\f_flower_2.png" />
+    <Content Include="images\powerups\fireflower\f_flower_3.png" />
+    <Content Include="images\powerups\fireflower\f_flower_4.png" />
+    <Content Include="images\powerups\fireflower\f_flower_s1.png" />
+    <Content Include="images\powerups\fireflower\f_flower_s2.png" />
+    <Content Include="images\powerups\fireflower\f_flower_s3.png" />
+    <Content Include="images\powerups\fireflower\f_flower_s4.png" />
+    <Content Include="images\powerups\fireflower\f_flower_s5.png" />
+    <Content Include="images\powerups\fireflower\f_flower_s6.png" />
+    <Content Include="images\powerups\fireflower\f_flower_s7.png" />
     <Content Include="images\icon.ico" />
-    <Content Include="images\itemblock.jpg" />
-    <Content Include="images\mario_small_2.png" />
-    <Content Include="images\mario_small_3.png" />
-    <Content Include="images\mario_small_4.png" />
-    <Content Include="images\mario_small_jump.png" />
-    <Content Include="images\pipe.png" />
-    <Content Include="images\placeholderLevel.png" />
-    <Content Include="images\platform.png" />
-    <None Include="Resources\f_flower_4.png" />
-    <None Include="Resources\f_flower_1.png" />
-    <None Include="Resources\f_flower_2.png" />
-    <None Include="Resources\f_flower_3.png" />
-    <None Include="Resources\mushroom.png" />
-    <None Include="Resources\mushroom_s7.png" />
-    <None Include="Resources\mushroom_s1.png" />
-    <None Include="Resources\mushroom_s2.png" />
-    <None Include="Resources\mushroom_s3.png" />
-    <None Include="Resources\mushroom_s4.png" />
-    <None Include="Resources\mushroom_s5.png" />
-    <None Include="Resources\mushroom_s6.png" />
-    <None Include="Resources\f_flower_s7.png" />
-    <None Include="Resources\f_flower_s1.png" />
-    <None Include="Resources\f_flower_s2.png" />
-    <None Include="Resources\f_flower_s3.png" />
-    <None Include="Resources\f_flower_s4.png" />
-    <None Include="Resources\f_flower_s5.png" />
-    <None Include="Resources\f_flower_s6.png" />
-    <None Include="Resources\blk_brick.png" />
-    <None Include="Resources\blk_used.png" />
-    <None Include="Resources\mario_big_2.png" />
-    <None Include="Resources\mario_big_3.png" />
-    <None Include="Resources\mario_big_4.png" />
-    <None Include="Resources\mario_big_1.png" />
-    <None Include="Resources\mario_big_jump.png" />
-    <None Include="Resources\blk_item.png" />
-    <None Include="Resources\blk_item_3.png" />
-    <None Include="Resources\blk_item_1.png" />
-    <None Include="Resources\blk_item_2.png" />
+    <Content Include="images\player\small\mario_small_2.png" />
+    <Content Include="images\player\small\mario_small_3.png" />
+    <Content Include="images\player\small\mario_small_4.png" />
+    <Content Include="images\player\small\mario_small_jump.png" />
+    <Content Include="images\blocks\blockMetal.png" />
+    <Content Include="images\powerups\mushroom\mushroom.png" />
+    <Content Include="images\powerups\mushroom\mushroom_s1.png" />
+    <Content Include="images\powerups\mushroom\mushroom_s2.png" />
+    <Content Include="images\powerups\mushroom\mushroom_s3.png" />
+    <Content Include="images\powerups\mushroom\mushroom_s4.png" />
+    <Content Include="images\powerups\mushroom\mushroom_s5.png" />
+    <Content Include="images\powerups\mushroom\mushroom_s6.png" />
+    <Content Include="images\powerups\mushroom\mushroom_s7.png" />
+    <Content Include="images\other\pipe.png" />
+    <Content Include="images\backgrounds\placeholderLevel.png" />
+    <Content Include="images\other\platform.png" />
     <Content Include="sounds\ground_theme.mp3" />
     <Content Include="sounds\jump.mp3" />
-    <None Include="images\mario_small_1.png" />
+    <None Include="images\player\small\mario_small_1.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">

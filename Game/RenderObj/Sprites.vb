@@ -83,8 +83,8 @@ Public Module Sprites
 
     Public itemBlock = New SpriteSet(
         New List(Of List(Of Image)) From {
-            New List(Of Image) From {My.Resources.blk_item_1, My.Resources.blk_item_2, My.Resources.blk_item_3},
-            New List(Of Image) From {My.Resources.blk_item_1}
+            New List(Of Image) From {My.Resources.blockQuestion1, My.Resources.blockQuestion2, My.Resources.blockQuestion3},
+            New List(Of Image) From {My.Resources.blockQuestion1}
         },
         MarioWidth,
         MarioHeightS
@@ -94,7 +94,7 @@ Public Module Sprites
 
     Public brickBlock = New SpriteSet(
         New List(Of List(Of Image)) From {
-            New List(Of Image) From {My.Resources.blk_brick}
+            New List(Of Image) From {My.Resources.blockBrick}
         },
         MarioWidth,
         MarioHeightS

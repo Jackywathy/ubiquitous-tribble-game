@@ -73,9 +73,9 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
-        Friend ReadOnly Property blk_brick() As System.Drawing.Bitmap
+        Friend ReadOnly Property blockBrick() As System.Drawing.Bitmap
             Get
-                Dim obj As Object = ResourceManager.GetObject("blk_brick", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("blockBrick", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -83,9 +83,9 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
-        Friend ReadOnly Property blk_item_1() As System.Drawing.Bitmap
+        Friend ReadOnly Property blockMetal() As System.Drawing.Bitmap
             Get
-                Dim obj As Object = ResourceManager.GetObject("blk_item_1", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("blockMetal", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -93,9 +93,9 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
-        Friend ReadOnly Property blk_item_2() As System.Drawing.Bitmap
+        Friend ReadOnly Property blockQuestion1() As System.Drawing.Bitmap
             Get
-                Dim obj As Object = ResourceManager.GetObject("blk_item_2", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("blockQuestion1", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -103,9 +103,9 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
-        Friend ReadOnly Property blk_item_3() As System.Drawing.Bitmap
+        Friend ReadOnly Property blockQuestion2() As System.Drawing.Bitmap
             Get
-                Dim obj As Object = ResourceManager.GetObject("blk_item_3", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("blockQuestion2", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -113,9 +113,19 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
-        Friend ReadOnly Property blk_used() As System.Drawing.Bitmap
+        Friend ReadOnly Property blockQuestion3() As System.Drawing.Bitmap
             Get
-                Dim obj As Object = ResourceManager.GetObject("blk_used", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("blockQuestion3", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property blockQuestionUsed() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("blockQuestionUsed", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -366,16 +376,6 @@ Namespace My.Resources
         Friend ReadOnly Property mario_small_jump() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("mario_small_jump", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized resource of type System.Drawing.Bitmap.
-        '''</summary>
-        Friend ReadOnly Property metalblock() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("metalblock", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
