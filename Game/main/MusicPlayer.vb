@@ -12,6 +12,7 @@ Public NotInheritable Class MusicPlayer
     Public Shared Sub PlayBackground(music As MusicPlayer)
        backgroundPlayer = music
        backgroundPlayer.DoLoop(True)
+       backgroundPlayer.Play()
     End Sub
 
  

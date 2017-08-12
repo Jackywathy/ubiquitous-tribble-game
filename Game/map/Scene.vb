@@ -70,11 +70,12 @@ Public Class Scene
 
         If Player1.Location.X - RenderObject.screenLocation.X > (ScreenGridWidth / 4 * 3) Then
             ' on right 1/4
-            Me.Background.ScrollHorizontal(10)
+            Me.Background.ScrollHorizontal((400-(ScreenGridWidth - (Player1.Location.X - RenderObject.screenLocation.X)))/50)
 
         ElseIf Player1.Location.X - RenderObject.screenLocation.X < (ScreenGridWidth / 4) Then
             ' on left 1/4
-            Me.Background.ScrollHorizontal(-10)
+            'Me.Background.ScrollHorizontal(Player1.Location.X - RenderObject.screenLocation.X)
+            Me.Background.ScrollHorizontal(-(400 - (Player1.Location.X - RenderObject.screenLocation.X))/50)
         End If
     End Sub
 

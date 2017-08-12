@@ -218,6 +218,11 @@ Public MustInherit Class Entity
 
     ' Handles movement
     Public Overridable Sub UpdatePos()
+        If Me.Location.X + Me.Veloc.X < 0
+            Me.Veloc.X = 0
+        Else if (Me.Location.X - screenLocation.X + Me.Veloc.X) > ScreenGridWidth
+            Me.Veloc.X = 0
+        End If
         Me.Location = New Point(Me.Location.X + Me.veloc.x, Me.Location.Y + Me.veloc.y)
     End Sub
 
