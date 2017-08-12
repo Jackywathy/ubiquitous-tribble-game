@@ -1,7 +1,7 @@
 ﻿Imports System.Drawing.Drawing2D
 
 Public Class MainGame
-    Private NotInheritable Class KeyHandler
+    Private Class KeyHandler
         Public Shared MoveRight As Boolean
         Public Shared MoveLeft As Boolean
         Public Shared MoveUp As Boolean
@@ -99,11 +99,11 @@ Public Class MainGame
     Private FPS As Integer = 0
     Private ReadOnly fpsFont as New Font("Arial", 20)
     Private ReadOnly fpsBrush As New SolidBrush(Color.Red)
-    Private lastFrame As DateTime = DateTime.Now()
+    Private lastFrame As DateTime = DateTime.UtcNow()
     
 
     Private Sub UpdateFPS()
-        Dim now = DateTime.Now()
+        Dim now = DateTime.UtcNow()
         If (Now-lastFrame).Seconds >= 1 Then
             fps = numFrames
             numFrames = 0
