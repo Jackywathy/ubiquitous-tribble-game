@@ -41,7 +41,7 @@ Public Class MainGame
         End Sub
     End Class
 
-    Private Property SceneController As New Scene
+    Private Property SceneController As Scene
 
     Sub New()
 
@@ -55,7 +55,7 @@ Public Class MainGame
         SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
         SetStyle(ControlStyles.AllPaintingInWmPaint, True)
 
-        SceneController.LoadTestLevel()
+        SceneController = Scene.ReadMapFromResource("testmap")
 
 
         MusicPlayer.PlayBackground("ground_theme")
@@ -100,6 +100,15 @@ Public Class MainGame
         handleInput()
         Entities.player1.Move(numFrames)
 
+        if player1.Location.X - RenderObject.screenLocation.X  > (ScreenGridWidth  /4 * 3)
+            ' on right 1/4
+            SceneController.Background.ScrollHorizontal(10)
+
+        Else if player1.Location.X - RenderObject.screenLocation.X < (ScreenGridWidth  /4)
+            ' on left 1/4
+            SceneController.Background.ScrollHorizontal(-10)
+        End If
+
         Me.Refresh()
     End Sub
 
@@ -135,6 +144,7 @@ Public Class MainGame
     End Sub
 
     Dim jump as New MusicPlayer("jump")
+
     Private Sub MainGame_KeyDown(sender As Object, e As KeyEventArgs) Handles MyBase.KeyDown
         Dim key As Keys = e.KeyData
         KeyHandler.KeyDown(key)
