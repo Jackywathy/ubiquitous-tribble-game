@@ -98,7 +98,12 @@ Public MustInherit Class RenderObject
         return left.ID = right.ID
     End Operator
     Public Shared Operator <>(left as RenderObject, right As RenderObject)
-        return left.ID <> right.ID
+        if left IsNot Nothing And right IsNot nothing
+            return left.ID <> right.ID
+        Else 
+            return IsNothing(left) and IsNothing(right)
+        End if
+        
     End Operator
 
 End Class

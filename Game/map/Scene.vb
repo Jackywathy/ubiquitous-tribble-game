@@ -2,17 +2,17 @@
 
 Public Class Scene
     ' Contains all objects (no entityes)
-    Public AllObjects As New List(Of RenderObject)
+    Public AllObjects As New HashSet(Of RenderObject)
     ' Contains all entityes (no objects)
-    Public AllEntities As New List(Of Entity)
+    Public AllEntities As New HashSet(Of Entity)
     ' contains everything
-    Public AllObjAndEnt As New List(Of RenderObject)
+    Public AllObjAndEnt As New HashSet(Of RenderObject)
 
     ' a reference to the background music playing
     Public BackgroundSound As MusicPlayer
 
     ' all the objects in the scene
-    Private InSceneItems As New List(Of RenderObject)
+    Private InSceneItems As New HashSet(Of RenderObject)
 
     ' background of scene
     Private background As BackgroundRender
@@ -22,7 +22,7 @@ Public Class Scene
     ''' Should be called once per physics tick
     ''' </summary>
     ''' <returns>Objects in scene</returns>
-    Public Function GetObjInScene() As List(Of RenderObject)
+    Public Function GetObjInScene() As HashSet(Of RenderObject)
         InSceneItems.Clear()
         For Each item As RenderObject In AllObjects
             If item.InScene() Then
@@ -51,6 +51,28 @@ Public Class Scene
         For Each item As Entity In args
             AllEntities.Add(item)
             AllObjAndEnt.Add(item)
+        Next
+    End Sub
+
+    ''' <summary>
+    ''' Removes obj from scene
+    ''' </summary>
+    ''' <param name="args"></param>
+    Sub RemoveObj(ByVal ParamArray args() As RenderObject)
+        For Each item As RenderObject In args
+            AllObjects.Remove(item)
+            AllObjAndEnt.Remove(item)
+        Next
+    End Sub
+
+    ''' <summary>
+    ''' Removes entity from scene
+    ''' </summary>
+    ''' <param name="args"></param>
+    Sub RemoveEntity(ByVal ParamArray args() As Entity)
+        For Each item As Entity In args
+            AllEntities.Remove(item)
+            AllObjAndEnt.Remove(item)
         Next
     End Sub
 

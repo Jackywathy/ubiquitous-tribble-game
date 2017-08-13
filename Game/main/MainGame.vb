@@ -45,7 +45,7 @@ Public Class MainGame
     End Class
     
 
-    Public Property SceneController As Scene
+    Public Shared Property SceneController As Scene
 
     Sub New()
 
@@ -75,12 +75,13 @@ Public Class MainGame
         if isDebug
             AddStringBuffer(String.Format("fps: {0}", FPS))
             AddStringBuffer(String.Format("Mario Location: {0}, {1}", player1.Location.X, player1.Location.Y))
-
             DrawStringBuffer(g)
         End if
     End Sub
 
     Private strBuffer As New List(Of String)
+
+
     Public Sub AddStringBuffer(str As String)
         strBuffer.Add(str)
     End Sub
@@ -88,7 +89,7 @@ Public Class MainGame
 
     Const WidthError = 5
     Public Sub DrawStringBuffer(g As Graphics)
-        Dim height as Integer = 0
+        Dim height = 0
         For each str As String In strBuffer
             Dim size = TextRenderer.MeasureText(str, fpsFont)
             Dim offset = ScreenGridWidth - size.Width - WidthError

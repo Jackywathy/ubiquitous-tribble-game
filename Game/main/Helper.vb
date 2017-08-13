@@ -1,8 +1,4 @@
-﻿Public Module TO_DO__DELETE
-    Public Sub Disappear(ByRef sender As RenderObject)
-        sender.Location = New Point(-32, -32)
-    End Sub
-End Module
+﻿
 
 Public Module Dimensions
     Public Const ScreenGridWidth As Integer = 1280

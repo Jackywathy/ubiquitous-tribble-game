@@ -14,7 +14,7 @@
         If sender.GetType = GetType(EntPlayer) Then
             Dim player As EntPlayer = sender
             If player.state > 0 Then
-                TO_DO__DELETE.Disappear(Me)
+                MainGame.SceneController.RemoveObj(Me)
                 Sounds.BrickSmash.Play()
             Else
                 ' could not break

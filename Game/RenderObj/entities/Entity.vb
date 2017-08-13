@@ -266,7 +266,7 @@ Public MustInherit Class Entity
     End Sub
 
     Public Overridable Sub Destroy()
-        TO_DO__DELETE.Disappear(Me)
+        MainGame.SceneController.RemoveEntity(Me)
     End Sub
 
 End Class

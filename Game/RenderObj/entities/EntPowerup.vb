@@ -30,7 +30,7 @@ Public MustInherit Class EntPowerup
             player.changeState(Me.state)
             Sounds.MushroomPickup.Play()
 
-            TO_DO__DELETE.Disappear(Me)
+            MainGame.SceneController.RemoveEntity(Me)
         End If
     End Sub
 
