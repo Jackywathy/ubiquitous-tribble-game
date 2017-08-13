@@ -1,11 +1,13 @@
-﻿Public Class EntMushroom
+﻿Imports WinGame
+
+Public Class EntFireFlower
     Inherits EntPowerup
 
-    Public Overrides Property spriteSet As SpriteSet = Sprites.mushroom
+    Public Overrides Property state As UInt16 = 2
+    Public Overrides Property moveSpeed As Velocity = New Velocity(0, 0)
+    Public Overrides ReadOnly Property maxVeloc As Velocity = New Velocity(0, 0)
+    Public Overrides Property spriteSet As SpriteSet = Sprites.f_flower
     Private spawnCounter = 0
-    Public Overrides Property state As UInt16 = 1
-    Public Overrides Property moveSpeed As Velocity = New Velocity(1, 0)
-    Public Overrides ReadOnly Property maxVeloc As Velocity = New Velocity(1.5, Forces.terminalVeloc)
 
     Public Overrides Sub Animate(numFrames As Integer)
         If isSpawning And numFrames Mod 5 = 0 Then
@@ -17,14 +19,13 @@
                 spawnCounter += 1
             End If
         End If
-    End Sub
 
-    Public Overrides Sub UpdatePos()
-        If Not isSpawning Then
-            Me.AccelerateX(moveSpeed.x)
-            Me.ApplyConstantForces()
+        If Not isSpawning And numFrames Mod 10 = 0 Then
+            RenderImage = spriteSet.allSprites(2).First
+            spriteSet.allSprites(2).Insert(0, spriteSet.allSprites(2).Last)
+            spriteSet.allSprites(2).RemoveAt(spriteSet.allSprites(2).Count - 1)
         End If
-        MyBase.UpdatePos()
+
     End Sub
 
     Sub New(width As Integer, height As Integer, location As Point)

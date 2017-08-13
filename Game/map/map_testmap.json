@@ -2,6 +2,7 @@
   "map_name": "test",
   "objects": {
     "breakablebrick": [
+      [ 192, 96 ],
       [ 128, 160 ],
       [ 320, 128 ],
       [ 352, 128 ],

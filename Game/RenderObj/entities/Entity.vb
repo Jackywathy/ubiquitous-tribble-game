@@ -8,7 +8,7 @@ Public Module Forces
     ' may need to tweak
     ' CANNOT exceed moveSpeed values of any entity otherwise it will not be able to move
     Public Const gravity = 0.98
-    Public Const friction = 0.5
+    Public Const friction = 0.4
     Public Const airResist = 0.5
     Public Const terminalVeloc = -15.0
 End Module
@@ -35,7 +35,6 @@ Public MustInherit Class Entity
     Public isFacingForward = True
     Public didJumpAndNotFall = True
 
-
     ' animation sprites
     Public MustOverride Property spriteSet As SpriteSet
 
@@ -43,7 +42,7 @@ Public MustInherit Class Entity
 
     Public Sub CheckCollision(ByRef sender As RenderObject)
 
-        Dim selfCentre = New Point((Me.Location.X + 0.5 * Me.Width), (Me.Location.Y + 0.5 * Me.Height))
+        Dim selfCentre = New Point((Me.Location.X + (0.5 * Me.Width)), (Me.Location.Y + (0.5 * Me.Height)))
 
         Dim selfRightmost = Me.Location.X + Me.Width
         Dim selfLeftmost = Me.Location.X
@@ -60,6 +59,9 @@ Public MustInherit Class Entity
         Dim insideFromBelow = selfUppermost > blockLowermost
         Dim insideFromAbove = selfLowermost < blockUppermost
 
+        Dim senderIsEntity = sender.GetType.IsSubclassOf(GetType(Entity)) ' is not entity or subclass
+        Dim newPositionToMoveTo As Point
+
         ' Me.Location:
         '  ___
         ' |   |
@@ -75,16 +77,15 @@ Public MustInherit Class Entity
         ' AND    entity intersect inside from left
         ' AND    entity intersects inside from right
 
-        If selfLowermost = 50 And player1.veloc.y < 0 Then
-            selfLowermost += 0
-        End If
-
         ' COLLISION FROM:
 
         ' NORTH
-        If Me.veloc.y < 0 And selfCentre.Y > blockUppermost And insideFromAbove And insideFromLeft And insideFromRight Then
-            isGrounded = True
-            Me.Location = New Point(Me.Location.X, blockUppermost)
+        If Me.veloc.y < 0 And selfUppermost > blockUppermost And insideFromAbove And insideFromLeft And insideFromRight Then
+            If Not senderIsEntity Then
+                Me.isGrounded = True
+            End If
+
+            newPositionToMoveTo = New Point(Me.Location.X, blockUppermost)
 
             ' NOTE - LET THE RenderObject being collided with deal with changing Entities' speed
             ' Me.veloc.y = 0
@@ -103,10 +104,7 @@ Public MustInherit Class Entity
 
             ElseIf Me.veloc.y > 0 Then
                 ' only triggers with positive veloc; necessary to stop infinite loop since veloc.y is set to 0 after collision
-                If sender.ID = 9 Then
-                    player1.ID += 0
-                End If
-                Me.Location = New Point(Me.Location.X, blockLowermost - Me.Height) ' - 0.2 * c ?
+                newPositionToMoveTo = New Point(Me.Location.X, blockLowermost - Me.Height) ' - 0.2 * c ?
                 sender.CollisionBottom(Me)
 
             End If
@@ -114,18 +112,19 @@ Public MustInherit Class Entity
             ' WEST
 
         ElseIf selfCentre.X < blockLeftmost And insideFromLeft And insideFromAbove And insideFromBelow Then
-            Me.Location = New Point(blockLeftmost - Me.Width, Me.Location.Y)
+            newPositionToMoveTo = New Point(blockLeftmost - Me.Width, Me.Location.Y)
             sender.CollisionLeft(Me)
 
             ' EAST
 
         ElseIf selfCentre.X > blockRightmost And insideFromRight And insideFromAbove And insideFromBelow Then
-            Me.Location = New Point(blockRightmost, Me.Location.Y)
+            newPositionToMoveTo = New Point(blockRightmost, Me.Location.Y)
             sender.CollisionRight(Me)
 
             ' Check for falling off platform
 
         End If
+
 
         'Just in case
 
@@ -137,25 +136,51 @@ Public MustInherit Class Entity
         'End If
 
         ' Handle falling off ledges and setting of didJumpAndNotFall
-
-        If selfCentre.Y > blockUppermost And selfLowermost <= blockUppermost And insideFromLeft And insideFromRight And Not currentGroundObjects.Contains(sender) Then
+        If Not senderIsEntity Then
+            If selfUppermost > blockUppermost And selfLowermost <= blockUppermost And insideFromLeft And insideFromRight And Not currentGroundObjects.Contains(sender) Then
             currentGroundObjects.Add(sender)
+
             'Console.WriteLine("Added")
             'Console.WriteLine(currentGroundObjects.Count)
 
         End If
 
-        If (Not (insideFromLeft And insideFromRight) Or selfLowermost > blockUppermost) And currentGroundObjects.Contains(sender) Then
+
+
+        If ((Not (insideFromLeft And insideFromRight)) Or selfLowermost > blockUppermost) And currentGroundObjects.Contains(sender) Then
             currentGroundObjects.RemoveAt(currentGroundObjects.IndexOf(sender))
             'Console.WriteLine("Removed")
             'Console.WriteLine(currentGroundObjects.Count)
             If currentGroundObjects.Count = 0 Then
-                isGrounded = False
+                Me.isGrounded = False
+
                 If Me.veloc.y <= 0 Then
                     didJumpAndNotFall = False
                 End If
             End If
         End If
+
+
+            If Not senderIsEntity And (newPositionToMoveTo <> Nothing) Then
+                If Me.Location.X <> -32 Then
+                    Me.Location = newPositionToMoveTo
+
+                End If
+            End If
+        End If
+
+    End Sub
+
+    Public Overrides Sub CollisionBottom(sender As Entity)
+
+    End Sub
+    Public Overrides Sub CollisionTop(sender As Entity)
+
+    End Sub
+    Public Overrides Sub CollisionLeft(sender As Entity)
+
+    End Sub
+    Public Overrides Sub CollisionRight(sender As Entity)
 
     End Sub
 
@@ -176,12 +201,12 @@ Public MustInherit Class Entity
         If magnitude > 0 And isGrounded Then
             Me.veloc.y += magnitude
             isJumping = True
-            isGrounded = False
             didJumpAndNotFall = True
 
         ElseIf magnitude < 0 Then
             Me.veloc.y += magnitude
         End If
+
         If Me.veloc.y < Me.maxVeloc.y Then
             Me.veloc.y = Me.maxVeloc.y
         End If
@@ -189,13 +214,25 @@ Public MustInherit Class Entity
     End Sub
 
     Public Sub DecreaseMagnitude(ByRef velocity As Double, magnitude As Double)
-        If magnitude > 0 Then
-            If Math.Abs(velocity) < magnitude Then
-                velocity = 0
-            Else
-                velocity -= velocity / Math.Abs(velocity) * magnitude
-            End If
+
+        Dim signOfVelocBefore = velocity / Math.Abs(velocity)
+
+        velocity -= signOfVelocBefore * magnitude
+
+        Dim signOfVelocAfter = velocity / Math.Abs(velocity)
+
+        If signOfVelocAfter <> signOfVelocBefore Then
+            velocity = 0
         End If
+
+        ' Just in case
+        'If magnitude > 0 Then
+        'If Math.Abs(velocity) < magnitude Then
+        'velocity = 0
+        'Else
+        'velocity -= velocity / Math.Abs(velocity) * magnitude
+        'End If
+        'End If
     End Sub
 
     Public Sub ApplyConstantForces()
@@ -218,15 +255,19 @@ Public MustInherit Class Entity
 
     ' Handles movement
     Public Overridable Sub UpdatePos()
-        If Me.Location.X + Me.Veloc.X < 0
-            Me.Veloc.X = 0
-        Else if (Me.Location.X - screenLocation.X + Me.Veloc.X) > ScreenGridWidth
-            Me.Veloc.X = 0
+
+        If Me.Location.X + Me.veloc.X < 0 Then
+            Me.veloc.X = 0
+        ElseIf (Me.Location.X - screenLocation.X + Me.veloc.X) > ScreenGridWidth Then
+            Me.veloc.X = 0
         End If
+
         Me.Location = New Point(Me.Location.X + Me.veloc.x, Me.Location.Y + Me.veloc.y)
     End Sub
 
-
+    Public Overridable Sub Destroy()
+        TO_DO__DELETE.Disappear(Me)
+    End Sub
 
 End Class
 

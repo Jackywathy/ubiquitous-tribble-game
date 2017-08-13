@@ -147,6 +147,8 @@
     <Compile Include="renderObj\blocks\BlockQuestion.vb" />
     <Compile Include="renderObj\blocks\BlockMetal.vb" />
     <Compile Include="renderObj\BrickPlatform.vb" />
+    <Compile Include="renderObj\entities\EntFireball.vb" />
+    <Compile Include="renderObj\entities\EntFireFlower.vb" />
     <Compile Include="renderObj\entities\Entity.vb" />
     <Compile Include="renderObj\entities\EntMushroom.vb" />
     <Compile Include="renderObj\entities\EntPlayer.vb" />
@@ -192,6 +194,15 @@
     <None Include="swift\[Physics] player.swift" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="images\player\big\fireball.png" />
+    <Content Include="images\player\big\mario_big_crouch.png" />
+    <None Include="Resources\mario_big_crouch.png" />
+    <Content Include="images\player\fire\mario_bigf_1.png" />
+    <Content Include="images\player\fire\mario_bigf_2.png" />
+    <Content Include="images\player\fire\mario_bigf_3.png" />
+    <Content Include="images\player\fire\mario_bigf_4.png" />
+    <Content Include="images\player\fire\mario_bigf_crouch.png" />
+    <Content Include="images\player\fire\mario_bigf_jump.png" />
     <Content Include="sounds\sfx\brick_smash.mp3" />
     <Content Include="sounds\sfx\mushroom_pickup.mp3" />
     <None Include="FodyWeavers.xml" />

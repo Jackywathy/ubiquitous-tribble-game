@@ -78,16 +78,16 @@ Public MustInherit Class RenderObject
 
     Public Overridable Sub CollisionBottom(sender As Entity)
         ' default behaviour = stop player
-        Sender.veloc.y = 0
+        sender.veloc.y = 0
     End Sub
     Public Overridable Sub CollisionTop(sender As Entity)
-        Sender.veloc.y = 0
+        sender.veloc.y = 0
     End Sub
     Public Overridable Sub CollisionLeft(sender As Entity)
-        Sender.veloc.x = 0
+        sender.veloc.x = 0
     End Sub
     Public Overridable Sub CollisionRight(sender As Entity)
-        Sender.veloc.x = 0
+        sender.veloc.x = 0
     End Sub
 
     Public Overridable Sub Animate(numFrames As Integer)

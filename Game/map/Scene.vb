@@ -96,7 +96,11 @@ Public Class Scene
         ' check collision of all entitys with all other obj, including entities
         For counter = 0 To (AllEntities.Count - 1)
             For count2 = 0 To (AllObjAndEnt.Count - 1)
-                AllEntities(counter).CheckCollision(AllObjAndEnt(count2))
+
+                ' Don't check collisions within the same obj
+                If AllEntities(counter).ID <> AllObjAndEnt(count2).ID Then
+                    AllEntities(counter).CheckCollision(AllObjAndEnt(count2))
+                End If
             Next
         Next
 

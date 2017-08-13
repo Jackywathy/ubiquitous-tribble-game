@@ -1,4 +1,6 @@
-﻿Public MustInherit Class Block
+﻿Imports WinGame
+
+Public MustInherit Class Block
     Inherits RenderObject
     Friend Const blockWidth = 32
     Friend Const blockHeight = 32
@@ -15,6 +17,27 @@
     'Using g = Graphics.FromImage(RenderImage)
     '        g.DrawImage(image, 0, 0, width, height)
     'End Using
+    Public Overrides Sub CollisionTop(sender As Entity)
+        MyBase.CollisionTop(sender)
+    End Sub
+    Public Overrides Sub CollisionBottom(sender As Entity)
+        MyBase.CollisionBottom(sender)
+    End Sub
+    Public Overrides Sub CollisionLeft(sender As Entity)
 
+        If sender.GetType = GetType(EntFireball) Then
+            sender.Destroy()
+        Else
+            MyBase.CollisionLeft(sender)
+        End If
+    End Sub
+    Public Overrides Sub CollisionRight(sender As Entity)
+
+        If sender.GetType = GetType(EntFireball) Then
+            sender.Destroy()
+        Else
+            MyBase.CollisionRight(sender)
+        End If
+    End Sub
 
 End Class

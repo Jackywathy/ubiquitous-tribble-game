@@ -41,21 +41,48 @@ Public Module Sprites
         MarioHeightS
     )
     ' 0 - Ground animation (4)
-    ' 1 - Idle sprite (1)
-    ' 2 - Jump sprite (1)
+    ' 1 - Idle (1)
+    ' 2 - Jump (1)
 
     Public playerBig = New SpriteSet(
         New List(Of List(Of Image)) From {
             New List(Of Image) From {My.Resources.mario_big_1, My.Resources.mario_big_2, My.Resources.mario_big_3, My.Resources.mario_big_4},
             New List(Of Image) From {My.Resources.mario_big_1},
-            New List(Of Image) From {My.Resources.mario_big_jump}
+            New List(Of Image) From {My.Resources.mario_big_jump},
+            New List(Of Image) From {My.Resources.mario_big_crouch}
         },
         MarioWidth,
-        MarioHeightS * 2
+        MarioHeightB
     )
     ' 0 - Ground animation (4)
-    ' 1 - Idle sprite (1)
-    ' 2 - Jump sprite (1)
+    ' 1 - Idle (1)
+    ' 2 - Jump (1)
+    ' 3 - Crouch (1)
+
+    Public playerBigFire = New SpriteSet(
+        New List(Of List(Of Image)) From {
+            New List(Of Image) From {My.Resources.mario_bigf_1, My.Resources.mario_bigf_2, My.Resources.mario_bigf_3, My.Resources.mario_bigf_4},
+            New List(Of Image) From {My.Resources.mario_bigf_1},
+            New List(Of Image) From {My.Resources.mario_bigf_jump},
+            New List(Of Image) From {My.Resources.mario_bigf_crouch}
+        },
+        MarioWidth,
+        MarioHeightB
+    )
+    ' 0 - Ground animation (4)
+    ' 1 - Idle (1)
+    ' 2 - Jump (1)
+    ' 3 - Crouch (1)
+
+    Public playerFireball = New SpriteSet(
+        New List(Of List(Of Image)) From {
+            New List(Of Image) From {My.Resources.fireball}
+        },
+        16,
+        16
+    )
+    ' 0 - Sprite (1) 
+    ' (gets rotated by pi/2 for animation)
 
     Public f_flower = New SpriteSet(
         New List(Of List(Of Image)) From {
@@ -100,6 +127,7 @@ Public Module Sprites
         MarioHeightS
     )
     ' 0 - Constant
+
     Public BrickMetalSprite = New SpriteSet(
         New List(Of List(Of Image)) From {
             New List(Of Image) From {My.Resources.blockMetal}

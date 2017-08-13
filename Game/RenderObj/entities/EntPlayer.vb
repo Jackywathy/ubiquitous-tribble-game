@@ -10,16 +10,15 @@ Public Class EntPlayer
     Inherits Entity
 
     Public Const CoinsToLives = 100
-
     Public Shared Property Lives = 5
     Public allowJump = True
-
-
+    Public allowShoot = True
+    Public isCrouching = False
     Public state As UInt16 = 0
+    Public numFireballs As UInt16 = 0
 
     ' This is set when New() is called
-    Public Overrides Property spriteSet As SpriteSet = Nothing
-
+    Public Overrides Property spriteSet As SpriteSet = Sprites.playerSmall
     Public Overrides Property moveSpeed As Velocity = New Velocity(1, 15)
     Public Overrides ReadOnly Property maxVeloc As Velocity = New Velocity(6, -15)
 
@@ -39,14 +38,42 @@ Public Class EntPlayer
         End Set
     End Property
 
+    ' This should NEVER be called if Mario is small
+    Public Sub onCrouch(state As Boolean)
+        isCrouching = state
+        If isCrouching Then ' IS crouching
+            Me.moveSpeed = New Velocity(0, Me.moveSpeed.y)
+            'Me.Height = MarioHeightS
+
+        Else ' is NOT crouching
+            Me.moveSpeed = New Velocity(1, Me.moveSpeed.y)
+            'Me.Height = MarioHeightB
+
+        End If
+    End Sub
+
     Public Sub changeState(change As Int16)
         state = change
         Select Case state
             Case 0 : Me.spriteSet = Sprites.playerSmall
-                Me.Height = 32
+                Me.Height = MarioHeightS
             Case 1 : Me.spriteSet = Sprites.playerBig
-                Me.Height = 64
+                Me.Height = MarioHeightB
+            Case 2 : Me.spriteSet = Sprites.playerBigFire
+                Me.Height = MarioHeightB
         End Select
+    End Sub
+
+    ' Do not call if state != 2
+    Public Sub tryShootFireball()
+        If numFireballs < 2 Then
+            Dim direction = 1
+            If Not player1.isFacingForward Then
+                direction *= -1
+            End If
+            MainGame.SceneController.AddEntity(New EntFireball(16, 16, New Point(Me.Location.X + (Me.Width * 1.1), Me.Location.Y), direction, Me.isGrounded))
+            'numFireballs += 1
+        End If
     End Sub
 
 
@@ -70,9 +97,17 @@ Public Class EntPlayer
                 spriteSet.allSprites(0).Insert(0, spriteSet.allSprites(0).Last)
                 spriteSet.allSprites(0).RemoveAt(spriteSet.allSprites(0).Count - 1)
             ElseIf veloc.x = 0 Then
-                imageToDraw = spriteSet.allSprites(1)(0).Clone
+                If Me.state > 0 And Me.isCrouching Then
+                    'Crouch
+                    imageToDraw = spriteSet.allSprites(3)(0).Clone
+                Else
+                    ' Idle
+                    imageToDraw = spriteSet.allSprites(1)(0).Clone
+                End If
+
             End If
         ElseIf didJumpAndNotFall Then
+            ' Jump
             imageToDraw = spriteSet.allSprites(2)(0).Clone
         End If
 
@@ -92,9 +127,8 @@ Public Class EntPlayer
 
         MyBase.New(width, height, location)
         Me.RenderImage = Resize(spriteSet.allSprites(1)(0), width, height)
-        Me.spriteSet = spriteSet
+        'Me.spriteSet = spriteSet
 
     End Sub
-
 
 End Class

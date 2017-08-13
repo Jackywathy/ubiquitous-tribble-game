@@ -7,21 +7,25 @@ Public Class MainGame
         Public Shared MoveUp As Boolean
         Public Shared MoveDown As Boolean
 
-        Private Shared Sub KeyHelp(key as Keys, vset As boolean)
-            if key = keys.Right Or Key = Keys.D
+        Private Shared Sub KeyHelp(key As Keys, vset As Boolean)
+
+            If key = Keys.Right Or key = Keys.D Then
                 MoveRight = vset
-                
-            End if
-            if key = keys.Left Or key = Keys.A
-                moveLeft = vset
+
             End If
-       
-            If key = keys.Up Or Key=Keys.W
-                moveUp = vset
+
+            If key = Keys.Left Or key = Keys.A Then
+                MoveLeft = vset
             End If
-            if key = keys.Down Or key = Keys.S
-                moveDown = vset
+
+            If key = Keys.Up Or key = Keys.W Then
+                MoveUp = vset
             End If
+
+            If key = Keys.Down Or key = Keys.S Then
+                MoveDown = vset
+            End If
+
         End Sub
 
         Public Shared Sub KeyDown(key As Keys)
@@ -118,19 +122,39 @@ Public Class MainGame
         Me.Refresh()
     End Sub
 
-    Private Sub handleInput()
-        If KeyHandler.MoveUp And player1.allowJump = True Then
+    Private Sub handleInput() ' this supplements the player's updatePos()
+
+        ' UP
+        If KeyHandler.MoveUp And player1.allowJump Then
             Entities.player1.AccelerateY(Entities.player1.moveSpeed.y)
             player1.allowJump = False
         ElseIf KeyHandler.MoveUp = False Then
             player1.allowJump = True
         End If
-        If KeyHandler.MoveDown Then
 
+        ' DOWN
+        If KeyHandler.MoveDown Then
+            If player1.state > 0 And player1.isGrounded = True Then 'crouch
+                player1.onCrouch(True)
+            End If
+        ElseIf player1.state > 0 And player1.isCrouching = True Then
+            ' TO DO - check for collision on above blocks before uncrouching
+            player1.onCrouch(False)
         End If
+
+        If player1.state = 2 And KeyHandler.MoveDown And player1.allowShoot Then
+            player1.tryShootFireball()
+            player1.allowShoot = False
+        ElseIf Not KeyHandler.MoveDown Then
+            player1.allowShoot = True
+        End If
+
+        ' LEFT
         If KeyHandler.MoveLeft Then
-            Entities.player1.accelerateX(-Entities.player1.moveSpeed.x)
+            Entities.player1.AccelerateX(-Entities.player1.moveSpeed.x)
         End If
+
+        ' RIGHT
         If KeyHandler.MoveRight Then
             Entities.player1.AccelerateX(Entities.player1.moveSpeed.x)
 
