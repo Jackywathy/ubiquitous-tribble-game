@@ -18,5 +18,6 @@
     ]
 
   },
-  "background" :  "placeholderLevel" 
+  "background": "placeholderLevel",
+  "background_music" :  "ground_theme"
 }

@@ -6,6 +6,7 @@
 ''' </summary>
 Public Class BackgroundRender
     Inherits RenderObject
+    Implements IDisposable
 
     Public Overrides Property RenderImage As Image = New Bitmap(ScreenGridWidth, ScreenGridHeight)
     Private backgroundNeedsUpdate As Boolean = True
@@ -90,7 +91,14 @@ Public Class BackgroundRender
         Return canScroll
     End Function
 
-   
+    Public Sub Dispose() Implements IDisposable.Dispose
+        If RenderImage IsNot Nothing
+            RenderImage.Dispose()
+        End If
+        If ActualImage IsNot Nothing
+            ActualImage.Dispose()
+        End If
+    End Sub
 End Class
 
 

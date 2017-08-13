@@ -52,9 +52,9 @@ Public Class MainGame
         ' This call is required by the designer.
         InitializeComponent()
 
-        ' Add any initialization after the InitializeComponent() call.
+        ' AddObj any initialization after the InitializeComponent() call.
 
-        DoubleBuffered = True
+        SetStyle(ControlStyles.DoubleBuffer, True)
         SetStyle(ControlStyles.UserPaint, True)
         SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
         SetStyle(ControlStyles.AllPaintingInWmPaint, True)

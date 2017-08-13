@@ -8,9 +8,20 @@ Public Class Scene
     ' contains everything
     Public AllObjAndEnt As New List(Of RenderObject)
 
+    ' a reference to the background music playing
+    Public BackgroundSound As MusicPlayer
 
+    ' all the objects in the scene
     Private InSceneItems As New List(Of RenderObject)
 
+    ' background of scene
+    Private background As BackgroundRender
+
+    ''' <summary>
+    ''' Gets/Updates the blocks that are in the scene and need to be rendened.
+    ''' Should be called once per physics tick
+    ''' </summary>
+    ''' <returns>Objects in scene</returns>
     Public Function GetObjInScene() As List(Of RenderObject)
         InSceneItems.Clear()
         For Each item As RenderObject In AllObjects
@@ -21,20 +32,21 @@ Public Class Scene
         Return InSceneItems
     End Function
 
-    Sub New(ByVal ParamArray args() As RenderObject)
+    ''' <summary>
+    ''' Adds a obj (not entity to the scene)
+    ''' </summary>
+    ''' <param name="args"></param>
+    Sub AddObj(ByVal ParamArray args() As RenderObject)
         For Each item As RenderObject In args
             AllObjects.Add(item)
             AllObjAndEnt.Add(item)
         Next
     End Sub
 
-    Sub Add(ByVal ParamArray args() As RenderObject)
-        For Each item As RenderObject In args
-            AllObjects.Add(item)
-            AllObjAndEnt.Add(item)
-        Next
-    End Sub
-
+    ''' <summary>
+    ''' Adds entity to the scene
+    ''' </summary>
+    ''' <param name="args"></param>
     Public Sub AddEntity(ByVal ParamArray args() As Entity)
         For Each item As Entity In args
             AllEntities.Add(item)
@@ -42,19 +54,26 @@ Public Class Scene
         Next
     End Sub
 
-
+    ''' <summary>
+    ''' Sets the background of the scene. Uses the resource name string.
+    ''' </summary>
+    ''' <param name="name"></param>
     Sub SetBackground(name As String)
-        Me.Background = New BackgroundRender(TotalGridWidth, TotalGridHeight, My.Resources.ResourceManager.GetObject(name))
+        if background IsNot Nothing
+            background.Dispose()
+        End If
+        Me.background = New BackgroundRender(TotalGridWidth, TotalGridHeight, My.Resources.ResourceManager.GetObject(name))
     End Sub
+
+    ''' <summary>
+    ''' Sets background of scene. Uses an image
+    ''' </summary>
+    ''' <param name="image"></param>
     Sub SetBackground(image As Image)
         Me.Background = New BackgroundRender(TotalGridWidth, TotalGridHeight, image)
     End Sub
 
-    Public Background As BackgroundRender
-    Public Player1 = Entities.player1
-
-
-
+    
     Sub UpdatePhysics(numframes As Integer)
         ' animate and update position of each entity
         For Each item In AllObjAndEnt
@@ -68,14 +87,26 @@ Public Class Scene
 
         Next
 
+        ' check collision of all entitys with all other obj, including entities
+        For counter = 0 To (AllEntities.Count - 1)
+            For count2 = 0 To (AllObjAndEnt.Count - 1)
+
+                ' Don't check collisions within the same obj
+                If AllEntities(counter) <> AllObjAndEnt(count2) Then
+                    AllEntities(counter).CheckCollision(AllObjAndEnt(count2))
+                End If
+            Next
+        Next
+
+
         If Player1.Location.X - RenderObject.screenLocation.X > (ScreenGridWidth / 4 * 3) Then
             ' on right 1/4
-            Me.Background.ScrollHorizontal((400-(ScreenGridWidth - (Player1.Location.X - RenderObject.screenLocation.X)))/50)
+            Me.Background.ScrollHorizontal((400 - (ScreenGridWidth - (Player1.Location.X - RenderObject.screenLocation.X))) / 50)
 
         ElseIf Player1.Location.X - RenderObject.screenLocation.X < (ScreenGridWidth / 4) Then
             ' on left 1/4
             'Me.Background.ScrollHorizontal(Player1.Location.X - RenderObject.screenLocation.X)
-            Me.Background.ScrollHorizontal(-(400 - (Player1.Location.X - RenderObject.screenLocation.X))/50)
+            Me.Background.ScrollHorizontal(-(400 - (Player1.Location.X - RenderObject.screenLocation.X)) / 50)
         End If
     End Sub
 
@@ -93,16 +124,7 @@ Public Class Scene
         'Next
 
 
-        ' check collision of all entitys with all other obj, including entities
-        For counter = 0 To (AllEntities.Count - 1)
-            For count2 = 0 To (AllObjAndEnt.Count - 1)
-
-                ' Don't check collisions within the same obj
-                If AllEntities(counter).ID <> AllObjAndEnt(count2).ID Then
-                    AllEntities(counter).CheckCollision(AllObjAndEnt(count2))
-                End If
-            Next
-        Next
+        
 
         ' render objects
         For Each item As RenderObject In objects
@@ -117,7 +139,6 @@ Public Class Scene
 
 
     Public Shared Function ReadMapFromResource(jsonName As String) As Scene
-        
         Dim byteArray = CType(My.Resources.ResourceManager.GetObject(jsonName), Byte())
         If byteArray(0) = 239 And byteArray(1) = 187 And byteArray(2) = 191 Then
             byteArray = byteArray.Skip(3).Take(byteArray.Length - 2).ToArray()
@@ -136,7 +157,7 @@ Public Class Scene
         For Each pair As KeyValuePair(Of String, IList(Of Integer())) In mapObject.objects
             Dim name = pair.Key
             For Each params As Integer() In pair.Value
-                outScene.Add(outScene.RenderItemFactory(name, params))
+                outScene.AddObj(outScene.RenderItemFactory(name, params))
             Next
         Next
         outScene.AddEntity(Entities.player1)
@@ -157,7 +178,7 @@ Public Class Scene
                 AssertLength("bbrick", 2, params.Length, params)
                 out = New BlockBreakableBrick(New Point(params(0), params(1)))
             Case "brickplatform"
-               AssertLength("brickplatform", 4, params.Length, params)
+                AssertLength("brickplatform", 4, params.Length, params)
                 out = New BrickPlatform(params(0), params(1), New Point(params(2), params(3)))
             Case "itemblock"
                 AssertLength("itemblock", 2, params.Length, params)
@@ -167,9 +188,9 @@ Public Class Scene
         End Select
 
         Return out
-        
+
     End Function
-    Private Class InvalidJsonException 
+    Private Class InvalidJsonException
         Inherits Exception
         Sub New(message As String)
             MyBase.New(message)
@@ -178,11 +199,12 @@ Public Class Scene
     End Class
 End Class
 
-<JsonObject(ItemRequired:= Required.Always)>
+<JsonObject(ItemRequired:=Required.Always)>
 Public Class MapObject
     Public Property map_name As String
     Public Property objects As Dictionary(Of String, IList(Of Integer()))
     Public Property background As String
+    Public Property background_music As String
 
 
 

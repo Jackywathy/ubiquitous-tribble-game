@@ -5,48 +5,52 @@ Public NotInheritable Class MusicPlayer
     Implements IDisposable
     Private Shared Property backgroundPlayer As MusicPlayer
 
-    Private reader As WaveStream
-    Private channel As WaveStream
-    Private player As IWavePlayer
+    Private ReadOnly reader As WaveStream
+    Private ReadOnly channel As WaveChannel32
+    Private ReadOnly player As IWavePlayer
 
     Public Shared Sub PlayBackground(music As MusicPlayer)
-       backgroundPlayer = music
-       backgroundPlayer.DoLoop(True)
-       backgroundPlayer.Play()
+        If backgroundPlayer IsNot Nothing Then
+            backgroundPlayer.Dispose()
+        End If
+        backgroundPlayer = music
+        backgroundPlayer.DoLoop(True)
+        backgroundPlayer.Play()
     End Sub
 
- 
+
 
     ''' <summary>
     ''' A wrapper allowing sound to be played.
     ''' </summary>
     ''' <param name="name"></param>
-    Public Sub New(name As String, Optional volume As Single=1.0f)
+    Public Sub New(name As String, Optional volume As Single = 1.0F)
         Me.New(New MemoryStream(CType(My.Resources.ResourceManager.GetObject(name), Byte())), volume)
-        
-    End Sub 
 
-    Public Sub DoLoop(optional enable as boolean=True)
+    End Sub
+
+    Public Sub DoLoop(Optional enable As Boolean = True)
         AddHandler player.PlaybackStopped, AddressOf Repeat_audio
     End Sub
 
-    Private sub Repeat_audio(sender As Object, e As EventArgs)
+    Private Sub Repeat_audio(sender As Object, e As EventArgs)
         Me.Play()
-    End sub
+    End Sub
 
-    Public Sub New(stream As Stream, Optional volume As Single=1.0f)
-        reader = New Mp3FileReader(stream) 
-       
+    Public Sub New(stream As Stream, Optional volume As Single = 1.0F)
+        reader = New Mp3FileReader(stream)
+
         channel = New WaveChannel32(reader, volume, 0)
-       
+        channel.PadWithZeroes = False
+
         player = New DirectSoundOut()
-        
-        
+
+
         player.Init(channel)
     End Sub
 
     Public Sub Play(Optional fromStart As Boolean = True)
-        If fromStart
+        If fromStart Then
 
             reader.CurrentTime = TimeSpan.Zero
         End If
@@ -62,23 +66,29 @@ Public NotInheritable Class MusicPlayer
 
 
     Public Shared Sub PlayBackground(name As String)
-        if backgroundPlayer IsNot Nothing
+        If backgroundPlayer IsNot Nothing Then
             backgroundPlayer.Dispose()
-        End if
+        End If
         backgroundPlayer = New MusicPlayer(name)
         backgroundPlayer.Play()
     End Sub
 
-    
+
 
     Public Shared Sub Media_Repeat(sender As MusicPlayer, e As EventArgs)
-        sender.Play(fromStart := True)
+        sender.Play(fromStart:=True)
     End Sub
 
     Public Sub Dispose() Implements IDisposable.Dispose
-        reader.Dispose()
-        channel.Dispose()
-        player.Dispose()
+        If reader IsNot Nothing Then
+            reader.Dispose()
+        End If
+        If reader IsNot Nothing Then
+            channel.Dispose()
+        End If
+        If reader IsNot Nothing Then
+            player.Dispose()
+        End If
     End Sub
 End Class
 
