@@ -3,8 +3,8 @@
     Public isUsed = False
     Overrides Property spriteset As SpriteSet = Sprites.itemBlock
 
-    Sub New(location As Point)
-        MyBase.New(blockWidth, blockHeight, location)
+    Sub New(location As Point, scene As Scene)
+        MyBase.New(blockWidth, blockHeight, location, scene)
         Me.RenderImage = Resize(spriteset.allSprites(0)(0), Width, Height)
         Me.spriteset = spriteset
     End Sub
@@ -23,7 +23,7 @@
             'Dim mushroom As New EntMushroom(32, 32, New Point(Me.Location.X, Me.Location.Y + Me.Height))
             'MainGame.SceneController.AddEntity(mushroom)
 
-            Dim flower As New EntFireFlower(32, 32, New Point(Me.Location.X, Me.Location.Y + Me.Height))
+            Dim flower As New EntFireFlower(32, 32, New Point(Me.Location.X, Me.Location.Y + Me.Height), scene)
             MainGame.SceneController.AddEntity(flower)
 
             isUsed = True

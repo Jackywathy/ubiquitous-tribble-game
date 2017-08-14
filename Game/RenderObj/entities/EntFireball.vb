@@ -29,8 +29,8 @@ Public Class EntFireball
 
     End Sub
 
-    Sub New(width As Integer, height As Integer, location As Point, direction As Integer, shooterIsGrounded As Boolean)
-        MyBase.New(width, height, location)
+    Sub New(width As Integer, height As Integer, location As Point, direction As Integer, shooterIsGrounded As Boolean, scene As Scene)
+        MyBase.New(width, height, location, scene)
         Me.moveSpeed = New Velocity(Me.moveSpeed.x * direction, Me.moveSpeed.y)
         Me.isGrounded = shooterIsGrounded
     End Sub

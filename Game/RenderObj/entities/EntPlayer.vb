@@ -68,10 +68,10 @@ Public Class EntPlayer
     Public Sub tryShootFireball()
         If numFireballs < 2 Then
             Dim direction = 1
-            If Not player1.isFacingForward Then
+            If Not MyScene.player1.isFacingForward Then
                 direction *= -1
             End If
-            MainGame.SceneController.AddEntity(New EntFireball(16, 16, New Point(Me.Location.X + (Me.Width * 1.1), Me.Location.Y), direction, Me.isGrounded))
+            MainGame.SceneController.AddEntity(New EntFireball(16, 16, New Point(Me.Location.X + (Me.Width * 1.1), Me.Location.Y), direction, Me.isGrounded, MyScene))
             'numFireballs += 1
         End If
     End Sub
@@ -123,9 +123,9 @@ Public Class EntPlayer
 
     End Sub
 
-    Sub New(width As Integer, height As Integer, location As Point, spriteSet As SpriteSet)
+    Sub New(width As Integer, height As Integer, location As Point, spriteSet As SpriteSet, scene As Scene)
 
-        MyBase.New(width, height, location)
+        MyBase.New(width, height, location, scene)
         Me.RenderImage = Resize(spriteSet.allSprites(1)(0), width, height)
         'Me.spriteSet = spriteSet
 

@@ -5,6 +5,7 @@ Public MustInherit Class RenderObject
     Public Property Height As Integer
     Friend Shared toolBarOffSet As Integer = 29
 
+    Friend Property MyScene As Scene
     Private Shared _idCount As Integer
     
     Private Shared Function GetNewID() As Integer
@@ -34,10 +35,11 @@ Public MustInherit Class RenderObject
     ''' <param name="width">Width, in grid units</param>
     ''' <param name="height">Height, in grid units</param>
     ''' <param name="location">Location, a point of grid units</param>
-    Public Sub New(width As Integer, height As Integer, location As Point)
+    Public Sub New(width As Integer, height As Integer, location As Point, scene As Scene)
         Me.Width = width
         Me.Height = height
         Me.Location = location
+        Me.MyScene = scene
 
         RenderImage = New Bitmap(width, height)
     End Sub

@@ -37,8 +37,8 @@ Public Class BackgroundRender
     End Sub
 
 
-    Sub New(levelWidth As Integer, levelHeight As Integer, backgroundImage As Image)
-        MyBase.New(Dimensions.ScreenGridWidth, Dimensions.ScreenGridHeight, New Point(0, 0))
+    Sub New(levelWidth As Integer, levelHeight As Integer, backgroundImage As Image, scene As Scene)
+        MyBase.New(Dimensions.ScreenGridWidth, Dimensions.ScreenGridHeight, New Point(0, 0), scene)
         Me.levelWidth = levelWidth
         me.levelHeight = levelHeight
         ActualImage = New Bitmap(levelWidth, levelHeight)

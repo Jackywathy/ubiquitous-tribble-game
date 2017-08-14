@@ -246,15 +246,13 @@ Public MustInherit Class Entity
             AccelerateY(-Forces.gravity)
             DecreaseMagnitude(Me.veloc.x, Forces.airResist)
         End If
-        If Not player1.isGrounded And player1.veloc.y < 0 Then
-            player1.veloc.y += 0
-        End If
+        
     End Sub
 
     Public Overrides Property RenderImage As Image
 
-    Sub New(width As Integer, height As Integer, location As Point)
-        MyBase.New(width, height, location)
+    Sub New(width As Integer, height As Integer, location As Point, scene As Scene)
+        MyBase.New(width, height, location, scene)
     End Sub
 
     ''' <summary>
@@ -286,14 +284,4 @@ Public MustInherit Class Entity
     End Sub
 
 End Class
-
-' ===========================
-' Entities
-' ---------------------------
-
-Public Module Entities
-    Public player1 As New EntPlayer(32, 32, New Point(0, GroundHeight), Sprites.playerSmall)
-End Module
-
-
 

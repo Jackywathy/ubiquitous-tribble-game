@@ -17,6 +17,8 @@ Public Class Scene
     ' dictionary containing all scenes : {map_name : scene}
     Private AllScenes As New Dictionary(Of String, Scene)
 
+    Public player1 As EntPlayer
+
     ' background of scene
     Private background As BackgroundRender
 
@@ -87,7 +89,7 @@ Public Class Scene
         if background IsNot Nothing
             background.Dispose()
         End If
-        Me.background = New BackgroundRender(TotalGridWidth, TotalGridHeight, My.Resources.ResourceManager.GetObject(name))
+        Me.background = New BackgroundRender(TotalGridWidth, TotalGridHeight, My.Resources.ResourceManager.GetObject(name), Me)
     End Sub
 
     ''' <summary>
@@ -95,7 +97,52 @@ Public Class Scene
     ''' </summary>
     ''' <param name="image"></param>
     Sub SetBackground(image As Image)
-        Me.Background = New BackgroundRender(TotalGridWidth, TotalGridHeight, image)
+        Me.Background = New BackgroundRender(TotalGridWidth, TotalGridHeight, image, Me)
+    End Sub
+
+    ''' <summary>
+    ''' Handles/ticks input from the user
+    ''' This also 
+    ''' </summary>
+    Public Sub HandleInput() 
+        ' UP
+        If MainGame.KeyHandler.MoveUp And player1.allowJump Then
+            player1.AccelerateY(player1.moveSpeed.y)
+            player1.allowJump = False
+        ElseIf MainGame.KeyHandler.MoveUp = False Then
+            player1.allowJump = True
+        End If
+
+        ' DOWN
+        If MainGame.KeyHandler.MoveDown Then
+            If player1.state > 0 And player1.isGrounded = True Then 'crouch
+                player1.onCrouch(True)
+            End If
+        ElseIf player1.state > 0 And player1.isCrouching = True Then
+            ' TO DO - check for collision on above blocks before uncrouching
+            player1.onCrouch(False)
+        End If
+
+        If player1.state = 2 And MainGame.KeyHandler.MoveDown And player1.allowShoot Then
+            player1.tryShootFireball()
+            player1.allowShoot = False
+        ElseIf Not MainGame.KeyHandler.MoveDown Then
+            player1.allowShoot = True
+        End If
+
+        ' LEFT
+        If MainGame.KeyHandler.MoveLeft Then
+            player1.AccelerateX(-player1.moveSpeed.x)
+        End If
+
+        ' RIGHT
+        If MainGame.KeyHandler.MoveRight Then
+            player1.AccelerateX(player1.moveSpeed.x)
+
+        End If
+
+        player1.ApplyConstantForces()
+
     End Sub
 
     ''' <summary>
@@ -104,6 +151,7 @@ Public Class Scene
     ''' <param name="numframes"></param>
     Sub UpdatePhysics(numframes As Integer)
         ' animate and update position of each entity
+        ' TODO - gravity is only applied to the player, in the handle input function
         For Each item In AllObjAndEnt
             item.Animate(numframes)
             If item.GetType.IsSubclassOf(GetType(Entity)) Then
@@ -198,8 +246,9 @@ Public Class Scene
             Next
         Next
         ' add all entities
-
-        outScene.AddEntity(Entities.player1)
+        Dim player1 = New EntPlayer(32, 32, New Point(0, GroundHeight), Sprites.playerSmall, outScene)
+        outScene.player1 = player1
+        outScene.AddEntity(player1)
         Return outScene
     End Function
 
@@ -215,16 +264,16 @@ Public Class Scene
         Select Case name
             Case "blockBreakableBrick"
                 AssertLength("bbrick", 2, params.Length, params)
-                out = New BlockBreakableBrick(New Point(params(0), params(1)))
+                out = New BlockBreakableBrick(New Point(params(0), params(1)), Me)
             Case "brickplatform"
                 AssertLength("brickplatform", 4, params.Length, params)
-                out = New BrickPlatform(params(0), params(1), New Point(params(2), params(3)))
+                out = New BrickPlatform(params(0), params(1), New Point(params(2), params(3)), Me)
             Case "blockQuestion"
                 AssertLength("itemblock", 2, params.Length, params)
-                out = New BlockQuestion(New Point(params(0), params(1)))
+                out = New BlockQuestion(New Point(params(0), params(1)), Me)
             Case "blockMetal"
                 AssertLength("blockmetal", 2, params.Length, params)
-                out = New BlockMetal(New Point(params(0), params(1)))
+                out = New BlockMetal(New Point(params(0), params(1)), me)
             Case Else
                 
                 Throw New Exception(String.Format("No object with name {0}", name))

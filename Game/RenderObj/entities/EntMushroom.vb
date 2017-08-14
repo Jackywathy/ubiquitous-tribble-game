@@ -29,8 +29,8 @@
         MyBase.UpdatePos()
     End Sub
 
-    Sub New(width As Integer, height As Integer, location As Point)
-        MyBase.New(width, height, location)
+    Sub New(width As Integer, height As Integer, location As Point, scene As Scene)
+        MyBase.New(width, height, location, scene)
     End Sub
 
 End Class

@@ -4,8 +4,8 @@ Public Class BrickPlatform
     Inherits RenderObject
 
     Public Overrides Property RenderImage As Image
-    Public Sub New(width As Integer, height As Integer, location As Point)
-        MyBase.New(width, height, location)
+    Public Sub New(width As Integer, height As Integer, location As Point, scene As Scene)
+        MyBase.New(width, height, location, scene)
         RenderImage = New Bitmap(width, height)
         Using brush=New TextureBrush(My.Resources.platform, WrapMode.Tile)
             Using g=Graphics.FromImage(RenderImage)

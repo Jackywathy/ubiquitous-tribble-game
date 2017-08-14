@@ -1,7 +1,7 @@
 ﻿Imports System.Drawing.Drawing2D
 
 Public Class MainGame
-    Private Class KeyHandler
+    Public Class KeyHandler
         Public Shared MoveRight As Boolean
         Public Shared MoveLeft As Boolean
         Public Shared MoveUp As Boolean
@@ -54,55 +54,18 @@ Public Class MainGame
         SceneController = Scene.ReadMapFromResource("map_testmap")
 
         MusicPlayer.PlayBackground(BackgroundMusic.GroundTheme)
+        ' only start loop after init has finished
+        GameLoop.Enabled = True
+        
     End Sub
 
     Private Sub GameLoop_Tick(sender As Object, e As EventArgs) Handles GameLoop.Tick
-        handleInput()
+        SceneController.handleInput()
         SceneController.UpdatePhysics(numFrames)
         Me.Refresh()
     End Sub
 
-    Private Sub handleInput() ' this supplements the player's updatePos()
-
-        ' UP
-        If KeyHandler.MoveUp And player1.allowJump Then
-            Entities.player1.AccelerateY(Entities.player1.moveSpeed.y)
-            player1.allowJump = False
-        ElseIf KeyHandler.MoveUp = False Then
-            player1.allowJump = True
-        End If
-
-        ' DOWN
-        If KeyHandler.MoveDown Then
-            If player1.state > 0 And player1.isGrounded = True Then 'crouch
-                player1.onCrouch(True)
-            End If
-        ElseIf player1.state > 0 And player1.isCrouching = True Then
-            ' TO DO - check for collision on above blocks before uncrouching
-            player1.onCrouch(False)
-        End If
-
-        If player1.state = 2 And KeyHandler.MoveDown And player1.allowShoot Then
-            player1.tryShootFireball()
-            player1.allowShoot = False
-        ElseIf Not KeyHandler.MoveDown Then
-            player1.allowShoot = True
-        End If
-
-        ' LEFT
-        If KeyHandler.MoveLeft Then
-            Entities.player1.AccelerateX(-Entities.player1.moveSpeed.x)
-        End If
-
-        ' RIGHT
-        If KeyHandler.MoveRight Then
-            Entities.player1.AccelerateX(Entities.player1.moveSpeed.x)
-
-        End If
-
-        Entities.player1.ApplyConstantForces()
-
-    End Sub
+    
 
 
 
@@ -114,9 +77,9 @@ Public Class MainGame
         SceneController.RenderScene(g)
         UpdateFPS()
 
-        if isDebug
+        if isDebug And SceneController.player1 IsNot Nothing
             AddStringBuffer(String.Format("fps: {0}", FPS))
-            AddStringBuffer(String.Format("Mario Location: {0}, {1}", player1.Location.X, player1.Location.Y))
+            AddStringBuffer(String.Format("Mario Location: {0}, {1}", SceneController.player1.Location.X, SceneController.player1.Location.Y))
             DrawStringBuffer(g)
         End if
     End Sub

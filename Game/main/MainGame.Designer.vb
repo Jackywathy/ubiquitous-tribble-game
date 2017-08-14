@@ -28,7 +28,6 @@ Partial Class MainGame
         '
         'GameLoop
         '
-        Me.GameLoop.Enabled = true
         Me.GameLoop.Interval = 10
         '
         'MainGame
