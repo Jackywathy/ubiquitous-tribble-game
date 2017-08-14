@@ -151,15 +151,7 @@ Public Class Scene
     ''' <param name="numframes"></param>
     Sub UpdatePhysics(numframes As Integer)
         ' animate and update position of each entity
-        ' TODO - gravity is only applied to the player, in the handle input function
-        For Each item In AllObjAndEnt
-            item.Animate(numframes)
-            If item.GetType.IsSubclassOf(GetType(Entity)) Then
-                Dim ent As Entity = item
-                ent.UpdatePos()
-            End If
-        Next
-
+        
         ' check collision of all entitys with all other obj, including entities
         For entityCount = 0 To (AllEntities.Count - 1)
             For otherCount = 0 To (AllObjAndEnt.Count - 1)
@@ -174,7 +166,16 @@ Public Class Scene
             Next
         Next
 
+        ' TODO - gravity is only applied to the player, in the handle input function
+        For Each item In AllObjAndEnt
+            item.Animate(numframes)
+            If item.GetType.IsSubclassOf(GetType(Entity)) Then
+                Dim ent As Entity = item
+                ent.UpdatePos()
+            End If
+        Next
 
+        ' TODO - chuck into function - scrolls screen if player is close to edge
         If Player1.Location.X - RenderObject.screenLocation.X > (ScreenGridWidth / 4 * 3) Then
             ' on right 1/4
             Me.Background.ScrollHorizontal((400 - (ScreenGridWidth - (Player1.Location.X - RenderObject.screenLocation.X))) / 50)

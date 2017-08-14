@@ -72,7 +72,6 @@ Public Class EntPlayer
                 direction *= -1
             End If
             MainGame.SceneController.AddEntity(New EntFireball(16, 16, New Point(Me.Location.X + (Me.Width * 1.1), Me.Location.Y), direction, Me.isGrounded, MyScene))
-            'numFireballs += 1
         End If
     End Sub
 
