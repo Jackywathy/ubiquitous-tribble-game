@@ -42,10 +42,17 @@ Public MustInherit Class RenderObject
         RenderImage = New Bitmap(width, height)
     End Sub
 
+    ''' <summary>
+    ''' Function run before RenderImage is rendered  - psst you can change it here if you dont wanna override Render()
+    ''' </summary>
     Public Overridable Sub BeforeRender()
        
     End Sub
 
+    ''' <summary>
+    ''' Draws the image into the graphics object given
+    ''' </summary>
+    ''' <param name="g"></param>
     Public Overridable Sub Render(g As Graphics)
         BeforeRender()
 
@@ -76,17 +83,17 @@ Public MustInherit Class RenderObject
         Return True
     End Function
 
-    Public Overridable Sub CollisionBottom(sender As Entity)
+    Public Overridable Sub CollisionBottom(sender As Entity, scene As Scene)
         ' default behaviour = stop player
         sender.veloc.y = 0
     End Sub
-    Public Overridable Sub CollisionTop(sender As Entity)
+    Public Overridable Sub CollisionTop(sender As Entity, scene As Scene)
         sender.veloc.y = 0
     End Sub
-    Public Overridable Sub CollisionLeft(sender As Entity)
+    Public Overridable Sub CollisionLeft(sender As Entity, scene As Scene)
         sender.veloc.x = 0
     End Sub
-    Public Overridable Sub CollisionRight(sender As Entity)
+    Public Overridable Sub CollisionRight(sender As Entity, scene As Scene)
         sender.veloc.x = 0
     End Sub
 
@@ -107,11 +114,3 @@ Public MustInherit Class RenderObject
     End Operator
 
 End Class
-
-' ===========================
-' Entities
-' ---------------------------
-
-'Public Module Entities
-'    Public player1 As New Entity(32, 32, New Point(0, 50), Sprites.player1)
-'End Module

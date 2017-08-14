@@ -9,6 +9,9 @@ Public Class EntFireFlower
     Public Overrides Property spriteSet As SpriteSet = Sprites.f_flower
     Private spawnCounter = 0
 
+    ' TODO Replace with actual sound, or set to nothing for no sound
+    Public Overrides Property PickupSound As MusicPlayer = Sounds.MushroomPickup
+
     Public Overrides Sub Animate(numFrames As Integer)
         If isSpawning And numFrames Mod 5 = 0 Then
             If spawnCounter = 6 Then

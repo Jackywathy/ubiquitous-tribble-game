@@ -40,7 +40,11 @@ Public MustInherit Class Entity
 
     Public currentGroundObjects As New List(Of RenderObject)
 
-    Public Sub CheckCollision(ByRef sender As RenderObject)
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    Public Sub CheckCollision(sender As RenderObject, scene As Scene)
 
         Dim selfCentre = New Point((Me.Location.X + (0.5 * Me.Width)), (Me.Location.Y + (0.5 * Me.Height)))
 
@@ -92,7 +96,7 @@ Public MustInherit Class Entity
 
             ' For example, collision with a platform from below != veloc = 0, mario passes through the platform
             ' Moved it into CollisionBottom for RenderObject 
-            sender.CollisionTop(Me)
+            sender.CollisionTop(Me, scene)
 
             ' SOUTH
         ElseIf selfCentre.Y < blockLowermost And (selfUppermost + (0.05 * Me.Height)) > blockLowermost And insideFromLeft And insideFromRight Then
@@ -100,12 +104,12 @@ Public MustInherit Class Entity
             If Me.veloc.y = 0 And sender.GetType.IsSubclassOf(GetType(Entity)) Then
 
                 ' NO entity's collisionBottom() should set veloc.y of sender to 0!
-                sender.CollisionBottom(Me)
+                sender.CollisionBottom(Me, scene)
 
             ElseIf Me.veloc.y > 0 Then
                 ' only triggers with positive veloc; necessary to stop infinite loop since veloc.y is set to 0 after collision
                 newPositionToMoveTo = New Point(Me.Location.X, blockLowermost - Me.Height) ' - 0.2 * c ?
-                sender.CollisionBottom(Me)
+                sender.CollisionBottom(Me, scene)
 
             End If
 
@@ -113,13 +117,13 @@ Public MustInherit Class Entity
 
         ElseIf selfCentre.X < blockLeftmost And insideFromLeft And insideFromAbove And insideFromBelow Then
             newPositionToMoveTo = New Point(blockLeftmost - Me.Width, Me.Location.Y)
-            sender.CollisionLeft(Me)
+            sender.CollisionLeft(Me, scene)
 
             ' EAST
 
         ElseIf selfCentre.X > blockRightmost And insideFromRight And insideFromAbove And insideFromBelow Then
             newPositionToMoveTo = New Point(blockRightmost, Me.Location.Y)
-            sender.CollisionRight(Me)
+            sender.CollisionRight(Me, scene)
 
             ' Check for falling off platform
 
@@ -171,16 +175,16 @@ Public MustInherit Class Entity
 
     End Sub
 
-    Public Overrides Sub CollisionBottom(sender As Entity)
+    Public Overrides Sub CollisionBottom(sender As Entity, scene As Scene)
 
     End Sub
-    Public Overrides Sub CollisionTop(sender As Entity)
+    Public Overrides Sub CollisionTop(sender As Entity, scene As Scene)
 
     End Sub
-    Public Overrides Sub CollisionLeft(sender As Entity)
+    Public Overrides Sub CollisionLeft(sender As Entity, scene As Scene)
 
     End Sub
-    Public Overrides Sub CollisionRight(sender As Entity)
+    Public Overrides Sub CollisionRight(sender As Entity, scene As Scene)
 
     End Sub
 
@@ -253,9 +257,21 @@ Public MustInherit Class Entity
         MyBase.New(width, height, location)
     End Sub
 
-    ' Handles movement
+    ''' <summary>
+    ''' Updates the position of this entity, using its velocity and location.
+    ''' </summary>
     Public Overridable Sub UpdatePos()
-
+        'TODO UPDATE SO IT WORKS PROPERLY - chuck it in the player class instead!
+        ' stop the player from walking off
+        If Me.GetType() = GetType(EntPlayer)
+            If Me.Location.X + Me.veloc.X < 0 Then
+                Me.veloc.X = 0
+            ElseIf (Me.Location.X - screenLocation.X + Me.veloc.X) > ScreenGridWidth Then
+                Me.veloc.X = 0
+            End If
+        End If
+        
+        ' kill itself if its out of the scene
         If Me.Location.X + Me.veloc.X < 0 Then
             Me.veloc.X = 0
         ElseIf (Me.Location.X - screenLocation.X + Me.veloc.X) > ScreenGridWidth Then
@@ -265,8 +281,8 @@ Public MustInherit Class Entity
         Me.Location = New Point(Me.Location.X + Me.veloc.x, Me.Location.Y + Me.veloc.y)
     End Sub
 
-    Public Overridable Sub Destroy()
-        MainGame.SceneController.RemoveEntity(Me)
+    Public Overridable Sub Destroy(scene As Scene)
+        scene.RemoveEntity(Me)
     End Sub
 
 End Class

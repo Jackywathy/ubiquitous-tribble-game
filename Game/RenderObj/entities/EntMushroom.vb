@@ -7,6 +7,8 @@
     Public Overrides Property moveSpeed As Velocity = New Velocity(1, 0)
     Public Overrides ReadOnly Property maxVeloc As Velocity = New Velocity(1.5, Forces.terminalVeloc)
 
+    Public Overrides Property PickupSound As MusicPlayer = Sounds.MushroomPickup
+
     Public Overrides Sub Animate(numFrames As Integer)
         If isSpawning And numFrames Mod 5 = 0 Then
             If spawnCounter = 6 Then

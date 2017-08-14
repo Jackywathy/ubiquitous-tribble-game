@@ -1,7 +1,7 @@
 ﻿{
   "map_name": "test",
-  "objects": {
-    "breakablebrick": [
+  "blocks": {
+    "blockBreakableBrick": [
       [ 192, 96 ],
       [ 128, 160 ],
       [ 320, 128 ],
@@ -13,11 +13,18 @@
     "brickplatform": [
       [ 4000, 64, 0, 0 ]
     ],
-    "itemblock": [
-      [480, 128]
-    ]
+    "blockQuestion": [
+      [ 480, 128 ]
+    ],
+    "blockMetal": [
+      [ 100, 60 ],
+      [ 132, 60 ],
+      [132, 92]
+    ] 
+    
 
   },
   "background": "placeholderLevel",
-  "background_music" :  "ground_theme"
+  "background_music": "ground_theme",
+  "default_entry": [ 0, 64 ] 
 }

@@ -1,4 +1,4 @@
-﻿Imports WinGame
+﻿Imports System.Reflection
 
 Public MustInherit Class EntPowerup
     Inherits Entity
@@ -10,39 +10,41 @@ Public MustInherit Class EntPowerup
     ' 1 - big 
     ' 2 - fire 
     Public MustOverride Property state As UInt16
+    Public MustOverride Property PickupSound As MusicPlayer
 
-    Public Overrides Sub CollisionBottom(sender As Entity)
-        Me.TryActivate(sender)
+    Public Overrides Sub CollisionBottom(sender As Entity, scene As Scene)
+        Me.TryActivate(sender, scene)
     End Sub
-    Public Overrides Sub CollisionTop(sender As Entity)
-        Me.TryActivate(sender)
+    Public Overrides Sub CollisionTop(sender As Entity, scene As Scene)
+        Me.TryActivate(sender, scene)
     End Sub
-    Public Overrides Sub CollisionLeft(sender As Entity)
-        Me.TryActivate(sender)
+    Public Overrides Sub CollisionLeft(sender As Entity, scene As Scene)
+        Me.TryActivate(sender, scene)
     End Sub
-    Public Overrides Sub CollisionRight(sender As Entity)
-        Me.TryActivate(sender)
+    Public Overrides Sub CollisionRight(sender As Entity, scene As Scene)
+        Me.TryActivate(sender, scene)
     End Sub
 
-    Public Sub TryActivate(sender As Entity)
+    Public Sub TryActivate(sender As Entity, scene As Scene)
         If sender.GetType = GetType(EntPlayer) Then
             Dim player As EntPlayer = sender
+            
             player.changeState(Me.state)
-            Sounds.MushroomPickup.Play()
 
-            MainGame.SceneController.RemoveEntity(Me)
+            If PickupSound IsNot Nothing
+                Me.PickupSound.Play()
+            End If
+
+            scene.RemoveEntity(Me)
         End If
     End Sub
 
-    Public Sub Spawn(location As Point)
-        MainGame.SceneController.AddEntity(Me)
+    Public Sub Spawn(scene As Scene)
+        scene.AddEntity(Me)
     End Sub
-
-
 
     Sub New(width As Integer, height As Integer, location As Point)
         MyBase.New(width, height, location)
-
     End Sub
 
 End Class

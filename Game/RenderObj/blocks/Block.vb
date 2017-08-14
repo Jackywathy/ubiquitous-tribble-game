@@ -1,6 +1,4 @@
-﻿Imports WinGame
-
-Public MustInherit Class Block
+﻿Public MustInherit Class Block
     Inherits RenderObject
     Friend Const blockWidth = 32
     Friend Const blockHeight = 32
@@ -8,35 +6,31 @@ Public MustInherit Class Block
     Public Overrides Property RenderImage As Image
     Public MustOverride Property spriteSet As SpriteSet
 
-    Public Sub New(width As Integer, height As Integer, location As Point, image As Image)
+    Public Sub New(width As Integer, height As Integer, location As Point)
         MyBase.New(width, height, location)
     End Sub
 
-    ' Just in case
-    'RenderImage = New Bitmap(width, height)
-    'Using g = Graphics.FromImage(RenderImage)
-    '        g.DrawImage(image, 0, 0, width, height)
-    'End Using
-    Public Overrides Sub CollisionTop(sender As Entity)
-        MyBase.CollisionTop(sender)
+    
+    Public Overrides Sub CollisionTop(sender As Entity, scene As Scene)
+        MyBase.CollisionTop(sender, scene)
     End Sub
-    Public Overrides Sub CollisionBottom(sender As Entity)
-        MyBase.CollisionBottom(sender)
+    Public Overrides Sub CollisionBottom(sender As Entity, scene As Scene)
+        MyBase.CollisionBottom(sender, scene)
     End Sub
-    Public Overrides Sub CollisionLeft(sender As Entity)
+    Public Overrides Sub CollisionLeft(sender As Entity, scene As Scene)
 
         If sender.GetType = GetType(EntFireball) Then
-            sender.Destroy()
+            sender.Destroy(scene)
         Else
-            MyBase.CollisionLeft(sender)
+            MyBase.CollisionLeft(sender, scene)
         End If
     End Sub
-    Public Overrides Sub CollisionRight(sender As Entity)
+    Public Overrides Sub CollisionRight(sender As Entity, scene As Scene)
 
         If sender.GetType = GetType(EntFireball) Then
-            sender.Destroy()
+            sender.Destroy(scene)
         Else
-            MyBase.CollisionRight(sender)
+            MyBase.CollisionRight(sender, scene)
         End If
     End Sub
 

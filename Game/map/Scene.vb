@@ -14,6 +14,9 @@ Public Class Scene
     ' all the objects in the scene
     Private InSceneItems As New HashSet(Of RenderObject)
 
+    ' dictionary containing all scenes : {map_name : scene}
+    Private AllScenes As New Dictionary(Of String, Scene)
+
     ' background of scene
     Private background As BackgroundRender
 
@@ -95,27 +98,30 @@ Public Class Scene
         Me.Background = New BackgroundRender(TotalGridWidth, TotalGridHeight, image)
     End Sub
 
-    
+    ''' <summary>
+    ''' Updates the physics for the game
+    ''' </summary>
+    ''' <param name="numframes"></param>
     Sub UpdatePhysics(numframes As Integer)
         ' animate and update position of each entity
         For Each item In AllObjAndEnt
-
             item.Animate(numframes)
-
             If item.GetType.IsSubclassOf(GetType(Entity)) Then
                 Dim ent As Entity = item
                 ent.UpdatePos()
             End If
-
         Next
 
         ' check collision of all entitys with all other obj, including entities
-        For counter = 0 To (AllEntities.Count - 1)
-            For count2 = 0 To (AllObjAndEnt.Count - 1)
+        For entityCount = 0 To (AllEntities.Count - 1)
+            For otherCount = 0 To (AllObjAndEnt.Count - 1)
+                Dim entity = AllEntities(entityCount)
+                Dim other = AllObjAndEnt(otherCount)
 
                 ' Don't check collisions within the same obj
-                If AllEntities(counter) <> AllObjAndEnt(count2) Then
-                    AllEntities(counter).CheckCollision(AllObjAndEnt(count2))
+                ' ensure entites are legit before collisions1
+                If entity IsNot Nothing And other IsNot Nothing And entity <> other Then
+                    entity.CheckCollision(other, Me)
                 End If
             Next
         Next
@@ -130,8 +136,13 @@ Public Class Scene
             'Me.Background.ScrollHorizontal(Player1.Location.X - RenderObject.screenLocation.X)
             Me.Background.ScrollHorizontal(-(400 - (Player1.Location.X - RenderObject.screenLocation.X)) / 50)
         End If
+
     End Sub
 
+    ''' <summary>
+    ''' Renders the entire scene onto a graphics object
+    ''' </summary>
+    ''' <param name="g"></param>
     Sub RenderScene(g As Graphics)
 
         Background.Render(g)
@@ -159,7 +170,11 @@ Public Class Scene
     End Sub
 
 
-
+    ''' <summary>
+    ''' Creates a new <see cref="Scene">object, from a json file in resources</see>
+    ''' </summary>
+    ''' <param name="jsonName"></param>
+    ''' <returns></returns>
     Public Shared Function ReadMapFromResource(jsonName As String) As Scene
         Dim byteArray = CType(My.Resources.ResourceManager.GetObject(jsonName), Byte())
         If byteArray(0) = 239 And byteArray(1) = 187 And byteArray(2) = 191 Then
@@ -176,12 +191,14 @@ Public Class Scene
         outScene.SetBackground(mapObject.background)
 
         ' add all blocks
-        For Each pair As KeyValuePair(Of String, IList(Of Integer())) In mapObject.objects
+        For Each pair As KeyValuePair(Of String, IList(Of Integer())) In mapObject.blocks
             Dim name = pair.Key
             For Each params As Integer() In pair.Value
                 outScene.AddObj(outScene.RenderItemFactory(name, params))
             Next
         Next
+        ' add all entities
+
         outScene.AddEntity(Entities.player1)
         Return outScene
     End Function
@@ -196,22 +213,28 @@ Public Class Scene
     Private Function RenderItemFactory(name As String, params As Integer()) As RenderObject
         Dim out As RenderObject
         Select Case name
-            Case "breakablebrick"
+            Case "blockBreakableBrick"
                 AssertLength("bbrick", 2, params.Length, params)
                 out = New BlockBreakableBrick(New Point(params(0), params(1)))
             Case "brickplatform"
                 AssertLength("brickplatform", 4, params.Length, params)
                 out = New BrickPlatform(params(0), params(1), New Point(params(2), params(3)))
-            Case "itemblock"
+            Case "blockQuestion"
                 AssertLength("itemblock", 2, params.Length, params)
                 out = New BlockQuestion(New Point(params(0), params(1)))
+            Case "blockMetal"
+                AssertLength("blockmetal", 2, params.Length, params)
+                out = New BlockMetal(New Point(params(0), params(1)))
             Case Else
+                
                 Throw New Exception(String.Format("No object with name {0}", name))
         End Select
 
         Return out
 
     End Function
+
+
     Private Class InvalidJsonException
         Inherits Exception
         Sub New(message As String)
@@ -224,7 +247,7 @@ End Class
 <JsonObject(ItemRequired:=Required.Always)>
 Public Class MapObject
     Public Property map_name As String
-    Public Property objects As Dictionary(Of String, IList(Of Integer()))
+    Public Property blocks As Dictionary(Of String, IList(Of Integer()))
     Public Property background As String
     Public Property background_music As String
 
