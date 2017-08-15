@@ -41,7 +41,8 @@ Public MustInherit Class Entity
     Public currentGroundObjects As New List(Of RenderObject)
 
     ''' <summary>
-    ''' 
+        ''' Checks for overlap between Me and sender, in scene.
+        ''' Handles change of location of Me and variables such as isGrounded and didJumpAndNotFall; velocity change is handled by sender
     ''' </summary>
     ''' <param name="sender"></param>
     Public Sub CheckCollision(sender As RenderObject, scene As Scene)
@@ -140,6 +141,7 @@ Public MustInherit Class Entity
         'End If
 
         ' Handle falling off ledges and setting of didJumpAndNotFall
+            
         If Not senderIsEntity Then
             If selfUppermost > blockUppermost And selfLowermost <= blockUppermost And insideFromLeft And insideFromRight And Not currentGroundObjects.Contains(sender) Then
             currentGroundObjects.Add(sender)
@@ -174,6 +176,7 @@ Public MustInherit Class Entity
 
     End Sub
 
+		' Entities do not physically move other entities
     Public Overrides Sub CollisionBottom(sender As Entity, scene As Scene)
 
     End Sub
@@ -187,6 +190,11 @@ Public MustInherit Class Entity
 
     End Sub
 
+	''' <summary>
+		''' Increases the absolute value of Me.veloc.x by magnitude.
+		''' Will not increase Me.veloc.x past Me.maxVeloc.x
+	''' <summary/>
+
     Public Sub AccelerateX(magnitude As Double)
         If isGrounded Then
             Me.veloc.x += magnitude
@@ -199,6 +207,11 @@ Public MustInherit Class Entity
             Me.veloc.x = (Me.veloc.x / Math.Abs(Me.veloc.x)) * Me.maxVeloc.x
         End If
     End Sub
+		
+	''' <summary>
+		''' Increases the absolute value of Me.veloc.y by magnitude and changes variables of Me appropriately.
+		''' Will not increase Me.veloc.y past Me.maxVeloc.y (terminal velocity).
+	''' <summary/>
 
     Public Sub AccelerateY(magnitude As Double)
         If magnitude > 0 And isGrounded Then
@@ -215,6 +228,10 @@ Public MustInherit Class Entity
         End If
 
     End Sub
+		
+	''' <summary>
+		''' Modifies the absolute value of velocity by magnitude.
+	''' <summary/>
 
     Public Sub DecreaseMagnitude(ByRef velocity As Double, magnitude As Double)
 
@@ -237,7 +254,10 @@ Public MustInherit Class Entity
         'End If
         'End If
     End Sub
-
+		
+	''' <summary>
+		''' Applies gravity, friction and air resistance
+	''' <summary/>
     Public Sub ApplyConstantForces()
         If isGrounded Then
             DecreaseMagnitude(Me.veloc.x, Forces.friction)
