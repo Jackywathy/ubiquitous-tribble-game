@@ -9,8 +9,8 @@
         Me.spriteset = spriteset
     End Sub
 
-    Public Overrides Sub CollisionBottom(sender As Entity, scene As Scene)
-        MyBase.CollisionBottom(sender, scene)
+    Public Overrides Sub CollisionBottom(sender As Entity)
+        MyBase.CollisionBottom(sender)
         If sender.GetType = GetType(EntPlayer) Then
             Dim player As EntPlayer = sender
             If player.state > 0 Then

@@ -1,6 +1,4 @@
-﻿Imports WinGame
-
-Public Class EntFireball
+﻿Public Class EntFireball
     Inherits Entity
 
     Public Overrides Property moveSpeed As Velocity = New Velocity(3, 15)

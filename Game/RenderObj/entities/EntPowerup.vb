@@ -11,23 +11,21 @@ Public MustInherit Class EntPowerup
     Public MustOverride Property state As UInt16
     Public MustOverride Property PickupSound As MusicPlayer
 
-    Public Overrides Sub CollisionBottom(sender As Entity, scene As Scene)
-        Me.TryActivate(sender, scene)
+    Public Overrides Sub CollisionBottom(sender As Entity)
+        Me.TryActivate(sender)
     End Sub
-    Public Overrides Sub CollisionTop(sender As Entity, scene As Scene)
-        Me.TryActivate(sender, scene)
+    Public Overrides Sub CollisionTop(sender As Entity)
+        Me.TryActivate(sender)
     End Sub
-    Public Overrides Sub CollisionLeft(sender As Entity, scene As Scene)
-        Me.TryActivate(sender, scene)
+    Public Overrides Sub CollisionLeft(sender As Entity)
+        Me.TryActivate(sender)
     End Sub
-    Public Overrides Sub CollisionRight(sender As Entity, scene As Scene)
-        Me.TryActivate(sender, scene)
+    Public Overrides Sub CollisionRight(sender As Entity)
+        Me.TryActivate(sender)
     End Sub
 
-                ''' <summary>
-            ''' Tries to activate Me on sender. Does not work if sender is not a Player.
-	''' <summary/>
-    Public Sub TryActivate(sender As Entity, scene As Scene)
+
+    Public Sub TryActivate(sender As Entity)
         If sender.GetType = GetType(EntPlayer) Then
             Dim player As EntPlayer = sender
             
@@ -37,7 +35,7 @@ Public MustInherit Class EntPowerup
                 Me.PickupSound.Play()
             End If
 
-            scene.RemoveEntity(Me)
+            MyScene.RemoveEntity(Me)
         End If
     End Sub
 

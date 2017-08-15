@@ -19,6 +19,8 @@ Public Class Scene
 
     Public player1 As EntPlayer
 
+    Public screenLocation As Point
+
     ' background of scene
     Private background As BackgroundRender
 

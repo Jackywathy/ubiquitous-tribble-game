@@ -57,10 +57,13 @@ Public MustInherit Class RenderObject
     ''' <param name="g"></param>
     Public Overridable Sub Render(g As Graphics)
         BeforeRender()
-
         g.DrawImage(RenderImage, New Point(Location.X - screenLocation.X, Dimensions.ScreenGridHeight - Height - Location.Y + screenLocation.Y - toolBarOffSet))
     End Sub
 
+    ''' <summary>
+    ''' Checks if the RenderItem is in the current screen
+    ''' </summary>
+    ''' <returns></returns>
     Public Overridable Function InScene()
         ' checks if levelWidth/levelHeight is in the screen properly
         ' it is in sceen if the location of itself is in the scene to be rendered
@@ -85,20 +88,43 @@ Public MustInherit Class RenderObject
         Return True
     End Function
 
-    Public Overridable Sub CollisionBottom(sender As Entity, scene As Scene)
+    ''' <summary>
+    ''' Called when an entity collides into this RenderObject from the bottom
+    ''' </summary>
+    ''' <param name="sender"></param>
+    Public Overridable Sub CollisionBottom(sender As Entity)
         ' default behaviour = stop player
         sender.veloc.y = 0
     End Sub
-    Public Overridable Sub CollisionTop(sender As Entity, scene As Scene)
+
+    ''' <summary>
+    ''' Called when an entity collides into this RenderObject from the top
+    ''' </summary>
+    ''' <param name="sender"></param>
+    Public Overridable Sub CollisionTop(sender As Entity)
         sender.veloc.y = 0
     End Sub
-    Public Overridable Sub CollisionLeft(sender As Entity, scene As Scene)
-        sender.veloc.x = 0
-    End Sub
-    Public Overridable Sub CollisionRight(sender As Entity, scene As Scene)
+
+    ''' <summary>
+    '''  Called when an entity collides into this RenderObject from the left
+    ''' </summary>
+    ''' <param name="sender"></param>
+    Public Overridable Sub CollisionLeft(sender As Entity)
         sender.veloc.x = 0
     End Sub
 
+    ''' <summary>
+    '''  Called when an entity collides into this RenderObject from the bottom
+    ''' </summary>
+    ''' <param name="sender"></param>
+    Public Overridable Sub CollisionRight(sender As Entity)
+        sender.veloc.x = 0
+    End Sub
+
+    ''' <summary>
+    ''' Changes the animation of the object, if necessary
+    ''' </summary>
+    ''' <param name="numFrames">number of frames </param>
     Public Overridable Sub Animate(numFrames As Integer)
         ' nothing by default
     End Sub

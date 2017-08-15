@@ -97,7 +97,7 @@ Public MustInherit Class Entity
 
             ' For example, collision with a platform from below != veloc = 0, mario passes through the platform
             ' Moved it into CollisionBottom for RenderObject 
-            sender.CollisionTop(Me, scene)
+            sender.CollisionTop(Me)
 
             ' SOUTH
         ElseIf selfCentre.Y < blockLowermost And (selfUppermost + (0.05 * Me.Height)) > blockLowermost And insideFromLeft And insideFromRight Then
@@ -105,12 +105,12 @@ Public MustInherit Class Entity
             If Me.veloc.y = 0 And sender.GetType.IsSubclassOf(GetType(Entity)) Then
 
                 ' NO entity's collisionBottom() should set veloc.y of sender to 0!
-                sender.CollisionBottom(Me, scene)
+                sender.CollisionBottom(Me)
 
             ElseIf Me.veloc.y > 0 Then
                 ' only triggers with positive veloc; necessary to stop infinite loop since veloc.y is set to 0 after collision
                 newPositionToMoveTo = New Point(Me.Location.X, blockLowermost - Me.Height) ' - 0.2 * c ?
-                sender.CollisionBottom(Me, scene)
+                sender.CollisionBottom(Me)
 
             End If
 
@@ -118,13 +118,13 @@ Public MustInherit Class Entity
 
         ElseIf selfCentre.X < blockLeftmost And insideFromLeft And insideFromAbove And insideFromBelow Then
             newPositionToMoveTo = New Point(blockLeftmost - Me.Width, Me.Location.Y)
-            sender.CollisionLeft(Me, scene)
+            sender.CollisionLeft(Me)
 
             ' EAST
 
         ElseIf selfCentre.X > blockRightmost And insideFromRight And insideFromAbove And insideFromBelow Then
             newPositionToMoveTo = New Point(blockRightmost, Me.Location.Y)
-            sender.CollisionRight(Me, scene)
+            sender.CollisionRight(Me)
 
             ' Check for falling off platform
 
@@ -176,18 +176,13 @@ Public MustInherit Class Entity
 
     End Sub
 
-		' Entities do not physically move other entities
-    Public Overrides Sub CollisionBottom(sender As Entity, scene As Scene)
-
+    Public Overrides Sub CollisionBottom(sender As Entity)
     End Sub
-    Public Overrides Sub CollisionTop(sender As Entity, scene As Scene)
-
+    Public Overrides Sub CollisionTop(sender As Entity)
     End Sub
-    Public Overrides Sub CollisionLeft(sender As Entity, scene As Scene)
-
+    Public Overrides Sub CollisionLeft(sender As Entity)
     End Sub
-    Public Overrides Sub CollisionRight(sender As Entity, scene As Scene)
-
+    Public Overrides Sub CollisionRight(sender As Entity)
     End Sub
 
 	''' <summary>
@@ -298,8 +293,11 @@ Public MustInherit Class Entity
         Me.Location = New Point(Me.Location.X + Me.veloc.x, Me.Location.Y + Me.veloc.y)
     End Sub
 
-    Public Overridable Sub Destroy(scene As Scene)
-        scene.RemoveEntity(Me)
+    ''' <summary>
+    ''' Removes entity from its scene
+    ''' </summary>
+    Public Overridable Sub Destroy()
+        MyScene.RemoveEntity(Me)
     End Sub
 
 End Class

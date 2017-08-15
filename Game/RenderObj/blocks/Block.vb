@@ -11,26 +11,27 @@
     End Sub
 
     
-    Public Overrides Sub CollisionTop(sender As Entity, scene As Scene)
-        MyBase.CollisionTop(sender, scene)
+    Public Overrides Sub CollisionTop(sender As Entity)
+        MyBase.CollisionTop(sender)
     End Sub
-    Public Overrides Sub CollisionBottom(sender As Entity, scene As Scene)
-        MyBase.CollisionBottom(sender, scene)
+    Public Overrides Sub CollisionBottom(sender As Entity)
+        MyBase.CollisionBottom(sender)
     End Sub
-    Public Overrides Sub CollisionLeft(sender As Entity, scene As Scene)
+
+    Public Overrides Sub CollisionLeft(sender As Entity)
 
         If sender.GetType = GetType(EntFireball) Then
-            sender.Destroy(scene)
+            sender.Destroy()
         Else
-            MyBase.CollisionLeft(sender, scene)
+            MyBase.CollisionLeft(sender)
         End If
     End Sub
-    Public Overrides Sub CollisionRight(sender As Entity, scene As Scene)
+    Public Overrides Sub CollisionRight(sender As Entity)
 
         If sender.GetType = GetType(EntFireball) Then
-            sender.Destroy(scene)
+            sender.Destroy()
         Else
-            MyBase.CollisionRight(sender, scene)
+            MyBase.CollisionRight(sender)
         End If
     End Sub
 
