@@ -24,6 +24,9 @@ Public MustInherit Class EntPowerup
         Me.TryActivate(sender, scene)
     End Sub
 
+                ''' <summary>
+            ''' Tries to activate Me on sender. Does not work if sender is not a Player.
+	''' <summary/>
     Public Sub TryActivate(sender As Entity, scene As Scene)
         If sender.GetType = GetType(EntPlayer) Then
             Dim player As EntPlayer = sender
@@ -38,6 +41,9 @@ Public MustInherit Class EntPowerup
         End If
     End Sub
 
+                ''' <summary>
+            ''' Adds a new instance into the scene
+	''' <summary/>
     Public Sub Spawn(scene As Scene)
         scene.AddEntity(Me)
     End Sub
