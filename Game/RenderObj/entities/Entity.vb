@@ -63,6 +63,10 @@ Public MustInherit Class Entity
         Dim insideFromRight = selfLeftmost < blockRightmost
         Dim insideFromBelow = selfUppermost > blockLowermost
         Dim insideFromAbove = selfLowermost < blockUppermost
+	
+			' preliminary test
+			Dim insideFromLeft_vertical = selfRightmost > (blockLeftmost + 0.2 * sender.Width)
+			Dim insideFromRight_vertical = selfLeftmost < (blockRightmost - 0.2 * sender.Width)
 
         Dim senderIsEntity = sender.GetType.IsSubclassOf(GetType(Entity)) ' is not entity or subclass
         Dim newPositionToMoveTo As Point
