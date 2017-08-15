@@ -39,6 +39,9 @@ Public Class EntPlayer
     End Property
 
     ' This should NEVER be called if Mario is small
+    ''' <summary>
+                    ''' Makes Player crouch and not crouch 
+	''' <summary/>
     Public Sub onCrouch(state As Boolean)
         isCrouching = state
         If isCrouching Then ' IS crouching
@@ -51,7 +54,10 @@ Public Class EntPlayer
 
         End If
     End Sub
-
+                    
+    ''' <summary>
+                    ''' Changes state of Player, from small to big and fire
+	''' <summary/>
     Public Sub changeState(change As Int16)
         state = change
         Select Case state
@@ -65,6 +71,9 @@ Public Class EntPlayer
     End Sub
 
     ' Do not call if state != 2
+                        ''' <summary>
+                    ''' Attempts to shoot a fireball. Will not shoot if 2 are onscreen already.
+	''' <summary/>
     Public Sub tryShootFireball()
         If numFireballs < 2 Then
             Dim direction = 1
