@@ -146,7 +146,7 @@ Public MustInherit Class Entity
 
             'Console.WriteLine("Added")
             'Console.WriteLine(currentGroundObjects.Count)
-
+            End If
         End If
 
 
@@ -165,11 +165,10 @@ Public MustInherit Class Entity
         End If
 
 
-            If Not senderIsEntity And (newPositionToMoveTo <> Nothing) Then
-                If Me.Location.X <> -32 Then
+        If Not senderIsEntity And (newPositionToMoveTo <> Nothing) Then
+            If Me.Location.X <> -32 Then
                     Me.Location = newPositionToMoveTo
 
-                End If
             End If
         End If
 
