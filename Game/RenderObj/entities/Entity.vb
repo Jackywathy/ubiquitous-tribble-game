@@ -45,127 +45,9 @@ Public MustInherit Class Entity
     Public currentGroundObjects As New List(Of RenderObject)
 
     ''' <summary>
-    ''' Checks for overlap between Me and sender, in scene.
-    ''' Handles change of location of Me and variables such as isGrounded and didJumpAndNotFall; velocity change is handled by sender
+    ''' Checks for overlap between Me and sender. Handles change of: location of Me, and variables such as isGrounded and didJumpAndNotFall.
     ''' </summary>
     ''' <param name="sender"></param>
-    Public Sub CheckCollision(sender As RenderObject, scene As Scene)
-
-        Dim selfCentre = New Point((Me.Location.X + (0.5 * Me.Width)), (Me.Location.Y + (0.5 * Me.Height)))
-
-        Dim selfRightmost = Me.Location.X + Me.Width
-        Dim selfLeftmost = Me.Location.X
-        Dim selfUppermost = Me.Location.Y + Me.Height
-        Dim selfLowermost = Me.Location.Y
-
-        Dim blockRightmost = sender.Location.X + sender.Width
-        Dim blockLeftmost = sender.Location.X
-        Dim blockUppermost = sender.Location.Y + sender.Height
-        Dim blockLowermost = sender.Location.Y
-
-        Dim insideFromLeft = selfRightmost > blockLeftmost
-        Dim insideFromRight = selfLeftmost < blockRightmost
-        Dim insideFromBelow = selfUppermost > blockLowermost
-        Dim insideFromAbove = selfLowermost < blockUppermost
-
-        Dim senderIsEntity = sender.GetType.IsSubclassOf(GetType(Entity)) ' is not entity or subclass
-        Dim newPositionToMoveTo As Point
-
-        ' Me.Location:
-        '  ___
-        ' |   |
-        ' |___|
-        ' X <------ from here
-        '
-
-        '     
-
-        ' entity is above the block, on TOP of block
-        ' if the lowest part + a bit > highest bit of block
-        ' AND    entity intersects inside from top
-        ' AND    entity intersect inside from left
-        ' AND    entity intersects inside from right
-
-        ' COLLISION FROM:
-
-        ' NORTH
-        If Me.veloc.y < 0 And selfUppermost > blockUppermost And insideFromAbove And insideFromLeft And insideFromRight Then
-            If Not senderIsEntity Then
-                Me.isGrounded = True
-            End If
-
-            newPositionToMoveTo = New Point(Me.Location.X, blockUppermost)
-
-            ' NOTE - LET THE RenderObject being collided with deal with changing Entities' speed
-            ' Me.veloc.y = 0
-
-            ' For example, collision with a platform from below != veloc = 0, mario passes through the platform
-            ' Moved it into CollisionBottom for RenderObject 
-            sender.CollisionTop(Me)
-
-            ' SOUTH
-        ElseIf selfCentre.Y < blockLowermost And (selfUppermost + (0.05 * Me.Height)) > blockLowermost And insideFromLeft And insideFromRight Then
-
-            If Me.veloc.y = 0 And sender.GetType.IsSubclassOf(GetType(Entity)) Then
-
-                ' NO entity's collisionBottom() should set veloc.y of sender to 0!
-                sender.CollisionBottom(Me)
-
-            ElseIf Me.veloc.y > 0 Then
-                ' only triggers with positive veloc; necessary to stop infinite loop since veloc.y is set to 0 after collision
-                newPositionToMoveTo = New Point(Me.Location.X, blockLowermost - Me.Height) ' - 0.2 * c ?
-                sender.CollisionBottom(Me)
-
-            End If
-
-            ' WEST
-
-        ElseIf selfCentre.X < blockLeftmost And insideFromLeft And insideFromAbove And insideFromBelow Then
-            newPositionToMoveTo = New Point(blockLeftmost - Me.Width, Me.Location.Y)
-            sender.CollisionLeft(Me)
-
-            ' EAST
-
-        ElseIf selfCentre.X > blockRightmost And insideFromRight And insideFromAbove And insideFromBelow Then
-            newPositionToMoveTo = New Point(blockRightmost, Me.Location.Y)
-            sender.CollisionRight(Me)
-
-            ' Check for falling off platform
-
-        End If
-
-        ' Handle falling off ledges and setting of didJumpAndNotFall
-
-        If Not senderIsEntity Then
-            If selfUppermost > blockUppermost And selfLowermost <= blockUppermost And insideFromLeft And insideFromRight And Not currentGroundObjects.Contains(sender) Then
-                currentGroundObjects.Add(sender)
-
-                'Console.WriteLine("Added")
-                'Console.WriteLine(currentGroundObjects.Count)
-            End If
-        End If
-
-        If ((Not (insideFromLeft And insideFromRight)) Or selfLowermost > blockUppermost) And currentGroundObjects.Contains(sender) Then
-            currentGroundObjects.RemoveAt(currentGroundObjects.IndexOf(sender))
-            'Console.WriteLine("Removed")
-            'Console.WriteLine(currentGroundObjects.Count)
-            If currentGroundObjects.Count = 0 Then
-                Me.isGrounded = False
-
-                If Me.veloc.y <= 0 Then
-                    didJumpAndNotFall = False
-                End If
-            End If
-        End If
-
-        If Not senderIsEntity And (newPositionToMoveTo <> Nothing) Then
-            If Me.Location.X <> -32 Then
-                Me.Location = newPositionToMoveTo
-
-            End If
-        End If
-
-    End Sub
 
     Public Sub CheckPotentialCollision(sender As RenderObject)
 
@@ -426,22 +308,21 @@ Public MustInherit Class Entity
             Me.veloc.X = 0
         End If
 
-        ' collision!
-
-        ' check collision of all entitys with all other obj, including entities
+        ' check collision of all entities with all existing RenderObj, including other entities
         For entityCount = 0 To (Me.MyScene.AllEntities.Count - 1)
             For otherCount = 0 To (Me.MyScene.AllObjAndEnt.Count - 1)
                 Dim entity = Me.MyScene.AllEntities(entityCount)
                 Dim other = Me.MyScene.AllObjAndEnt(otherCount)
 
-                ' Don't check collisions within the same obj
-                ' ensure entities are legit before collisions1
+                ' Don't check collisions using the same obj
+                ' and ensure entities are valid
                 If entity IsNot Nothing And other IsNot Nothing And entity <> other Then
                     entity.CheckPotentialCollision(other)
                 End If
             Next
         Next
 
+        ' If entity is going to collide, clear veloc so that it never moves INSIDE the object
         If Me.willCollideFromAbove And Me.veloc.y < 0 Then
             Me.veloc.y = 0
         End If
@@ -455,8 +336,10 @@ Public MustInherit Class Entity
             Me.veloc.x = 0
         End If
 
+        ' Update location
         Me.Location = New Point(Me.Location.X + Me.veloc.x, Me.Location.Y + Me.veloc.y)
 
+        ' Reset collision variables
         Me.willCollideFromAbove = False
         Me.willCollideFromBelow = False
         Me.willCollideFromLeft = False
