@@ -143,7 +143,7 @@ Public Class Scene
 
         End If
 
-        player1.ApplyConstantForces()
+
 
     End Sub
 
@@ -153,27 +153,17 @@ Public Class Scene
     ''' <param name="numframes"></param>
     Sub UpdatePhysics(numframes As Integer)
         ' animate and update position of each entity
-        
-        ' check collision of all entitys with all other obj, including entities
-        For entityCount = 0 To (AllEntities.Count - 1)
-            For otherCount = 0 To (AllObjAndEnt.Count - 1)
-                Dim entity = AllEntities(entityCount)
-                Dim other = AllObjAndEnt(otherCount)
 
-                ' Don't check collisions within the same obj
-                ' ensure entites are legit before collisions1
-                If entity IsNot Nothing And other IsNot Nothing And entity <> other Then
-                    entity.CheckCollision(other, Me)
-                End If
-            Next
-        Next
+
 
         ' TODO - gravity is only applied to the player, in the handle input function
-        For Each item In AllObjAndEnt
-            item.Animate(numframes)
-            If item.GetType.IsSubclassOf(GetType(Entity)) Then
-                Dim ent As Entity = item
-                ent.UpdatePos()
+        For itemCount = 0 To (AllObjAndEnt.Count - 1)
+            If AllObjAndEnt(itemCount) IsNot Nothing Then
+                AllObjAndEnt(itemCount).Animate(numframes)
+                If AllObjAndEnt(itemCount).GetType.IsSubclassOf(GetType(Entity)) Then
+                    Dim ent As Entity = AllObjAndEnt(itemCount)
+                    ent.UpdatePos()
+                End If
             End If
         Next
 

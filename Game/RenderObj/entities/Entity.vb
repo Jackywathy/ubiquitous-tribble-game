@@ -2,18 +2,17 @@
 ' Physics 
 ' ---------------------------
 
-Imports WinGame
 
 Public Module Forces
     ' may need to tweak
     ' CANNOT exceed moveSpeed values of any entity otherwise it will not be able to move
     Public Const gravity = 0.98
-    Public Const friction = 0.4
+    Public Const friction = 0.5
     Public Const airResist = 0.5
     Public Const terminalVeloc = -15.0
 End Module
 
-Public Structure Velocity
+Public Structure Distance
     Dim x As Double
     Dim y As Double
     Sub New(x As Double, y As Double)
@@ -25,10 +24,15 @@ End Structure
 Public MustInherit Class Entity
 
     Inherits RenderObject
-    Public veloc = New Velocity(0, 0)
+    Public veloc = New Distance(0, 0)
 
-    Public MustOverride Property moveSpeed As Velocity
-    Public MustOverride ReadOnly Property maxVeloc As Velocity
+    Public MustOverride Property moveSpeed As Distance
+    Public MustOverride ReadOnly Property maxVeloc As Distance
+
+    Public willCollideFromAbove = False
+    Public willCollideFromBelow = False
+    Public willCollideFromLeft = False
+    Public willCollideFromRight = False
 
     Public isGrounded = True
     Public isJumping = False
@@ -41,8 +45,8 @@ Public MustInherit Class Entity
     Public currentGroundObjects As New List(Of RenderObject)
 
     ''' <summary>
-        ''' Checks for overlap between Me and sender, in scene.
-        ''' Handles change of location of Me and variables such as isGrounded and didJumpAndNotFall; velocity change is handled by sender
+    ''' Checks for overlap between Me and sender, in scene.
+    ''' Handles change of location of Me and variables such as isGrounded and didJumpAndNotFall; velocity change is handled by sender
     ''' </summary>
     ''' <param name="sender"></param>
     Public Sub CheckCollision(sender As RenderObject, scene As Scene)
@@ -130,28 +134,16 @@ Public MustInherit Class Entity
 
         End If
 
-
-        'Just in case
-
-        'If lastGroundObject IsNot Nothing Then
-        'If sender = Me.lastGroundObject And isGrounded And Not (insideFromLeft And insideFromRight) Then
-        'isGrounded = False
-        'didJumpAndNotFall = False
-        'End If
-        'End If
-
         ' Handle falling off ledges and setting of didJumpAndNotFall
-            
+
         If Not senderIsEntity Then
             If selfUppermost > blockUppermost And selfLowermost <= blockUppermost And insideFromLeft And insideFromRight And Not currentGroundObjects.Contains(sender) Then
-            currentGroundObjects.Add(sender)
+                currentGroundObjects.Add(sender)
 
-            'Console.WriteLine("Added")
-            'Console.WriteLine(currentGroundObjects.Count)
+                'Console.WriteLine("Added")
+                'Console.WriteLine(currentGroundObjects.Count)
             End If
         End If
-
-
 
         If ((Not (insideFromLeft And insideFromRight)) Or selfLowermost > blockUppermost) And currentGroundObjects.Contains(sender) Then
             currentGroundObjects.RemoveAt(currentGroundObjects.IndexOf(sender))
@@ -166,11 +158,151 @@ Public MustInherit Class Entity
             End If
         End If
 
-
         If Not senderIsEntity And (newPositionToMoveTo <> Nothing) Then
             If Me.Location.X <> -32 Then
-                    Me.Location = newPositionToMoveTo
+                Me.Location = newPositionToMoveTo
 
+            End If
+        End If
+
+    End Sub
+
+    Public Sub CheckPotentialCollision(sender As RenderObject)
+
+        Dim selfNextPoint = New Point(Me.Location.X + Me.veloc.x, Me.Location.Y + Me.veloc.y)
+
+        Dim selfCentre = New Point((Me.Location.X + (0.5 * Me.Width)), (Me.Location.Y + (0.5 * Me.Height)))
+
+        Dim blockRightmost = sender.Location.X + sender.Width
+        Dim blockLeftmost = sender.Location.X
+        Dim blockUppermost = sender.Location.Y + sender.Height
+        Dim blockLowermost = sender.Location.Y
+
+        ' Potential locations
+        Dim selfRightmost = selfNextPoint.X + Me.Width
+        Dim selfLeftmost = selfNextPoint.X
+        Dim selfUppermost = selfNextPoint.Y + Me.Height
+        Dim selfLowermost = selfNextPoint.Y
+
+        ' Current locations
+        Dim isAbove = selfCentre.Y >= (blockUppermost - 12)
+        Dim isBelow = selfCentre.Y <= blockLowermost
+        Dim isLeftOf = selfCentre.X < blockLeftmost
+        Dim isRightOf = selfCentre.X > blockRightmost
+
+        ' Current sub-collisions
+        Dim isInsideFromAbove = Me.Location.Y < blockUppermost
+        Dim isInsideFromBelow = Me.Location.Y + Me.Height > blockLowermost
+        Dim isInsideFromLeft = Me.Location.X + Me.Width > blockLeftmost
+        Dim isInsideFromRight = Me.Location.X + (10) < blockRightmost
+        ' Used for vertical collisions to add buffer space
+        Dim isInsideFromLeft_v = Me.Location.X + Me.Width > blockLeftmost
+        Dim isInsideFromRight_v = Me.Location.X + (10) < blockRightmost
+
+        ' Potential sub-collisions
+        Dim willInsideFromLeft = selfRightmost > blockLeftmost
+        Dim willInsideFromRight = selfLeftmost < blockRightmost
+        Dim willInsideFromBelow = selfUppermost > blockLowermost
+        Dim willInsideFromAbove = selfLowermost < blockUppermost
+        Dim willInsideFromLeft_v = selfRightmost - (10) > blockLeftmost
+        Dim willInsideFromRight_v = selfLeftmost + (10) < blockRightmost
+
+        Dim senderIsEntity = sender.GetType.IsSubclassOf(GetType(Entity)) ' is not entity or subclass
+
+        Dim newPositionToMoveTo As Point
+
+        If Me.veloc.y < 0 And Me.Location.Y < 96 Then
+            Me.ID += 0
+        End If
+
+        ' NORTH
+        If Me.veloc.y < 0 And isAbove And willInsideFromAbove And isInsideFromLeft_v And isInsideFromRight_v Then
+            If Not senderIsEntity Then
+                Me.willCollideFromAbove = True
+                newPositionToMoveTo = New Point(Me.Location.X, blockUppermost)
+            End If
+
+            sender.CollisionTop(Me)
+
+            ' SOUTH
+        ElseIf Me.veloc.y >= 0 And isBelow And willInsideFromBelow And willInsideFromLeft_v And willInsideFromRight_v Then
+            If Me.veloc.y = 0 And senderIsEntity Then
+
+                ' NO entity's collisionBottom() should set veloc.y of sender to 0!
+                sender.CollisionBottom(Me)
+
+            ElseIf Me.veloc.y > 0 Then
+                If Not senderIsEntity Then
+                    ' only triggers with positive veloc; necessary to stop infinite loop since veloc.y is set to 0 after collision
+                    Me.willCollideFromBelow = True
+                    newPositionToMoveTo = New Point(Me.Location.X, blockLowermost - Me.Height) ' - 0.2 * c ?
+
+                    ' check for another collision; allows collision with several objects at once
+                    For objCount = 0 To (Me.MyScene.AllObjects.Count - 1)
+                        If Me.MyScene.AllObjects(objCount) <> sender And Me.MyScene.AllObjects(objCount) IsNot Nothing Then
+                            Dim otherBlock As RenderObject = Me.MyScene.AllObjects(objCount)
+                            If Me.veloc.y > 0 And Me.Location.Y + Me.Height <= otherBlock.Location.Y And (selfUppermost + (0.05 * Me.Height)) > otherBlock.Location.Y And selfRightmost - (10) > otherBlock.Location.X And selfLeftmost + (10) < otherBlock.Location.X + otherBlock.Width Then
+                                Me.MyScene.AllObjects(objCount).CollisionBottom(Me)
+                            End If
+                        End If
+                    Next
+
+                End If
+                sender.CollisionBottom(Me)
+            End If
+
+            ' WEST
+        ElseIf isLeftOf And willInsideFromLeft And isInsideFromAbove And isInsideFromBelow Then
+
+            If Not senderIsEntity Then
+                newPositionToMoveTo = New Point(blockLeftmost - Me.Width, Me.Location.Y)
+                Me.willCollideFromLeft = True
+            End If
+
+            sender.CollisionLeft(Me)
+
+            ' EAST
+        ElseIf isRightOf And willInsideFromRight And isInsideFromAbove And isInsideFromBelow Then
+
+            If Not senderIsEntity Then
+                newPositionToMoveTo = New Point(blockRightmost, Me.Location.Y)
+                Me.willCollideFromRight = True
+            End If
+
+            sender.CollisionRight(Me)
+
+        End If
+
+        ' Handle falling off ledges and setting of didJumpAndNotFall, isGrounded
+        ' Also handle location correction due to collision
+
+        If Not senderIsEntity Then
+
+            If selfUppermost > blockUppermost And selfLowermost <= blockUppermost And isInsideFromLeft And isInsideFromRight And Not currentGroundObjects.Contains(sender) Then
+                currentGroundObjects.Add(sender)
+                Me.isGrounded = True
+                'Console.WriteLine("Added")
+                'Console.WriteLine(currentGroundObjects.Count)
+
+            End If
+
+            If ((Not (isInsideFromLeft And isInsideFromRight)) Or selfLowermost > blockUppermost) And currentGroundObjects.Contains(sender) Then
+                currentGroundObjects.RemoveAt(currentGroundObjects.IndexOf(sender))
+                'Console.WriteLine("Removed")
+                'Console.WriteLine(currentGroundObjects.Count)
+                If currentGroundObjects.Count = 0 Then
+                    Me.isGrounded = False
+
+                    If Me.veloc.y <= 0 Then
+                        didJumpAndNotFall = False
+                    End If
+                End If
+            End If
+
+            If (newPositionToMoveTo <> Nothing) Then
+                If Me.Location.X <> -32 Then
+                    Me.Location = newPositionToMoveTo
+                End If
             End If
         End If
 
@@ -275,14 +407,18 @@ Public MustInherit Class Entity
     Public Overridable Sub UpdatePos()
         'TODO UPDATE SO IT WORKS PROPERLY - chuck it in the player class instead!
         ' stop the player from walking off
-        If Me.GetType() = GetType(EntPlayer)
+
+        Me.ApplyConstantForces()
+
+        ' Stop from going off left side of screen
+        If Me.GetType() = GetType(EntPlayer)Then
             If Me.Location.X + Me.veloc.X < 0 Then
                 Me.veloc.X = 0
             ElseIf (Me.Location.X - screenLocation.X + Me.veloc.X) > ScreenGridWidth Then
                 Me.veloc.X = 0
             End If
         End If
-        
+
         ' kill itself if its out of the scene
         If Me.Location.X + Me.veloc.X < 0 Then
             Me.veloc.X = 0
@@ -290,7 +426,42 @@ Public MustInherit Class Entity
             Me.veloc.X = 0
         End If
 
+        ' collision!
+
+        ' check collision of all entitys with all other obj, including entities
+        For entityCount = 0 To (Me.MyScene.AllEntities.Count - 1)
+            For otherCount = 0 To (Me.MyScene.AllObjAndEnt.Count - 1)
+                Dim entity = Me.MyScene.AllEntities(entityCount)
+                Dim other = Me.MyScene.AllObjAndEnt(otherCount)
+
+                ' Don't check collisions within the same obj
+                ' ensure entities are legit before collisions1
+                If entity IsNot Nothing And other IsNot Nothing And entity <> other Then
+                    entity.CheckPotentialCollision(other)
+                End If
+            Next
+        Next
+
+        If Me.willCollideFromAbove And Me.veloc.y < 0 Then
+            Me.veloc.y = 0
+        End If
+        If Me.willCollideFromBelow And Me.veloc.y > 0 Then
+            Me.veloc.y = 0
+        End If
+        If Me.willCollideFromLeft And Me.veloc.x > 0 Then
+            Me.veloc.x = 0
+        End If
+        If Me.willCollideFromRight And Me.veloc.x < 0 Then
+            Me.veloc.x = 0
+        End If
+
         Me.Location = New Point(Me.Location.X + Me.veloc.x, Me.Location.Y + Me.veloc.y)
+
+        Me.willCollideFromAbove = False
+        Me.willCollideFromBelow = False
+        Me.willCollideFromLeft = False
+        Me.willCollideFromRight = False
+
     End Sub
 
     ''' <summary>

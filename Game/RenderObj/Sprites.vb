@@ -128,11 +128,22 @@ Public Module Sprites
     )
     ' 0 - Constant
 
-    Public BrickMetalSprite = New SpriteSet(
+    Public metalBlock = New SpriteSet(
         New List(Of List(Of Image)) From {
             New List(Of Image) From {My.Resources.blockMetal}
         },
         MarioWidth,
         MarioHeightS
         )
+    ' 0 - Constant
+
+    Public groundBlock = New SpriteSet(
+        New List(Of List(Of Image)) From {
+            New List(Of Image) From {My.Resources.blockGround}
+        },
+        MarioWidth,
+        MarioHeightS
+        )
+    ' 0 - Constant
+
 End Module

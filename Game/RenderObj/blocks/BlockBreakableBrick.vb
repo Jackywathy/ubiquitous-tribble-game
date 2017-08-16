@@ -6,7 +6,6 @@
     Public Sub New(location As Point, scene As Scene)
         MyBase.New(blockWidth, blockHeight, location, scene)
         Me.RenderImage = Resize(spriteset.allSprites(0)(0), Width, Height)
-        Me.spriteset = spriteset
     End Sub
 
     Public Overrides Sub CollisionBottom(sender As Entity)

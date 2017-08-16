@@ -19,8 +19,8 @@ Public Class EntPlayer
 
     ' This is set when New() is called
     Public Overrides Property spriteSet As SpriteSet = Sprites.playerSmall
-    Public Overrides Property moveSpeed As Velocity = New Velocity(1, 15)
-    Public Overrides ReadOnly Property maxVeloc As Velocity = New Velocity(6, -15)
+    Public Overrides Property moveSpeed As Distance = New Distance(1, 15)
+    Public Overrides ReadOnly Property maxVeloc As Distance = New Distance(6, -15)
 
     Private Shared _coins As Integer = 0
 
@@ -40,16 +40,16 @@ Public Class EntPlayer
 
     ' This should NEVER be called if Mario is small
     ''' <summary>
-                    ''' Makes Player crouch and not crouch 
-	''' <summary/>
+    ''' Makes Player crouch and not crouch 
+    ''' <summary/>
     Public Sub onCrouch(state As Boolean)
         isCrouching = state
         If isCrouching Then ' IS crouching
-            Me.moveSpeed = New Velocity(0, Me.moveSpeed.y)
+            Me.moveSpeed = New Distance(0, Me.moveSpeed.y)
             'Me.Height = MarioHeightS
 
         Else ' is NOT crouching
-            Me.moveSpeed = New Velocity(1, Me.moveSpeed.y)
+            Me.moveSpeed = New Distance(1, Me.moveSpeed.y)
             'Me.Height = MarioHeightB
 
         End If
@@ -71,8 +71,8 @@ Public Class EntPlayer
     End Sub
 
     ' Do not call if state != 2
-                        ''' <summary>
-                    ''' Attempts to shoot a fireball. Will not shoot if 2 are onscreen already.
+    ''' <summary>
+    ''' Attempts to shoot a fireball. Will not shoot if 2 are onscreen already.
 	''' <summary/>
     Public Sub tryShootFireball()
         If numFireballs < 2 Then

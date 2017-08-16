@@ -144,6 +144,7 @@
     </Compile>
     <Compile Include="renderObj\blocks\Block.vb" />
     <Compile Include="renderObj\blocks\BlockBreakableBrick.vb" />
+    <Compile Include="renderObj\blocks\BlockGround.vb" />
     <Compile Include="renderObj\blocks\BlockQuestion.vb" />
     <Compile Include="renderObj\blocks\BlockMetal.vb" />
     <Compile Include="renderObj\BrickPlatform.vb" />
@@ -194,6 +195,7 @@
     <None Include="swift\[Physics] player.swift" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="images\blocks\blockGround.png" />
     <Content Include="images\player\big\fireball.png" />
     <Content Include="images\player\big\mario_big_crouch.png" />
     <None Include="Resources\mario_big_crouch.png" />
@@ -203,6 +205,8 @@
     <Content Include="images\player\fire\mario_bigf_4.png" />
     <Content Include="images\player\fire\mario_bigf_crouch.png" />
     <Content Include="images\player\fire\mario_bigf_jump.png" />
+    <None Include="Resources\blockMetal.png" />
+    <None Include="Resources\blockGround.png" />
     <Content Include="sounds\sfx\brick_smash.mp3" />
     <Content Include="sounds\sfx\mushroom_pickup.mp3" />
     <None Include="FodyWeavers.xml" />
