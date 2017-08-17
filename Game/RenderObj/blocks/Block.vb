@@ -4,10 +4,12 @@
     Friend Const blockHeight = 32
 
     Public Overrides Property RenderImage As Image
-    Public MustOverride Property spriteSet As SpriteSet
+    Public Property spriteSet As SpriteSet
 
-    Public Sub New(width As Integer, height As Integer, location As Point, scene As Scene)
+    Public Sub New(width As Integer, height As Integer, location As Point, spriteSet As SpriteSet, scene As Scene)
         MyBase.New(width, height, location, scene)
+        Me.spriteSet = spriteSet
+        Me.RenderImage = spriteSet(0)(0)
     End Sub
 
     

@@ -1,11 +1,9 @@
 ﻿Public Class BlockBreakableBrick
     Inherits Block
 
-    Overrides Property spriteset As SpriteSet = Sprites.brickBlock
-
     Public Sub New(location As Point, scene As Scene)
-        MyBase.New(blockWidth, blockHeight, location, scene)
-        Me.RenderImage = Resize(spriteset.allSprites(0)(0), Width, Height)
+        MyBase.New(32, 32, location, Sprites.brickBlock, scene)
+        Me.RenderImage = Resize(spriteset(0)(0), Width, Height)
     End Sub
 
     Public Overrides Sub CollisionBottom(sender As Entity)

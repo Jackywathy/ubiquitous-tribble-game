@@ -7,7 +7,6 @@ Public Class EntKoopa
     End Sub
 
 
-    Public Overrides Property SpriteSet As SpriteSet = Sprites.KoopaRed
     Public Overrides Property RenderImage As Image = spriteSet.allSprites(0)(0)
 
 End Class

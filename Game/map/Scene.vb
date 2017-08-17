@@ -61,7 +61,7 @@ Public Class Scene
         Next
     End Sub
 
-    Private ToRemoveObjects As New HashSet(Of Entity)
+    Private ToRemoveObjects As New HashSet(Of RenderObject)
 
     ''' <summary>
     ''' Adds entity to be removed once <see cref="RemoveAllDeleted">is run</see>
@@ -113,6 +113,7 @@ Public Class Scene
         If MainGame.KeyHandler.MoveUp And player1.allowJump Then
             player1.AccelerateY(player1.moveSpeed.y)
             player1.allowJump = False
+            Sounds.jump.Play(fromStart := True)
         ElseIf MainGame.KeyHandler.MoveUp = False Then
             player1.allowJump = True
         End If

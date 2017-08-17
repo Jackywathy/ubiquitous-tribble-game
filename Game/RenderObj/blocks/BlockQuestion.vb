@@ -1,19 +1,15 @@
 ﻿Public Class BlockQuestion
     Inherits Block
     Public isUsed = False
-    Overrides Property spriteset As SpriteSet = Sprites.itemBlock
 
     Sub New(location As Point, scene As Scene)
-        MyBase.New(blockWidth, blockHeight, location, scene)
-        Me.RenderImage = Resize(spriteset.allSprites(0)(0), Width, Height)
+        MyBase.New(blockWidth, blockHeight, location, Sprites.itemBlock, scene)
         Me.spriteset = spriteset
     End Sub
 
     Public Overrides Sub Animate(numFrames As Integer)
         If numFrames Mod 10 = 0 And Not isUsed Then
-            RenderImage = spriteset.allSprites(0).First
-            spriteset.allSprites(0).Insert(0, spriteset.allSprites(0).Last)
-            spriteset.allSprites(0).RemoveAt(spriteset.allSprites(0).Count - 1)
+            RenderImage = spriteSet.GetNext(0)
         End If
     End Sub
 

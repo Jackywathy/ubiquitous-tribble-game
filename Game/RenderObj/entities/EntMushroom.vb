@@ -1,7 +1,6 @@
 ﻿Public Class EntMushroom
     Inherits EntPowerup
 
-    Public Overrides Property SpriteSet As SpriteSet = Sprites.mushroom
     Private spawnCounter = 0
     Public Overrides Property state As UInt16 = 1
     Public Overrides Property moveSpeed As Distance = New Distance(1, 0)
@@ -9,13 +8,18 @@
 
     Public Overrides Property PickupSound As MusicPlayer = Sounds.MushroomPickup
 
+    Sub New(width As Integer, height As Integer, location As Point, scene As Scene)
+        MyBase.New(width, height, location, Sprites.mushroom, scene)
+    End Sub
+
+
     Public Overrides Sub Animate(numFrames As Integer)
         If isSpawning And numFrames Mod 5 = 0 Then
             If spawnCounter = 6 Then
                 isSpawning = False
-                RenderImage = spriteSet.allSprites(1)(0)
+                RenderImage = spriteSet.GetNext(1)
             Else
-                RenderImage = spriteSet.allSprites(0)(spawnCounter).Clone
+                RenderImage = spriteSet(0)(spawnCounter).Clone
                 spawnCounter += 1
             End If
         End If
@@ -28,8 +32,6 @@
         MyBase.UpdatePos()
     End Sub
 
-    Sub New(width As Integer, height As Integer, location As Point, scene As Scene)
-        MyBase.New(width, height, location, Sprites.mushroom, scene)
-    End Sub
+   
 
 End Class

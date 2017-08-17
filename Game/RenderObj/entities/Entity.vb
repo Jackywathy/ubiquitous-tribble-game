@@ -16,8 +16,16 @@ Public MustInherit Class Entity
     Inherits RenderObject
     Public veloc = New Distance(0, 0)
 
-    Public Overridable Property SpriteSet As SpriteSet 
+    Public Property SpriteSet As SpriteSet 
     Public Overrides Property RenderImage As Image
+
+    Sub New(width As Integer, height As Integer, location As Point, spriteSet As SpriteSet, scene As Scene)
+        MyBase.New(width, height, location, scene)
+        Me.SpriteSet = spriteSet
+        Me.RenderImage = spriteSet(0)(0)
+    End Sub
+
+    ' all vincent
 
     Public Overridable Property moveSpeed As Distance
     Public Overridable ReadOnly Property maxVeloc As Distance
@@ -267,11 +275,7 @@ Public MustInherit Class Entity
 
     End Sub
 
-    Sub New(width As Integer, height As Integer, location As Point, spriteSet As SpriteSet, scene As Scene)
-        MyBase.New(width, height, location, scene)
-        Me.SpriteSet = spriteSet
-        Me.RenderImage = spriteSet.allSprites(0)(0)
-    End Sub
+  
 
     ''' <summary>
     ''' Updates the position of this entity, using its velocity and location.

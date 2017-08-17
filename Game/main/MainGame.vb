@@ -137,9 +137,6 @@ Public Class MainGame
     Private Sub MainGame_KeyDown(sender As Object, e As KeyEventArgs) Handles MyBase.KeyDown
         Dim key As Keys = e.KeyData
         KeyHandler.KeyDown(key)
-        If key=Keys.W Or key=keys.Up
-            Sounds.jump.Play(fromStart := True)
-        End If
 
     End Sub
 

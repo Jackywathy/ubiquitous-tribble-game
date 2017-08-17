@@ -17,26 +17,14 @@ Public Class EntPlayer
     Public state As UInt16 = 0
     Public numFireballs As UInt16 = 0
 
-    ' This is set when New() is called
-    Public Overrides Property SpriteSet As SpriteSet = Sprites.playerSmall
     Public Overrides Property moveSpeed As Distance = New Distance(1, 15)
     Public Overrides ReadOnly Property maxVeloc As Distance = New Distance(6, -15)
 
-    Private Shared _coins As Integer = 0
+    
 
-    Public Shared Property Coins
-        Get
-            Return _coins
-        End Get
-        Set(value)
-            If value >= CoinsToLives Then
-                _coins = value - CoinsToLives
-            Else
-                _coins += 1
-            End If
-
-        End Set
-    End Property
+    Sub New(width As Integer, height As Integer, location As Point, scene As Scene)
+        MyBase.New(width, height, location, Sprites.playerSmall, scene)
+    End Sub
 
     ' This should NEVER be called if Mario is small
     ''' <summary>
@@ -99,11 +87,12 @@ Public Class EntPlayer
             ' Re-animate every 5 frames
             If veloc.x <> 0 And numFrames Mod 5 = 0 Then
                 ' Must be cloned, otherwise the resource image itself gets flipped (an unfortunate side effect of classes being passed by reference...)
-                imageToDraw = spriteSet.allSprites(0)(0).Clone
+                'imageToDraw = spriteSet(0)(0).Clone
                 ' Cycle through the list, moving the last element to the first
                 ' I miss being able to use a pop function
-                spriteSet.allSprites(0).Insert(0, spriteSet.allSprites(0).Last)
-                spriteSet.allSprites(0).RemoveAt(spriteSet.allSprites(0).Count - 1)
+                'spriteSet(0).Insert(0, spriteSet.allSprites(0).Last)
+                'spriteSet.allSprites(0).RemoveAt(spriteSet.allSprites(0).Count - 1)
+                imageToDraw = SpriteSet.GetNext(0).Clone()
             ElseIf veloc.x = 0 Then
                 If Me.state > 0 And Me.isCrouching Then
                     'Crouch
@@ -116,7 +105,7 @@ Public Class EntPlayer
             End If
         ElseIf didJumpAndNotFall Then
             ' Jump
-            imageToDraw = spriteSet.allSprites(2)(0).Clone
+            imageToDraw = spriteSet(2)(0).Clone
         End If
 
 #Disable Warning BC42104 ' Variable is used before it has been assigned a value
@@ -131,8 +120,20 @@ Public Class EntPlayer
 
     End Sub
 
-    Sub New(width As Integer, height As Integer, location As Point, scene As Scene)
-        MyBase.New(width, height, location, Sprites.playerSmall, scene)
-    End Sub
+   
+    Private Shared _coins As Integer = 0
 
+    Public Shared Property Coins
+        Get
+            Return _coins
+        End Get
+        Set(value)
+            If value >= CoinsToLives Then
+                _coins = value - CoinsToLives
+            Else
+                _coins += 1
+            End If
+
+        End Set
+    End Property
 End Class
