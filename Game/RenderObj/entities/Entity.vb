@@ -22,12 +22,14 @@ Public Structure Distance
 End Structure
 
 Public MustInherit Class Entity
-
     Inherits RenderObject
     Public veloc = New Distance(0, 0)
 
-    Public MustOverride Property moveSpeed As Distance
-    Public MustOverride ReadOnly Property maxVeloc As Distance
+    Public Overridable Property SpriteSet As SpriteSet 
+    Public Overrides Property RenderImage As Image
+
+    Public Overridable Property moveSpeed As Distance
+    Public Overridable ReadOnly Property maxVeloc As Distance
 
     Public willCollideFromAbove = False
     Public willCollideFromBelow = False

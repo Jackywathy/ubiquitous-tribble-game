@@ -1,6 +1,4 @@
-﻿Imports WinGame
-
-Public Class EntFireFlower
+﻿Public Class EntFireFlower
     Inherits EntPowerup
 
     Public Overrides Property state As UInt16 = 2
