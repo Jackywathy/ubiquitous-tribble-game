@@ -274,34 +274,34 @@
   <data name="platform" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\other\platform.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="blockMetal" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\blockMetal.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="blockGround" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\blockGround.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="blockGround_2x" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\blockGround_2x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="goomba_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\goomba_1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="goomba_2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\goomba_2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="goomba_d" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\goomba_d.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="mario_big_crouch" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\player\big\mario_big_crouch.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="blockGround" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\blocks\blockground.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="blockGround_2x" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\blocks\blockground_2x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="blockMetal" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\blocks\blockmetal.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="goomba_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\enemy\goomba\goomba_1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="goomba_2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\enemy\goomba\goomba_2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="goomba_d" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\enemy\goomba\goomba_d.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="pipe_2x" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\pipe_2x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\images\blocks\pipe\pipe_2x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="pipe_left" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\pipe_left.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\images\blocks\pipe\pipe_left.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="pipe_right" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\pipe_right.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\images\blocks\pipe\pipe_right.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
