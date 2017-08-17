@@ -7,7 +7,8 @@ Public Class BrickPlatform
     Public Sub New(width As Integer, height As Integer, location As Point, scene As Scene)
         MyBase.New(width, height, location, scene)
         RenderImage = New Bitmap(width, height)
-        Using brush=New TextureBrush(My.Resources.platform, WrapMode.Tile)
+        Using brush=New TextureBrush(My.Resources.blockGround, WrapMode.Tile)
+            brush.TranslateTransform(0, 32)
             Using g=Graphics.FromImage(RenderImage)
                 g.FillRectangle(brush, 0,0, RenderImage.Width, RenderImage.Height)
             End Using
