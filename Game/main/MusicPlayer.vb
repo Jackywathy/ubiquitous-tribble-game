@@ -92,12 +92,17 @@ Public NotInheritable Class MusicPlayer
     End Sub
 End Class
 
-Public Module Sounds
-    Public Jump As New MusicPlayer("jump", 0.6)
-    Public CoinPickup As New MusicPlayer("coin_pickup")
-    Public MushroomPickup As New MusicPlayer("mushroom_pickup")
-    Public BrickSmash As New MusicPlayer("brick_smash", 10)
-End Module
+Public NotInheritable Class Sounds
+    Public Shared Jump As New MusicPlayer("jump", 0.6)
+    Public Shared CoinPickup As New MusicPlayer("coin_pickup")
+    Public Shared MushroomPickup As New MusicPlayer("mushroom_pickup")
+    Public Shared BrickSmash As New MusicPlayer("brick_smash", 10)
+    Public Shared PlayerDead As New MusicPlayer("player_dead")
+    Public Shared Warp As New MusicPlayer("warp")
+    Public Shared _1_Up As New MusicPlayer("_1_up")
+    Private Sub New
+    End Sub
+End Class
 
 Public Module BackgroundMusic
     Public GroundTheme As New MusicPlayer("ground_theme")

@@ -23,6 +23,7 @@
     Public Overrides Sub CollisionTop(sender As Entity)
         If sender.GetType() = GetType(EntPlayer)
             isDead = True
+            Sounds.Warp.Play()
         End If
     End Sub
 End Class
