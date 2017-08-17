@@ -143,7 +143,7 @@ Public Class Scene
 
         End If
 
-        player1.ApplyConstantForces()
+
 
     End Sub
 
@@ -153,27 +153,17 @@ Public Class Scene
     ''' <param name="numframes"></param>
     Sub UpdatePhysics(numframes As Integer)
         ' animate and update position of each entity
-        
-        ' check collision of all entitys with all other obj, including entities
-        For entityCount = 0 To (AllEntities.Count - 1)
-            For otherCount = 0 To (AllObjAndEnt.Count - 1)
-                Dim entity = AllEntities(entityCount)
-                Dim other = AllObjAndEnt(otherCount)
 
-                ' Don't check collisions within the same obj
-                ' ensure entites are legit before collisions1
-                If entity IsNot Nothing And other IsNot Nothing And entity <> other Then
-                    entity.CheckCollision(other, Me)
-                End If
-            Next
-        Next
+
 
         ' TODO - gravity is only applied to the player, in the handle input function
-        For Each item In AllObjAndEnt
-            item.Animate(numframes)
-            If item.GetType.IsSubclassOf(GetType(Entity)) Then
-                Dim ent As Entity = item
-                ent.UpdatePos()
+        For itemCount = 0 To (AllObjAndEnt.Count - 1)
+            If AllObjAndEnt(itemCount) IsNot Nothing Then
+                AllObjAndEnt(itemCount).Animate(numframes)
+                If AllObjAndEnt(itemCount).GetType.IsSubclassOf(GetType(Entity)) Then
+                    Dim ent As Entity = AllObjAndEnt(itemCount)
+                    ent.UpdatePos()
+                End If
             End If
         Next
 
@@ -242,27 +232,28 @@ Public Class Scene
         outScene.SetBackground(mapObject.background)
 
         ' add all blocks
-        For Each pair As KeyValuePair(Of String, IList(Of Integer())) In mapObject.blocks
+        For Each pair As KeyValuePair(Of String, IList(Of Object())) In mapObject.blocks
             Dim name = pair.Key
-            For Each params As Integer() In pair.Value
+            For Each params As Object() In pair.Value
                 outScene.AddObj(outScene.RenderItemFactory(name, params))
             Next
         Next
         ' add all entities
-        Dim player1 = New EntPlayer(32, 32, New Point(0, GroundHeight), Sprites.playerSmall, outScene)
+        Dim player1 = New EntPlayer(32, 32, New Point(0, GroundHeight), outScene)
         outScene.player1 = player1
         outScene.AddEntity(player1)
+        outScene.AddEntity(New EntKoopa(New Point(320, 64), outScene))
         Return outScene
     End Function
 
-    Private Sub AssertLength(type As String, expected As Integer, given As Integer, array As Integer())
+    Private Sub AssertLength(type As String, expected As Integer, given As Integer, array As Object())
         If expected <> given Then
             Throw New InvalidJsonException(String.Format("Error in JSON, type={0}, given {1} elements when {2} expected - [ {3} ] ",
                                                          type, given, expected, String.Join(", ", array)))
         End If
     End Sub
 
-    Private Function RenderItemFactory(name As String, params As Integer()) As RenderObject
+    Private Function RenderItemFactory(name As String, params As Object()) As RenderObject
         Dim out As RenderObject
         Select Case name
             Case "blockBreakableBrick"
@@ -276,9 +267,9 @@ Public Class Scene
                 out = New BlockQuestion(New Point(params(0), params(1)), Me)
             Case "blockMetal"
                 AssertLength("blockmetal", 2, params.Length, params)
-                out = New BlockMetal(New Point(params(0), params(1)), me)
+                out = New BlockMetal(New Point(params(0), params(1)), Me)
             Case Else
-                
+
                 Throw New Exception(String.Format("No object with name {0}", name))
         End Select
 
@@ -299,7 +290,7 @@ End Class
 <JsonObject(ItemRequired:=Required.Always)>
 Public Class MapObject
     Public Property map_name As String
-    Public Property blocks As Dictionary(Of String, IList(Of Integer()))
+    Public Property blocks As Dictionary(Of String, IList(Of Object()))
     Public Property background As String
     Public Property background_music As String
 

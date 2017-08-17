@@ -1,11 +1,11 @@
 ﻿Public Class EntMushroom
     Inherits EntPowerup
 
-    Public Overrides Property spriteSet As SpriteSet = Sprites.mushroom
+    Public Overrides Property SpriteSet As SpriteSet = Sprites.mushroom
     Private spawnCounter = 0
     Public Overrides Property state As UInt16 = 1
-    Public Overrides Property moveSpeed As Velocity = New Velocity(1, 0)
-    Public Overrides ReadOnly Property maxVeloc As Velocity = New Velocity(1.5, Forces.terminalVeloc)
+    Public Overrides Property moveSpeed As Distance = New Distance(1, 0)
+    Public Overrides ReadOnly Property maxVeloc As Distance = New Distance(1.5, Forces.terminalVeloc)
 
     Public Overrides Property PickupSound As MusicPlayer = Sounds.MushroomPickup
 
@@ -24,13 +24,12 @@
     Public Overrides Sub UpdatePos()
         If Not isSpawning Then
             Me.AccelerateX(moveSpeed.x)
-            Me.ApplyConstantForces()
         End If
         MyBase.UpdatePos()
     End Sub
 
     Sub New(width As Integer, height As Integer, location As Point, scene As Scene)
-        MyBase.New(width, height, location, scene)
+        MyBase.New(width, height, location, Sprites.mushroom, scene)
     End Sub
 
 End Class

@@ -1,9 +1,9 @@
 ﻿Public Class EntFireball
     Inherits Entity
 
-    Public Overrides Property moveSpeed As Velocity = New Velocity(3, 15)
-    Public Overrides ReadOnly Property maxVeloc As Velocity = New Velocity(8, Forces.terminalVeloc)
-    Public Overrides Property spriteSet As SpriteSet = Sprites.playerFireball
+    Public Overrides Property moveSpeed As Distance = New Distance(3, 15)
+    Public Overrides ReadOnly Property maxVeloc As Distance = New Distance(8, Forces.terminalVeloc)
+    Public Overrides Property SpriteSet As SpriteSet = Sprites.playerFireball
 
 
 
@@ -22,14 +22,13 @@
             Me.isGrounded = False
         End If
 
-        Me.ApplyConstantForces()
         MyBase.UpdatePos()
 
     End Sub
 
     Sub New(width As Integer, height As Integer, location As Point, direction As Integer, shooterIsGrounded As Boolean, scene As Scene)
-        MyBase.New(width, height, location, scene)
-        Me.moveSpeed = New Velocity(Me.moveSpeed.x * direction, Me.moveSpeed.y)
+        MyBase.New(width, height, location, Sprites.playerFireball, scene)
+        Me.moveSpeed = New Distance(Me.moveSpeed.x * direction, Me.moveSpeed.y)
         Me.isGrounded = shooterIsGrounded
     End Sub
 

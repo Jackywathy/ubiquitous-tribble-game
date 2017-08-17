@@ -1,5 +1,6 @@
 ﻿Public Class SpriteSet
-    Public allSprites As List(Of List(Of Image)) '3D Array
+
+    Public AllSprites As List(Of List(Of Image)) '2D Array
 
     Sub New(spriteSet As List(Of List(Of Image)), width As Integer, height As Integer)
         Me.allSprites = spriteSet
@@ -128,11 +129,22 @@ Public Module Sprites
     )
     ' 0 - Constant
 
-    Public BrickMetalSprite = New SpriteSet(
+    Public metalBlock = New SpriteSet(
         New List(Of List(Of Image)) From {
             New List(Of Image) From {My.Resources.blockMetal}
         },
         MarioWidth,
         MarioHeightS
         )
+    ' 0 - Constant
+
+    Public groundBlock = New SpriteSet(
+        New List(Of List(Of Image)) From {
+            New List(Of Image) From {My.Resources.blockGround}
+        },
+        MarioWidth,
+        MarioHeightS
+        )
+    ' 0 - Constant
+    Public KoopaRed = playerBigFire
 End Module
