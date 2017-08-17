@@ -286,7 +286,7 @@ Public MustInherit Class Entity
 
         Me.ApplyConstantForces()
 
-        ' Stop from going off left side of screen
+        ' Stop from going off the screen
         If Me.GetType() = GetType(EntPlayer)Then
             If Me.Location.X + Me.veloc.X < 0 Then
                 Me.veloc.X = 0

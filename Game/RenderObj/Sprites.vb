@@ -106,8 +106,13 @@ End Class
 ' Sprite sets
 ' ---------------------------
 
-Public Module Sprites
-    Public playerSmall = New SpriteSet(
+Public MustInherit Class Sprites
+    ' 1 - Idle/Constant (1)
+    ' 0 - Ground animation (4)
+    ' 2 - Jump (1)
+    ' 3 - Crouch (1)
+
+    Public Shared playerSmall As New SpriteSet(
         New List(Of List(Of Image)) From {
             New List(Of Image) From {My.Resources.mario_small_1, My.Resources.mario_small_2, My.Resources.mario_small_3, My.Resources.mario_small_4},
             New List(Of Image) From {My.Resources.mario_small_1},
@@ -116,12 +121,9 @@ Public Module Sprites
         MarioWidth,
         MarioHeightS
     )
-    ' 0 - Ground animation (4)
-    ' 1 - Idle (1)
-    ' 2 - Jump (1)
-    ' 3 - Crouch (1)
+    
 
-    Public playerBig = New SpriteSet(
+    Public Shared playerBig As New SpriteSet(
         New List(Of List(Of Image)) From {
             New List(Of Image) From {My.Resources.mario_big_1, My.Resources.mario_big_2, My.Resources.mario_big_3, My.Resources.mario_big_4},
             New List(Of Image) From {My.Resources.mario_big_1},
@@ -136,7 +138,7 @@ Public Module Sprites
     ' 2 - Jump (1)
     ' 3 - Crouch (1)
 
-    Public playerBigFire = New SpriteSet(
+    Public Shared playerBigFire As New SpriteSet(
         New List(Of List(Of Image)) From {
             New List(Of Image) From {My.Resources.mario_bigf_1, My.Resources.mario_bigf_2, My.Resources.mario_bigf_3, My.Resources.mario_bigf_4},
             New List(Of Image) From {My.Resources.mario_bigf_1},
@@ -151,7 +153,7 @@ Public Module Sprites
     ' 2 - Jump (1)
     ' 3 - Crouch (1)
 
-    Public playerFireball = New SpriteSet(
+    Public Shared playerFireball As New SpriteSet(
         New List(Of List(Of Image)) From {
             New List(Of Image) From {My.Resources.fireball}
         },
@@ -161,7 +163,7 @@ Public Module Sprites
     ' 0 - Sprite (1) 
     ' (gets rotated by pi/2 for animation)
 
-    Public f_flower = New SpriteSet(
+    Public Shared f_flower As New SpriteSet(
         New List(Of List(Of Image)) From {
             New List(Of Image) From {My.Resources.f_flower_s1, My.Resources.f_flower_s2, My.Resources.f_flower_s3, My.Resources.f_flower_s4, My.Resources.f_flower_s5, My.Resources.f_flower_s6, My.Resources.f_flower_s7},
             New List(Of Image) From {My.Resources.f_flower_1},
@@ -174,7 +176,7 @@ Public Module Sprites
     ' 1 - Single frame (1)
     ' 2 - Idle animation (4)
 
-    Public mushroom = New SpriteSet(
+    Public Shared mushroom As New SpriteSet(
         New List(Of List(Of Image)) From {
             New List(Of Image) From {My.Resources.mushroom_s1, My.Resources.mushroom_s2, My.Resources.mushroom_s3, My.Resources.mushroom_s4, My.Resources.mushroom_s5, My.Resources.mushroom_s6, My.Resources.mushroom_s7},
             New List(Of Image) From {My.Resources.mushroom}
@@ -185,7 +187,7 @@ Public Module Sprites
     ' 0 - Spawn animation (7)
     ' 1 - Single frame (1)
 
-    Public itemBlock = New SpriteSet(
+    Public Shared itemBlock As New SpriteSet(
         New List(Of List(Of Image)) From {
             New List(Of Image) From {My.Resources.blockQuestion1, My.Resources.blockQuestion2, My.Resources.blockQuestion3},
             New List(Of Image) From {My.Resources.blockQuestion1}
@@ -196,7 +198,7 @@ Public Module Sprites
     ' 0 - Constant animation
     ' 1 - Idle (unused?)
 
-    Public brickBlock = New SpriteSet(
+    Public Shared brickBlock As New SpriteSet(
         New List(Of List(Of Image)) From {
             New List(Of Image) From {My.Resources.blockBrick}
         },
@@ -205,7 +207,7 @@ Public Module Sprites
     )
     ' 0 - Constant
 
-    Public blockMetal = New SpriteSet(
+    Public Shared blockMetal As New SpriteSet(
         New List(Of List(Of Image)) From {
             New List(Of Image) From {My.Resources.blockMetal}
         },
@@ -214,5 +216,37 @@ Public Module Sprites
         )
 
     ' 0 - Constant
-    Public KoopaRed = playerBigFire
-End Module
+    Public Shared KoopaRed = playerBigFire
+
+
+    ' 0 - Idle
+    ' 1 - GroundWalkRight
+    ' 2 - GroundWalkLeft
+    
+    Public Shared EntGoomba As New SpriteSet(
+    New List(Of List(Of Image)) From {
+            New List(Of Image) From {My.Resources.goomba_1},
+            New List(Of Image) From {My.Resources.goomba_1, My.Resources.goomba_2},
+            New List(Of Image) From {My.Resources.goomba_d}
+        },
+        32,
+        32
+        )
+
+
+
+
+
+    Private Sub New
+        ' make this class un-intializable
+    End Sub
+End Class
+
+Public Enum SpriteState
+    Constant = 0
+    GroundWalkRight = 1
+    GroundWalkLeft = 2
+    JumpRight = 3
+    JumpLeft = 4
+
+End Enum

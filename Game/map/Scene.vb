@@ -247,6 +247,7 @@ Public Class Scene
         outScene.player1 = player1
         outScene.AddEntity(player1)
         outScene.AddEntity(New EntKoopa(New Point(320, 64), outScene))
+        outScene.AddEntity(New EntGoomba(New Point(350, 64), outScene))
         Return outScene
     End Function
 
