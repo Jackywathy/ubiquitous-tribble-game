@@ -1,10 +1,15 @@
 ﻿Public Class SpriteSet
+    Implements IList(Of List(Of Image))
+
+
+    
+    Public Counter As List(Of Integer)
+
 
     Public AllSprites As List(Of List(Of Image)) '2D Array
 
     Sub New(spriteSet As List(Of List(Of Image)), width As Integer, height As Integer)
         Me.allSprites = spriteSet
-
         ' Resize EVERY image
         Dim resizeListList As New List(Of List(Of Image))
 
@@ -20,11 +25,79 @@
             resizeListList.Add(resizeList)
 
         Next
-
         Me.allSprites = resizeListList
-
     End Sub
 
+    Public Function GetNext(listNum As Integer)
+        Dim ret = AllSprites(listNum)(counter(listNum))
+        counter(ListNum) += 1
+        If counter(ListNum) > AllSprites(listNum).Count -1 
+            ' if counter is greater than the size of array, reset back to zero
+            counter(listNum) = 0
+        End If
+        return ret
+    End Function
+
+    Public ReadOnly Property Count As Integer Implements ICollection(Of List(Of Image)).Count
+        Get
+            Return AllSprites.Count
+        End Get
+    End Property
+
+    Public ReadOnly Property IsReadOnly As Boolean Implements ICollection(Of List(Of Image)).IsReadOnly
+        Get
+            Return CType(Me.AllSprites,IList).IsReadOnly
+        End Get
+    End Property
+
+    Default Public Property Item(index As Integer) As List(Of Image) Implements IList(Of List(Of Image)).Item
+        Get
+            Return AllSprites.Item(index)
+        End Get
+        Set(value As List(Of Image))
+            AllSprites.Item(index) = value
+        End Set
+    End Property
+
+    Public Sub Add(item As List(Of Image)) Implements ICollection(Of List(Of Image)).Add
+        AllSprites.Add(item)
+    End Sub
+
+    Public Sub Clear() Implements ICollection(Of List(Of Image)).Clear
+        AllSprites.Clear()
+    End Sub
+
+    Public Sub CopyTo(array() As List(Of Image), arrayIndex As Integer) Implements ICollection(Of List(Of Image)).CopyTo
+        Me.AllSprites.CopyTo(array, ArrayIndex)
+    End Sub
+
+    Public Sub Insert(index As Integer, item As List(Of Image)) Implements IList(Of List(Of Image)).Insert
+        AllSprites.Insert(index, item)
+    End Sub
+
+    Public Sub RemoveAt(index As Integer) Implements IList(Of List(Of Image)).RemoveAt
+        AllSprites.RemoveAt(index)
+    End Sub
+
+    Public Function Contains(item As List(Of Image)) As Boolean Implements ICollection(Of List(Of Image)).Contains
+        Return ALlSprites.Contains(item)
+    End Function
+
+    Public Function GetEnumerator() As IEnumerator(Of List(Of Image)) Implements IEnumerable(Of List(Of Image)).GetEnumerator
+        Return AllSprites.GetEnumerator()
+    End Function
+
+    Public Function IndexOf(item As List(Of Image)) As Integer Implements IList(Of List(Of Image)).IndexOf
+        Return AllSprites.IndexOf(item)
+    End Function
+
+    Public Function Remove(item As List(Of Image)) As Boolean Implements ICollection(Of List(Of Image)).Remove
+        Return AllSprites.Remove(item)
+    End Function
+
+    Private Function IEnumerable_GetEnumerator() As IEnumerator Implements IEnumerable.GetEnumerator
+        Return AllSprites.GetEnumerator()
+    End Function
 End Class
 
 ' ===========================
@@ -32,6 +105,7 @@ End Class
 ' ---------------------------
 
 Public Module Sprites
+    
     Public playerSmall = New SpriteSet(
         New List(Of List(Of Image)) From {
             New List(Of Image) From {My.Resources.mario_small_1, My.Resources.mario_small_2, My.Resources.mario_small_3, My.Resources.mario_small_4},

@@ -50,6 +50,7 @@ Public Class MainGame
         SetStyle(ControlStyles.UserPaint, True)
         SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
         SetStyle(ControlStyles.AllPaintingInWmPaint, True)
+        
 
         SceneController = Scene.ReadMapFromResource("map_testmap")
 

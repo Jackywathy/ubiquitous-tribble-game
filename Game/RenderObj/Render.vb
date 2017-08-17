@@ -1,6 +1,4 @@
-﻿Imports System.Drawing.Drawing2D
-
-Public MustInherit Class RenderObject
+﻿Public MustInherit Class RenderObject
     Public Property Width As Integer
     Public Property Height As Integer
     Friend Shared toolBarOffSet As Integer = 29

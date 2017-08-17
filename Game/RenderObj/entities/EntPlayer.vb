@@ -19,6 +19,7 @@ Public Class EntPlayer
 
     ' This is set when New() is called
     Public Overrides Property SpriteSet As SpriteSet = Sprites.playerSmall
+
     Public Overrides Property moveSpeed As Distance = New Distance(1, 15)
     Public Overrides ReadOnly Property maxVeloc As Distance = New Distance(6, -15)
 
