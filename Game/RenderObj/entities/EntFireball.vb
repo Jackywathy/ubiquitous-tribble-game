@@ -22,7 +22,6 @@
             Me.isGrounded = False
         End If
 
-        Me.ApplyConstantForces()
         MyBase.UpdatePos()
 
     End Sub
