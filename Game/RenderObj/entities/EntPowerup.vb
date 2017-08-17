@@ -35,7 +35,7 @@ Public MustInherit Class EntPowerup
                 Me.PickupSound.Play()
             End If
 
-            MyScene.RemoveEntity(Me)
+            MyScene.PrepareRemove(Me)
         End If
     End Sub
 

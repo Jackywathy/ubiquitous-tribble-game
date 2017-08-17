@@ -3,15 +3,6 @@
 ' ---------------------------
 
 
-Public Module Forces
-    ' may need to tweak
-    ' CANNOT exceed moveSpeed values of any entity otherwise it will not be able to move
-    Public Const gravity = 0.98
-    Public Const friction = 0.5
-    Public Const airResist = 0.5
-    Public Const terminalVeloc = -15.0
-End Module
-
 Public Structure Distance
     Dim x As Double
     Dim y As Double
@@ -350,8 +341,19 @@ Public MustInherit Class Entity
     ''' Removes entity from its scene
     ''' </summary>
     Public Overridable Sub Destroy()
-        MyScene.RemoveEntity(Me)
+        MyScene.PrepareRemove(Me)
     End Sub
 
 End Class
 
+
+
+
+Public Module Forces
+    ' may need to tweak
+    ' CANNOT exceed moveSpeed values of any entity otherwise it will not be able to move
+    Public Const gravity = 0.98
+    Public Const friction = 0.5
+    Public Const airResist = 0.5
+    Public Const terminalVeloc = -15.0
+End Module

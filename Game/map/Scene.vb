@@ -61,24 +61,26 @@ Public Class Scene
         Next
     End Sub
 
+    Private ToRemoveObjects As New HashSet(Of Entity)
+
     ''' <summary>
-    ''' Removes obj from scene
+    ''' Adds entity to be removed once <see cref="RemoveAllDeleted">is run</see>
     ''' </summary>
     ''' <param name="args"></param>
-    Sub RemoveObj(ByVal ParamArray args() As RenderObject)
-        For Each item As RenderObject In args
-            AllObjects.Remove(item)
-            AllObjAndEnt.Remove(item)
+    Sub PrepareRemove(ByVal ParamArray args() As RenderObject)
+        For each item As RenderObject in args
+            ToRemoveObjects.Add(item)
         Next
     End Sub
 
-    ''' <summary>
-    ''' Removes entity from scene
-    ''' </summary>
-    ''' <param name="args"></param>
-    Sub RemoveEntity(ByVal ParamArray args() As Entity)
-        For Each item As Entity In args
-            AllEntities.Remove(item)
+
+    Sub RemoveAllDeleted()
+        For each item As RenderObject In ToRemoveObjects
+            If item.GetType.IsSubclassOf(GetType(Entity))
+                AllEntities.Remove(item)
+            Else 
+                AllObjects.Remove(item)
+            End If
             AllObjAndEnt.Remove(item)
         Next
     End Sub
@@ -166,6 +168,7 @@ Public Class Scene
                 End If
             End If
         Next
+        RemoveAllDeleted()
 
         ' TODO - chuck into function - scrolls screen if player is close to edge
         If Player1.Location.X - RenderObject.screenLocation.X > (ScreenGridWidth / 4 * 3) Then

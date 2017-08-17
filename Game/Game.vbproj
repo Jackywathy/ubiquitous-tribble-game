@@ -150,6 +150,7 @@
     <Compile Include="renderObj\BrickPlatform.vb" />
     <Compile Include="renderObj\entities\EntFireball.vb" />
     <Compile Include="renderObj\entities\EntFireFlower.vb" />
+    <Compile Include="renderObj\entities\EntGoomba.vb" />
     <Compile Include="renderObj\entities\Entity.vb" />
     <Compile Include="renderObj\entities\EntKoopa.vb" />
     <Compile Include="renderObj\entities\EntMushroom.vb" />
