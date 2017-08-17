@@ -18,7 +18,9 @@ Public Class EntPlayer
     Public numFireballs As UInt16 = 0
 
     ' This is set when New() is called
-    Public Overrides Property SpriteSet As SpriteSet = Sprites.playerSmall
+    Public Overrides Property spriteSet As SpriteSet = Sprites.playerSmall
+    Public Overrides Property moveSpeed As Distance = New Distance(1, 15)
+    Public Overrides ReadOnly Property maxVeloc As Distance = New Distance(6, -15)
 
     Public Overrides Property moveSpeed As Distance = New Distance(1, 15)
     Public Overrides ReadOnly Property maxVeloc As Distance = New Distance(6, -15)
@@ -39,10 +41,10 @@ Public Class EntPlayer
         End Set
     End Property
 
-    ' This should NEVER be called if Mario is small
     ''' <summary>
     ''' Makes Player crouch and not crouch 
-    ''' </summary>
+    ''' This should NEVER be called if Mario is small
+    ''' <summary/>
     Public Sub onCrouch(state As Boolean)
         isCrouching = state
         If isCrouching Then ' IS crouching

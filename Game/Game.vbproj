@@ -197,6 +197,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="images\blocks\blockGround.png" />
+    <Content Include="images\blocks\blockGround_2x.png" />
+    <Content Include="images\enemy\goomba_1.png" />
+    <Content Include="images\enemy\goomba_2.png" />
+    <Content Include="images\enemy\goomba_d.png" />
+    <Content Include="images\blocks\blockGround.png" />
     <Content Include="images\player\big\fireball.png" />
     <Content Include="images\player\big\mario_big_crouch.png" />
     <None Include="Resources\mario_big_crouch.png" />
@@ -208,6 +213,15 @@
     <Content Include="images\player\fire\mario_bigf_jump.png" />
     <None Include="Resources\blockMetal.png" />
     <None Include="Resources\blockGround.png" />
+    <None Include="Resources\blockMetal.png" />
+    <None Include="Resources\blockGround.png" />
+    <None Include="Resources\pipe_right.png" />
+    <None Include="Resources\pipe_2x.png" />
+    <None Include="Resources\goomba_d.png" />
+    <None Include="Resources\goomba_1.png" />
+    <None Include="Resources\goomba_2.png" />
+    <None Include="Resources\blockGround_2x.png" />
+    <None Include="Resources\pipe_left.png" />
     <Content Include="sounds\sfx\brick_smash.mp3" />
     <Content Include="sounds\sfx\mushroom_pickup.mp3" />
     <None Include="FodyWeavers.xml" />

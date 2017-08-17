@@ -6,7 +6,7 @@ Public Class EntFireFlower
     Public Overrides Property state As UInt16 = 2
     Public Overrides Property moveSpeed As Distance = New Distance(0, 0)
     Public Overrides ReadOnly Property maxVeloc As Distance = New Distance(0, 0)
-    Public Overrides Property SpriteSet As SpriteSet = Sprites.f_flower
+    Public Overrides Property spriteSet As SpriteSet = Sprites.f_flower
     Private spawnCounter = 0
 
     ' TODO Replace with actual sound, or set to nothing for no sound

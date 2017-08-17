@@ -24,14 +24,10 @@ End Structure
 Public MustInherit Class Entity
 
     Inherits RenderObject
-    Public Overrides Property RenderImage As Image
-    Public Overridable Property SpriteSet As SpriteSet
-
-
     Public veloc = New Distance(0, 0)
 
-    Public Overridable Property moveSpeed As Distance
-    Public Overridable ReadOnly Property maxVeloc As Distance
+    Public MustOverride Property moveSpeed As Distance
+    Public MustOverride ReadOnly Property maxVeloc As Distance
 
     Public willCollideFromAbove = False
     Public willCollideFromBelow = False
@@ -294,7 +290,7 @@ Public MustInherit Class Entity
         Me.ApplyConstantForces()
 
         ' Stop from going off left side of screen
-        If Me.GetType() = GetType(EntPlayer) Then
+        If Me.GetType() = GetType(EntPlayer)Then
             If Me.Location.X + Me.veloc.X < 0 Then
                 Me.veloc.X = 0
             ElseIf (Me.Location.X - screenLocation.X + Me.veloc.X) > ScreenGridWidth Then
