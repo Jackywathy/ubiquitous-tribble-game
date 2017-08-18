@@ -5,9 +5,6 @@ Public MustInherit Class EntPowerup
     Public isSpawning = True
 
     ' The state the powerup changes the player to
-    ' 0 - small
-    ' 1 - big 
-    ' 2 - fire 
     Public MustOverride Property state As UInt16
     Public MustOverride Property PickupSound As MusicPlayer
 
@@ -28,10 +25,10 @@ Public MustInherit Class EntPowerup
     Public Sub TryActivate(sender As Entity)
         If sender.GetType = GetType(EntPlayer) Then
             Dim player As EntPlayer = sender
-            
-            player.changeState(Me.state)
 
-            If PickupSound IsNot Nothing
+            player.setState(Me.state)
+
+            If PickupSound IsNot NothingThen
                 Me.PickupSound.Play()
             End If
 

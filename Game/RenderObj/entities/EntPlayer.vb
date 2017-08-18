@@ -1,7 +1,8 @@
 ﻿Friend Enum PlayerStates
-    Small = 0
-    Big = 1
-    Fire = 2
+    Dead = 0
+    Small = 1
+    Big = 2
+    Fire = 3
     'Ice = 4
 End Enum
 
@@ -11,6 +12,7 @@ Public Class EntPlayer
 
     Public Const CoinsToLives = 100
     Public Shared Property Lives = 5
+
     Public allowJump = True
     Public allowShoot = True
     Public isCrouching = False
@@ -19,8 +21,6 @@ Public Class EntPlayer
 
     Public Overrides Property moveSpeed As Distance = New Distance(1, 15)
     Public Overrides ReadOnly Property maxVeloc As Distance = New Distance(6, -15)
-
-    
 
     Sub New(width As Integer, height As Integer, location As Point, scene As Scene)
         MyBase.New(width, height, location, Sprites.playerSmall, scene)
@@ -42,20 +42,27 @@ Public Class EntPlayer
 
         End If
     End Sub
-                    
+
     ''' <summary>
     ''' Changes state of Player, from small to big and fire
-	''' </summary>
-    Public Sub changeState(change As Int16)
+    ''' </summary>
+    Public Sub setState(change As Int16)
         state = change
         Select Case state
-            Case 0 : Me.spriteSet = Sprites.playerSmall
+            Case PlayerStates.Dead
+            Case PlayerStates.Small : Me.SpriteSet = Sprites.playerSmall
                 Me.Height = MarioHeightS
-            Case 1 : Me.spriteSet = Sprites.playerBig
+            Case PlayerStates.Big : Me.SpriteSet = Sprites.playerBig
                 Me.Height = MarioHeightB
-            Case 2 : Me.spriteSet = Sprites.playerBigFire
+            Case PlayerStates.Fire : Me.SpriteSet = Sprites.playerBigFire
                 Me.Height = MarioHeightB
         End Select
+    End Sub
+
+    Public Sub decrementState()
+        If Me.state > 0 Then
+            'Me.state -= 1
+        End If
     End Sub
 
     ' Do not call if state != 2
@@ -76,6 +83,7 @@ Public Class EntPlayer
     Public Overrides Sub Animate(numFrames As Integer)
         ' Animate
         Dim imageToDraw As Image
+
         If isGrounded Or (Not isGrounded And Not didJumpAndNotFall) Then
             ' Check direction
             If veloc.x < 0 And isFacingForward Then
@@ -84,25 +92,32 @@ Public Class EntPlayer
                 isFacingForward = True
             End If
 
-            ' Re-animate every 5 frames
-            If veloc.x <> 0 And numFrames Mod 5 = 0 Then
-                ' Must be cloned, otherwise the resource image itself gets flipped (an unfortunate side effect of classes being passed by reference...)
-                'imageToDraw = spriteSet(0)(0).Clone
-                ' Cycle through the list, moving the last element to the first
-                ' I miss being able to use a pop function
-                'spriteSet(0).Insert(0, spriteSet.allSprites(0).Last)
-                'spriteSet.allSprites(0).RemoveAt(spriteSet.allSprites(0).Count - 1)
-                imageToDraw = SpriteSet.SendToBack(0).Clone()
-            ElseIf veloc.x = 0 Then
-                If Me.state > 0 And Me.isCrouching Then
+            If isCrouching Then
+                'Crouch
+                imageToDraw = SpriteSet.AllSprites(3)(0).Clone
+            Else
+                ' Re-animate every 5 frames
+                If veloc.x <> 0 And numFrames Mod 5 = 0 Then
+                    ' Must be cloned, otherwise the resource image itself gets flipped (an unfortunate side effect of classes being passed by reference...)
+                    'imageToDraw = spriteSet(0)(0).Clone
+                    ' Cycle through the list, moving the last element to the first
+                    ' I miss being able to use a pop function
+                    'spriteSet(0).Insert(0, spriteSet.allSprites(0).Last)
+                    'spriteSet.allSprites(0).RemoveAt(spriteSet.allSprites(0).Count - 1)
+                    imageToDraw = SpriteSet.SendToBack(0).Clone()
+                ElseIf veloc.x = 0 Then
+                    'If Me.state > 0 And Me.isCrouching Then
                     'Crouch
-                    imageToDraw = spriteSet.allSprites(3)(0).Clone
-                Else
+                    'imageToDraw = SpriteSet.AllSprites(3)(0).Clone
+                    'Else
                     ' Idle
-                    imageToDraw = spriteSet.allSprites(1)(0).Clone
-                End If
+                    imageToDraw = SpriteSet.AllSprites(1)(0).Clone
+                    'End If
 
+                End If
             End If
+
+
         ElseIf didJumpAndNotFall Then
             ' Jump
             imageToDraw = spriteSet(2)(0).Clone

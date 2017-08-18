@@ -1,4 +1,6 @@
-﻿Public Class SpriteSet
+﻿Imports WinGame
+
+Public Class SpriteSet
     Implements IDictionary(Of SpriteState, List(Of Image))
 
     Public AllSprites As Dictionary(Of SpriteState, List(Of Image)) ' Dict (SpriteEnum.Walk, List(Of Image) )
@@ -28,7 +30,7 @@
             If otherWidth.TryGetValue(imgPair.Key, pair) Then
                 ' succeeded in gettng point from widthDictionary
                 currentWidth = pair.Width
-                currentWidth = pair.Height
+                currentHeight = pair.Height
             Else
                 currentWidth = width
                 currentHeight = height
@@ -190,7 +192,8 @@ Public MustInherit Class Sprites
             {3, New List(Of Image) From {My.Resources.mario_big_crouch}}
         },
         MarioWidth,
-        MarioHeightB
+        MarioHeightB,
+        New Dictionary(Of SpriteState, Size) From {{3, New Size(32, 32)}}
     )
     ' 0 - Ground animation (4)
     ' 1 - Idle (1)
@@ -307,5 +310,4 @@ Public Enum SpriteState
     GroundWalkLeft = 2
     JumpRight = 3
     JumpLeft = 4
-
 End Enum

@@ -1,7 +1,7 @@
 ﻿Public Class EntFireFlower
     Inherits EntPowerup
 
-    Public Overrides Property state As UInt16 = 2
+    Public Overrides Property state As UInt16 = PlayerStates.Fire
     Public Overrides Property moveSpeed As Distance = New Distance(0, 0)
     Public Overrides ReadOnly Property maxVeloc As Distance = New Distance(0, 0)
     Private spawnCounter = 0
