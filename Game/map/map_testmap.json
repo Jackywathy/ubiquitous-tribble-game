@@ -11,8 +11,8 @@
       [ 416, 128 ],
       [ 448, 128 ]
     ],
-    "brickplatform": [
-      [ 4000, 64, 0, 0 ]
+    "brickPlatform": [
+      [ 0, 0, 640, 64 ]
     ],
     "blockQuestion": [
       [ 480, 128 ]
@@ -23,11 +23,11 @@
       [ 64, 64 ],
       [ 192, 96 ],
       [ 352, 128 ]
-    ] 
-    
+    ]
+
 
   },
-  "background": "placeholderLevel",
+  "background": "#93CCEA",
   "background_music": "ground_theme",
   "default_entry": [ 0, 64 ] 
 }

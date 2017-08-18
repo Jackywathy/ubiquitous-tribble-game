@@ -3,7 +3,15 @@
 
     Public Sub New(location As Point, scene As Scene)
         MyBase.New(32, 32, location, Sprites.brickBlock, scene)
-        Me.RenderImage = Resize(spriteset(0)(0), Width, Height)
+    End Sub
+    
+    ''' <summary>
+    ''' 0 : x
+    ''' 0 : y
+    ''' </summary>
+    ''' <param name="params"></param>
+    Public Sub New(params As Object(), scene As Scene)
+        Me.New(New Point(params(0), params(1)), scene)
     End Sub
 
     Public Overrides Sub CollisionBottom(sender As Entity)

@@ -7,6 +7,10 @@
         MyBase.New(32, 32, location, Sprites.EntGoomba, scene)
     End Sub
 
+    Public Sub New(params As Object(), scene As Scene)
+        Me.New(New Point(params(0), params(1)), scene)
+    End Sub
+
     Public Overrides Sub Animate(numFrames As Integer)
         If isDead
             Me.RenderImage = SpriteSet.SendToBack(2)

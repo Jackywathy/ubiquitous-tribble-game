@@ -123,7 +123,7 @@ Public Class Scene
         if background IsNot Nothing
             background.Dispose()
         End If
-        Me.background = New BackgroundRender(TotalGridWidth, TotalGridHeight, My.Resources.ResourceManager.GetObject(name), Me)
+        Me.background = New BackgroundRender(TotalGridWidth, TotalGridHeight, name, Me)
     End Sub
 
     ''' <summary>
@@ -292,6 +292,7 @@ Public Class Scene
         Next
         ' add all entities
         Dim player1 = New EntPlayer(32, 32, New Point(0, GroundHeight), outScene)
+
         outScene.player1 = player1
         outScene.AddEntity(player1)
         outScene.AddEntity(New EntKoopa(New Point(320, 64), outScene))
@@ -311,10 +312,10 @@ Public Class Scene
         Select Case name
             Case "blockBreakableBrick"
                 AssertLength("bbrick", 2, params.Length, params)
-                out = New BlockBreakableBrick(New Point(params(0), params(1)), Me)
-            Case "brickplatform"
+                out = New BlockBreakableBrick(params , Me)
+            Case "brickPlatform"
                 AssertLength("brickplatform", 4, params.Length, params)
-                out = New BrickPlatform(params(0), params(1), New Point(params(2), params(3)), Me)
+                out = New BrickPlatform(params, Me)
             Case "blockQuestion"
                 AssertLength("itemblock", 2, params.Length, params)
                 out = New BlockQuestion(New Point(params(0), params(1)), Me)

@@ -15,6 +15,17 @@ Public Class BrickPlatform
         End Using
     End Sub
 
+    ''' <summary>
+    ''' 0 : x
+    ''' 1 : y
+    ''' 2 : width
+    ''' 3 : height
+    ''' </summary>
+    ''' <param name="params"></param>
+    Public Sub New (params As Object(), scene As Scene)
+        Me.New(params(2), params(3), New Point(params(0), params(1)), scene)
+    End Sub
+
 
 
 End Class
