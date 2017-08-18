@@ -17,7 +17,7 @@ Public Class BackgroundRender
     Private ReadOnly levelWidth As Integer
     Private ReadOnly levelHeight As Integer
 
-    Private BackgroundColor As New SolidBrush(Color.CornflowerBlue)
+    Private BackgroundColor As SolidBrush
     Public Overrides Sub Render(g As Graphics)
         ' Overriding the background Render() func for optimization
 
@@ -38,16 +38,9 @@ Public Class BackgroundRender
     End Sub
 
 
-    Sub New(levelWidth As Integer, levelHeight As Integer, backgroundImage As Image, scene As Scene)
+    Sub New(backgroundColor As String, scene As Scene)
         MyBase.New(Dimensions.ScreenGridWidth, Dimensions.ScreenGridHeight, New Point(0, 0), scene)
-        Me.levelWidth = levelWidth
-        me.levelHeight = levelHeight
-        ActualImage = New Bitmap(levelWidth, levelHeight)
-
-
-        Using g=Graphics.FromImage(ActualImage)
-            g.DrawImage(backgroundImage, 0, 0, levelWidth, levelHeight)
-        End Using
+        Me.BackgroundColor = New SolidBrush(New ColorConverter().ConvertFrom(backgroundColor))
     End Sub
 
     Public Function CanScrollHorizontal(Optional amount As Integer = 0) As Boolean

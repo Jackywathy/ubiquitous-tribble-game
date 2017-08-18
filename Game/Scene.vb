@@ -14,15 +14,20 @@ Public Class Scene
     ' all the objects in the scene
     Private InSceneItems As New HashSet(Of RenderObject)
 
-    ' dictionary containing all scenes : {map_name : scene}
-    Private AllScenes As New Dictionary(Of String, Scene)
+    Private toRemoveObjects As New HashSet(Of RenderObject)
+    Private toAddObjects As New HashSet(Of RenderObject)
 
-    Public player1 As EntPlayer
 
-    Public screenLocation As Point
+    Public Player1 As EntPlayer
+
+    Public ScreenLocation As Point
 
     ' background of scene
     Private background As BackgroundRender
+
+
+    ' dictionary containing all scenes : {map_name : scene}
+    Private AllScenes As New Dictionary(Of String, Scene)
 
     ''' <summary>
     ''' Gets/Updates the blocks that are in the scene and need to be rendened.
@@ -61,8 +66,7 @@ Public Class Scene
         Next
     End Sub
 
-    Private toRemoveObjects As New HashSet(Of RenderObject)
-    Private toAddObjects As New HashSet(Of RenderObject)
+    
 
     ''' <summary>
     ''' Prepares item to be removed once <see cref="RemoveAllDeleted">is run</see>
@@ -118,20 +122,12 @@ Public Class Scene
     ''' <summary>
     ''' Sets the background of the scene. Uses the resource name string.
     ''' </summary>
-    ''' <param name="name"></param>
-    Sub SetBackground(name As String)
+    ''' <param name="hexColor"></param>
+    Sub SetBackground(hexColor As String)
         if background IsNot Nothing
             background.Dispose()
         End If
-        Me.background = New BackgroundRender(TotalGridWidth, TotalGridHeight, name, Me)
-    End Sub
-
-    ''' <summary>
-    ''' Sets background of scene. Uses an image
-    ''' </summary>
-    ''' <param name="image"></param>
-    Sub SetBackground(image As Image)
-        Me.Background = New BackgroundRender(TotalGridWidth, TotalGridHeight, image, Me)
+        Me.background = New BackgroundRender(hexColor, Me)
     End Sub
 
     ''' <summary>
@@ -139,7 +135,6 @@ Public Class Scene
     ''' This also 
     ''' </summary>
     Public Sub HandleInput()
-
         ' LEFT
         If MainGame.KeyHandler.MoveLeft Then
             If Not player1.isCrouching Then
@@ -195,29 +190,22 @@ Public Class Scene
 
     End Sub
 
+    
+
     ''' <summary>
     ''' Updates the physics for the game
     ''' </summary>
     ''' <param name="numframes"></param>
     Sub UpdatePhysics(numframes As Integer)
-        ' animate and update position of each entity
-
-
-
-        ' TODO - gravity is only applied to the player, in the handle input function
         For Each item As RenderObject In AllObjAndEnt
-
             If item.GetType.IsSubclassOf(GetType(Entity)) Then
                 CType(item, Entity).UpdatePos()
-                If item.GetType = (GetType(EntPlayer)) Then
-                    item.ID += 0
-                End If
             End If
             item.Animate(numframes)
         Next
+
         AddAllAdded()
         RemoveAllDeleted()
-        
 
         ' TODO - chuck into function - scrolls screen if player is close to edge
         If Player1.Location.X - RenderObject.screenLocation.X > (ScreenGridWidth / 4 * 3) Then
@@ -226,7 +214,7 @@ Public Class Scene
 
         ElseIf Player1.Location.X - RenderObject.screenLocation.X < (ScreenGridWidth / 4) Then
             ' on left 1/4
-            'Me.Background.ScrollHorizontal(Player1.Location.X - RenderObject.screenLocation.X)
+            'Me.Background.ScrollHorizontal(Player1.Location.X - RenderObject.ScreenLocation.X)
             Me.Background.ScrollHorizontal(-(400 - (Player1.Location.X - RenderObject.screenLocation.X)) / 50)
         End If
 
@@ -237,20 +225,9 @@ Public Class Scene
     ''' </summary>
     ''' <param name="g"></param>
     Sub RenderScene(g As Graphics)
-
         Background.Render(g)
 
         Dim objects = GetObjInScene()
-
-        ' OLD
-        'For Each entity As Entity In AllEntities
-        '    For Each obj As RenderObject In AllObjAndEnt
-        '        entity.CheckCollision(obj)
-        '    Next
-        'Next
-
-
-        
 
         ' render objects
         For Each item As RenderObject In objects

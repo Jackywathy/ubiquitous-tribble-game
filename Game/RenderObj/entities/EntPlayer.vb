@@ -87,7 +87,8 @@ Public Class EntPlayer
                 pointSpawn = New Point(Me.Location.X, Me.Location.Y + 0.5 * Me.Height)
                 direction *= -1
             End If
-            MainGame.SceneController.AddEntity(New EntFireball(16, 16, pointSpawn, direction, Me, MyScene))
+
+            MyScene.PrepareAdd(New EntFireball(16, 16, pointSpawn, direction, Me, MyScene))
             Me.numFireballs += 1
         End If
     End Sub
@@ -98,10 +99,6 @@ Public Class EntPlayer
 
 
     Public Overrides Sub Animate(numFrames As Integer)
-
-        'Console.WriteLine(Me.veloc.x)
-
-        ' Animate
         Dim imageToDraw As Image
 
         If isGrounded Or (Not isGrounded And Not didJumpAndNotFall) Then

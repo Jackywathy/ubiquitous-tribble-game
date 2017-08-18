@@ -51,11 +51,7 @@ Public Class MainGame
         SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
         SetStyle(ControlStyles.AllPaintingInWmPaint, True)
 
-        SceneController = Scene.ReadMapFromResource("map_testmap")
-
-        MusicPlayer.PlayBackground(BackgroundMusic.GroundTheme)
-        ' only start loop after init has finished
-        GameLoop.Enabled = True
+        
         
     End Sub
 
@@ -141,7 +137,11 @@ Public Class MainGame
     End Sub
 
     Private Sub MainGame_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        
+        SceneController = Scene.ReadMapFromResource("map_testmap")
+
+        MusicPlayer.PlayBackground(BackgroundMusic.GroundTheme)
+        ' only start loop after init has finished
+        GameLoop.Enabled = True
     End Sub
 
 
