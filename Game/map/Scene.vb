@@ -138,14 +138,38 @@ Public Class Scene
     ''' Handles/ticks input from the user
     ''' This also 
     ''' </summary>
-    Public Sub HandleInput() 
+    Public Sub HandleInput()
+
+        ' LEFT
+        If MainGame.KeyHandler.MoveLeft Then
+            If Not player1.isCrouching Then
+                player1.AccelerateX(-player1.moveSpeed.x)
+            End If
+
+            ' Yes this is really badly hard-coded
+            If player1.isCrouching And Not player1.allowedToUncrouch And MainGame.KeyHandler.MoveUp And player1.allowJumpInput Then
+                player1.AccelerateX(-player1.moveSpeed.x)
+            End If
+        End If
+
+        ' RIGHT
+        If MainGame.KeyHandler.MoveRight Then
+            If Not player1.isCrouching Then
+                player1.AccelerateX(player1.moveSpeed.x)
+
+            End If
+            If player1.isCrouching And Not player1.allowedToUncrouch And MainGame.KeyHandler.MoveUp And player1.allowJumpInput Then
+                player1.AccelerateX(player1.moveSpeed.x)
+            End If
+        End If
+
         ' UP
-        If MainGame.KeyHandler.MoveUp And player1.allowJump Then
+        If MainGame.KeyHandler.MoveUp And player1.allowJumpInput Then
             player1.AccelerateY(player1.moveSpeed.y)
-            player1.allowJump = False
-            Sounds.jump.Play(fromStart := True)
+            player1.allowJumpInput = False
+            Sounds.Jump.Play(fromStart:=True)
         ElseIf MainGame.KeyHandler.MoveUp = False Then
-            player1.allowJump = True
+            player1.allowJumpInput = True
         End If
 
         ' DOWN
@@ -165,19 +189,7 @@ Public Class Scene
             player1.allowShoot = True
         End If
 
-        ' LEFT
-        If MainGame.KeyHandler.MoveLeft Then
-            If Not player1.isCrouching Then
-                player1.AccelerateX(-player1.moveSpeed.x)
-            End If
-        End If
 
-        ' RIGHT
-        If MainGame.KeyHandler.MoveRight Then
-            If Not player1.isCrouching Then
-                player1.AccelerateX(player1.moveSpeed.x)
-            End If
-        End If
 
 
 

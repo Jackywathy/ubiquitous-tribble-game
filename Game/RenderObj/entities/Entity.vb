@@ -99,11 +99,6 @@ Public MustInherit Class Entity
                 Me.willCollideFromBelow = True
             End If
 
-            If Me.GetType = GetType(EntPlayer) Then
-                Dim player As EntPlayer = Me
-                player.objectsBlockingCrouching.Add(sender)
-            End If
-
             If Me.veloc.y = 0 And senderIsEntity Then
 
                 ' NO entity's collisionBottom() should set veloc.y of sender to 0!
@@ -186,6 +181,12 @@ Public MustInherit Class Entity
                     Me.Location = newPositionToMoveTo
                 End If
             End If
+        End If
+
+        ' Handle tracking of crouch allowance
+        If Me.GetType = GetType(EntPlayer) Then
+            Dim player As EntPlayer = Me
+            player.allowedToUncrouch = Not willCollideFromBelow
         End If
 
     End Sub

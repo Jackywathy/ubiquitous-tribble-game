@@ -13,10 +13,10 @@ Public Class EntPlayer
     Public Const CoinsToLives = 100
     Public Shared Property Lives = 5
 
-    Public allowJump = True
+    Public allowJumpInput = True
     Public allowShoot = True
     Public isCrouching = False
-    Public objectsBlockingCrouching As List(Of RenderObject) = New List(Of RenderObject)
+    Public allowedToUncrouch = True
     Public state As UInt16 = 0
     Public numFireballs As UInt16 = 0
 
@@ -34,7 +34,7 @@ Public Class EntPlayer
     Public Sub onCrouch(tryCrouch As Boolean)
 
         ' isCrouching only false if state is false and if player is allowed to uncrouch
-        If (Not tryCrouch) And objectsBlockingCrouching.Count = 0 Then
+        If (Not tryCrouch) And allowedToUncrouch Then
             isCrouching = False
         Else
             isCrouching = True
@@ -151,7 +151,6 @@ Public Class EntPlayer
     End Sub
 
     Public Overrides Sub UpdatePos()
-
         If Me.isCrouching And Not isGrounded Then
             Me.onCrouch(False)
         End If
