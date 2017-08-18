@@ -61,10 +61,11 @@ Public Class Scene
         Next
     End Sub
 
-    Private ToRemoveObjects As New HashSet(Of RenderObject)
+    Private toRemoveObjects As New HashSet(Of RenderObject)
+    Private toAddObjects As New HashSet(Of RenderObject)
 
     ''' <summary>
-    ''' Adds entity to be removed once <see cref="RemoveAllDeleted">is run</see>
+    ''' Prepares item to be removed once <see cref="RemoveAllDeleted">is run</see>
     ''' </summary>
     ''' <param name="args"></param>
     Sub PrepareRemove(ByVal ParamArray args() As RenderObject)
@@ -73,7 +74,20 @@ Public Class Scene
         Next
     End Sub
 
+    ''' <summary>
+    ''' Prepares item to be added
+    ''' </summary>
+    ''' <param name="args"></param>
+    Sub PrepareAdd(ByVal ParamArray args() As RenderObject)
+        For each item As RenderObject in args
+            toAddObjects.Add(item)
+        Next
+    End Sub
 
+
+    ''' <summary>
+    ''' Actually remove all entities
+    ''' </summary>
     Sub RemoveAllDeleted()
         For each item As RenderObject In ToRemoveObjects
             If item.GetType.IsSubclassOf(GetType(Entity))
@@ -83,6 +97,22 @@ Public Class Scene
             End If
             AllObjAndEnt.Remove(item)
         Next
+        toRemoveObjects.Clear()
+    End Sub
+
+    ''' <summary>
+    ''' Actually add all items
+    ''' </summary>
+    Sub AddAllAdded()
+        For each item As RenderObject In toAddObjects
+            If item.GetType.IsSubclassOf(GetType(Entity))
+                AllEntities.Add(item)
+            Else 
+                AllObjects.Add(item)
+            End If
+            AllObjAndEnt.Add(item)
+        Next
+        toAddObjects.Clear()
     End Sub
 
     ''' <summary>
@@ -160,16 +190,15 @@ Public Class Scene
 
 
         ' TODO - gravity is only applied to the player, in the handle input function
-        For itemCount = 0 To (AllObjAndEnt.Count - 1)
-            If AllObjAndEnt(itemCount) IsNot Nothing Then
-                AllObjAndEnt(itemCount).Animate(numframes)
-                If AllObjAndEnt(itemCount).GetType.IsSubclassOf(GetType(Entity)) Then
-                    Dim ent As Entity = AllObjAndEnt(itemCount)
-                    ent.UpdatePos()
-                End If
+        For Each item As RenderObject In AllObjAndEnt
+            item.Animate(numframes)
+            If item.GetType.IsSubclassOf(GetType(Entity)) Then
+                CType(item, Entity).UpdatePos()
             End If
         Next
+        AddAllAdded()
         RemoveAllDeleted()
+        
 
         ' TODO - chuck into function - scrolls screen if player is close to edge
         If Player1.Location.X - RenderObject.screenLocation.X > (ScreenGridWidth / 4 * 3) Then

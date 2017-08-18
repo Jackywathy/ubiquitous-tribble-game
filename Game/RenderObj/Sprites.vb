@@ -30,7 +30,7 @@
     ''' </summary>
     Private counter As New List(Of Integer)
 
-    Public Function GetNext(listNum As Integer) As Image
+    Public Function SendToBack(listNum As Integer) As Image
         Dim ret = AllSprites(listNum)(counter(listNum))
         counter(ListNum) += 1
         If counter(ListNum) > AllSprites(listNum).Count -1 
@@ -40,6 +40,7 @@
         return ret
     End Function
 
+    #Region "ICollectionImplementation"
     Public ReadOnly Property Count As Integer Implements ICollection(Of List(Of Image)).Count
         Get
             Return AllSprites.Count
@@ -100,6 +101,7 @@
     Private Function IEnumerable_GetEnumerator() As IEnumerator Implements IEnumerable.GetEnumerator
         Return AllSprites.GetEnumerator()
     End Function
+    #End Region
 End Class
 
 ' ===========================

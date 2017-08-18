@@ -42,8 +42,8 @@ Public MustInherit Class EntPowerup
     ''' <summary>
     ''' Adds a new instance into the scene
 	''' </summary>
-    Public Sub Spawn(scene As Scene)
-        scene.AddEntity(Me)
+    Public Sub Spawn()
+        MyScene.PrepareAdd(Me)
     End Sub
 
     Sub New(width As Integer, height As Integer, location As Point, spriteSet As SpriteSet, scene As Scene)

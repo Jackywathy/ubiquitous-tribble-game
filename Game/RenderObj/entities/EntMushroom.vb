@@ -17,7 +17,7 @@
         If isSpawning And numFrames Mod 5 = 0 Then
             If spawnCounter = 6 Then
                 isSpawning = False
-                RenderImage = spriteSet.GetNext(1)
+                RenderImage = spriteSet.SendToBack(1)
             Else
                 RenderImage = spriteSet(0)(spawnCounter).Clone
                 spawnCounter += 1

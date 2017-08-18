@@ -9,10 +9,10 @@
 
     Public Overrides Sub Animate(numFrames As Integer)
         If isDead
-            Me.RenderImage = SpriteSet.GetNext(2)
+            Me.RenderImage = SpriteSet.SendToBack(2)
         Else 
             If veloc.x <> 0 And numFrames Mod 5 = 0 Then
-                Me.RenderImage = SpriteSet.GetNext(SpriteState.GroundWalkRight)
+                Me.RenderImage = SpriteSet.SendToBack(SpriteState.GroundWalkRight)
 
             End If
             ' just to check if it works

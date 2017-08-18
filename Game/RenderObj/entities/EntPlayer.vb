@@ -92,7 +92,7 @@ Public Class EntPlayer
                 ' I miss being able to use a pop function
                 'spriteSet(0).Insert(0, spriteSet.allSprites(0).Last)
                 'spriteSet.allSprites(0).RemoveAt(spriteSet.allSprites(0).Count - 1)
-                imageToDraw = SpriteSet.GetNext(0).Clone()
+                imageToDraw = SpriteSet.SendToBack(0).Clone()
             ElseIf veloc.x = 0 Then
                 If Me.state > 0 And Me.isCrouching Then
                     'Crouch

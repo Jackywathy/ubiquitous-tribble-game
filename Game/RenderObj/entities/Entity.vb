@@ -2,16 +2,6 @@
 ' Physics 
 ' ---------------------------
 
-
-Public Structure Distance
-    Dim x As Double
-    Dim y As Double
-    Sub New(x As Double, y As Double)
-        Me.x = x
-        Me.y = y
-    End Sub
-End Structure
-
 Public MustInherit Class Entity
     Inherits RenderObject
     Public veloc = New Distance(0, 0)
@@ -361,3 +351,12 @@ Public Module Forces
     Public Const airResist = 0.5
     Public Const terminalVeloc = -15.0
 End Module
+
+Public Structure Distance
+    Dim x As Double
+    Dim y As Double
+    Sub New(x As Double, y As Double)
+        Me.x = x
+        Me.y = y
+    End Sub
+End Structure

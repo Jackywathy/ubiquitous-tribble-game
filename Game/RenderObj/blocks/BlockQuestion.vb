@@ -9,7 +9,7 @@
 
     Public Overrides Sub Animate(numFrames As Integer)
         If numFrames Mod 10 = 0 And Not isUsed Then
-            RenderImage = spriteSet.GetNext(0)
+            RenderImage = spriteSet.SendToBack(0)
         End If
     End Sub
 
@@ -17,7 +17,7 @@
         MyBase.CollisionBottom(sender)
         If Not isUsed Then
             Dim mushroom As New EntMushroom(32, 32, New Point(Me.Location.X, Me.Location.Y + Me.Height), MyScene)
-            MainGame.SceneController.AddEntity(mushroom)
+            mushroom.Spawn()
 
             'Dim flower As New EntFireFlower(32, 32, New Point(Me.Location.X, Me.Location.Y + Me.Height), MyScene)
             'MainGame.SceneController.AddEntity(flower)
