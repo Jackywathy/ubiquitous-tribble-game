@@ -167,13 +167,16 @@ Public Class Scene
 
         ' LEFT
         If MainGame.KeyHandler.MoveLeft Then
-            player1.AccelerateX(-player1.moveSpeed.x)
+            If Not player1.isCrouching Then
+                player1.AccelerateX(-player1.moveSpeed.x)
+            End If
         End If
 
         ' RIGHT
         If MainGame.KeyHandler.MoveRight Then
-            player1.AccelerateX(player1.moveSpeed.x)
-
+            If Not player1.isCrouching Then
+                player1.AccelerateX(player1.moveSpeed.x)
+            End If
         End If
 
 

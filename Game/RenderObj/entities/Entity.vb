@@ -25,8 +25,6 @@ Public MustInherit Class Entity
     Public willCollideFromLeft = False
     Public willCollideFromRight = False
 
-    Public nextMoveLocation As Point
-
     Public isGrounded = True
     Public isJumping = False
     Public isFacingForward = True
@@ -45,17 +43,17 @@ Public MustInherit Class Entity
 
         Dim selfNextPoint = New Point(Me.Location.X + Me.veloc.x, Me.Location.Y + Me.veloc.y)
 
-        Dim selfCentre = New Point((Me.Location.X + (0.5 * Me.Width)), (Me.Location.Y + (0.5 * Me.Height)))
+        Dim selfCentre = New Point((Me.Location.X + (0.5 * Me.Width)), (Me.Location.Y + (0.5 * Me.CollisionHeight)))
 
         Dim blockRightmost = sender.Location.X + sender.Width
         Dim blockLeftmost = sender.Location.X
-        Dim blockUppermost = sender.Location.Y + sender.Height
+        Dim blockUppermost = sender.Location.Y + sender.CollisionHeight
         Dim blockLowermost = sender.Location.Y
 
         ' Potential locations
         Dim selfRightmost = selfNextPoint.X + Me.Width
         Dim selfLeftmost = selfNextPoint.X
-        Dim selfUppermost = selfNextPoint.Y + Me.Height
+        Dim selfUppermost = selfNextPoint.Y + Me.CollisionHeight
         Dim selfLowermost = selfNextPoint.Y
 
         ' Current locations
@@ -66,7 +64,7 @@ Public MustInherit Class Entity
 
         ' Current sub-collisions
         Dim isInsideFromAbove = Me.Location.Y < blockUppermost
-        Dim isInsideFromBelow = Me.Location.Y + Me.Height > blockLowermost
+        Dim isInsideFromBelow = Me.Location.Y + Me.CollisionHeight > blockLowermost
         Dim isInsideFromLeft = Me.Location.X + Me.Width > blockLeftmost
         Dim isInsideFromRight = Me.Location.X < blockRightmost
         ' Used for vertical collisions to add buffer space
@@ -96,16 +94,29 @@ Public MustInherit Class Entity
 
             ' SOUTH
         ElseIf Me.veloc.y >= 0 And isBelow And willInsideFromBelow And willInsideFromLeft_v And willInsideFromRight_v Then
+
+            If Not senderIsEntity Then
+                Me.willCollideFromBelow = True
+            End If
+
+            If Me.GetType = GetType(EntPlayer) Then
+                Dim player As EntPlayer = Me
+                player.objectsBlockingCrouching.Add(sender)
+            End If
+
             If Me.veloc.y = 0 And senderIsEntity Then
 
                 ' NO entity's collisionBottom() should set veloc.y of sender to 0!
                 sender.CollisionBottom(Me)
 
             ElseIf Me.veloc.y > 0 Then
+                ' only triggers with positive veloc; necessary to stop infinite loop since veloc.y is set to 0 after collision
+
                 If Not senderIsEntity Then
-                    ' only triggers with positive veloc; necessary to stop infinite loop since veloc.y is set to 0 after collision
-                    Me.willCollideFromBelow = True
-                    newPositionToMoveTo = New Point(Me.Location.X, blockLowermost - Me.Height) ' - 0.2 * c ?
+
+                    ' Me.willCollideFromBelow = True
+
+                    newPositionToMoveTo = New Point(Me.Location.X, blockLowermost - Me.CollisionHeight) ' - 0.2 * c ?
 
                     ' check for another collision; allows collision with several objects at once
                     'For objCount = 0 To (Me.MyScene.AllObjects.Count - 1)
@@ -149,6 +160,7 @@ Public MustInherit Class Entity
         If Not senderIsEntity Then
 
             If selfUppermost > blockUppermost And selfLowermost <= blockUppermost And isInsideFromLeft And isInsideFromRight And Not currentGroundObjects.Contains(sender) Then
+
                 currentGroundObjects.Add(sender)
                 Me.isGrounded = True
                 'Console.WriteLine("Added")
@@ -349,8 +361,6 @@ Public MustInherit Class Entity
         Me.willCollideFromBelow = False
         Me.willCollideFromLeft = False
         Me.willCollideFromRight = False
-        Me.nextMoveLocation = Nothing
-
     End Sub
 
     ''' <summary>
@@ -369,7 +379,7 @@ Public Module Forces
     ' may need to tweak
     ' CANNOT exceed moveSpeed values of any entity otherwise it will not be able to move
     Public Const gravity = 0.98
-    Public Const friction = 0.5
+    Public Const friction = 0.3
     Public Const airResist = 0.5
     Public Const terminalVeloc = -15.0
 End Module

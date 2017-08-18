@@ -1,6 +1,9 @@
 ﻿Public MustInherit Class RenderObject
     Public Property Width As Integer
     Public Property Height As Integer
+
+    Public Property CollisionHeight As Integer
+
     Friend Shared toolBarOffSet As Integer = 29
 
     Friend Property MyScene As Scene
@@ -36,6 +39,9 @@
     Public Sub New(width As Integer, height As Integer, location As Point, scene As Scene)
         Me.Width = width
         Me.Height = height
+
+        Me.CollisionHeight = height
+
         Me.Location = location
         Me.MyScene = scene
 

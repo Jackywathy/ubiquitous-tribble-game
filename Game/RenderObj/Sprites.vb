@@ -200,8 +200,7 @@ Public MustInherit Class Sprites
             {3, New List(Of Image) From {My.Resources.mario_big_crouch}}
         },
         MarioWidth,
-        MarioHeightB,
-        New Dictionary(Of SpriteState, Size) From {{3, New Size(32, 32)}}
+        MarioHeightB
     )
     ' 0 - Ground animation (4)
     ' 1 - Idle (1)

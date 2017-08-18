@@ -16,6 +16,7 @@ Public Class EntPlayer
     Public allowJump = True
     Public allowShoot = True
     Public isCrouching = False
+    Public objectsBlockingCrouching As List(Of RenderObject) = New List(Of RenderObject)
     Public state As UInt16 = 0
     Public numFireballs As UInt16 = 0
 
@@ -30,17 +31,21 @@ Public Class EntPlayer
     ''' <summary>
     ''' Makes Player crouch and not crouch 
     ''' </summary>
-    Public Sub onCrouch(state As Boolean)
-        isCrouching = state
-        If isCrouching Then ' IS crouching
-            Me.moveSpeed = New Distance(0, Me.moveSpeed.y)
-            Me.Height = MarioHeightS
+    Public Sub onCrouch(tryCrouch As Boolean)
 
-        Else ' is NOT crouching
-            Me.moveSpeed = New Distance(1, Me.moveSpeed.y)
-            Me.Height = MarioHeightB
-
+        ' isCrouching only false if state is false and if player is allowed to uncrouch
+        If (Not tryCrouch) And objectsBlockingCrouching.Count = 0 Then
+            isCrouching = False
+        Else
+            isCrouching = True
         End If
+
+        If isCrouching Then ' IS crouching
+            Me.CollisionHeight = MarioHeightS
+        Else ' is NOT crouching
+            Me.CollisionHeight = MarioHeightB
+        End If
+
     End Sub
 
     ''' <summary>
@@ -52,10 +57,13 @@ Public Class EntPlayer
             Case PlayerStates.Dead
             Case PlayerStates.Small : Me.SpriteSet = Sprites.playerSmall
                 Me.Height = MarioHeightS
+                Me.CollisionHeight = MarioHeightS
             Case PlayerStates.Big : Me.SpriteSet = Sprites.playerBig
                 Me.Height = MarioHeightB
+                Me.CollisionHeight = MarioHeightB
             Case PlayerStates.Fire : Me.SpriteSet = Sprites.playerBigFire
                 Me.Height = MarioHeightB
+                Me.CollisionHeight = MarioHeightB
         End Select
     End Sub
 
@@ -65,7 +73,7 @@ Public Class EntPlayer
         End If
     End Sub
 
-    ' Do not call if state != 3
+    ' Do not call if state != PlayerStates.fire
     ''' <summary>
     ''' Attempts to shoot a fireball. Will not shoot if 2 are onscreen already.
 	''' </summary>
@@ -79,7 +87,8 @@ Public Class EntPlayer
                 pointSpawn = New Point(Me.Location.X, Me.Location.Y + 0.5 * Me.Height)
                 direction *= -1
             End If
-            MainGame.SceneController.AddEntity(New EntFireball(16, 16, pointSpawn, direction, Me.isGrounded, MyScene))
+            MainGame.SceneController.AddEntity(New EntFireball(16, 16, pointSpawn, direction, Me, MyScene))
+            Me.numFireballs += 1
         End If
     End Sub
 
@@ -89,6 +98,9 @@ Public Class EntPlayer
 
 
     Public Overrides Sub Animate(numFrames As Integer)
+
+        'Console.WriteLine(Me.veloc.x)
+
         ' Animate
         Dim imageToDraw As Image
 
@@ -123,7 +135,7 @@ Public Class EntPlayer
 
         ElseIf didJumpAndNotFall Then
             ' Jump
-            imageToDraw = spriteSet(2)(0).Clone
+            imageToDraw = SpriteSet(2)(0).Clone
         End If
 
 #Disable Warning BC42104 ' Variable is used before it has been assigned a value
@@ -138,7 +150,14 @@ Public Class EntPlayer
 
     End Sub
 
-   
+    Public Overrides Sub UpdatePos()
+
+        If Me.isCrouching And Not isGrounded Then
+            Me.onCrouch(False)
+        End If
+        MyBase.UpdatePos()
+    End Sub
+
     Private Shared _coins As Integer = 0
 
     Public Shared Property Coins
