@@ -17,23 +17,24 @@ Public Class BackgroundRender
     Private ReadOnly levelWidth As Integer
     Private ReadOnly levelHeight As Integer
 
-    
+    Private BackgroundColor As New SolidBrush(Color.CornflowerBlue)
     Public Overrides Sub Render(g As Graphics)
         ' Overriding the background Render() func for optimization
 
-        ' update RenderImage if it needs to
-        if backgroundNeedsUpdate
-            Using gfx=Graphics.FromImage(RenderImage)
-                ' Interpolation and Alpha values dont matter
-                gfx.SmoothingMode = SmoothingMode.None
-                gfx.CompositingMode = CompositingMode.SourceCopy
-                gfx.InterpolationMode = InterpolationMode.NearestNeighbor
-                Crop(ActualImage, gfx, Me.Location, ScreenGridWidth, ScreenGridHeight)
-                backgroundNeedsUpdate = False
-            End Using
-        End If
+        '' update RenderImage if it needs to
+        'if backgroundNeedsUpdate
+        '    Using gfx = Graphics.FromImage(RenderImage)
+        '        ' Interpolation and Alpha values dont matter
+        '        gfx.SmoothingMode = SmoothingMode.None
+        '        gfx.CompositingMode = CompositingMode.SourceCopy
+        '        gfx.InterpolationMode = InterpolationMode.NearestNeighbor
+        '        Crop(ActualImage, gfx, Me.Location, ScreenGridWidth, ScreenGridHeight)
+        '        backgroundNeedsUpdate = False
+        '    End Using
+        'End If
 
-        g.DrawImage(RenderImage, New Point(0, -toolBarOffSet))
+        'g.DrawImage(RenderImage, New Point(0, -toolBarOffSet))
+        g.FillRectangle(BackgroundColor, New Rectangle(0,0,ScreenGridWidth, ScreenGridHeight))
     End Sub
 
 

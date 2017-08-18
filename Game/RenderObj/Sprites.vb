@@ -1,6 +1,4 @@
-﻿Imports WinGame
-
-Public Class SpriteSet
+﻿Public Class SpriteSet
     Implements IDictionary(Of SpriteState, List(Of Image))
 
     Public AllSprites As Dictionary(Of SpriteState, List(Of Image)) ' Dict (SpriteEnum.Walk, List(Of Image) )
