@@ -16,11 +16,11 @@
     Public Overrides Sub CollisionBottom(sender As Entity)
         MyBase.CollisionBottom(sender)
         If Not isUsed Then
-            Dim mushroom As New EntMushroom(32, 32, New Point(Me.Location.X, Me.Location.Y + Me.Height), MyScene)
-            mushroom.Spawn()
+            'Dim mushroom As New EntMushroom(32, 32, New Point(Me.Location.X, Me.Location.Y + Me.Height), MyScene)
+            'mushroom.Spawn()
 
-            'Dim flower As New EntFireFlower(32, 32, New Point(Me.Location.X, Me.Location.Y + Me.Height), MyScene)
-            'MainGame.SceneController.AddEntity(flower)
+            Dim flower As New EntFireFlower(32, 32, New Point(Me.Location.X, Me.Location.Y + Me.Height), MyScene)
+            flower.Spawn()
 
             isUsed = True
             Me.RenderImage = My.Resources.blockQuestionUsed

@@ -163,6 +163,14 @@ End Class
 ' Sprite sets
 ' ---------------------------
 
+Public Enum SpriteState
+    Constant = 0
+    GroundWalkRight = 1
+    GroundWalkLeft = 2
+    JumpRight = 3
+    JumpLeft = 4
+End Enum
+
 Public MustInherit Class Sprites
     ' 1 - Idle/Constant (1)
     ' 0 - Ground animation (4)
@@ -223,7 +231,7 @@ Public MustInherit Class Sprites
         16
     )
     ' 0 - Sprite (1) 
-    ' (gets rotated by pi/2 for animation)
+    ' (gets rotated by π/2 for animation)
 
     Public Shared f_flower As New SpriteSet(
         New Dictionary(Of SpriteState, List(Of Image)) From {
@@ -304,10 +312,3 @@ Public MustInherit Class Sprites
     End Sub
 End Class
 
-Public Enum SpriteState
-    Constant = 0
-    GroundWalkRight = 1
-    GroundWalkLeft = 2
-    JumpRight = 3
-    JumpLeft = 4
-End Enum

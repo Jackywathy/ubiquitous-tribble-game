@@ -65,18 +65,26 @@ Public Class EntPlayer
         End If
     End Sub
 
-    ' Do not call if state != 2
+    ' Do not call if state != 3
     ''' <summary>
     ''' Attempts to shoot a fireball. Will not shoot if 2 are onscreen already.
 	''' </summary>
     Public Sub tryShootFireball()
         If numFireballs < 2 Then
             Dim direction = 1
-            If Not MyScene.player1.isFacingForward Then
+            Dim pointSpawn = Me.Location
+            If Me.isFacingForward Then
+                pointSpawn = New Point(Me.Location.X + Me.Width, Me.Location.Y + 0.5 * Me.Height)
+            Else
+                pointSpawn = New Point(Me.Location.X, Me.Location.Y + 0.5 * Me.Height)
                 direction *= -1
             End If
-            MainGame.SceneController.AddEntity(New EntFireball(16, 16, New Point(Me.Location.X + (Me.Width * 1.1), Me.Location.Y), direction, Me.isGrounded, MyScene))
+            MainGame.SceneController.AddEntity(New EntFireball(16, 16, pointSpawn, direction, Me.isGrounded, MyScene))
         End If
+    End Sub
+
+    Public Sub AnimateWalk()
+
     End Sub
 
 
@@ -85,12 +93,7 @@ Public Class EntPlayer
         Dim imageToDraw As Image
 
         If isGrounded Or (Not isGrounded And Not didJumpAndNotFall) Then
-            ' Check direction
-            If veloc.x < 0 And isFacingForward Then
-                isFacingForward = False
-            ElseIf veloc.x > 0 And Not isFacingForward Then
-                isFacingForward = True
-            End If
+
 
             If isCrouching Then
                 'Crouch

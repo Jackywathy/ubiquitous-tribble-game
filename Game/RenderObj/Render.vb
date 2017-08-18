@@ -92,7 +92,7 @@
     ''' <param name="sender"></param>
     Public Overridable Sub CollisionBottom(sender As Entity)
         ' default behaviour = stop player
-        sender.veloc.y = 0
+        'sender.veloc.y = 0
     End Sub
 
     ''' <summary>
@@ -100,7 +100,7 @@
     ''' </summary>
     ''' <param name="sender"></param>
     Public Overridable Sub CollisionTop(sender As Entity)
-        sender.veloc.y = 0
+        'sender.veloc.y = 0
     End Sub
 
     ''' <summary>
@@ -108,7 +108,7 @@
     ''' </summary>
     ''' <param name="sender"></param>
     Public Overridable Sub CollisionLeft(sender As Entity)
-        sender.veloc.x = 0
+        'sender.veloc.x = 0
     End Sub
 
     ''' <summary>
@@ -116,7 +116,7 @@
     ''' </summary>
     ''' <param name="sender"></param>
     Public Overridable Sub CollisionRight(sender As Entity)
-        sender.veloc.x = 0
+        'sender.veloc.x = 0
     End Sub
 
     ''' <summary>

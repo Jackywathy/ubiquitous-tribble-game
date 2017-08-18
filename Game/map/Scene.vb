@@ -158,7 +158,7 @@ Public Class Scene
             player1.onCrouch(False)
         End If
 
-        If player1.state = 2 And MainGame.KeyHandler.MoveDown And player1.allowShoot Then
+        If player1.state = PlayerStates.Fire And MainGame.KeyHandler.MoveDown And player1.allowShoot Then
             player1.tryShootFireball()
             player1.allowShoot = False
         ElseIf Not MainGame.KeyHandler.MoveDown Then
@@ -191,10 +191,14 @@ Public Class Scene
 
         ' TODO - gravity is only applied to the player, in the handle input function
         For Each item As RenderObject In AllObjAndEnt
-            item.Animate(numframes)
+
             If item.GetType.IsSubclassOf(GetType(Entity)) Then
                 CType(item, Entity).UpdatePos()
+                If item.GetType = (GetType(EntPlayer)) Then
+                    item.ID += 0
+                End If
             End If
+            item.Animate(numframes)
         Next
         AddAllAdded()
         RemoveAllDeleted()

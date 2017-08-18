@@ -28,7 +28,7 @@ Public MustInherit Class EntPowerup
 
             player.setState(Me.state)
 
-            If PickupSound IsNot NothingThen
+            If PickupSound IsNot Nothing Then
                 Me.PickupSound.Play()
             End If
 
