@@ -376,7 +376,7 @@ End Class
 Public Module Forces
     ' may need to tweak
     ' CANNOT exceed moveSpeed values of any entity otherwise it will not be able to move
-    Public Const gravity = 0.98
+    Public Const gravity = 0.8
     Public Const friction = 0.3
     Public Const airResist = 0.5
     Public Const terminalVeloc = -15.0

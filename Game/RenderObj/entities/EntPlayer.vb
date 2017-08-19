@@ -20,7 +20,9 @@ Public Class EntPlayer
     ''' </summary>
     Public Const FramesInvulnerableIfHit = 60
 
-    
+    ''' <summary>
+    ''' </summary>
+    ''' <returns></returns>
     Public Property Lives As Integer 
         Get
             return _lives
@@ -40,11 +42,28 @@ Public Class EntPlayer
     Public AllowedToUncrouch = True
 
     Private _state As PlayerStates = PlayerStates.Small
+
+
     Public Property State As PlayerStates
         Get
             return _state
         End Get
         Set(value As PlayerStates)
+            Select Case value
+                Case PlayerStates.Dead : 
+                    Me.KillPlayer()
+                Case PlayerStates.Small :
+                    Me.SpriteSet = Sprites.playerSmall
+                    Me.Height = MarioHeightS
+                    Me.CollisionHeight = MarioHeightS
+                Case PlayerStates.Big :
+                    Me.SpriteSet = Sprites.playerBig
+                    Me.Height = MarioHeightB
+                    Me.CollisionHeight = MarioHeightB
+                Case PlayerStates.Fire : Me.SpriteSet = Sprites.playerBigFire
+                    Me.Height = MarioHeightB
+                    Me.CollisionHeight = MarioHeightB
+            End Select
             _state = value
         End Set
     End Property
@@ -88,57 +107,41 @@ Public Class EntPlayer
     End Sub
 
     ''' <summary>
-    ''' Changes state of Player, from small to big and fire
-    ''' </summary>
-    Public Sub SetState(change As PlayerStates)
-        state = change
-        Select Case state
-            Case PlayerStates.Dead : 
-                Me.KillPlayer
-            Case PlayerStates.Small :
-                Me.SpriteSet = Sprites.playerSmall
-                Me.Height = MarioHeightS
-                Me.CollisionHeight = MarioHeightS
-            Case PlayerStates.Big :
-                Me.SpriteSet = Sprites.playerBig
-                Me.Height = MarioHeightB
-                Me.CollisionHeight = MarioHeightB
-            Case PlayerStates.Fire : Me.SpriteSet = Sprites.playerBigFire
-                Me.Height = MarioHeightB
-                Me.CollisionHeight = MarioHeightB
-        End Select
-    End Sub
-
-    ''' <summary>
     ''' kills the player if he is small, else loses a powerup
     ''' Will set/check invulnerability time
     ''' </summary>
     Public Sub PlayerGotHit()
         If invulnerableTime = 0
             Select Case Me.State
-
                 Case PlayerStates.Small:
-                    KillPlayer()
+                    State = PlayerStates.Dead
                 Case PlayerStates.Big:
-                    SetState(PlayerStates.Small)
+                    State = PlayerStates.Small
                 Case PlayerStates.Fire
-                    SetState(PlayerStates.Big)
+                    state = PlayerStates.Big
                 Case PlayerStates.Ice
-                    SetState(PlayerStates.Big)
-
+                    state = PlayerStates.Big
             End Select
             invulnerableTime = FramesInvulnerableIfHit
-            Sounds.Warp.Play()
+            If Me.State <> PlayerStates.Dead
+                Sounds.Warp.Play()
+            End If
         End If
 
     End Sub
 
+    Public Sub PickupCoin
+        Sounds.CoinPickup.Play()
+        Coins += 1
+    End Sub
+
     ''' <summary>
     ''' Play outro scene and remove player / decrease lives
-    ''' TODO FINISH!!!!!!!!!!!!!!!!!
+    ''' Do not use for player damage - use PlayerGotHit instead
+    ''' Me.State must be set appropriately
+    ''' TODO make it go to black backgroudn etc
     ''' </summary>
     Private Sub KillPlayer()
-        Me.State = PlayerStates.Dead    
         Lives -= 1
         Sounds.PlayerDead.Play()
         System.Threading.Thread.Sleep(1000)

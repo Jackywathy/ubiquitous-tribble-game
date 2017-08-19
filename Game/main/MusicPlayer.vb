@@ -109,7 +109,7 @@ End Class
 
 Public NotInheritable Class Sounds
     Public Shared Jump As New MusicPlayer("jump", 0.6)
-    Public Shared CoinPickup As New MusicPlayer("coin_pickup")
+    Public Shared CoinPickup As New MusicPlayer("coin_pickup", 10)
     Public Shared MushroomPickup As New MusicPlayer("mushroom_pickup")
     Public Shared BrickSmash As New MusicPlayer("brick_smash", 10)
     Public Shared PlayerDead As New MusicPlayer("player_dead")

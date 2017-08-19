@@ -2,7 +2,7 @@
     Inherits Block
     Public isUsed = False
     Public type As String
-    Private Shared ReadOnly PossibleStates As New List(Of String) From { "fire", "default_fire", "mushroom" }
+    Private Shared ReadOnly PossibleStates As New List(Of String) From { "fire", "default_fire", "mushroom", "coin" }
 
     Sub New(location As Point, type As String, scene As Scene)
         MyBase.New(blockWidth, blockHeight, location, Sprites.itemBlock, scene)
@@ -39,7 +39,7 @@
                 Select Case type
                     Case "default_fire"
                         ' check the current status of mario, then spawn the right
-                        If player.state = 0 ' TODO REMOVE
+                        If player.state = PlayerStates.Small 
                             Dim mushroom As New EntMushroom(32, 32, New Point(Me.Location.X, Me.Location.Y + Me.Height), MyScene)
                             mushroom.Spawn()
                         Else
@@ -52,6 +52,8 @@
                     Case "mushroom"
                         Dim mushroom As New EntMushroom(32, 32, New Point(Me.Location.X, Me.Location.Y + Me.Height), MyScene)
                         mushroom.Spawn()
+                    Case "coin"
+                        player.PickupCoin()
                     
                 End Select
                 isUsed = True

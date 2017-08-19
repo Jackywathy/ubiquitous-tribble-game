@@ -27,7 +27,7 @@ Public MustInherit Class EntPowerup
         If sender.GetType = GetType(EntPlayer) Then
             Dim player As EntPlayer = sender
 
-            player.setState(Me.state)
+            player.State = Me.state
 
             If PickupSound IsNot Nothing Then
                 Me.PickupSound.Play()

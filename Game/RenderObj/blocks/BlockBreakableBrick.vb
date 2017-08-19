@@ -18,11 +18,10 @@
         MyBase.CollisionBottom(sender)
         If sender.GetType = GetType(EntPlayer) Then
             Dim player As EntPlayer = sender
-            If player.state > 0 Then
-                MainGame.CurrentScene.PrepareRemove(Me)
+            If player.state <> PlayerStates.Small Then
+                MyScene.PrepareRemove(Me)
                 Sounds.BrickSmash.Play()
-            Else
-                ' could not break
+
             End If
         End If
     End Sub
