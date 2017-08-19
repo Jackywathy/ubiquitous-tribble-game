@@ -7,8 +7,8 @@
         Me.spriteset = spriteset
     End Sub
 
-    Public Overrides Sub Animate(numFrames As Integer)
-        If numFrames Mod 10 = 0 And Not isUsed Then
+    Public Overrides Sub animate()
+        If internalFrameCounter Mod (animationInterval * 3) = 0 And Not isUsed Then
             RenderImage = spriteSet.SendToBack(0)
         End If
     End Sub

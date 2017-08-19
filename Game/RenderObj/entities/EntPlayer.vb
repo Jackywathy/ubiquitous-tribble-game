@@ -92,62 +92,48 @@ Public Class EntPlayer
         End If
     End Sub
 
-    Public Sub AnimateWalk()
+    Public Overrides Sub animate()
 
-    End Sub
+        ' Make sure this is exhaustive
+        Dim spriteStateToUse = -2
+
+        ' If crouching
+        If isCrouching Then
+            spriteStateToUse = SpriteState.Crouch
+
+            ' If grounded or falling off a platform
+        ElseIf isGrounded Or (Not isGrounded And Not didJumpAndNotFall) Then
+
+            ' If moving
+            If veloc.x <> 0 Then
+
+                spriteStateToUse = SpriteState.Ground
 
 
-    Public Overrides Sub Animate(numFrames As Integer)
-
-        'Console.WriteLine(Me.veloc.x)
-
-        ' Animate
-        Dim imageToDraw As Image
-
-        If isGrounded Or (Not isGrounded And Not didJumpAndNotFall) Then
-
-
-            If isCrouching Then
-                'Crouch
-                imageToDraw = SpriteSet.AllSprites(3)(0).Clone
-            Else
-                ' Re-animate every 5 frames
-                If veloc.x <> 0 And numFrames Mod 5 = 0 Then
-                    ' Must be cloned, otherwise the resource image itself gets flipped (an unfortunate side effect of classes being passed by reference...)
-                    'imageToDraw = spriteSet(0)(0).Clone
-                    ' Cycle through the list, moving the last element to the first
-                    ' I miss being able to use a pop function
-                    'spriteSet(0).Insert(0, spriteSet.allSprites(0).Last)
-                    'spriteSet.allSprites(0).RemoveAt(spriteSet.allSprites(0).Count - 1)
-                    imageToDraw = SpriteSet.SendToBack(0).Clone()
-                ElseIf veloc.x = 0 Then
-                    'If Me.state > 0 And Me.isCrouching Then
-                    'Crouch
-                    'imageToDraw = SpriteSet.AllSprites(3)(0).Clone
-                    'Else
-                    ' Idle
-                    imageToDraw = SpriteSet.AllSprites(1)(0).Clone
-                    'End If
-
-                End If
+            ElseIf veloc.x = 0 Then 'If still
+                spriteStateToUse = SpriteState.Constant
             End If
 
-
+            'If jumping
         ElseIf didJumpAndNotFall Then
-            ' Jump
-            imageToDraw = SpriteSet(2)(0).Clone
+            spriteStateToUse = SpriteState.Air
         End If
 
-#Disable Warning BC42104 ' Variable is used before it has been assigned a value
-        ' stupid compiler, I'm checking if its null
-        If imageToDraw IsNot Nothing Then
-            If Not isFacingForward Then
-                imageToDraw.RotateFlip(RotateFlipType.RotateNoneFlipX)
-            End If
-            RenderImage = imageToDraw
+        If Not isFacingForward Then
+            spriteStateToUse += 1
         End If
-#Enable Warning BC42104 ' Variable is used before it has been assigned a value
 
+        Select Case spriteStateToUse
+            ' Multi-frame
+            Case SpriteState.Ground, SpriteState.GroundFlip
+                If internalFrameCounter Mod animationInterval = 0 Then
+                    Me.renderImage = SpriteSet.SendToBack(spriteStateToUse)
+                End If
+
+                ' Single frame
+            Case Else
+                Me.renderImage = SpriteSet(spriteStateToUse)(0)
+        End Select
     End Sub
 
     Public Overrides Sub UpdatePos()

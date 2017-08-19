@@ -3,7 +3,7 @@ Public Class EntKoopa
     Inherits Entity
 
     Public Sub New(location As Point, scene As Scene)
-        MyBase.New(32, 64, location, Sprites.KoopaRed, scene)
+        MyBase.New(32, 64, location, Sprites.koopaGreen, scene)
     End Sub
 
 

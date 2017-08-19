@@ -165,7 +165,7 @@ Public Class Scene
 
         ' UP
         If MainGame.KeyHandler.MoveUp And player1.allowJumpInput Then
-            player1.AccelerateY(player1.moveSpeed.y)
+            player1.AccelerateY(player1.moveSpeed.y, False)
             player1.allowJumpInput = False
             Sounds.Jump.Play(fromStart:=True)
         ElseIf MainGame.KeyHandler.MoveUp = False Then
@@ -202,18 +202,13 @@ Public Class Scene
     Sub UpdatePhysics(numframes As Integer)
         ' animate and update position of each entity
 
-
-
         ' TODO - gravity is only applied to the player, in the handle input function
         For Each item As RenderObject In AllObjAndEnt
-
+            item.internalFrameCounter += 1
             If item.GetType.IsSubclassOf(GetType(Entity)) Then
                 CType(item, Entity).UpdatePos()
-                If item.GetType = (GetType(EntPlayer)) Then
-                    item.ID += 0
-                End If
             End If
-            item.Animate(numframes)
+            item.animate()
         Next
         AddAllAdded()
         RemoveAllDeleted()
@@ -294,8 +289,8 @@ Public Class Scene
         Dim player1 = New EntPlayer(32, 32, New Point(0, GroundHeight), outScene)
         outScene.player1 = player1
         outScene.AddEntity(player1)
-        outScene.AddEntity(New EntKoopa(New Point(320, 64), outScene))
-        outScene.AddEntity(New EntGoomba(New Point(350, 64), outScene))
+        'outScene.AddEntity(New EntKoopa(New Point(320, 64), outScene))
+        outScene.AddEntity(New EntGoomba(New Point(320, 64), outScene))
         Return outScene
     End Function
 

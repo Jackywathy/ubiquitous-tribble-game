@@ -142,9 +142,6 @@
   <data name="coin_pickup" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\sounds\sfx\coin_pickup.mp3;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="fireball" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\images\player\big\fireball.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="f_flower_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\powerups\fireflower\f_flower_1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -312,5 +309,98 @@
   </data>
   <data name="_1_up" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\sounds\sfx\1_up.mp3;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="cloud_big" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\decoration\cloud_big.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cloud_small" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\decoration\cloud_small.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="fireball" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\player\fire\fireball.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="fireball_expl_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\player\fire\fireball_expl_1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="fireball_expl_2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\player\fire\fireball_expl_2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="fireball_expl_3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\player\fire\fireball_expl_3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="hill_big" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\decoration\hill_big.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="hill_small" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\decoration\hill_small.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="koopa_greenf_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\enemy\koopa\flying\koopa_greenf_1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="koopa_greenf_2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\enemy\koopa\flying\koopa_greenf_2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="koopa_green_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\enemy\koopa\ground\koopa_green_1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="koopa_green_2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\enemy\koopa\ground\koopa_green_2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="koopa_green_shell1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\enemy\koopa\koopa_green_shell1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="koopa_green_shell2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\enemy\koopa\koopa_green_shell2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mario_bigf_1r" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\player\fire\mario_bigf_1r.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mario_bigf_2r" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\player\fire\mario_bigf_2r.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mario_bigf_3r" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\player\fire\mario_bigf_3r.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mario_bigf_4r" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\player\fire\mario_bigf_4r.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mario_bigf_crouchr" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\player\fire\mario_bigf_crouchr.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mario_bigf_jumpr" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\player\fire\mario_bigf_jumpr.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mario_big_1r" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\player\big\mario_big_1r.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mario_big_2r" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\player\big\mario_big_2r.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mario_big_3r" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\player\big\mario_big_3r.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mario_big_4r" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\player\big\mario_big_4r.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mario_big_crouchr" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\player\big\mario_big_crouchr.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mario_big_jumpr" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\player\big\mario_big_jumpr.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mario_small_1r" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\player\small\mario_small_1r.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mario_small_2r" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\player\small\mario_small_2r.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mario_small_3r" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\player\small\mario_small_3r.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mario_small_4r" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\player\small\mario_small_4r.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mario_small_jumpr" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\player\small\mario_small_jumpr.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

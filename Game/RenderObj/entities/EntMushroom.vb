@@ -10,20 +10,9 @@
 
     Sub New(width As Integer, height As Integer, location As Point, scene As Scene)
         MyBase.New(width, height, location, Sprites.mushroom, scene)
+        Me.RenderImage = Me.SpriteSet(SpriteState.Spawn)(0)
     End Sub
 
-
-    Public Overrides Sub Animate(numFrames As Integer)
-        If isSpawning And numFrames Mod 5 = 0 Then
-            If spawnCounter = 6 Then
-                isSpawning = False
-                RenderImage = spriteSet.SendToBack(1)
-            Else
-                RenderImage = spriteSet(0)(spawnCounter).Clone
-                spawnCounter += 1
-            End If
-        End If
-    End Sub
 
     Public Overrides Sub UpdatePos()
         If Not isSpawning Then
@@ -32,6 +21,6 @@
         MyBase.UpdatePos()
     End Sub
 
-   
+
 
 End Class

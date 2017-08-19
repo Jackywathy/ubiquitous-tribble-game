@@ -6,17 +6,16 @@ Public MustInherit Class Entity
     Inherits RenderObject
     Public veloc = New Distance(0, 0)
 
-    Public Property SpriteSet As SpriteSet 
-    Public Overrides Property RenderImage As Image
+    Public Property SpriteSet As SpriteSet
+    Public Overrides Property renderImage As Image
 
     Sub New(width As Integer, height As Integer, location As Point, spriteSet As SpriteSet, scene As Scene)
         MyBase.New(width, height, location, scene)
         Me.SpriteSet = spriteSet
-        Me.RenderImage = spriteSet(0)(0)
+        Me.renderImage = Me.SpriteSet(SpriteState.Constant)(0)
     End Sub
 
     ' all vincent
-
     Public Overridable Property moveSpeed As Distance
     Public Overridable ReadOnly Property maxVeloc As Distance
 
@@ -29,8 +28,6 @@ Public MustInherit Class Entity
     Public isJumping = False
     Public isFacingForward = True
     Public didJumpAndNotFall = True
-
-    
 
     Public currentGroundObjects As New List(Of RenderObject)
 
@@ -51,10 +48,10 @@ Public MustInherit Class Entity
         Dim blockLowermost = sender.Location.Y
 
         ' Potential locations
-        Dim selfRightmost = selfNextPoint.X + Me.Width
-        Dim selfLeftmost = selfNextPoint.X
-        Dim selfUppermost = selfNextPoint.Y + Me.CollisionHeight
-        Dim selfLowermost = selfNextPoint.Y
+        Dim nextSelfRightmost = selfNextPoint.X + Me.Width
+        Dim nextSelfLeftmost = selfNextPoint.X
+        Dim nextSelfUppermost = selfNextPoint.Y + Me.CollisionHeight
+        Dim nextSelfLowermost = selfNextPoint.Y
 
         ' Current locations
         Dim isAbove = selfCentre.Y >= blockUppermost
@@ -68,16 +65,16 @@ Public MustInherit Class Entity
         Dim isInsideFromLeft = Me.Location.X + Me.Width > blockLeftmost
         Dim isInsideFromRight = Me.Location.X < blockRightmost
         ' Used for vertical collisions to add buffer space
-        Dim isInsideFromLeft_v = Me.Location.X + Me.Width - (10) > blockLeftmost
-        Dim isInsideFromRight_v = Me.Location.X + (10) < blockRightmost
+        Dim isInsideFromLeft_v = Me.Location.X + Me.Width - (5) > blockLeftmost
+        Dim isInsideFromRight_v = Me.Location.X + (5) < blockRightmost
 
         ' Potential sub-collisions
-        Dim willInsideFromLeft = selfRightmost >= blockLeftmost
-        Dim willInsideFromRight = selfLeftmost <= blockRightmost
-        Dim willInsideFromBelow = selfUppermost >= blockLowermost
-        Dim willInsideFromAbove = selfLowermost <= blockUppermost
-        Dim willInsideFromLeft_v = selfRightmost - (10) >= blockLeftmost
-        Dim willInsideFromRight_v = selfLeftmost + (10) <= blockRightmost
+        Dim willInsideFromLeft = nextSelfRightmost >= blockLeftmost
+        Dim willInsideFromRight = nextSelfLeftmost <= blockRightmost
+        Dim willInsideFromBelow = nextSelfUppermost >= blockLowermost
+        Dim willInsideFromAbove = nextSelfLowermost <= blockUppermost
+        Dim willInsideFromLeft_v = nextSelfRightmost - (10) >= blockLeftmost
+        Dim willInsideFromRight_v = nextSelfLeftmost + (10) <= blockRightmost
 
         Dim senderIsEntity = sender.GetType.IsSubclassOf(GetType(Entity)) ' is not entity or subclass
 
@@ -92,7 +89,7 @@ Public MustInherit Class Entity
 
             sender.CollisionTop(Me)
 
-            ' SOUTH
+            ' SOUTH 
         ElseIf Me.veloc.y >= 0 And isBelow And willInsideFromBelow And willInsideFromLeft_v And willInsideFromRight_v Then
 
             If Not senderIsEntity Then
@@ -109,7 +106,7 @@ Public MustInherit Class Entity
 
                 If Not senderIsEntity Then
 
-                    ' Me.willCollideFromBelow = True
+                    Me.willCollideFromBelow = True
 
                     newPositionToMoveTo = New Point(Me.Location.X, blockLowermost - Me.CollisionHeight) ' - 0.2 * c ?
 
@@ -152,9 +149,11 @@ Public MustInherit Class Entity
         ' Handle falling off ledges and setting of didJumpAndNotFall, isGrounded
         ' Also handle location correction due to collision
 
+        ' NOTE: managing ground objects is NOT predictive, so it does NOT use predictive values
+
         If Not senderIsEntity Then
 
-            If selfUppermost > blockUppermost And selfLowermost <= blockUppermost And isInsideFromLeft And isInsideFromRight And Not currentGroundObjects.Contains(sender) Then
+            If Me.Location.Y + Me.CollisionHeight > blockUppermost And Me.Location.Y <= blockUppermost And isInsideFromLeft And isInsideFromRight And Not currentGroundObjects.Contains(sender) Then
 
                 currentGroundObjects.Add(sender)
                 Me.isGrounded = True
@@ -163,7 +162,7 @@ Public MustInherit Class Entity
 
             End If
 
-            If ((Not (isInsideFromLeft And isInsideFromRight)) Or selfLowermost > blockUppermost) And currentGroundObjects.Contains(sender) Then
+            If ((Not (isInsideFromLeft_v And isInsideFromRight_v)) Or Me.Location.Y > blockUppermost) And currentGroundObjects.Contains(sender) Then
                 currentGroundObjects.RemoveAt(currentGroundObjects.IndexOf(sender))
                 'Console.WriteLine("Removed")
                 'Console.WriteLine(currentGroundObjects.Count)
@@ -186,6 +185,9 @@ Public MustInherit Class Entity
         ' Handle tracking of crouch allowance
         If Me.GetType = GetType(EntPlayer) Then
             Dim player As EntPlayer = Me
+            If blockLowermost = 96 And sender.Location.X = 192 Then
+                player.ID += 0
+            End If
             player.allowedToUncrouch = Not willCollideFromBelow
         End If
 
@@ -222,8 +224,8 @@ Public MustInherit Class Entity
     ''' Increases the absolute value of Me.veloc.y by magnitude and changes variables of Me appropriately.
     ''' Will not increase Me.veloc.y past Me.maxVeloc.y (terminal velocity).
     ''' </summary>
-    Public Sub AccelerateY(magnitude As Double)
-        If magnitude > 0 And isGrounded Then
+    Public Sub AccelerateY(magnitude As Double, forceAccelerate As Boolean)
+        If magnitude > 0 And (isGrounded Or forceAccelerate) Then
             Me.veloc.y += magnitude
             isJumping = True
             didJumpAndNotFall = True
@@ -270,7 +272,7 @@ Public MustInherit Class Entity
         If isGrounded Then
             DecreaseMagnitude(Me.veloc.x, Forces.friction)
         Else
-            AccelerateY(-Forces.gravity)
+            AccelerateY(-Forces.gravity, False)
             DecreaseMagnitude(Me.veloc.x, Forces.airResist)
         End If
 
@@ -335,8 +337,6 @@ Public MustInherit Class Entity
             Next
         Next
 
-
-
         ' If entity is going to collide, clear veloc so that it never moves INSIDE the object
         If Me.willCollideFromAbove And Me.veloc.y < 0 Then
             Me.veloc.y = 0
@@ -350,9 +350,6 @@ Public MustInherit Class Entity
         If Me.willCollideFromRight And Me.veloc.x < 0 Then
             Me.veloc.x = 0
         End If
-
-
-
 
         ' Update location
         Me.Location = New Point(Me.Location.X + Me.veloc.x, Me.Location.Y + Me.veloc.y)

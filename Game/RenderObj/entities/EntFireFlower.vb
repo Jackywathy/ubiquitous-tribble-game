@@ -16,28 +16,18 @@
 
     End Sub
 
-
-    
-
-    Public Overrides Sub Animate(numFrames As Integer)
-        If isSpawning And numFrames Mod 5 = 0 Then
-            If spawnCounter = 6 Then
+    Public Overrides Sub animate()
+        If Not isSpawning And internalFrameCounter Mod (animationInterval * 2) = 0 Then
+            Me.RenderImage = Me.SpriteSet.SendToBack(SpriteState.Constant)
+        ElseIf isSpawning Then
+            If Math.Floor(internalFrameCounter / animationInterval) = Me.SpriteSet(SpriteState.Spawn).Count - 1 Then
                 isSpawning = False
-                RenderImage = spriteSet.allSprites(1)(0)
+                Me.RenderImage = Me.SpriteSet(SpriteState.Constant)(0)
             Else
-                RenderImage = spriteSet.allSprites(0)(spawnCounter).Clone
-                spawnCounter += 1
+                Me.RenderImage = Me.SpriteSet(SpriteState.Spawn)(Math.Floor(internalFrameCounter / animationInterval))
             End If
-        End If
 
-        If Not isSpawning And numFrames Mod 10 = 0 Then
-            RenderImage = spriteSet.allSprites(2).First
-            spriteSet.allSprites(2).Insert(0, spriteSet.allSprites(2).Last)
-            spriteSet.allSprites(2).RemoveAt(spriteSet.allSprites(2).Count - 1)
         End If
-
     End Sub
-
-    
 
 End Class

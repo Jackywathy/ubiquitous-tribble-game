@@ -7,6 +7,7 @@ Public MustInherit Class EntPowerup
     ' The state the powerup changes the player to
     Public MustOverride Property state As UInt16
     Public MustOverride Property PickupSound As MusicPlayer
+    Public Overrides Property RenderImage As Image = Me.SpriteSet(SpriteState.Spawn)(0)
 
     Public Overrides Sub CollisionBottom(sender As Entity)
         Me.TryActivate(sender)
@@ -33,6 +34,15 @@ Public MustInherit Class EntPowerup
             End If
 
             MyScene.PrepareRemove(Me)
+        End If
+    End Sub
+
+    Public Overrides Sub animate()
+        If Math.Floor(internalFrameCounter / animationInterval) = Me.SpriteSet(SpriteState.Spawn).Count - 1 Then
+            isSpawning = False
+            Me.RenderImage = Me.SpriteSet(SpriteState.Constant)(0)
+        ElseIf isSpawning Then
+            Me.RenderImage = Me.SpriteSet(SpriteState.Spawn)(Math.Floor(internalFrameCounter / animationInterval))
         End If
     End Sub
 

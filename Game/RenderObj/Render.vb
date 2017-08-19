@@ -16,7 +16,10 @@
         Return temp
     End Function
 
-    Public Property ID As Integer = GetNewId()
+    Public Property ID As Integer = GetNewID()
+
+    Public internalFrameCounter = 0
+    Public Const animationInterval As Integer = 5 ' Frames to wait before proceeding to next image of animation
 
     Public MustOverride Property RenderImage As Image
     ''' <summary>
@@ -128,8 +131,7 @@
     ''' <summary>
     ''' Changes the animation of the object, if necessary
     ''' </summary>
-    ''' <param name="numFrames">number of frames </param>
-    Public Overridable Sub Animate(numFrames As Integer)
+    Public Overridable Sub animate()
         ' nothing by default
     End Sub
 

@@ -131,8 +131,8 @@
     Private Function IEnumerable_GetEnumerator() As IEnumerator Implements IEnumerable.GetEnumerator
         Return AllSprites.GetEnumerator()
     End Function
-    
-    #Region "IDictionary"
+
+#Region "IDictionary"
 
     ''' <summary>
     ''' A list of integers, which represents how much each animation loop has progressed
@@ -140,19 +140,12 @@
     Public Function SendToBack(state As SpriteState) As Image
         Dim ret = AllSprites(state)(counter(state))
         counter(state) += 1
-        If counter(state) > AllSprites(state).Count - 1
+        If counter(state) > AllSprites(state).Count - 1 Then
             ' if counter is greater than the size of array, reset back to zero
             counter(state) = 0
         End If
         Return ret
     End Function
-
-    
-
-
-
-
-
 
 #End Region
 End Class
@@ -162,149 +155,134 @@ End Class
 ' ---------------------------
 
 Public Enum SpriteState
-    Constant = 0
-    GroundWalkRight = 1
-    GroundWalkLeft = 2
-    JumpRight = 3
-    JumpLeft = 4
+    Constant = 0        ' The set to use if nothing is happening to the Ent. Also use .Constant if only one main animation
+    ConstantFlip = 1
+    Ground = 2
+    GroundFlip = 3
+    Air = 4
+    AirFlip = 5
+    Spawn = 6
+    Destroy = 7
+    Crouch = 8
+    CrouchFlip = 9
 End Enum
 
 Public MustInherit Class Sprites
-    ' 1 - Idle/Constant (1)
-    ' 0 - Ground animation (4)
-    ' 2 - Jump (1)
 
-    ' todo remove replace with SpriteStates instead of raw numbers
     Public Shared playerSmall As New SpriteSet(
         New Dictionary(Of SpriteState, List(Of Image)) From {
-            {0, New List(Of Image) From {My.Resources.mario_small_1, My.Resources.mario_small_2, My.Resources.mario_small_3, My.Resources.mario_small_4}},
-            {1, New List(Of Image) From {My.Resources.mario_small_1}},
-            {2, New List(Of Image) From {My.Resources.mario_small_jump}}
+            {SpriteState.Ground, New List(Of Image) From {My.Resources.mario_small_1, My.Resources.mario_small_2, My.Resources.mario_small_3, My.Resources.mario_small_4}},
+            {SpriteState.Constant, New List(Of Image) From {My.Resources.mario_small_1}},
+            {SpriteState.Air, New List(Of Image) From {My.Resources.mario_small_jump}},
+            {SpriteState.GroundFlip, New List(Of Image) From {My.Resources.mario_small_1r, My.Resources.mario_small_2r, My.Resources.mario_small_3r, My.Resources.mario_small_4r}},
+            {SpriteState.ConstantFlip, New List(Of Image) From {My.Resources.mario_small_1r}},
+            {SpriteState.AirFlip, New List(Of Image) From {My.Resources.mario_small_jumpr}}
         },
-        MarioWidth,
-        MarioHeightS
+        32,
+        32
     )
-
-    ' 1 - Idle/Constant (1)
-    ' 0 - Ground animation (4)
-    ' 2 - Jump (1)
-    ' 3 - Crouch (1)
 
     Public Shared playerBig As New SpriteSet(
         New Dictionary(Of SpriteState, List(Of Image)) From {
-            {0, New List(Of Image) From {My.Resources.mario_big_1, My.Resources.mario_big_2, My.Resources.mario_big_3, My.Resources.mario_big_4}},
-            {1, New List(Of Image) From {My.Resources.mario_big_1}},
-            {2, New List(Of Image) From {My.Resources.mario_big_jump}},
-            {3, New List(Of Image) From {My.Resources.mario_big_crouch}}
+            {SpriteState.Ground, New List(Of Image) From {My.Resources.mario_big_1, My.Resources.mario_big_2, My.Resources.mario_big_3, My.Resources.mario_big_4}},
+            {SpriteState.Constant, New List(Of Image) From {My.Resources.mario_big_1}},
+            {SpriteState.Air, New List(Of Image) From {My.Resources.mario_big_jump}},
+            {SpriteState.Crouch, New List(Of Image) From {My.Resources.mario_big_crouch}},
+            {SpriteState.GroundFlip, New List(Of Image) From {My.Resources.mario_big_1r, My.Resources.mario_big_2r, My.Resources.mario_big_3r, My.Resources.mario_big_4r}},
+            {SpriteState.ConstantFlip, New List(Of Image) From {My.Resources.mario_big_1r}},
+            {SpriteState.AirFlip, New List(Of Image) From {My.Resources.mario_big_jumpr}},
+            {SpriteState.CrouchFlip, New List(Of Image) From {My.Resources.mario_big_crouchr}}
         },
-        MarioWidth,
-        MarioHeightB
+        32,
+        64
     )
-    ' 0 - Ground animation (4)
-    ' 1 - Idle (1)
-    ' 2 - Jump (1)
-    ' 3 - Crouch (1)
 
     Public Shared playerBigFire As New SpriteSet(
         New Dictionary(Of SpriteState, List(Of Image)) From {
-            {0, New List(Of Image) From {My.Resources.mario_bigf_1, My.Resources.mario_bigf_2, My.Resources.mario_bigf_3, My.Resources.mario_bigf_4}},
-            {1, New List(Of Image) From {My.Resources.mario_bigf_1}},
-            {2, New List(Of Image) From {My.Resources.mario_bigf_jump}},
-            {3, New List(Of Image) From {My.Resources.mario_bigf_crouch}}
+            {SpriteState.Ground, New List(Of Image) From {My.Resources.mario_bigf_1, My.Resources.mario_bigf_2, My.Resources.mario_bigf_3, My.Resources.mario_bigf_4}},
+            {SpriteState.Constant, New List(Of Image) From {My.Resources.mario_bigf_1}},
+            {SpriteState.Air, New List(Of Image) From {My.Resources.mario_bigf_jump}},
+            {SpriteState.Crouch, New List(Of Image) From {My.Resources.mario_bigf_crouch}},
+            {SpriteState.GroundFlip, New List(Of Image) From {My.Resources.mario_bigf_1r, My.Resources.mario_bigf_2r, My.Resources.mario_bigf_3r, My.Resources.mario_bigf_4r}},
+            {SpriteState.ConstantFlip, New List(Of Image) From {My.Resources.mario_bigf_1r}},
+            {SpriteState.AirFlip, New List(Of Image) From {My.Resources.mario_bigf_jumpr}},
+            {SpriteState.CrouchFlip, New List(Of Image) From {My.Resources.mario_bigf_crouchr}}
         },
-        MarioWidth,
-        MarioHeightB
+        32,
+        64
     )
-    ' 0 - Ground animation (4)
-    ' 1 - Idle (1)
-    ' 2 - Jump (1)
-    ' 3 - Crouch (1)
 
     Public Shared playerFireball As New SpriteSet(
         New Dictionary(Of SpriteState, List(Of Image)) From {
-            {0, New List(Of Image) From {My.Resources.fireball}}
+            {SpriteState.Constant, New List(Of Image) From {My.Resources.fireball}},
+            {SpriteState.Destroy, New List(Of Image) From {My.Resources.fireball_expl_1, My.Resources.fireball_expl_2, My.Resources.fireball_expl_3}}
         },
         16,
-        16
+        16,
+        New Dictionary(Of SpriteState, Size) From {{SpriteState.Destroy, New Size(32, 32)}}
     )
-    ' 0 - Sprite (1) 
-    ' (gets rotated by π/2 for animation)
 
     Public Shared f_flower As New SpriteSet(
         New Dictionary(Of SpriteState, List(Of Image)) From {
-            {0, New List(Of Image) From {My.Resources.f_flower_s1, My.Resources.f_flower_s2, My.Resources.f_flower_s3, My.Resources.f_flower_s4, My.Resources.f_flower_s5, My.Resources.f_flower_s6, My.Resources.f_flower_s7}},
-            {1, New List(Of Image) From {My.Resources.f_flower_1}},
-            {2, New List(Of Image) From {My.Resources.f_flower_1, My.Resources.f_flower_2, My.Resources.f_flower_3, My.Resources.f_flower_4}}
+            {SpriteState.Spawn, New List(Of Image) From {My.Resources.f_flower_s1, My.Resources.f_flower_s2, My.Resources.f_flower_s3, My.Resources.f_flower_s4, My.Resources.f_flower_s5, My.Resources.f_flower_s6, My.Resources.f_flower_s7}},
+            {SpriteState.Constant, New List(Of Image) From {My.Resources.f_flower_1, My.Resources.f_flower_2, My.Resources.f_flower_3, My.Resources.f_flower_4}}
         },
-        MarioWidth,
-        MarioHeightS
+        32,
+        32
     )
-    ' 0 - Spawn animation (7)
-    ' 1 - Single frame (1)
-    ' 2 - Idle animation (4)
 
     Public Shared mushroom As New SpriteSet(
         New Dictionary(Of SpriteState, List(Of Image)) From {
-            {0, New List(Of Image) From {My.Resources.mushroom_s1, My.Resources.mushroom_s2, My.Resources.mushroom_s3, My.Resources.mushroom_s4, My.Resources.mushroom_s5, My.Resources.mushroom_s6, My.Resources.mushroom_s7}},
-            {1, New List(Of Image) From {My.Resources.mushroom}}
+            {SpriteState.Spawn, New List(Of Image) From {My.Resources.mushroom_s1, My.Resources.mushroom_s2, My.Resources.mushroom_s3, My.Resources.mushroom_s4, My.Resources.mushroom_s5, My.Resources.mushroom_s6, My.Resources.mushroom_s7}},
+            {SpriteState.Constant, New List(Of Image) From {My.Resources.mushroom}}
         },
-        MarioWidth,
-        MarioHeightS
+        32,
+        32
     )
-    ' 0 - Spawn animation (7)
-    ' 1 - Single frame (1)
 
     Public Shared itemBlock As New SpriteSet(
         New Dictionary(Of SpriteState, List(Of Image)) From {
-            {0, New List(Of Image) From {My.Resources.blockQuestion1, My.Resources.blockQuestion2, My.Resources.blockQuestion3}},
-            {1, New List(Of Image) From {My.Resources.blockQuestion1}}
+            {SpriteState.Constant, New List(Of Image) From {My.Resources.blockQuestion1, My.Resources.blockQuestion2, My.Resources.blockQuestion3}}
         },
-        MarioWidth,
-        MarioHeightS
+        32,
+        32
     )
-    ' 0 - Constant animation
-    ' 1 - Idle (unused?)
 
     Public Shared brickBlock As New SpriteSet(
         New Dictionary(Of SpriteState, List(Of Image)) From {
-            {0, New List(Of Image) From {My.Resources.blockBrick}}
+            {SpriteState.Constant, New List(Of Image) From {My.Resources.blockBrick}}
         },
-        MarioWidth,
-        MarioHeightS
+        32,
+        32
     )
-    ' 0 - Constant
 
     Public Shared blockMetal As New SpriteSet(
         New Dictionary(Of SpriteState, List(Of Image)) From {
-            {0, New List(Of Image) From {My.Resources.blockMetal}}
-        },
-        MarioWidth,
-        MarioHeightS
-        )
-
-    ' 0 - Constant
-    Public Shared KoopaRed = playerBigFire
-
-
-    ' 0 - Idle
-    ' 1 - GroundWalkRight
-    ' 2 - GroundWalkLeft
-
-    Public Shared EntGoomba As New SpriteSet(
-    New Dictionary(Of SpriteState, List(Of Image)) From {
-            {0, New List(Of Image) From {My.Resources.goomba_1}},
-            {1, New List(Of Image) From {My.Resources.goomba_1, My.Resources.goomba_2}},
-            {2, New List(Of Image) From {My.Resources.goomba_d}}
+            {SpriteState.Constant, New List(Of Image) From {My.Resources.blockMetal}}
         },
         32,
         32
         )
 
+    Public Shared koopaGreen As New SpriteSet(
+    New Dictionary(Of SpriteState, List(Of Image)) From {
+            {SpriteState.Constant, New List(Of Image) From {My.Resources.koopa_green_1, My.Resources.koopa_green_2}},
+            {SpriteState.Destroy, New List(Of Image) From {My.Resources.koopa_green_shell1, My.Resources.koopa_green_shell2}}
+        },
+        32,
+        64
+    )
 
+    Public Shared goomba As New SpriteSet(
+    New Dictionary(Of SpriteState, List(Of Image)) From {
+            {SpriteState.Constant, New List(Of Image) From {My.Resources.goomba_1, My.Resources.goomba_2}},
+            {SpriteState.Destroy, New List(Of Image) From {My.Resources.goomba_d}}
+        },
+        32,
+        32
+    )
 
-
-
-    Private Sub New
+    Private Sub New()
         ' make this class un-intializable
     End Sub
 End Class
