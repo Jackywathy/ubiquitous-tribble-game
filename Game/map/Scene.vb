@@ -14,15 +14,22 @@ Public Class Scene
     ' all the objects in the scene
     Private InSceneItems As New HashSet(Of RenderObject)
 
-    ' dictionary containing all scenes : {map_name : scene}
-    Private AllScenes As New Dictionary(Of String, Scene)
+    Private toRemoveObjects As New HashSet(Of RenderObject)
+    Private toAddObjects As New HashSet(Of RenderObject)
+    
+    Public AllItems As New HashSet(Of RenderItem)
 
-    Public player1 As EntPlayer
 
-    Public screenLocation As Point
+    Public Player1 As EntPlayer
+
+    Public ScreenLocation As Point
 
     ' background of scene
     Private background As BackgroundRender
+
+
+    ' dictionary containing all scenes : {map_name : scene}
+    Private AllScenes As New Dictionary(Of String, Scene)
 
     ''' <summary>
     ''' Gets/Updates the blocks that are in the scene and need to be rendened.
@@ -43,10 +50,16 @@ Public Class Scene
     ''' Adds a obj (not entity to the scene)
     ''' </summary>
     ''' <param name="args"></param>
-    Sub AddObj(ByVal ParamArray args() As RenderObject)
+    Sub AddObject(ByVal ParamArray args() As RenderObject)
         For Each item As RenderObject In args
             AllObjects.Add(item)
             AllObjAndEnt.Add(item)
+        Next
+    End Sub
+
+    Sub AddItem(ByVal ParamArray args() As RenderItem)
+        For Each item As RenderItem In args
+            AllItems.Add(item)
         Next
     End Sub
 
@@ -61,8 +74,7 @@ Public Class Scene
         Next
     End Sub
 
-    Private toRemoveObjects As New HashSet(Of RenderObject)
-    Private toAddObjects As New HashSet(Of RenderObject)
+    
 
     ''' <summary>
     ''' Prepares item to be removed once <see cref="RemoveAllDeleted">is run</see>
@@ -118,20 +130,12 @@ Public Class Scene
     ''' <summary>
     ''' Sets the background of the scene. Uses the resource name string.
     ''' </summary>
-    ''' <param name="name"></param>
-    Sub SetBackground(name As String)
+    ''' <param name="hexColor"></param>
+    Sub SetBackground(hexColor As String, width As Integer, height As Integer)
         if background IsNot Nothing
             background.Dispose()
         End If
-        Me.background = New BackgroundRender(TotalGridWidth, TotalGridHeight, My.Resources.ResourceManager.GetObject(name), Me)
-    End Sub
-
-    ''' <summary>
-    ''' Sets background of scene. Uses an image
-    ''' </summary>
-    ''' <param name="image"></param>
-    Sub SetBackground(image As Image)
-        Me.Background = New BackgroundRender(TotalGridWidth, TotalGridHeight, image, Me)
+        Me.background = New BackgroundRender(width, height, hexColor, Me)
     End Sub
 
     ''' <summary>
@@ -139,7 +143,6 @@ Public Class Scene
     ''' This also 
     ''' </summary>
     Public Sub HandleInput()
-
         ' LEFT
         If MainGame.KeyHandler.MoveLeft Then
             If Not player1.isCrouching Then
@@ -195,6 +198,8 @@ Public Class Scene
 
     End Sub
 
+    
+
     ''' <summary>
     ''' Updates the physics for the game
     ''' </summary>
@@ -210,19 +215,19 @@ Public Class Scene
             End If
             item.animate()
         Next
+
         AddAllAdded()
         RemoveAllDeleted()
-        
 
         ' TODO - chuck into function - scrolls screen if player is close to edge
-        If Player1.Location.X - RenderObject.screenLocation.X > (ScreenGridWidth / 4 * 3) Then
+        If Player1.Location.X - Me.screenLocation.X > (ScreenGridWidth / 4 * 3) Then
             ' on right 1/4
-            Me.Background.ScrollHorizontal((400 - (ScreenGridWidth - (Player1.Location.X - RenderObject.screenLocation.X))) / 50)
+            Me.Background.ScrollHorizontal((400 - (ScreenGridWidth - (Player1.Location.X - Me.screenLocation.X))) / 50)
 
-        ElseIf Player1.Location.X - RenderObject.screenLocation.X < (ScreenGridWidth / 4) Then
+        ElseIf Player1.Location.X - Me.screenLocation.X < (ScreenGridWidth / 4) Then
             ' on left 1/4
-            'Me.Background.ScrollHorizontal(Player1.Location.X - RenderObject.screenLocation.X)
-            Me.Background.ScrollHorizontal(-(400 - (Player1.Location.X - RenderObject.screenLocation.X)) / 50)
+            'Me.Background.ScrollHorizontal(Player1.Location.X - RenderObject.ScreenLocation.X)
+            Me.Background.ScrollHorizontal(-(400 - (Player1.Location.X - Me.screenLocation.X)) / 50)
         End If
 
     End Sub
@@ -232,20 +237,14 @@ Public Class Scene
     ''' </summary>
     ''' <param name="g"></param>
     Sub RenderScene(g As Graphics)
-
         Background.Render(g)
 
+        ' all text & stuff
+        For each item As RenderItem in AllItems
+            item.Render(g)
+        Next
+
         Dim objects = GetObjInScene()
-
-        ' OLD
-        'For Each entity As Entity In AllEntities
-        '    For Each obj As RenderObject In AllObjAndEnt
-        '        entity.CheckCollision(obj)
-        '    Next
-        'Next
-
-
-        
 
         ' render objects
         For Each item As RenderObject In objects
@@ -276,21 +275,24 @@ Public Class Scene
         Dim outScene As New Scene
 
         ' add the background
-        outScene.SetBackground(mapObject.background)
+        outScene.SetBackground(mapObject.background(0), mapObject.background(1), mapObject.background(2))
 
         ' add all blocks
         For Each pair As KeyValuePair(Of String, IList(Of Object())) In mapObject.blocks
             Dim name = pair.Key
             For Each params As Object() In pair.Value
-                outScene.AddObj(outScene.RenderItemFactory(name, params))
+                outScene.AddObject(outScene.RenderItemFactory(name, params))
             Next
         Next
         ' add all entities
         Dim player1 = New EntPlayer(32, 32, New Point(0, GroundHeight), outScene)
+
         outScene.player1 = player1
         outScene.AddEntity(player1)
         'outScene.AddEntity(New EntKoopa(New Point(320, 64), outScene))
         outScene.AddEntity(New EntGoomba(New Point(320, 64), outScene))
+        Dim x As New StaticText(New RectangleF(0,0,ScreenGridWidth/4, ScreenGridHeight/8), "Mario", New Font("Times New Roman", 5), New SolidBrush(Color.Red), StringAlignment.Center)
+        outScene.AddItem(x)
         Return outScene
     End Function
 
@@ -306,16 +308,16 @@ Public Class Scene
         Select Case name
             Case "blockBreakableBrick"
                 AssertLength("bbrick", 2, params.Length, params)
-                out = New BlockBreakableBrick(New Point(params(0), params(1)), Me)
-            Case "brickplatform"
-                AssertLength("brickplatform", 4, params.Length, params)
-                out = New BrickPlatform(params(0), params(1), New Point(params(2), params(3)), Me)
+                out = New BlockBreakableBrick(params , Me)
+            Case "brickPlatform"
+                AssertLength("brickPlatform", 4, params.Length, params)
+                out = New BrickPlatform(params, Me)
             Case "blockQuestion"
-                AssertLength("itemblock", 2, params.Length, params)
-                out = New BlockQuestion(New Point(params(0), params(1)), Me)
+                AssertLength("blockQuestion", 3, params.Length, params)
+                out = New BlockQuestion(params, Me)
             Case "blockMetal"
-                AssertLength("blockmetal", 2, params.Length, params)
-                out = New BlockMetal(New Point(params(0), params(1)), Me)
+                AssertLength("blockMetal", 2, params.Length, params)
+                out = New BlockMetal(params, Me)
             Case Else
 
                 Throw New Exception(String.Format("No object with name {0}", name))
@@ -324,7 +326,6 @@ Public Class Scene
         Return out
 
     End Function
-
 
     Private Class InvalidJsonException
         Inherits Exception
@@ -339,7 +340,7 @@ End Class
 Public Class MapObject
     Public Property map_name As String
     Public Property blocks As Dictionary(Of String, IList(Of Object()))
-    Public Property background As String
+    Public Property background As List(Of Object)
     Public Property background_music As String
 
 

@@ -9,49 +9,26 @@ Public Class BackgroundRender
     Implements IDisposable
 
     Public Overrides Property RenderImage As Image = New Bitmap(ScreenGridWidth, ScreenGridHeight)
-    Private backgroundNeedsUpdate As Boolean = True
-
-
-    Public ActualImage As Image
 
     Private ReadOnly levelWidth As Integer
     Private ReadOnly levelHeight As Integer
 
-    Private BackgroundColor As New SolidBrush(Color.CornflowerBlue)
+    Private ReadOnly backgroundColor As SolidBrush
+
     Public Overrides Sub Render(g As Graphics)
-        ' Overriding the background Render() func for optimization
-
-        '' update RenderImage if it needs to
-        'if backgroundNeedsUpdate
-        '    Using gfx = Graphics.FromImage(RenderImage)
-        '        ' Interpolation and Alpha values dont matter
-        '        gfx.SmoothingMode = SmoothingMode.None
-        '        gfx.CompositingMode = CompositingMode.SourceCopy
-        '        gfx.InterpolationMode = InterpolationMode.NearestNeighbor
-        '        Crop(ActualImage, gfx, Me.Location, ScreenGridWidth, ScreenGridHeight)
-        '        backgroundNeedsUpdate = False
-        '    End Using
-        'End If
-
-        'g.DrawImage(RenderImage, New Point(0, -toolBarOffSet))
         g.FillRectangle(BackgroundColor, New Rectangle(0,0,ScreenGridWidth, ScreenGridHeight))
     End Sub
 
 
-    Sub New(levelWidth As Integer, levelHeight As Integer, backgroundImage As Image, scene As Scene)
+    Sub New(width As Integer, height As Integer, backgroundColor As String, scene As Scene)
         MyBase.New(Dimensions.ScreenGridWidth, Dimensions.ScreenGridHeight, New Point(0, 0), scene)
-        Me.levelWidth = levelWidth
-        me.levelHeight = levelHeight
-        ActualImage = New Bitmap(levelWidth, levelHeight)
-
-
-        Using g=Graphics.FromImage(ActualImage)
-            g.DrawImage(backgroundImage, 0, 0, levelWidth, levelHeight)
-        End Using
+        Me.BackgroundColor = New SolidBrush(New ColorConverter().ConvertFrom(backgroundColor))
+        levelWidth = width
+        levelHeight = height
     End Sub
 
     Public Function CanScrollHorizontal(Optional amount As Integer = 0) As Boolean
-        If Me.Location.X + amount + Dimensions.ScreenGridWidth >= levelWidth Then
+        If MyScene.ScreenLocation.X + amount + Dimensions.ScreenGridWidth >= levelWidth Then
             ' it went to the right of the screen
             Return False
         ElseIf Me.Location.X + amount < 0 Then
@@ -76,9 +53,8 @@ Public Class BackgroundRender
         Dim canScroll = CanScrollHorizontal(amount)
         If canScroll Then
             Location = New Point(Location.X + amount, Location.Y)
-            screenLocation = location
+            MyScene.ScreenLocation = location
         End If
-        backgroundNeedsUpdate = True
         Return canScroll
     End Function
 
@@ -86,9 +62,8 @@ Public Class BackgroundRender
         Dim canScroll = CanScrollVertical(amount)
         If canScroll Then
             Location = New Point(Location.X, Location.Y+amount)
-            screenLocation = location
+            MyScene.ScreenLocation = location
         End If
-        backgroundNeedsUpdate = True
         Return canScroll
     End Function
 
@@ -96,9 +71,7 @@ Public Class BackgroundRender
         If RenderImage IsNot Nothing
             RenderImage.Dispose()
         End If
-        If ActualImage IsNot Nothing
-            ActualImage.Dispose()
-        End If
+
     End Sub
 End Class
 

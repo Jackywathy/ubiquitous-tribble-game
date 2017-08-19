@@ -1,4 +1,16 @@
-﻿Public MustInherit Class RenderObject
+﻿''' <summary>
+''' items that are simply added onto the screen - no hitboxes
+''' </summary>
+Public MustInherit Class RenderItem
+    Public MustOverride Sub Render(g As Graphics)
+
+End Class
+
+''' <summary>
+''' Items that have hitboxes
+''' </summary>
+Public MustInherit Class RenderObject
+    Inherits RenderItem
     Public Property Width As Integer
     Public Property Height As Integer
 
@@ -22,10 +34,6 @@
     Public Const animationInterval As Integer = 5 ' Frames to wait before proceeding to next image of animation
 
     Public MustOverride Property RenderImage As Image
-    ''' <summary>
-    ''' Holds the current screen location, shared by RENDER OBJECT and all subclasses
-    ''' </summary>
-    Friend Shared screenLocation As New Point(0,0)
 
     ''' <summary>
     ''' Location of object from the very bottom left (0,0)
@@ -62,9 +70,9 @@
     ''' Draws the image into the graphics object given
     ''' </summary>
     ''' <param name="g"></param>
-    Public Overridable Sub Render(g As Graphics)
+    Public Overrides Sub Render(g As Graphics)
         BeforeRender()
-        g.DrawImage(RenderImage, New Point(Location.X - screenLocation.X, Dimensions.ScreenGridHeight - Height - Location.Y + screenLocation.Y - toolBarOffSet))
+        g.DrawImage(RenderImage, New Point(Location.X - MyScene.screenLocation.X, Dimensions.ScreenGridHeight - Height - Location.Y + MyScene.screenLocation.Y - toolBarOffSet))
     End Sub
 
     ''' <summary>
@@ -74,20 +82,20 @@
     Public Overridable Function InScene()
         ' checks if levelWidth/levelHeight is in the screen properly
         ' it is in sceen if the location of itself is in the scene to be rendered
-        If Me.Location.X + Me.Width < screenLocation.X Then
+        If Me.Location.X + Me.Width < MyScene.screenLocation.X Then
             ' if most right point of block < most left point of screen
             ' left of the screen
             Return False
-        ElseIf Me.Location.X > screenLocation.X + Dimensions.ScreenGridWidth Then
+        ElseIf Me.Location.X > MyScene.screenLocation.X + Dimensions.ScreenGridWidth Then
             ' if msot left of block > most right of screen
             ' it is to the right of the scene
             Return False
 
-        ElseIf Me.Location.Y > screenLocation.Y + Dimensions.ScreenGridHeight Then
+        ElseIf Me.Location.Y > MyScene.screenLocation.Y + Dimensions.ScreenGridHeight Then
             ' if lowest bit of block > highest bit of screen
             ' it is above scene
             Return False
-        ElseIf Me.Location.Y + Me.Height < screenLocation.Y Then
+        ElseIf Me.Location.Y + Me.Height < MyScene.screenLocation.Y Then
             ' if highest bit of block < lowest bit of screen
             ' it is below scene
             Return False

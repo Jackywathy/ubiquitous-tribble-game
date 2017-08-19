@@ -1,17 +1,14 @@
 ﻿Public Class SpriteSet
     Implements IDictionary(Of SpriteState, List(Of Image))
 
-    Public AllSprites As Dictionary(Of SpriteState, List(Of Image)) ' Dict (SpriteEnum.Walk, List(Of Image) )
-    Private counter As New Dictionary(Of SpriteState, Integer) ' Dict (SpriteEnum, Integer)
+    Public Readonly AllSprites As Dictionary(Of SpriteState, List(Of Image)) ' Dict (SpriteEnum.Walk, List(Of Image) )
+    Private ReadOnly counter As New Dictionary(Of SpriteState, Integer) ' Dict (SpriteEnum, Integer)
 
 
-    Sub New(spriteSet As Dictionary(Of SpriteState, List(Of Image)), width As Integer, height As Integer, Optional otherWidth As Dictionary(Of SpriteState, Size) = Nothing)
+    Sub New(spriteSet As Dictionary(Of SpriteState, List(Of Image)), width As Integer, height As Integer, Optional otherWidth As Dictionary(Of SpriteState, Size) = Nothing, Optional autoRotate As Boolean = True)
         If otherWidth Is Nothing
             otherWidth = New Dictionary(Of SpriteState, Size)
         End If
-
-        Me.AllSprites = spriteSet
-
 
         ' images do NOT have to be disposed here - they are references to 
         ' my.resources.<image>, and by disposing them, you wil make them
@@ -41,14 +38,38 @@
             Next
             ' add completed list to out dict
             outDict.Add(state, resizeList)
+            
             ' create animation state counter
             counter.Add(state, 0)
         Next
-
+        'If autoRotate
+        '    ' do auto-flipping if needed
+        '    if AllSprites.ContainsKey(SpriteState.GroundWalkLeft) And Not AllSprites.ContainsKey(SpriteState.GroundWalkRight)
+        '        Dim flipped As New List(Of Image)
+        '        For each img As Image In AllSprites(SpriteState.GroundWalkLeft)
+        '            flipped.Add(Flip(img))
+        '        Next
+        '        AllSprites.Add(SpriteState.GroundWalkRight, flipped)
+        '    End If
+        'End if
         Me.AllSprites = outDict
-
     End Sub
+    
+    ''' <summary>
+    ''' Returns the current image in the selected sprite animation
+    ''' </summary>
+    Public Function SendToBack(state As SpriteState) As Image
+        Dim ret = AllSprites(state)(counter(state))
+        counter(state) += 1
+        If counter(state) > AllSprites(state).Count - 1
+            ' if counter is greater than the size of array, reset back to zero
+            counter(state) = 0
+        End If
+        Return ret
+    End Function
 
+
+    #Region "IDictionary"
     Public ReadOnly Property Count As Integer Implements ICollection(Of KeyValuePair(Of SpriteState, List(Of Image))).Count
         Get
             Return AllSprites.Count
@@ -131,24 +152,10 @@
     Private Function IEnumerable_GetEnumerator() As IEnumerator Implements IEnumerable.GetEnumerator
         Return AllSprites.GetEnumerator()
     End Function
-
-#Region "IDictionary"
-
-    ''' <summary>
-    ''' A list of integers, which represents how much each animation loop has progressed
-    ''' </summary>
-    Public Function SendToBack(state As SpriteState) As Image
-        Dim ret = AllSprites(state)(counter(state))
-        counter(state) += 1
-        If counter(state) > AllSprites(state).Count - 1 Then
-            ' if counter is greater than the size of array, reset back to zero
-            counter(state) = 0
-        End If
-        Return ret
-    End Function
-
-#End Region
+    
+    #End Region
 End Class
+
 
 ' ===========================
 ' Sprite sets

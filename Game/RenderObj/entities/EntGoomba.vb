@@ -8,6 +8,9 @@
         MyBase.New(32, 32, location, Sprites.goomba, scene)
     End Sub
 
+    Public Sub New(params As Object(), scene As Scene)
+        Me.New(New Point(params(0), params(1)), scene)
+    End Sub
     Public Overrides Sub animate()
         If isDead Then
             Me.renderImage = SpriteSet(SpriteState.Destroy)(0)

@@ -16,8 +16,8 @@ Module Debug
         Dim x = (new    TestImage(image))
         x.Show()
     End Sub
-    Public Sub Print(str As String)
-        Console.Out.WriteLine(str)
+    Public Sub Print(str As Object)
+        Console.Out.WriteLine(str.ToString)
     End Sub
     Public isDebug = True
 End Module
@@ -54,6 +54,12 @@ Public Module ImageManipulation
             g.DrawImage(image, 0, 0, width, height)
         End Using
         Return out
+    End Function
+
+    Public Function Flip(image As Image) As Image
+        Dim img As Bitmap = image.Clone()
+        img.RotateFlip(RotateFlipType.RotateNoneFlipX)
+        return img
     End Function
 
 End Module

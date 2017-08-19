@@ -293,7 +293,7 @@ Public MustInherit Class Entity
         If Me.GetType() = GetType(EntPlayer) Then
             If Me.Location.X + Me.veloc.X < 0 Then
                 Me.veloc.X = 0
-            ElseIf (Me.Location.X - screenLocation.X + Me.veloc.X) > ScreenGridWidth Then
+            ElseIf (Me.Location.X - MyScene.screenLocation.X + Me.veloc.X) > ScreenGridWidth Then
                 Me.veloc.X = 0
             End If
         End If
@@ -301,7 +301,7 @@ Public MustInherit Class Entity
         If Me.GetType() = GetType(EntFireball) Then
             If Me.Location.X + Me.veloc.X < 0 Then
                 Me.Destroy()
-            ElseIf (Me.Location.X - screenLocation.X + Me.veloc.X) > ScreenGridWidth Then
+            ElseIf (Me.Location.X - MyScene.screenLocation.X + Me.veloc.X) > ScreenGridWidth Then
                 Me.Destroy()
             End If
         End If
@@ -309,7 +309,7 @@ Public MustInherit Class Entity
         ' kill itself if its out of the scene
         If Me.Location.X + Me.veloc.X < 0 Then
             Me.veloc.X = 0
-        ElseIf (Me.Location.X - screenLocation.X + Me.veloc.X) > ScreenGridWidth Then
+        ElseIf (Me.Location.X - MyScene.screenLocation.X + Me.veloc.X) > ScreenGridWidth Then
             Me.veloc.X = 0
         End If
 

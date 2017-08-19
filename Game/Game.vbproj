@@ -111,6 +111,13 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="fonts\FontController.vb" />
+    <Compile Include="main\MainGame.Designer.vb">
+      <DependentUpon>MainGame.vb</DependentUpon>
+    </Compile>
+    <Compile Include="main\MainGame.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="main\MusicPlayer.vb" />
     <Compile Include="main\TestImage.designer.vb">
       <DependentUpon>TestImage.vb</DependentUpon>
@@ -119,13 +126,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="main\Helper.vb" />
-    <Compile Include="main\MainGame.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="main\MainGame.Designer.vb">
-      <DependentUpon>MainGame.vb</DependentUpon>
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="map\Scene.vb" />
     <Compile Include="My Project\Resources.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -157,14 +158,14 @@
     <Compile Include="renderObj\entities\EntPowerup.vb" />
     <Compile Include="renderObj\Render.vb" />
     <Compile Include="renderObj\Sprites.vb" />
-    <Compile Include="map\Scene.vb" />
+    <Compile Include="renderObj\static\StaticText.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="main\TestImage.resx">
-      <DependentUpon>TestImage.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="main\MainGame.resx">
       <DependentUpon>MainGame.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="main\TestImage.resx">
+      <DependentUpon>TestImage.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
