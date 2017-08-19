@@ -112,21 +112,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="fonts\FontController.vb" />
-    <Compile Include="misc\MusicPlayer.vb" />
-    <Compile Include="misc\TestImage.designer.vb">
+    <Compile Include="main\MainGame.Designer.vb">
+      <DependentUpon>MainGame.vb</DependentUpon>
+    </Compile>
+    <Compile Include="main\MainGame.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="main\MusicPlayer.vb" />
+    <Compile Include="main\TestImage.designer.vb">
       <DependentUpon>TestImage.vb</DependentUpon>
     </Compile>
-    <Compile Include="misc\TestImage.vb">
+    <Compile Include="main\TestImage.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="misc\Helper.vb" />
-    <Compile Include="MainGame.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MainGame.Designer.vb">
-      <DependentUpon>MainGame.vb</DependentUpon>
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="main\Helper.vb" />
+    <Compile Include="map\Scene.vb" />
     <Compile Include="My Project\Resources.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -157,16 +157,15 @@
     <Compile Include="renderObj\entities\EntPlayer.vb" />
     <Compile Include="renderObj\entities\EntPowerup.vb" />
     <Compile Include="renderObj\Render.vb" />
-    <Compile Include="misc\Sprites.vb" />
+    <Compile Include="renderObj\Sprites.vb" />
     <Compile Include="renderObj\static\StaticText.vb" />
-    <Compile Include="Scene.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="misc\TestImage.resx">
-      <DependentUpon>TestImage.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MainGame.resx">
+    <EmbeddedResource Include="main\MainGame.resx">
       <DependentUpon>MainGame.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="main\TestImage.resx">
+      <DependentUpon>TestImage.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
