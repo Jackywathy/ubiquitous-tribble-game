@@ -1,49 +1,22 @@
 ﻿Imports System.Drawing.Drawing2D
-
+''' <summary>
+''' Main Form that is run on startup - this is controlled using <see cref="Scene"/> objects
+''' </summary>
 Public Class MainGame
-    Public Class KeyHandler
-        Public Shared MoveRight As Boolean
-        Public Shared MoveLeft As Boolean
-        Public Shared MoveUp As Boolean
-        Public Shared MoveDown As Boolean
-        Private Shared Sub KeyHelp(key As Keys, vset As Boolean)
-            If key = Keys.Right Or key = Keys.D Then
-                MoveRight = vset
-            End If
+    Public Shared Property CurrentScene As Scene
 
-            If key = Keys.Left Or key = Keys.A Then
-                MoveLeft = vset
-            End If
-
-            If key = Keys.Up Or key = Keys.W Then
-                MoveUp = vset
-            End If
-
-            If key = Keys.Down Or key = Keys.S Then
-                MoveDown = vset
-            End If
-
-        End Sub
-
-        Public Shared Sub KeyDown(key As Keys)
-           KeyHelp(key, True)
-        End Sub
-
-        Public Shared Sub KeyUp(key as Keys)
-            KeyHelp(key, False)
-        End Sub
-
-        Public Shared Sub Reset()
-            MoveRight = False
-            MoveLeft = False
-            MoveUp = False
-            MoveDown = False
-        End Sub
-    End Class
-    
-    Public Shared Property SceneController As Scene
+    ''' <summary>
+    ''' Temp fonts - for testing
+    ''' </summary>
     Public tempFont As Font 
-    Public FontController As FontController
+    Public tempFont2 As Font
+
+    ''' <summary>
+    ''' Debug buffer - this is written to top right of scene each tick, only if isDebug is set to False in Helper.vb
+    ''' </summary>
+    Private strBuffer As New List(Of String)
+
+
     Sub New()
         ' This call is required by the designer.
         InitializeComponent()
@@ -54,16 +27,14 @@ Public Class MainGame
 
         
         tempFont = New Font(CustomFontFamily.NES.GetFontFamily(), 30.0)
-
+        tempFont2 = New Font(CustomFontFamily.SuperMario.GetFontFamily(),  30.0)
     End Sub
 
     Private Sub GameLoop_Tick(sender As Object, e As EventArgs) Handles GameLoop.Tick
-        SceneController.handleInput()
-        SceneController.UpdatePhysics(numFrames)
+        CurrentScene.handleInput()
+        CurrentScene.UpdatePhysics(numFrames)
         Me.Refresh()
     End Sub
-
-    
 
 
 
@@ -72,18 +43,21 @@ Public Class MainGame
         Dim g = e.Graphics
         g.InterpolationMode = InterpolationMode.NearestNeighbor
         
-        SceneController.RenderScene(g)
+        CurrentScene.RenderScene(g)
         UpdateFPS()
         g.DrawString("THIS FONT!", tempFont, New SolidBrush(Color.Blue), 30, 30)
+        g.DrawString("Or THIS?", tempFont2, New SolidBrush(Color.Blue), 500, 30)
 
-        if isDebug And SceneController.player1 IsNot Nothing
+        if isDebug And CurrentScene.player1 IsNot Nothing
             AddStringBuffer(String.Format("fps: {0}", FPS))
-            AddStringBuffer(String.Format("Mario Location: {0}, {1}", SceneController.player1.Location.X, SceneController.player1.Location.Y))
+            AddStringBuffer(String.Format("Mario Location: {0}, {1}", CurrentScene.player1.Location.X, CurrentScene.player1.Location.Y))
             DrawStringBuffer(g)
         End if
+
+
     End Sub
 
-    Private strBuffer As New List(Of String)
+   
 
 
     Public Sub AddStringBuffer(str As String)
@@ -140,12 +114,50 @@ Public Class MainGame
     End Sub
 
     Private Sub MainGame_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        SceneController = Scene.ReadMapFromResource("map_testmap")
+        CurrentScene = Scene.ReadMapFromResource("map_testmap")
 
         MusicPlayer.PlayBackground(BackgroundMusic.GroundTheme)
         ' only start loop after init has finished
         GameLoop.Enabled = True
     End Sub
 
+    Public Class KeyHandler
+        Public Shared MoveRight As Boolean
+        Public Shared MoveLeft As Boolean
+        Public Shared MoveUp As Boolean
+        Public Shared MoveDown As Boolean
+        Private Shared Sub KeyHelp(key As Keys, vset As Boolean)
+            If key = Keys.Right Or key = Keys.D Then
+                MoveRight = vset
+            End If
 
+            If key = Keys.Left Or key = Keys.A Then
+                MoveLeft = vset
+            End If
+
+            If key = Keys.Up Or key = Keys.W Then
+                MoveUp = vset
+            End If
+
+            If key = Keys.Down Or key = Keys.S Then
+                MoveDown = vset
+            End If
+
+        End Sub
+
+        Public Shared Sub KeyDown(key As Keys)
+            KeyHelp(key, True)
+        End Sub
+
+        Public Shared Sub KeyUp(key as Keys)
+            KeyHelp(key, False)
+        End Sub
+
+        Public Shared Sub Reset()
+            MoveRight = False
+            MoveLeft = False
+            MoveUp = False
+            MoveDown = False
+        End Sub
+    End Class
 End Class

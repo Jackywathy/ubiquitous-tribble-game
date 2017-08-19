@@ -29,4 +29,5 @@ End Class
 
 Public Module CustomFontFamily
     Public NES As New FontController("NES")
+    Public SuperMario As New FontController("SuperMario256")
 End Module

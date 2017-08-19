@@ -1013,6 +1013,16 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Byte[].
         '''</summary>
+        Friend ReadOnly Property SuperMario256() As Byte()
+            Get
+                Dim obj As Object = ResourceManager.GetObject("SuperMario256", resourceCulture)
+                Return CType(obj,Byte())
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Byte[].
+        '''</summary>
         Friend ReadOnly Property warp() As Byte()
             Get
                 Dim obj As Object = ResourceManager.GetObject("warp", resourceCulture)
