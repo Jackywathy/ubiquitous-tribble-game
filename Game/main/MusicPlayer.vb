@@ -1,6 +1,9 @@
 ﻿Imports System.IO
 Imports NAudio.Wave
 
+''' <summary>
+''' 
+''' </summary>
 Public NotInheritable Class MusicPlayer
     Implements IDisposable
     Private Shared Property backgroundPlayer As MusicPlayer
@@ -9,33 +12,38 @@ Public NotInheritable Class MusicPlayer
     Private ReadOnly channel As WaveChannel32
     Private ReadOnly player As IWavePlayer
 
+
+    ''' <summary>
+    ''' A wrapper allowing sound to be player 
+    ''' </summary>
+    ''' <param name="name">Resource name of mp3 file</param>
+    Public Sub New(name As String, Optional volume As Single = 1.0F)
+        Me.New(New MemoryStream(CType(My.Resources.ResourceManager.GetObject(name), Byte())), volume)
+    End Sub
+
+
+    ''' <summary>
+    ''' Stops the current background music if necessary and plays the given sound on repeat
+    ''' </summary>
+    ''' <param name="music"></param>
     Public Shared Sub PlayBackground(music As MusicPlayer)
         If backgroundPlayer IsNot Nothing Then
             backgroundPlayer.Dispose()
         End If
         backgroundPlayer = music
-        backgroundPlayer.DoLoop(True)
+        backgroundPlayer.EnableLoop(True)
         backgroundPlayer.Play()
     End Sub
 
-
-
     ''' <summary>
-    ''' A wrapper allowing sound to be played.
+    ''' Makes sound loop itself after it finishes
     ''' </summary>
-    ''' <param name="name"></param>
-    Public Sub New(name As String, Optional volume As Single = 1.0F)
-        Me.New(New MemoryStream(CType(My.Resources.ResourceManager.GetObject(name), Byte())), volume)
-
-    End Sub
-
-    Public Sub DoLoop(Optional enable As Boolean = True)
+    ''' <param name="enable"></param>
+    Public Sub EnableLoop(Optional enable As Boolean = True)
         AddHandler player.PlaybackStopped, AddressOf Repeat_audio
     End Sub
 
-    Private Sub Repeat_audio(sender As Object, e As EventArgs)
-        Me.Play()
-    End Sub
+    
 
     Public Sub New(stream As Stream, Optional volume As Single = 1.0F)
         reader = New Mp3FileReader(stream)
@@ -74,11 +82,9 @@ Public NotInheritable Class MusicPlayer
     End Sub
 
 
-
-    Public Shared Sub Media_Repeat(sender As MusicPlayer, e As EventArgs)
-        sender.Play(fromStart:=True)
-    End Sub
-
+    ''' <summary>
+    ''' Dispose all unmanaged audio resources
+    ''' </summary>
     Public Sub Dispose() Implements IDisposable.Dispose
         If reader IsNot Nothing Then
             reader.Dispose()
@@ -89,6 +95,15 @@ Public NotInheritable Class MusicPlayer
         If reader IsNot Nothing Then
             player.Dispose()
         End If
+    End Sub
+
+    ''' <summary>
+    ''' Event handler to play sound
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub Repeat_audio(sender As Object, e As EventArgs)
+        Me.Play()
     End Sub
 End Class
 

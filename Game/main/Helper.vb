@@ -1,5 +1,6 @@
-﻿
-
+﻿''' <summary>
+''' Module that stores global variables
+''' </summary>
 Public Module Dimensions
     Public Const ScreenGridWidth As Integer = 1280
     Public Const ScreenGridHeight As Integer = 720
@@ -12,23 +13,37 @@ Public Module Dimensions
 End Module
 
 Module Debug
+    ''' <summary>
+    ''' Shows an image as a form for debugging purposes
+    ''' </summary>
+    ''' <param name="image"></param>
     Public Sub DbShowImage(image As Image)
-        Dim x = (new    TestImage(image))
+        Dim x = (new TestImage(image))
         x.Show()
     End Sub
+
+    ''' <summary>
+    ''' Prints an object to the console
+    ''' </summary>
+    ''' <param name="str"></param>
     Public Sub Print(str As Object)
         Console.Out.WriteLine(str.ToString)
     End Sub
-    Public isDebug = True
+
+    Public IsDebug = True
 End Module
 
+
 Public Module ImageManipulation
-
+    ''' <summary>
+    ''' Crops an image, and returns a new image
+    ''' </summary>
+    ''' <param name="image"></param>
+    ''' <param name="bottomLeft"></param>
+    ''' <param name="width"></param>
+    ''' <param name="height"></param>
+    ''' <returns></returns>
     Public Function Crop(image As Image, bottomLeft As Point, width As Integer, height As Integer) As Image
-        ' width/height of rectangle output
-
-
-        ' rectangle to be cut out
         Dim cropRect As New RectangleF(New PointF(bottomLeft.X, image.Height - height - bottomLeft.Y), New SizeF(width, height))
 
         Dim out As New Bitmap(width, height)
@@ -38,15 +53,26 @@ Public Module ImageManipulation
         Return out
     End Function
 
+    ''' <summary>
+    ''' Crops an image, drawing it on the out graphics object
+    ''' </summary>
+    ''' <param name="image"></param>
+    ''' <param name="out"></param>
+    ''' <param name="bottomLeft"></param>
+    ''' <param name="width"></param>
+    ''' <param name="height"></param>
     Public Sub Crop(image As Image, out As Graphics, bottomLeft As Point, width As Integer, height As Integer)
-        ' width/height of rectangle output
-
-
-        ' rectangle to be cut out
         Dim cropRect As New RectangleF(New PointF(bottomLeft.X, image.Height - height - bottomLeft.Y), New SizeF(width, height))
         out.DrawImage(image, New RectangleF(0, 0, cropRect.Width, cropRect.Height), cropRect, GraphicsUnit.Pixel)
     End Sub
 
+    ''' <summary>
+    ''' Scales the image
+    ''' </summary>
+    ''' <param name="image"></param>
+    ''' <param name="width"></param>
+    ''' <param name="height"></param>
+    ''' <returns></returns>
     Public Function Resize(image As Image, width As Integer, height As Integer) As Image
         ' width/height of rectangle output
         Dim out As New Bitmap(width, height)
@@ -56,21 +82,15 @@ Public Module ImageManipulation
         Return out
     End Function
 
+    ''' <summary>
+    ''' Returns a flipped image
+    ''' </summary>
+    ''' <param name="image"></param>
+    ''' <returns></returns>
     Public Function Flip(image As Image) As Image
         Dim img As Bitmap = image.Clone()
         img.RotateFlip(RotateFlipType.RotateNoneFlipX)
         return img
     End Function
-
-End Module
-
-
-
-
-Friend Module UriCreator
-    
-
-    
-
 
 End Module

@@ -12,11 +12,13 @@ Public Class MainGame
     Public tempFont2 As Font
 
     ''' <summary>
-    ''' Debug buffer - this is written to top right of scene each tick, only if isDebug is set to False in Helper.vb
+    ''' Debug buffer - this is written to top right of scene each tick, only if IsDebug is set to False in Helper.vb
     ''' </summary>
     Private strBuffer As New List(Of String)
 
-
+    ''' <summary>
+    ''' Constructor for 
+    ''' </summary>
     Sub New()
         ' This call is required by the designer.
         InitializeComponent()

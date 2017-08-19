@@ -46,4 +46,29 @@
             Sounds.Warp.Play()
         End If
     End Sub
+
+    Public Overrides Sub CollisionBottom(sender As Entity)
+        MyBase.CollisionBottom(sender)
+        If sender.GetType() = GetType(EntPlayer) Then
+            HurtPlayer(sender)
+        End If
+    End Sub
+
+    Public Overrides Sub CollisionLeft(sender As Entity)
+        MyBase.CollisionLeft(sender)
+        If sender.GetType() = GetType(EntPlayer) Then
+            HurtPlayer(sender)
+        End If
+    End Sub
+
+    Public Overrides Sub CollisionRight(sender As Entity)
+        MyBase.CollisionRight(sender)
+        If sender.GetType() = GetType(EntPlayer) Then
+            HurtPlayer(sender)
+        End If
+    End Sub
+    
+    Private Sub HurtPlayer(player As EntPlayer)
+        player.PlayerGotHit()
+    End Sub
 End Class
