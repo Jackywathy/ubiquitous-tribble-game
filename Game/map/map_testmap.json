@@ -1,5 +1,6 @@
 ﻿{
   "map_name": "test",
+
   "blocks": {
     "blockBreakableBrick": [
 
@@ -12,10 +13,10 @@
       [ 448, 128 ]
     ],
     "brickPlatform": [
-      [ 0, 0, 640, 64 ]
+      [ 0, 0, 1920, 64 ]
     ],
     "blockQuestion": [
-      [ 480, 128 ]
+      [ 480, 128, "default_fire" ]
     ],
     "blockMetal": [
       [ 128, 64 ],
@@ -27,7 +28,7 @@
 
 
   },
-  "background": "#6495ED",
+  "background": [ "#6495ED", 100000000, 1000 ],
   "background_music": "ground_theme",
   "default_entry": [ 0, 64 ] 
 }

@@ -111,6 +111,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="fonts\FontController.vb" />
     <Compile Include="misc\MusicPlayer.vb" />
     <Compile Include="misc\TestImage.designer.vb">
       <DependentUpon>TestImage.vb</DependentUpon>
@@ -157,6 +158,7 @@
     <Compile Include="renderObj\entities\EntPowerup.vb" />
     <Compile Include="renderObj\Render.vb" />
     <Compile Include="misc\Sprites.vb" />
+    <Compile Include="renderObj\static\StaticText.vb" />
     <Compile Include="Scene.vb" />
   </ItemGroup>
   <ItemGroup>

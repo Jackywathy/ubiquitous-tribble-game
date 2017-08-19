@@ -42,7 +42,8 @@ Public Class MainGame
     End Class
     
     Public Shared Property SceneController As Scene
-
+    Public tempFont As Font 
+    Public FontController As FontController
     Sub New()
         ' This call is required by the designer.
         InitializeComponent()
@@ -52,7 +53,8 @@ Public Class MainGame
         SetStyle(ControlStyles.AllPaintingInWmPaint, True)
 
         
-        
+        tempFont = New Font(CustomFontFamily.NES.GetFontFamily(), 30.0)
+
     End Sub
 
     Private Sub GameLoop_Tick(sender As Object, e As EventArgs) Handles GameLoop.Tick
@@ -72,6 +74,7 @@ Public Class MainGame
         
         SceneController.RenderScene(g)
         UpdateFPS()
+        g.DrawString("THIS FONT!", tempFont, New SolidBrush(Color.Blue), 30, 30)
 
         if isDebug And SceneController.player1 IsNot Nothing
             AddStringBuffer(String.Format("fps: {0}", FPS))
