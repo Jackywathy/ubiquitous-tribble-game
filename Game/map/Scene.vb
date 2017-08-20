@@ -1,4 +1,5 @@
-﻿Imports Newtonsoft.Json
+﻿Imports System.Data.Common
+Imports Newtonsoft.Json
 
 Public Class Scene
     ' Contains all objects (no entityes)
@@ -281,7 +282,7 @@ Public Class Scene
         For Each pair As KeyValuePair(Of String, IList(Of Object())) In mapObject.blocks
             Dim name = pair.Key
             For Each params As Object() In pair.Value
-                outScene.AddObject(outScene.RenderItemFactory(name, params))
+                outScene.RenderItemFactory(name, params).AddSelfToScene()
             Next
         Next
         ' add all entities
@@ -291,8 +292,13 @@ Public Class Scene
         outScene.AddEntity(player1)
         'outScene.AddEntity(New EntKoopa(New Point(320, 64), outScene))
         outScene.AddEntity(New EntGoomba(New Point(320, 64), outScene))
-        Dim x As New StaticText(New RectangleF(0,0,ScreenGridWidth/4, ScreenGridHeight/8), "Mario", New Font("Times New Roman", 5), New SolidBrush(Color.Red), StringAlignment.Center)
+        Dim x As New StaticText(New RectangleF(0,0,ScreenGridWidth/4, ScreenGridHeight/32), "MARIO", CustomFontFamily.NES.GetFontFamily(), 18, New SolidBrush(Color.White), StringAlignment.Near, StringAlignment.Near)
         outScene.AddItem(x)
+        x = New StaticText(New RectangleF(0,ScreenGridHeight/32,ScreenGridWidth/4,ScreenGridHeight/16 ), "000000", CustomFontFamily.NES.GetFontFamily(), 18, New SolidBrush(Color.White), StringAlignment.Near, StringAlignment.Near)
+        outScene.AddItem(x)
+        Dim y As New BlockPipe(64, 128, New Point(700, 64), outScene)
+        y.AddSelfToScene()
+
         Return outScene
     End Function
 

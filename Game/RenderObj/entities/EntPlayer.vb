@@ -144,6 +144,7 @@ Public Class EntPlayer
     Private Sub KillPlayer()
         Lives -= 1
         Sounds.PlayerDead.Play()
+        MusicPlayer.BackgroundPlayer._Stop()
         System.Threading.Thread.Sleep(1000)
     End Sub
 
@@ -212,13 +213,23 @@ Public Class EntPlayer
     End Sub
 
     Public Overrides Sub UpdatePos()
+        MyBase.UpdatePos()
+        Select Case IsOutOfMap()
+            Case Direction.Right, Direction.Left
+                veloc.X = 0
+                
+            Case Direction.Top, Direction.Bottom
+                Throw New NotImplementedException
+                
+        End Select
+            
         If Me.isCrouching And Not isGrounded Then
             Me.onCrouch(False)
         End If
         If invulnerableTime <> 0
             invulnerableTime -= 1
         End If
-        MyBase.UpdatePos()
+        
     End Sub
 
     Private Shared _coins As Integer = 0

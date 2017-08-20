@@ -155,4 +155,12 @@ Public MustInherit Class RenderObject
         
     End Operator
 
+    Public Overridable Sub AddSelfToScene()
+        If Me.GetType.IsSubclassOf(GetType(Entity))
+            MyScene.AddEntity(Me)
+        Else 
+            MyScene.AddObject(Me)
+        End If
+    End Sub
+
 End Class

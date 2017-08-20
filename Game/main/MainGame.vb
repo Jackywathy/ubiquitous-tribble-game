@@ -6,12 +6,6 @@ Public Class MainGame
     Public Shared Property CurrentScene As Scene
 
     ''' <summary>
-    ''' Temp fonts - for testing
-    ''' </summary>
-    Public tempFont As Font 
-    Public tempFont2 As Font
-
-    ''' <summary>
     ''' Debug buffer - this is written to top right of scene each tick, only if IsDebug is set to False in Helper.vb
     ''' </summary>
     Private strBuffer As New List(Of String)
@@ -27,9 +21,6 @@ Public Class MainGame
         SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
         SetStyle(ControlStyles.AllPaintingInWmPaint, True)
 
-        
-        tempFont = New Font(CustomFontFamily.NES.GetFontFamily(), 30.0)
-        tempFont2 = New Font(CustomFontFamily.SuperMario.GetFontFamily(),  30.0)
     End Sub
 
     Private Sub GameLoop_Tick(sender As Object, e As EventArgs) Handles GameLoop.Tick
@@ -47,8 +38,6 @@ Public Class MainGame
         
         CurrentScene.RenderScene(g)
         UpdateFPS()
-        g.DrawString("THIS FONT!", tempFont, New SolidBrush(Color.Blue), 30, 30)
-        g.DrawString("Or THIS?", tempFont2, New SolidBrush(Color.Blue), 500, 30)
 
         if isDebug And CurrentScene.player1 IsNot Nothing
             AddStringBuffer(String.Format("fps: {0}", FPS))

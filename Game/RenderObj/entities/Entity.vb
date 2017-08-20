@@ -277,29 +277,29 @@ Public MustInherit Class Entity
         End If
 
     End Sub
+    
 
+    Public Function IsOutOfMap() As Direction
+        If Me.Location.X  < 0 Then
+            Return Direction.Left
+        ElseIf (Me.Location.X - MyScene.screenLocation.X + Me.veloc.X) > ScreenGridWidth Then
+            Return Direction.Right
+        End If
+        Return Direction.None
+    End Function
   
 
     ''' <summary>
     ''' Updates the position of this entity, using its velocity and location.
     ''' </summary>
     Public Overridable Sub UpdatePos()
-        'TODO UPDATE SO IT WORKS PROPERLY - chuck it in the player class instead!
         ' stop the player from walking off
 
         Me.ApplyConstantForces()
 
-        ' Stop from going off the screen
-        If Me.GetType() = GetType(EntPlayer) Then
-            If Me.Location.X + Me.veloc.X < 0 Then
-                Me.veloc.X = 0
-            ElseIf (Me.Location.X - MyScene.screenLocation.X + Me.veloc.X) > ScreenGridWidth Then
-                Me.veloc.X = 0
-            End If
-        End If
 
         If Me.GetType() = GetType(EntFireball) Then
-            If Me.Location.X + Me.veloc.X < 0 Then
+            If Me.Location.X< 0 Then
                 Me.Destroy()
             ElseIf (Me.Location.X - MyScene.screenLocation.X + Me.veloc.X) > ScreenGridWidth Then
                 Me.Destroy()
@@ -390,3 +390,11 @@ Public Structure Distance
         Me.y = y
     End Sub
 End Structure
+
+Public Enum Direction
+    Top
+    Right
+    Bottom
+    Left
+    None
+End Enum

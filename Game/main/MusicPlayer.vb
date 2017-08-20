@@ -6,7 +6,7 @@ Imports NAudio.Wave
 ''' </summary>
 Public NotInheritable Class MusicPlayer
     Implements IDisposable
-    Private Shared Property backgroundPlayer As MusicPlayer
+    Public  Shared Property BackgroundPlayer As MusicPlayer
 
     Private ReadOnly reader As WaveStream
     Private ReadOnly channel As WaveChannel32
@@ -20,7 +20,6 @@ Public NotInheritable Class MusicPlayer
     Public Sub New(name As String, Optional volume As Single = 1.0F)
         Me.New(New MemoryStream(CType(My.Resources.ResourceManager.GetObject(name), Byte())), volume)
     End Sub
-
 
     ''' <summary>
     ''' Stops the current background music if necessary and plays the given sound on repeat
@@ -67,9 +66,11 @@ Public NotInheritable Class MusicPlayer
         player.Play()
     End Sub
 
-    Public Sub Pause()
+    ''' <summary>
+    ''' Stops playback - has  to be _stop cuz stop is a keyword in vb.Net for some reason
+    ''' </summary>
+    Public Sub _Stop()
         player.Stop()
-
     End Sub
 
 

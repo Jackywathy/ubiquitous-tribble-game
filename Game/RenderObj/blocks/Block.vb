@@ -12,6 +12,10 @@
         Me.RenderImage = spriteSet(0)(0)
     End Sub
 
+    Public Sub New(width As Integer, height As Integer, location As Point, scene As Scene)
+        MyBase.New(width, height, location, scene)
+    End Sub
+
     
     Public Overrides Sub CollisionTop(sender As Entity)
         MyBase.CollisionTop(sender)

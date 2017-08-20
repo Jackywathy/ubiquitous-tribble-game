@@ -281,13 +281,14 @@ Public MustInherit Class Sprites
     )
 
     Public Shared goomba As New SpriteSet(
-    New Dictionary(Of SpriteState, List(Of Image)) From {
+        New Dictionary(Of SpriteState, List(Of Image)) From {
             {SpriteState.Constant, New List(Of Image) From {My.Resources.goomba_1, My.Resources.goomba_2}},
             {SpriteState.Destroy, New List(Of Image) From {My.Resources.goomba_d}}
         },
         32,
         32
     )
+
 
     Private Sub New()
         ' make this class un-intializable

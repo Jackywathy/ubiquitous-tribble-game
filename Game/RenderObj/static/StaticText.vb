@@ -12,13 +12,13 @@
         g.DrawString(str, font, brush, drawnRect, sf)
     End Sub
 
-    Sub New (drawnRect As RectangleF, str As String, font As Font, brush As Brush, alignment As StringAlignment)
+    Sub New (drawnRect As RectangleF, str As String, fontFam As FontFamily, emSize As Integer, brush As Brush, horAlignment As StringAlignment, vertAlignment As StringAlignment)
         sf = New StringFormat()
-        sf.Alignment = alignment
-        sf.LineAlignment = alignment
+        sf.Alignment = horAlignment
+        sf.LineAlignment = vertAlignment
         Me.brush = brush
         Me.Str = str
-        Me.Font = font
+        Me.Font = New Font(fontFam, emSize)
         Me.drawnRect = drawnRect
     End Sub
 End Class

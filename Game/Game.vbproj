@@ -145,6 +145,7 @@
     </Compile>
     <Compile Include="renderObj\blocks\Block.vb" />
     <Compile Include="renderObj\blocks\BlockBreakableBrick.vb" />
+    <Compile Include="renderObj\blocks\BlockPipe.vb" />
     <Compile Include="renderObj\blocks\BlockQuestion.vb" />
     <Compile Include="renderObj\blocks\BlockMetal.vb" />
     <Compile Include="renderObj\BrickPlatform.vb" />
@@ -214,6 +215,8 @@
     <Content Include="images\enemy\koopa\ground\koopa_green_2.png" />
     <Content Include="images\enemy\koopa\koopa_green_shell1.png" />
     <Content Include="images\enemy\koopa\koopa_green_shell2.png" />
+    <Content Include="images\other\pipebottom.png" />
+    <Content Include="images\other\pipetop.png" />
     <Content Include="images\player\fire\fireball.png" />
     <Content Include="images\player\big\mario_big_1r.png" />
     <Content Include="images\player\big\mario_big_2r.png" />
@@ -286,7 +289,6 @@
     <Content Include="images\powerups\mushroom\mushroom_s7.png" />
     <Content Include="images\other\pipe.png" />
     <Content Include="images\backgrounds\placeholderLevel.png" />
-    <Content Include="images\other\platform.png" />
     <Content Include="sounds\sfx\coin_pickup.mp3" />
     <Content Include="sounds\background_music\ground_theme.mp3" />
     <Content Include="sounds\sfx\jump.mp3" />
@@ -304,7 +306,9 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="renderObj\other\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <Import Project="..\packages\Fody.2.0.0\build\dotnet\Fody.targets" Condition="Exists('..\packages\Fody.2.0.0\build\dotnet\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
