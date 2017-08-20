@@ -30,6 +30,10 @@
     End Sub
 
     Public Overrides Sub UpdatePos()
+        If IsOutOfMap() <> Direction.None
+            Me.Destroy()
+        End If
+
         If Not willDestroy Then
             Me.AccelerateX(moveSpeed.x)
 

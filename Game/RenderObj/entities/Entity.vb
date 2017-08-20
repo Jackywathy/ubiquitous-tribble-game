@@ -298,20 +298,7 @@ Public MustInherit Class Entity
         Me.ApplyConstantForces()
 
 
-        If Me.GetType() = GetType(EntFireball) Then
-            If Me.Location.X< 0 Then
-                Me.Destroy()
-            ElseIf (Me.Location.X - MyScene.screenLocation.X + Me.veloc.X) > ScreenGridWidth Then
-                Me.Destroy()
-            End If
-        End If
-
-        ' kill itself if its out of the scene
-        If Me.Location.X + Me.veloc.X < 0 Then
-            Me.veloc.X = 0
-        ElseIf (Me.Location.X - MyScene.screenLocation.X + Me.veloc.X) > ScreenGridWidth Then
-            Me.veloc.X = 0
-        End If
+       
 
         ' Check direction
         If veloc.x < 0 And isFacingForward Then

@@ -11,6 +11,7 @@
     Public Sub New(params As Object(), scene As Scene)
         Me.New(New Point(params(0), params(1)), scene)
     End Sub
+
     Public Overrides Sub animate()
         If isDead Then
             Me.renderImage = SpriteSet(SpriteState.Destroy)(0)
@@ -43,28 +44,33 @@
             End If
             Me.internalFrameCounter = 0 ' Reset for timer
             isDead = True
-            Sounds.Warp.Play()
         End If
     End Sub
 
     Public Overrides Sub CollisionBottom(sender As Entity)
         MyBase.CollisionBottom(sender)
         If sender.GetType() = GetType(EntPlayer) Then
-            HurtPlayer(sender)
+            If Not Me.IsDead
+                HurtPlayer(sender)
+            End If
         End If
     End Sub
 
     Public Overrides Sub CollisionLeft(sender As Entity)
         MyBase.CollisionLeft(sender)
         If sender.GetType() = GetType(EntPlayer) Then
-            HurtPlayer(sender)
+            If Not Me.IsDead
+                HurtPlayer(sender)
+            End If
         End If
     End Sub
 
     Public Overrides Sub CollisionRight(sender As Entity)
         MyBase.CollisionRight(sender)
         If sender.GetType() = GetType(EntPlayer) Then
-            HurtPlayer(sender)
+            If Not Me.IsDead
+                HurtPlayer(sender)
+            End If
         End If
     End Sub
     

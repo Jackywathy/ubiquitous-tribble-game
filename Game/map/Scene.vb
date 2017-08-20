@@ -290,14 +290,12 @@ Public Class Scene
 
         outScene.player1 = player1
         outScene.AddEntity(player1)
-        'outScene.AddEntity(New EntKoopa(New Point(320, 64), outScene))
         outScene.AddEntity(New EntGoomba(New Point(320, 64), outScene))
         Dim x As New StaticText(New RectangleF(0,0,ScreenGridWidth/4, ScreenGridHeight/32), "MARIO", CustomFontFamily.NES.GetFontFamily(), 18, New SolidBrush(Color.White), StringAlignment.Near, StringAlignment.Near)
         outScene.AddItem(x)
         x = New StaticText(New RectangleF(0,ScreenGridHeight/32,ScreenGridWidth/4,ScreenGridHeight/16 ), "000000", CustomFontFamily.NES.GetFontFamily(), 18, New SolidBrush(Color.White), StringAlignment.Near, StringAlignment.Near)
         outScene.AddItem(x)
-        Dim y As New BlockPipe(64, 128, New Point(700, 64), outScene)
-        y.AddSelfToScene()
+        
 
         Return outScene
     End Function
@@ -313,7 +311,7 @@ Public Class Scene
         Dim out As RenderObject
         Select Case name
             Case "blockBreakableBrick"
-                AssertLength("bbrick", 2, params.Length, params)
+                AssertLength("blockBreakableBrick", 2, params.Length, params)
                 out = New BlockBreakableBrick(params , Me)
             Case "brickPlatform"
                 AssertLength("brickPlatform", 4, params.Length, params)
@@ -324,6 +322,9 @@ Public Class Scene
             Case "blockMetal"
                 AssertLength("blockMetal", 2, params.Length, params)
                 out = New BlockMetal(params, Me)
+            Case "blockPipe"
+                AssertLength("blockPipe", 5, params.Length, params)
+                out = New BlockPipe(params, Me)
             Case Else
 
                 Throw New Exception(String.Format("No object with name {0}", name))

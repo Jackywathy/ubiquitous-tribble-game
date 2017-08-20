@@ -72,7 +72,7 @@ Public Class EntPlayer
 
     Private invulnerableTime As Integer = 0
 
-    Public Overrides Property moveSpeed As Distance = New Distance(1, 15)
+    Public Overrides Property moveSpeed As Distance = New Distance(0.8, 15)
     Public Overrides ReadOnly Property maxVeloc As Distance = New Distance(6, -15)
 
     ''' <summary>
@@ -84,6 +84,14 @@ Public Class EntPlayer
     ''' <param name="scene"></param>
     Sub New(width As Integer, height As Integer, location As Point, scene As Scene)
         MyBase.New(width, height, location, Sprites.playerSmall, scene)
+    End Sub
+
+    ''' <summary>
+    ''' Called when up/jump key is pressed
+    ''' Will check if already jumping etc etc
+    ''' </summary>
+    Public Sub Jump()
+
     End Sub
 
     ''' <summary>
@@ -215,7 +223,7 @@ Public Class EntPlayer
     Public Overrides Sub UpdatePos()
         MyBase.UpdatePos()
         Select Case IsOutOfMap()
-            Case Direction.Right, Direction.Left
+            Case Direction.Right And Me.veloc.X > 0, Direction.Left And Me.veloc.X < 0
                 veloc.X = 0
                 
             Case Direction.Top, Direction.Bottom
