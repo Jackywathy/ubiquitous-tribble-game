@@ -222,14 +222,12 @@ Public Class EntPlayer
 
     Public Overrides Sub UpdatePos()
         MyBase.UpdatePos()
-        Select Case IsOutOfMap()
-            Case Direction.Right And Me.veloc.X > 0, Direction.Left And Me.veloc.X < 0
-                veloc.X = 0
-                
-            Case Direction.Top, Direction.Bottom
-                Throw New NotImplementedException
-                
-        End Select
+
+        Dim outOfMap = IsOutOfMap()
+        if (outOfMap = Direction.Right And Me.veloc.X > 0) Or (outOfMap = Direction.Left And Me.veloc.X < 0)
+            veloc.X = 0
+        End If
+          
             
         If Me.isCrouching And Not isGrounded Then
             Me.onCrouch(False)

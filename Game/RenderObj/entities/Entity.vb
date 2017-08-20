@@ -297,9 +297,6 @@ Public MustInherit Class Entity
 
         Me.ApplyConstantForces()
 
-
-       
-
         ' Check direction
         If veloc.x < 0 And isFacingForward Then
             isFacingForward = False
@@ -379,9 +376,10 @@ Public Structure Distance
 End Structure
 
 Public Enum Direction
+    None = 0
     Top
     Right
     Bottom
     Left
-    None
+    
 End Enum

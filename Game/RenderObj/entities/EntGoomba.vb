@@ -23,7 +23,7 @@
                 Me.renderImage = SpriteSet.SendToBack(SpriteState.Constant)
             End If
             ' just to check if it works
-            veloc.x = 1
+            veloc.x = -1
         End If
 
     End Sub

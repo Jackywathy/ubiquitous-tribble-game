@@ -15,7 +15,7 @@
         Me.isGrounded = False
     End Sub
 
-    Public Overrides Sub animate()
+    Public Overrides Sub Animate()
         If Not willDestroy Then
             Me.renderImage = SpriteSet(SpriteState.Constant)(0)
             renderImage.RotateFlip(RotateFlipType.Rotate90FlipNone)
