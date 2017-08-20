@@ -23,10 +23,15 @@
                 Me.renderImage = SpriteSet.SendToBack(SpriteState.Constant)
             End If
             ' just to check if it works
-            veloc.x = -1
+            If collidedX
+                collidedX = False
+                temp *= -1
+            End If
+            Me.Veloc.X = temp
         End If
 
     End Sub
+    Dim temp As Integer = -1
 
     Public Overrides Sub UpdatePos()
         If Me.shouldRemove Then

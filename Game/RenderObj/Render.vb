@@ -30,6 +30,8 @@ Public MustInherit Class RenderObject
 
     Public Property ID As Integer = GetNewID()
 
+    
+
     Public internalFrameCounter = 0
     Public Const animationInterval As Integer = 5 ' Frames to wait before proceeding to next image of animation
 
@@ -120,12 +122,15 @@ Public MustInherit Class RenderObject
         'sender.veloc.y = 0
     End Sub
 
+    Public collidedX As Boolean = False
+
     ''' <summary>
     '''  Called when an entity collides into this RenderObject from the left
     ''' </summary>
     ''' <param name="sender"></param>
     Public Overridable Sub CollisionLeft(sender As Entity)
         'sender.veloc.x = 0
+        collidedX = True
     End Sub
 
     ''' <summary>
@@ -134,6 +139,7 @@ Public MustInherit Class RenderObject
     ''' <param name="sender"></param>
     Public Overridable Sub CollisionRight(sender As Entity)
         'sender.veloc.x = 0
+        collidedX = True
     End Sub
 
     ''' <summary>

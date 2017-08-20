@@ -29,7 +29,11 @@ Public MustInherit Class Entity
     Public isFacingForward = True
     Public didJumpAndNotFall = True
 
+
     Public currentGroundObjects As New List(Of RenderObject)
+
+    
+    
 
     ''' <summary>
     ''' Checks for overlap between Me and sender. Handles change of: location of Me, and variables such as isGrounded and didJumpAndNotFall.
@@ -37,6 +41,7 @@ Public MustInherit Class Entity
     ''' <param name="sender"></param>
 
     Public Sub CheckPotentialCollision(sender As RenderObject)
+        collidedX = False
 
         Dim selfNextPoint = New Point(Me.Location.X + Me.veloc.x, Me.Location.Y + Me.veloc.y)
 
