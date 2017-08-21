@@ -200,8 +200,7 @@
     <Content Include="images\blocks\blockGround.png" />
     <Content Include="images\blocks\blockGround_2x.png" />
     <Content Include="images\blocks\pipe\pipe_2x.png" />
-    <Content Include="images\blocks\pipe\pipe_left.png" />
-    <Content Include="images\blocks\pipe\pipe_right.png" />
+    <Content Include="images\blocks\pipe\pipe_bottom.png" />
     <Content Include="images\decoration\cloud_big.png" />
     <Content Include="images\decoration\cloud_small.png" />
     <Content Include="images\decoration\hill_big.png" />

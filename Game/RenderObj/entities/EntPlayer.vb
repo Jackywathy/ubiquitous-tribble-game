@@ -210,7 +210,7 @@ Public Class EntPlayer
         Select Case spriteStateToUse
             ' Multi-frame
             Case SpriteState.Ground, SpriteState.GroundFlip
-                If internalFrameCounter Mod animationInterval = 0 Then
+                If MyScene.frameCount Mod animationInterval = 0 Then
                     Me.renderImage = SpriteSet.SendToBack(spriteStateToUse)
                 End If
 

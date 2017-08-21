@@ -38,11 +38,11 @@ Public MustInherit Class EntPowerup
     End Sub
 
     Public Overrides Sub animate()
-        If Math.Floor(internalFrameCounter / animationInterval) = Me.SpriteSet(SpriteState.Spawn).Count - 1 Then
+        If Math.Floor(MyScene.frameCount / animationInterval) = Me.SpriteSet(SpriteState.Spawn).Count - 1 Then
             isSpawning = False
             Me.RenderImage = Me.SpriteSet(SpriteState.Constant)(0)
         ElseIf isSpawning Then
-            Me.RenderImage = Me.SpriteSet(SpriteState.Spawn)(Math.Floor(internalFrameCounter / animationInterval))
+            Me.RenderImage = Me.SpriteSet(SpriteState.Spawn)(Math.Floor(MyScene.frameCount / animationInterval))
         End If
     End Sub
 
