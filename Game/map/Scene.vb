@@ -28,6 +28,9 @@ Public Class Scene
     ' background of scene
     Private background As BackgroundRender
 
+    ' global framecounter
+    Public frameCount As Integer
+
 
     ' dictionary containing all scenes : {map_name : scene}
     Private AllScenes As New Dictionary(Of String, Scene)
@@ -210,7 +213,6 @@ Public Class Scene
 
         ' TODO - gravity is only applied to the player, in the handle input function
         For Each item As RenderObject In AllObjAndEnt
-            item.internalFrameCounter += 1
             If item.GetType.IsSubclassOf(GetType(Entity)) Then
                 CType(item, Entity).UpdatePos()
             End If
@@ -238,10 +240,13 @@ Public Class Scene
     ''' </summary>
     ''' <param name="g"></param>
     Sub RenderScene(g As Graphics)
-        Background.Render(g)
+
+        Me.frameCount += 1
+
+        background.Render(g)
 
         ' all text & stuff
-        For each item As RenderItem in AllItems
+        For Each item As RenderItem In AllItems
             item.Render(g)
         Next
 

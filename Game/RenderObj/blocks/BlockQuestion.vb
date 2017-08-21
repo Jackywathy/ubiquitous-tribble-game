@@ -2,6 +2,7 @@
     Inherits Block
     Public isUsed = False
     Public type As String
+
     Private Shared ReadOnly PossibleStates As New List(Of String) From { "fire", "default_fire", "mushroom", "coin" }
 
     Sub New(location As Point, type As String, scene As Scene)
@@ -20,13 +21,16 @@
     ''' </summary>
     ''' <param name="params"></param>
     ''' <param name="scene"></param>
-    SUb New(params As Object, scene As Scene)
+    Sub New(params As Object, scene As Scene)
         Me.New(New Point(params(0), params(1)), params(2), scene)
-    End SUb
+    End Sub
 
     Public Overrides Sub animate()
-        If internalFrameCounter Mod (animationInterval * 3) = 0 And Not isUsed Then
-            RenderImage = spriteSet.SendToBack(0)
+        ' IFC mod 15 = 0
+        ' IFC = 0, 15, 30, 45 ...
+        If MyScene.frameCount Mod (animationInterval * 3) = 0 And Not isUsed Then
+            ' We need 0, 1 or 2
+            RenderImage = spriteSet(SpriteState.Constant)((MyScene.frameCount / (animationInterval * 3)) Mod 3)
         End If
     End Sub
 
