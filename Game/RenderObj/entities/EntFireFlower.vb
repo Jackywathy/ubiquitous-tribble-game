@@ -17,14 +17,15 @@
     End Sub
 
     Public Overrides Sub animate()
-        If Not isSpawning And internalFrameCounter Mod (animationInterval * 2) = 0 Then
+        If Not isSpawning And MyScene.frameCount Mod (animationInterval) = 0 Then
             Me.RenderImage = Me.SpriteSet.SendToBack(SpriteState.Constant)
         ElseIf isSpawning Then
-            If Math.Floor(internalFrameCounter / animationInterval) = Me.SpriteSet(SpriteState.Spawn).Count - 1 Then
+            If (Math.Floor(spawnCounter / animationInterval) Mod 7) = Me.SpriteSet(SpriteState.Spawn).Count - 1 Then
                 isSpawning = False
                 Me.RenderImage = Me.SpriteSet(SpriteState.Constant)(0)
             Else
-                Me.RenderImage = Me.SpriteSet(SpriteState.Spawn)(Math.Floor(internalFrameCounter / animationInterval))
+                Me.spawnCounter += 1
+                Me.RenderImage = Me.SpriteSet(SpriteState.Spawn)(Math.Floor(spawnCounter / animationInterval) Mod 7)
             End If
 
         End If

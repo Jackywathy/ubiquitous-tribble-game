@@ -1,6 +1,7 @@
 ﻿Public Class EntGoomba
     Inherits Entity
 
+    Public deathTimer As Integer
     Public isDead As Boolean = False
     Public shouldRemove = False
 
@@ -15,15 +16,15 @@
     Public Overrides Sub animate()
         If isDead Then
             Me.renderImage = SpriteSet(SpriteState.Destroy)(0)
-            If Math.Floor(internalFrameCounter / animationInterval) = 5 Then
+            If Math.Floor(Me.deathTimer / animationInterval) = 5 Then
                 Me.shouldRemove = True
             End If
         Else
-            If veloc.x <> 0 And internalFrameCounter Mod (2 * animationInterval) = 0 Then
+            If veloc.x <> 0 And MyScene.frameCount Mod (2 * animationInterval) = 0 Then
                 Me.renderImage = SpriteSet.SendToBack(SpriteState.Constant)
             End If
             ' just to check if it works
-            If collidedX
+            If collidedX Then
                 collidedX = False
                 temp *= -1
             End If
@@ -34,6 +35,9 @@
     Dim temp As Integer = -1
 
     Public Overrides Sub UpdatePos()
+        If Me.isDead Then
+            Me.deathTimer += 1
+        End If
         If Me.shouldRemove Then
             Me.Destroy()
         End If
@@ -47,7 +51,6 @@
                 player.veloc = New Distance(player.veloc.x, 0)
                 player.AccelerateY(player.moveSpeed.y, True)
             End If
-            Me.internalFrameCounter = 0 ' Reset for timer
             isDead = True
         End If
     End Sub

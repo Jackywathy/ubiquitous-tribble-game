@@ -20,10 +20,10 @@
             Me.renderImage = SpriteSet(SpriteState.Constant)(0)
             renderImage.RotateFlip(RotateFlipType.Rotate90FlipNone)
         Else
-            If Math.Floor(internalFrameCounter / animationInterval) = 3 Then
+            If Math.Floor(MyScene.frameCount / animationInterval) = 3 Then
                 destroyAnimationComplete = True
             Else
-                Me.renderImage = SpriteSet(SpriteState.Destroy)(Math.Floor(internalFrameCounter / animationInterval))
+                Me.renderImage = SpriteSet(SpriteState.Destroy)(Math.Floor(MyScene.frameCount / animationInterval))
                 Console.WriteLine(Me.Height)
             End If
         End If
@@ -52,8 +52,7 @@
     Public Overrides Sub Destroy()
 
         If Not willDestroy Then
-            owner.numFireballs -= 1
-            Me.internalFrameCounter = 0 ' reset for animation
+            owner.NumFireballs -= 1
             Me.Width = 32
             Me.Height = 32
         End If

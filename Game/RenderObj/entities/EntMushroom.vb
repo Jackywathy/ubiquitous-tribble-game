@@ -21,6 +21,4 @@
         MyBase.UpdatePos()
     End Sub
 
-
-
 End Class

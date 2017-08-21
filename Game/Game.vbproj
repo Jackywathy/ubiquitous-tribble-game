@@ -215,8 +215,15 @@
     <Content Include="images\enemy\koopa\ground\koopa_green_2.png" />
     <Content Include="images\enemy\koopa\koopa_green_shell1.png" />
     <Content Include="images\enemy\koopa\koopa_green_shell2.png" />
-    <Content Include="images\other\pipebottom.png" />
-    <Content Include="images\other\pipetop.png" />
+    <Content Include="images\other\coin\coin_hit_1.png" />
+    <Content Include="images\other\coin\coin_hit_2.png" />
+    <Content Include="images\other\coin\coin_hit_3.png" />
+    <Content Include="images\other\coin\coin_hit_4.png" />
+    <Content Include="images\other\coin\coin_idle_1.png" />
+    <Content Include="images\other\coin\coin_idle_2.png" />
+    <Content Include="images\other\coin\coin_idle_3.png" />
+    <Content Include="images\other\pipe\pipebottom.png" />
+    <Content Include="images\other\pipe\pipetop.png" />
     <Content Include="images\player\fire\fireball.png" />
     <Content Include="images\player\big\mario_big_1r.png" />
     <Content Include="images\player\big\mario_big_2r.png" />
@@ -287,7 +294,7 @@
     <Content Include="images\powerups\mushroom\mushroom_s5.png" />
     <Content Include="images\powerups\mushroom\mushroom_s6.png" />
     <Content Include="images\powerups\mushroom\mushroom_s7.png" />
-    <Content Include="images\other\pipe.png" />
+    <Content Include="images\other\pipe\pipe.png" />
     <Content Include="images\backgrounds\placeholderLevel.png" />
     <Content Include="sounds\sfx\coin_pickup.mp3" />
     <Content Include="sounds\background_music\ground_theme.mp3" />
