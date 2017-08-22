@@ -251,6 +251,7 @@
     <Content Include="images\player\small\mario_small_2r.png" />
     <Content Include="images\player\small\mario_small_3r.png" />
     <Content Include="images\player\small\mario_small_4r.png" />
+    <Content Include="images\player\small\mario_small_dead.png" />
     <Content Include="images\player\small\mario_small_jumpr.png" />
     <Content Include="sounds\sfx\1_up.mp3" />
     <Content Include="sounds\sfx\brick_smash.mp3" />

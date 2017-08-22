@@ -17,9 +17,9 @@
                 {SpriteState.Constant, New List(Of Image) From {My.Resources.pipe_2x}}
             },
             width,
-            32,
+            64,
 )
-        pipeTop = New BlockPipeTop(width, 32, New Point(location.X, location.Y + (height-32)), pipeSprite, scene)
+        pipeTop = New BlockPipeTop(width, 64, New Point(location.X, location.Y + (height - 32)), pipeSprite, scene)
         pipeSprite = New SpriteSet(
             New Dictionary(Of SpriteState, List(Of Image)) From {
                 {SpriteState.Constant, New List(Of Image) From {My.Resources.pipe_bottom}}

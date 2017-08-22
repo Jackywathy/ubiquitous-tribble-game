@@ -183,7 +183,8 @@ Public MustInherit Class Sprites
             {SpriteState.Air, New List(Of Image) From {My.Resources.mario_small_jump}},
             {SpriteState.GroundFlip, New List(Of Image) From {My.Resources.mario_small_1r, My.Resources.mario_small_2r, My.Resources.mario_small_3r, My.Resources.mario_small_4r}},
             {SpriteState.ConstantFlip, New List(Of Image) From {My.Resources.mario_small_1r}},
-            {SpriteState.AirFlip, New List(Of Image) From {My.Resources.mario_small_jumpr}}
+            {SpriteState.AirFlip, New List(Of Image) From {My.Resources.mario_small_jumpr}},
+            {SpriteState.Destroy, New List(Of Image) From {My.Resources.mario_small_dead}}
         },
         32,
         32
