@@ -147,62 +147,68 @@ Public Class Scene
     ''' This also 
     ''' </summary>
     Public Sub HandleInput()
+
+        Dim xToMove = 0
+        Dim yToMove = 0
+
         ' LEFT
         If MainGame.KeyHandler.MoveLeft Then
-            If Not player1.isCrouching Then
-                player1.AccelerateX(-player1.moveSpeed.x)
+            If Not Player1.IsCrouching Then
+                xToMove = -Player1.moveSpeed.x
             End If
 
             ' Yes this is really badly hard-coded
-            If player1.isCrouching And Not player1.allowedToUncrouch And MainGame.KeyHandler.MoveUp And player1.allowJumpInput Then
-                player1.AccelerateX(-player1.moveSpeed.x)
+            If Player1.IsCrouching And Not Player1.AllowedToUncrouch And MainGame.KeyHandler.MoveUp And Player1.AllowJumpInput Then
+                xToMove = -Player1.moveSpeed.x
             End If
         End If
 
         ' RIGHT
         If MainGame.KeyHandler.MoveRight Then
-            If Not player1.isCrouching Then
-                player1.AccelerateX(player1.moveSpeed.x)
+            If Not Player1.IsCrouching Then
+                xToMove = Player1.moveSpeed.x
 
             End If
-            If player1.isCrouching And Not player1.allowedToUncrouch And MainGame.KeyHandler.MoveUp And player1.allowJumpInput Then
-                player1.AccelerateX(player1.moveSpeed.x)
+            If Player1.IsCrouching And Not Player1.AllowedToUncrouch And MainGame.KeyHandler.MoveUp And Player1.AllowJumpInput Then
+                xToMove = Player1.moveSpeed.x
             End If
         End If
 
         ' UP
-        If MainGame.KeyHandler.MoveUp And player1.allowJumpInput Then
-            player1.AccelerateY(player1.moveSpeed.y, False)
-            player1.allowJumpInput = False
+        If MainGame.KeyHandler.MoveUp And Player1.AllowJumpInput Then
+            yToMove = Player1.moveSpeed.y
+            Player1.AllowJumpInput = False
             Sounds.Jump.Play(fromStart:=True)
         ElseIf MainGame.KeyHandler.MoveUp = False Then
-            player1.allowJumpInput = True
+            Player1.AllowJumpInput = True
         End If
 
         ' DOWN
         If MainGame.KeyHandler.MoveDown Then
-            If player1.state > 0 And player1.isGrounded = True Then 'crouch
-                player1.onCrouch(True)
+            If Player1.State > 0 And Player1.isGrounded = True Then 'crouch
+                Player1.OnCrouch(True)
             End If
-        ElseIf player1.state > 0 And player1.isCrouching = True Then
+        ElseIf Player1.State > 0 And Player1.IsCrouching = True Then
             ' TO DO - check for collision on above blocks before uncrouching
-            player1.onCrouch(False)
+            Player1.OnCrouch(False)
         End If
 
-        If player1.state = PlayerStates.Fire And MainGame.KeyHandler.MoveDown And player1.allowShoot Then
-            player1.tryShootFireball()
-            player1.allowShoot = False
+        If Player1.State = PlayerStates.Fire And MainGame.KeyHandler.MoveDown And Player1.AllowShoot Then
+            Player1.TryShootFireball()
+            Player1.AllowShoot = False
         ElseIf Not MainGame.KeyHandler.MoveDown Then
-            player1.allowShoot = True
+            Player1.AllowShoot = True
         End If
 
-
-
+        If Not Player1.isDead Then
+            Player1.AccelerateX(xToMove)
+            Player1.AccelerateY(yToMove, False)
+        End If
 
 
     End Sub
 
-    
+
 
     ''' <summary>
     ''' Updates the physics for the game

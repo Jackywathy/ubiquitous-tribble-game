@@ -3,7 +3,9 @@
 
     Public deathTimer As Integer
     Public isDead As Boolean = False
+    Public squashed As Boolean = True
     Public shouldRemove = False
+    Private defaultY As Integer
 
     Public Sub New(location As Point, scene As Scene)
         MyBase.New(32, 32, location, Sprites.goomba, scene)
@@ -15,10 +17,26 @@
 
     Public Overrides Sub animate()
         If isDead Then
-            Me.renderImage = SpriteSet(SpriteState.Destroy)(0)
-            If Math.Floor(Me.deathTimer / animationInterval) = 5 Then
-                Me.shouldRemove = True
+            If squashed Then
+                Me.renderImage = SpriteSet(SpriteState.Destroy)(0)
+                If Math.Floor(Me.deathTimer / animationInterval) = 5 Then
+                    Me.shouldRemove = True
+                End If
+            Else
+                Me.renderImage = SpriteSet(SpriteState.Destroy)(1)
+                Me.deathTimer += 1
+                Dim x = Me.deathTimer / (animationInterval * 5)
+
+                ' Use displacement/time function
+                ' f(x) = 50(2x - x^2)
+
+                Dim heightFunc = 50 * (2 * (x) - (x * x))
+                Me.Location = New Point(Me.Location.X, defaultY + heightFunc)
+                If Me.Location.Y < 0 Then
+                    Me.shouldRemove = True
+                End If
             End If
+
         Else
             If veloc.x <> 0 And MyScene.frameCount Mod (2 * animationInterval) = 0 Then
                 Me.renderImage = SpriteSet.SendToBack(SpriteState.Constant)
@@ -49,36 +67,53 @@
             If Not Me.isDead Then
                 Dim player As EntPlayer = sender
                 player.veloc = New Distance(player.veloc.x, 0)
-                player.AccelerateY(player.moveSpeed.y, True)
+                player.AccelerateY(player.moveSpeed.y * 0.75, True)
             End If
             isDead = True
+            squashed = True
+        ElseIf sender.GetType() = GetType(EntFireball) Then
+            isDead = True
+            squashed = False
+            Me.defaultY = Me.Location.Y
         End If
     End Sub
 
     Public Overrides Sub CollisionBottom(sender As Entity)
         MyBase.CollisionBottom(sender)
         If sender.GetType() = GetType(EntPlayer) Then
-            If Not Me.IsDead
+            If Not Me.IsDead Then
                 HurtPlayer(sender)
             End If
+        ElseIf sender.GetType() = GetType(EntFireball) Then
+            isDead = True
+            squashed = False
+            Me.defaultY = Me.Location.Y
         End If
     End Sub
 
     Public Overrides Sub CollisionLeft(sender As Entity)
         MyBase.CollisionLeft(sender)
         If sender.GetType() = GetType(EntPlayer) Then
-            If Not Me.IsDead
+            If Not Me.IsDead Then
                 HurtPlayer(sender)
             End If
+        ElseIf sender.GetType() = GetType(EntFireball) Then
+            isDead = True
+            squashed = False
+            Me.defaultY = Me.Location.Y
         End If
     End Sub
 
     Public Overrides Sub CollisionRight(sender As Entity)
         MyBase.CollisionRight(sender)
         If sender.GetType() = GetType(EntPlayer) Then
-            If Not Me.IsDead
+            If Not Me.IsDead Then
                 HurtPlayer(sender)
             End If
+        ElseIf sender.GetType() = GetType(EntFireball) Then
+            isDead = True
+            squashed = False
+            Me.defaultY = Me.Location.Y
         End If
     End Sub
     

@@ -6,7 +6,7 @@
 
     Public owner As EntPlayer
     Public willDestroy = False
-    Public destroyAnimationComplete = False
+    Public destroyTimer As Integer = 0
 
     Sub New(width As Integer, height As Integer, location As Point, direction As Integer, shooter As EntPlayer, scene As Scene)
         MyBase.New(width, height, location, Sprites.playerFireball, scene)
@@ -20,12 +20,8 @@
             Me.renderImage = SpriteSet(SpriteState.Constant)(0)
             renderImage.RotateFlip(RotateFlipType.Rotate90FlipNone)
         Else
-            If Math.Floor(MyScene.frameCount / animationInterval) = 3 Then
-                destroyAnimationComplete = True
-            Else
-                Me.renderImage = SpriteSet(SpriteState.Destroy)(Math.Floor(MyScene.frameCount / animationInterval))
-                Console.WriteLine(Me.Height)
-            End If
+            Me.renderImage = SpriteSet(SpriteState.Destroy)(Math.Floor(MyScene.frameCount / animationInterval) Mod 3)
+            Me.destroyTimer += 1
         End If
     End Sub
 
@@ -43,7 +39,7 @@
 
             MyBase.UpdatePos()
         Else
-            If destroyAnimationComplete Then
+            If Me.destroyTimer >= 3 Then
                 MyBase.Destroy()
             End If
         End If

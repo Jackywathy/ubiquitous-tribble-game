@@ -209,6 +209,7 @@
     <Content Include="images\enemy\goomba\goomba_2.png" />
     <Content Include="images\enemy\goomba\goomba_d.png" />
     <Content Include="images\blocks\blockGround.png" />
+    <Content Include="images\enemy\goomba\goomba_d2.png" />
     <Content Include="images\enemy\koopa\flying\koopa_greenf_1.png" />
     <Content Include="images\enemy\koopa\flying\koopa_greenf_2.png" />
     <Content Include="images\enemy\koopa\ground\koopa_green_1.png" />
