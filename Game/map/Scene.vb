@@ -185,10 +185,10 @@ Public Class Scene
 
         ' DOWN
         If MainGame.KeyHandler.MoveDown Then
-            If Player1.State > 0 And Player1.isGrounded = True Then 'crouch
+            If Player1.State > PlayerStates.Small And Player1.isGrounded = True Then 'crouch
                 Player1.OnCrouch(True)
             End If
-        ElseIf Player1.State > 0 And Player1.IsCrouching = True Then
+        ElseIf Player1.State > PlayerStates.Small And Player1.IsCrouching = True Then
             ' TO DO - check for collision on above blocks before uncrouching
             Player1.OnCrouch(False)
         End If
@@ -220,9 +220,11 @@ Public Class Scene
         ' TODO - gravity is only applied to the player, in the handle input function
         For Each item As RenderObject In AllObjAndEnt
             If item.GetType.IsSubclassOf(GetType(Entity)) Then
-                CType(item, Entity).UpdatePos()
+                If CType(item, Entity).isDead = False Then
+                    CType(item, Entity).UpdatePos()
+                End If
             End If
-            item.animate()
+                item.animate()
         Next
 
         AddAllAdded()

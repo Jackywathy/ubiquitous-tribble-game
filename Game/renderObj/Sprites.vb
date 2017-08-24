@@ -290,6 +290,21 @@ Public MustInherit Class Sprites
         32
     )
 
+    Public Shared coin As New SpriteSet(
+        New Dictionary(Of SpriteState, List(Of Image)) From {
+            {SpriteState.Constant, New List(Of Image) From {My.Resources.coin_idle_1, My.Resources.coin_idle_2, My.Resources.coin_idle_3}}
+        },
+        32,
+        32
+    )
+
+    Public Shared coinFromBlock As New SpriteSet(
+        New Dictionary(Of SpriteState, List(Of Image)) From {
+            {SpriteState.Constant, New List(Of Image) From {My.Resources.coin_hit_1, My.Resources.coin_hit_2, My.Resources.coin_hit_3, My.Resources.coin_hit_4}}
+        },
+        32,
+        32
+    )
 
     Private Sub New()
         ' make this class un-intializable

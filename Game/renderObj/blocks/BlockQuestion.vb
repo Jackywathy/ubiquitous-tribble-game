@@ -32,18 +32,29 @@
             ' We need 0, 1 or 2
             RenderImage = spriteSet(SpriteState.Constant)((MyScene.frameCount / (animationInterval * 3)) Mod 3)
         End If
+        If isMoving Then
+            ' bumps block
+            Me.frameCount += 1
+
+            Me.Location = bounceFunction(Me.frameCount, Me.defaultLocationY)
+
+            ' f(x) = 0 when x = 2
+            If frameCount / animationInterval >= 2 Then
+                Me.isMoving = False
+            End If
+        End If
     End Sub
 
     Public Overrides Sub CollisionBottom(sender As Entity)
         MyBase.CollisionBottom(sender)
         If Not isUsed Then
             ' only player is allowed to activate block
-            If sender.GetType() = GetType(EntPlayer)
+            If sender.GetType() = GetType(EntPlayer) Then
                 Dim player As EntPlayer = sender
                 Select Case type
                     Case "default_fire"
                         ' check the current status of mario, then spawn the right
-                        If player.state = PlayerStates.Small 
+                        If player.state = PlayerStates.Small Then
                             Dim mushroom As New EntMushroom(32, 32, New Point(Me.Location.X, Me.Location.Y + Me.Height), MyScene)
                             mushroom.Spawn()
                         Else
@@ -58,13 +69,18 @@
                         mushroom.Spawn()
                     Case "coin"
                         player.PickupCoin()
-                    
-                End Select
-                isUsed = True
-                    Me.RenderImage = My.Resources.blockQuestionUsed
-                End If
-            End If
 
+                End Select
+                If Not isUsed Then
+                    frameCount = 0
+                    Me.isMoving = True
+                    Me.defaultLocationY = Me.Location.Y
+                End If
+                isUsed = True
+
+                Me.RenderImage = My.Resources.blockQuestionUsed
+            End If
+        End If
     End Sub
 
 

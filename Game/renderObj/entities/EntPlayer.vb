@@ -69,7 +69,6 @@ Public Class EntPlayer
     End Property
 
     Public NumFireballs As Integer = 0
-
     Private invulnerableTime As Integer = 0
 
     Public Overrides Property moveSpeed As Distance = New Distance(0.8, 15)
@@ -150,10 +149,13 @@ Public Class EntPlayer
     ''' TODO make it go to black backgroudn etc
     ''' </summary>
     Private Sub KillPlayer()
+        Me.isDead = True
+        Me.veloc.x = 0
+        Me.defaultY = Me.Location.Y
         Lives -= 1
         Sounds.PlayerDead.Play()
         MusicPlayer.BackgroundPlayer._Stop()
-        System.Threading.Thread.Sleep(1000)
+
     End Sub
 
     ''' <summary>
@@ -176,48 +178,67 @@ Public Class EntPlayer
         End If
     End Sub
 
+    Private defaultY As Integer
+    Private deathTimer As Integer
+
     Public Overrides Sub animate()
+        If Not Me.isDead Then
+            ' Make sure this is exhaustive
+            Dim spriteStateToUse = -2
 
-        ' Make sure this is exhaustive
-        Dim spriteStateToUse = -2
+            ' If crouching
+            If isCrouching Then
+                spriteStateToUse = SpriteState.Crouch
 
-        ' If crouching
-        If isCrouching Then
-            spriteStateToUse = SpriteState.Crouch
+                ' If grounded or falling off a platform
+            ElseIf isGrounded Or (Not isGrounded And Not didJumpAndNotFall) Then
 
-            ' If grounded or falling off a platform
-        ElseIf isGrounded Or (Not isGrounded And Not didJumpAndNotFall) Then
+                ' If moving
+                If veloc.x <> 0 Then
 
-            ' If moving
-            If veloc.x <> 0 Then
-
-                spriteStateToUse = SpriteState.Ground
+                    spriteStateToUse = SpriteState.Ground
 
 
-            ElseIf veloc.x = 0 Then 'If still
-                spriteStateToUse = SpriteState.Constant
-            End If
-
-            'If jumping
-        ElseIf didJumpAndNotFall Then
-            spriteStateToUse = SpriteState.Air
-        End If
-
-        If Not isFacingForward Then
-            spriteStateToUse += 1
-        End If
-
-        Select Case spriteStateToUse
-            ' Multi-frame
-            Case SpriteState.Ground, SpriteState.GroundFlip
-                If MyScene.frameCount Mod animationInterval = 0 Then
-                    Me.renderImage = SpriteSet.SendToBack(spriteStateToUse)
+                ElseIf veloc.x = 0 Then 'If still
+                    spriteStateToUse = SpriteState.Constant
                 End If
 
-                ' Single frame
-            Case Else
-                Me.renderImage = SpriteSet(spriteStateToUse)(0)
-        End Select
+                'If jumping
+            ElseIf didJumpAndNotFall Then
+                spriteStateToUse = SpriteState.Air
+            End If
+
+            If Not isFacingForward Then
+                spriteStateToUse += 1
+            End If
+
+            Select Case spriteStateToUse
+            ' Multi-frame
+                Case SpriteState.Ground, SpriteState.GroundFlip
+                    If MyScene.frameCount Mod animationInterval = 0 Then
+                        Me.renderImage = SpriteSet.SendToBack(spriteStateToUse)
+                    End If
+
+                    ' Single frame
+                Case Else
+                    Me.renderImage = SpriteSet(spriteStateToUse)(0)
+            End Select
+        Else
+            Me.renderImage = SpriteSet(SpriteState.Destroy)(0)
+            Me.deathTimer += 1
+            If deathTimer > 60 Then
+                Dim x = (Me.deathTimer - 60) / (animationInterval * 5)
+
+                ' Use displacement/time function
+                ' f(x) = 50(2x - x^2)
+
+                Dim heightFunc = 50 * (2 * (x) - (x * x))
+                Me.Location = New Point(Me.Location.X, defaultY + heightFunc)
+                If Me.Location.Y < 0 Then
+                    ' restart level here
+                End If
+            End If
+        End If
     End Sub
 
     Public Overrides Sub UpdatePos()
