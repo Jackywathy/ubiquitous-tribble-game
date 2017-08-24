@@ -1,13 +1,11 @@
 ﻿Public Class BlockBreakableBrick
     Inherits Block
 
-    Public isMoving As Boolean = False
-    Public defaultLocationY As Integer
-    Public frameCount As Integer = 0
+
 
     Public Sub New(location As Point, scene As Scene)
         MyBase.New(32, 32, location, Sprites.brickBlock, scene)
-        Me.defaultLocationY = location.Y
+
     End Sub
 
     Public Overrides Sub animate()
@@ -58,10 +56,7 @@
                 ' bump block
                 frameCount = 0
                 Me.isMoving = True
-
             End If
-        Else
-
         End If
     End Sub
 End Class

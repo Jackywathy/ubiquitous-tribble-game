@@ -2,7 +2,6 @@
     Inherits Entity
 
     Public deathTimer As Integer
-    Public isDead As Boolean = False
     Public squashed As Boolean = True
     Public shouldRemove = False
     Private defaultY As Integer

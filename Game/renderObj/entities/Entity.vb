@@ -8,6 +8,7 @@ Public MustInherit Class Entity
 
     Public Property SpriteSet As SpriteSet
     Public Overrides Property renderImage As Image
+    Public isDead As Boolean = False
 
     Sub New(width As Integer, height As Integer, location As Point, spriteSet As SpriteSet, scene As Scene)
         MyBase.New(width, height, location, scene)
@@ -32,8 +33,8 @@ Public MustInherit Class Entity
 
     Public currentGroundObjects As New List(Of RenderObject)
 
-    
-    
+
+
 
     ''' <summary>
     ''' Checks for overlap between Me and sender. Handles change of: location of Me, and variables such as isGrounded and didJumpAndNotFall.
@@ -42,6 +43,13 @@ Public MustInherit Class Entity
 
     Public Sub CheckPotentialCollision(sender As RenderObject)
         collidedX = False
+
+        If Me.GetType = GetType(EntPlayer) Then
+            Dim player As EntPlayer = Me
+            If player.isDead And player.veloc.y < 0 Then
+                Me.ID += 0
+            End If
+        End If
 
         Dim selfNextPoint = New Point(Me.Location.X + Me.veloc.x, Me.Location.Y + Me.veloc.y)
 
@@ -220,8 +228,12 @@ Public MustInherit Class Entity
             Me.veloc.x += magnitude - (magnitude / Math.Abs(magnitude)) * reduction
         End If
 
-        If Math.Abs(Me.veloc.x) > Me.maxVeloc.x Then
-            Me.veloc.x = (Me.veloc.x / Math.Abs(Me.veloc.x)) * Me.maxVeloc.x
+        If Me.veloc.x <> 0 And Math.Abs(Me.veloc.x) > Me.maxVeloc.x Then
+            Dim sign = 1
+            If Me.veloc.x < 0 Then
+                sign = -1
+            End If
+            Me.veloc.x = sign * Me.maxVeloc.x
         End If
     End Sub
 
@@ -282,17 +294,17 @@ Public MustInherit Class Entity
         End If
 
     End Sub
-    
+
 
     Public Function IsOutOfMap() As Direction
-        If Me.Location.X  < 0 Then
+        If Me.Location.X < 0 Then
             Return Direction.Left
         ElseIf (Me.Location.X - MyScene.screenLocation.X + Me.veloc.X) > ScreenGridWidth Then
             Return Direction.Right
         End If
         Return Direction.None
     End Function
-  
+
 
     ''' <summary>
     ''' Updates the position of this entity, using its velocity and location.
@@ -358,9 +370,6 @@ Public MustInherit Class Entity
     End Sub
 
 End Class
-
-
-
 
 Public Module Forces
     ' may need to tweak
