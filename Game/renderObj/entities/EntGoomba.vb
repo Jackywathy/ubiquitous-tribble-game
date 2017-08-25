@@ -10,8 +10,15 @@
         MyBase.New(32, 32, location, Sprites.goomba, scene)
     End Sub
 
+
+    ''' <summary>
+    ''' 0 : x
+    ''' 1 : y
+    ''' </summary>
+    ''' <param name="params"></param>
+    ''' <param name="scene"></param>
     Public Sub New(params As Object(), scene As Scene)
-        Me.New(New Point(params(0), params(1)), scene)
+        Me.New(New Point(params(0)*32, params(1)*32), scene)
     End Sub
 
     Public Overrides Sub animate()

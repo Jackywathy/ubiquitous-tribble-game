@@ -35,6 +35,90 @@ Public Class Scene
     ' dictionary containing all scenes : {map_name : scene}
     Private AllScenes As New Dictionary(Of String, Scene)
 
+
+    ''' <summary>
+    ''' Creates a new <see cref="Scene">object, from a json file in resources</see>
+    ''' </summary>
+    ''' <param name="jsonName"></param>
+    ''' <returns></returns>
+    Public Shared Function ReadMapFromResource(jsonName As String) As Scene
+        Dim byteArray = CType(My.Resources.ResourceManager.GetObject(jsonName), Byte())
+        If byteArray(0) = 239 And byteArray(1) = 187 And byteArray(2) = 191 Then
+            byteArray = byteArray.Skip(3).Take(byteArray.Length - 2).ToArray()
+        End If
+        Dim str = Text.Encoding.UTF8.GetString(byteArray)
+
+
+        Dim mapObject = JsonConvert.DeserializeObject(Of MapObject)(str)
+
+        Dim outScene As New Scene
+
+        ' add the background
+        outScene.SetBackground(mapObject.background(0), mapObject.background(1), mapObject.background(2))
+
+        ' add all blocks
+        For Each pair As KeyValuePair(Of String, IList(Of Object())) In mapObject.blocks
+            Dim name = pair.Key
+            For Each params As Object() In pair.Value
+                outScene.RenderItemFactory(name, params).AddSelfToScene()
+            Next
+        Next
+
+        For Each pair As KeyValuePair(Of String, IList(Of Object())) In mapObject.entities
+            Dim name = pair.Key
+            For Each params As Object() In pair.Value
+                outScene.RenderItemFactory(name, params).AddSelfToScene()
+            Next
+        Next
+
+        ' add all entities
+        Dim player1 = New EntPlayer(32, 32, New Point(0, GroundHeight), outScene)
+
+        outScene.player1 = player1
+        outScene.AddEntity(player1)
+        outScene.AddEntity(New EntCoin(320, 96, New Point(64, 64), outScene))
+        'outScene.AddEntity(New EntGoomba(New Point(320, 64), outScene))
+        Dim x As New StaticText(New RectangleF(0,0,ScreenGridWidth/4, ScreenGridHeight/32), "MARIO", CustomFontFamily.NES.GetFontFamily(), 18, New SolidBrush(Color.White), StringAlignment.Near, StringAlignment.Near)
+        outScene.AddItem(x)
+        x = New StaticText(New RectangleF(0,ScreenGridHeight/32,ScreenGridWidth/4,ScreenGridHeight/16 ), "000000", CustomFontFamily.NES.GetFontFamily(), 18, New SolidBrush(Color.White), StringAlignment.Near, StringAlignment.Near)
+        outScene.AddItem(x)
+        
+        Return outScene
+    End Function
+
+
+    Private Function RenderItemFactory(name As String, params As Object()) As RenderObject
+        Dim out As RenderObject
+        Select Case name
+            Case "blockBreakableBrick"
+                AssertLength("blockBreakableBrick", 2, params.Length, params)
+                out = New BlockBreakableBrick(params , Me)
+            Case "brickPlatform"
+                AssertLength("brickPlatform", 4, params.Length, params)
+                out = New BrickPlatform(params, Me)
+            Case "blockQuestion"
+                AssertLength("blockQuestion", 3, params.Length, params)
+                out = New BlockQuestion(params, Me)
+            Case "blockMetal"
+                AssertLength("blockMetal", 2, params.Length, params)
+                out = New BlockMetal(params, Me)
+            Case "blockPipe"
+                AssertLength("blockPipe", 5, params.Length, params)
+                out = New BlockPipe(params, Me)
+            Case "entGoomba"
+                AssertLength("entGoomba", 2, params.Length, params)
+                out = New EntGoomba(params, Me)
+            Case Else
+
+                Throw New Exception(String.Format("No object with name {0}", name))
+        End Select
+
+        Return out
+
+    End Function
+
+
+
     ''' <summary>
     ''' Gets/Updates the blocks that are in the scene and need to be rendened.
     ''' Should be called once per physics tick
@@ -189,7 +273,7 @@ Public Class Scene
                 Player1.OnCrouch(True)
             End If
         ElseIf Player1.State > PlayerStates.Small And Player1.IsCrouching = True Then
-            ' TO DO - check for collision on above blocks before uncrouching
+            ' TODO - check for collision on above blocks before uncrouching
             Player1.OnCrouch(False)
         End If
 
@@ -218,11 +302,19 @@ Public Class Scene
         ' animate and update position of each entity
          For Each item As RenderObject In AllObjAndEnt
             If item.GetType.IsSubclassOf(GetType(Entity)) Then
+                Dim ent As Entity = item
+                If Double.IsNan(ent.veloc.X)
+
+                    ent.ID += 0
+                End If
                 'If CType(item, Entity).isDead = False Then
-                CType(item, Entity).UpdatePos()
+                ent.UpdatePos()
                 'End If
+                If Double.IsNan(ent.veloc.X)
+                    ent.ID += 0
+                End If
             End If
-                item.animate()
+            item.animate()
         Next
 
         AddAllAdded()
@@ -269,82 +361,20 @@ Public Class Scene
     End Sub
 
 
-    ''' <summary>
-    ''' Creates a new <see cref="Scene">object, from a json file in resources</see>
-    ''' </summary>
-    ''' <param name="jsonName"></param>
-    ''' <returns></returns>
-    Public Shared Function ReadMapFromResource(jsonName As String) As Scene
-        Dim byteArray = CType(My.Resources.ResourceManager.GetObject(jsonName), Byte())
-        If byteArray(0) = 239 And byteArray(1) = 187 And byteArray(2) = 191 Then
-            byteArray = byteArray.Skip(3).Take(byteArray.Length - 2).ToArray()
-        End If
-        Dim str = Text.Encoding.UTF8.GetString(byteArray)
-
-
-        Dim mapObject = JsonConvert.DeserializeObject(Of MapObject)(str)
-
-        Dim outScene As New Scene
-
-        ' add the background
-        outScene.SetBackground(mapObject.background(0), mapObject.background(1), mapObject.background(2))
-
-        ' add all blocks
-        For Each pair As KeyValuePair(Of String, IList(Of Object())) In mapObject.blocks
-            Dim name = pair.Key
-            For Each params As Object() In pair.Value
-                outScene.RenderItemFactory(name, params).AddSelfToScene()
-            Next
-        Next
-        ' add all entities
-        Dim player1 = New EntPlayer(32, 32, New Point(0, GroundHeight), outScene)
-
-        outScene.player1 = player1
-        outScene.AddEntity(player1)
-        outScene.AddEntity(New EntCoin(320, 96, New Point(64, 64), outScene))
-        outScene.AddEntity(New EntGoomba(New Point(320, 64), outScene))
-        Dim x As New StaticText(New RectangleF(0,0,ScreenGridWidth/4, ScreenGridHeight/32), "MARIO", CustomFontFamily.NES.GetFontFamily(), 18, New SolidBrush(Color.White), StringAlignment.Near, StringAlignment.Near)
-        outScene.AddItem(x)
-        x = New StaticText(New RectangleF(0,ScreenGridHeight/32,ScreenGridWidth/4,ScreenGridHeight/16 ), "000000", CustomFontFamily.NES.GetFontFamily(), 18, New SolidBrush(Color.White), StringAlignment.Near, StringAlignment.Near)
-        outScene.AddItem(x)
-        
-
-        Return outScene
-    End Function
+   
 
     Private Sub AssertLength(type As String, expected As Integer, given As Integer, array As Object())
+        If expected = -1
+            return
+        End If
+
         If expected <> given Then
             Throw New InvalidJsonException(String.Format("Error in JSON, type={0}, given {1} elements when {2} expected - [ {3} ] ",
                                                          type, given, expected, String.Join(", ", array)))
         End If
     End Sub
 
-    Private Function RenderItemFactory(name As String, params As Object()) As RenderObject
-        Dim out As RenderObject
-        Select Case name
-            Case "blockBreakableBrick"
-                AssertLength("blockBreakableBrick", 2, params.Length, params)
-                out = New BlockBreakableBrick(params , Me)
-            Case "brickPlatform"
-                AssertLength("brickPlatform", 4, params.Length, params)
-                out = New BrickPlatform(params, Me)
-            Case "blockQuestion"
-                AssertLength("blockQuestion", 3, params.Length, params)
-                out = New BlockQuestion(params, Me)
-            Case "blockMetal"
-                AssertLength("blockMetal", 2, params.Length, params)
-                out = New BlockMetal(params, Me)
-            Case "blockPipe"
-                AssertLength("blockPipe", 5, params.Length, params)
-                out = New BlockPipe(params, Me)
-            Case Else
-
-                Throw New Exception(String.Format("No object with name {0}", name))
-        End Select
-
-        Return out
-
-    End Function
+   
 
     Private Class InvalidJsonException
         Inherits Exception
@@ -359,6 +389,7 @@ End Class
 Public Class MapObject
     Public Property map_name As String
     Public Property blocks As Dictionary(Of String, IList(Of Object()))
+    Public Property entities As Dictionary(Of String, IList(Of Object()))
     Public Property background As List(Of Object)
     Public Property background_music As String
 

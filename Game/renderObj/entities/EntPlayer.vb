@@ -235,13 +235,17 @@ Public Class EntPlayer
                 Dim heightFunc = 50 * (2 * (x) - (x * x))
                 Me.Location = New Point(Me.Location.X, defaultY + heightFunc)
                 If Me.Location.Y < 0 Then
-                    ' restart level here
+                    Me.KillPlayer()
                 End If
             End If
         End If
     End Sub
 
     Public Overrides Sub UpdatePos()
+        If Double.IsNan(me.veloc.X)
+            Me.ID += 0
+        End If
+
         MyBase.UpdatePos()
 
         Dim outOfMap = IsOutOfMap()

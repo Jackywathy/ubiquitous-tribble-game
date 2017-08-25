@@ -4,7 +4,7 @@
 
 Public MustInherit Class Entity
     Inherits RenderObject
-    Public veloc = New Distance(0, 0)
+    Public veloc As New Distance(0, 0)
 
     Public Property SpriteSet As SpriteSet
     Public Overrides Property renderImage As Image
@@ -45,6 +45,9 @@ Public MustInherit Class Entity
             If player.isDead And player.veloc.y < 0 Then
                 Me.ID += 0
             End If
+        End If
+        If Double.IsNan(me.veloc.X)
+            Me.ID += 0
         End If
 
         Dim selfNextPoint = New Point(Me.Location.X + Me.veloc.x, Me.Location.Y + Me.veloc.y)
@@ -256,17 +259,18 @@ Public MustInherit Class Entity
     ''' <summary>
     ''' Modifies the absolute value of velocity by magnitude.
     ''' </summary>
-    Public Sub DecreaseMagnitude(ByRef velocity As Double, magnitude As Double)
+    Public Sub DecreaseMagnitude(ByRef velocity As Double, ByVal magnitude As Double)
 
-        Dim signOfVelocBefore = velocity / Math.Abs(velocity)
+        Dim signBeforeIsNegative As Boolean = velocity < 0
 
-        velocity -= signOfVelocBefore * magnitude
+        velocity -=  magnitude * If(signBeforeIsNegative, -1, 1)
 
-        Dim signOfVelocAfter = velocity / Math.Abs(velocity)
+        Dim signOfVelocAfter As Boolean = velocity < 0
 
-        If signOfVelocAfter <> signOfVelocBefore Then
+        If signOfVelocAfter <> signBeforeIsNegative Then
             velocity = 0
         End If
+        
 
         ' Just in case
         'If magnitude > 0 Then
@@ -318,21 +322,26 @@ Public MustInherit Class Entity
         End If
 
         ' check collision of all entities with all existing RenderObj, including other entities
-        For entityCount = 0 To (Me.MyScene.AllEntities.Count - 1)
-            For otherCount = 0 To (Me.MyScene.AllObjAndEnt.Count - 1)
-                Dim entity = Me.MyScene.AllEntities(entityCount)
-                Dim other = Me.MyScene.AllObjAndEnt(otherCount)
+        'For entityCount = 0 To (Me.MyScene.AllEntities.Count - 1)
+            For each other As RenderObject in MyScene.AllObjAndEnt
+         
+
+               
 
                 ' Don't check collisions using the same obj
                 ' and ensure entities are valid
-                If entity IsNot Nothing And other IsNot Nothing And entity <> other Then
-                    entity.CheckPotentialCollision(other)
+                If other IsNot Nothing And Me <> other Then
+                    Me.CheckPotentialCollision(other)
                     'If Me.nextMoveLocation <> Nothing Then
                     'Me.Location = Me.nextMoveLocation
                     'End If
+                    
+                End If
+                If Double.IsNan(me.veloc.X)
+                    Me.ID += 0
                 End If
             Next
-        Next
+       ' Next
 
         ' If entity is going to collide, clear veloc so that it never moves INSIDE the object
         If Me.willCollideFromAbove And Me.veloc.y < 0 Then
