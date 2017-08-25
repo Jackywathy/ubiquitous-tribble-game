@@ -30,11 +30,7 @@ Public MustInherit Class Entity
     Public isFacingForward = True
     Public didJumpAndNotFall = True
 
-
     Public currentGroundObjects As New List(Of RenderObject)
-
-
-
 
     ''' <summary>
     ''' Checks for overlap between Me and sender. Handles change of: location of Me, and variables such as isGrounded and didJumpAndNotFall.

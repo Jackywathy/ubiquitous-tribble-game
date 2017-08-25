@@ -151,6 +151,7 @@
     <Compile Include="renderObj\BrickPlatform.vb" />
     <Compile Include="renderObj\entities\Enemy.vb" />
     <Compile Include="renderObj\entities\EntCoin.vb" />
+    <Compile Include="renderObj\entities\EntCoinFromBlock.vb" />
     <Compile Include="renderObj\entities\EntFireball.vb" />
     <Compile Include="renderObj\entities\EntFireFlower.vb" />
     <Compile Include="renderObj\entities\EntGoomba.vb" />

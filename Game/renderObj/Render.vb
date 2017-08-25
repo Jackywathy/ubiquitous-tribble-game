@@ -30,7 +30,7 @@ Public MustInherit Class RenderObject
 
     Public Property ID As Integer = GetNewID()
 
-
+    Public frameCount As Integer = 0
 
     'Public internalFrameCounter = 0
     Public Const animationInterval As Integer = 5 ' Frames to wait before proceeding to next image of animation

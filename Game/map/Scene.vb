@@ -220,9 +220,9 @@ Public Class Scene
         ' TODO - gravity is only applied to the player, in the handle input function
         For Each item As RenderObject In AllObjAndEnt
             If item.GetType.IsSubclassOf(GetType(Entity)) Then
-                If CType(item, Entity).isDead = False Then
-                    CType(item, Entity).UpdatePos()
-                End If
+                'If CType(item, Entity).isDead = False Then
+                CType(item, Entity).UpdatePos()
+                'End If
             End If
                 item.animate()
         Next
@@ -303,6 +303,7 @@ Public Class Scene
 
         outScene.player1 = player1
         outScene.AddEntity(player1)
+        outScene.AddEntity(New EntCoin(320, 96, New Point(64, 64), outScene))
         outScene.AddEntity(New EntGoomba(New Point(320, 64), outScene))
         Dim x As New StaticText(New RectangleF(0,0,ScreenGridWidth/4, ScreenGridHeight/32), "MARIO", CustomFontFamily.NES.GetFontFamily(), 18, New SolidBrush(Color.White), StringAlignment.Near, StringAlignment.Near)
         outScene.AddItem(x)

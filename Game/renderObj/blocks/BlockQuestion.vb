@@ -69,7 +69,7 @@
                         mushroom.Spawn()
                     Case "coin"
                         player.PickupCoin()
-
+                        MyScene.PrepareAdd(New EntCoinFromBlock(32, 32, New Point(Me.Location.X, Me.Location.Y + Me.Height), MyScene))
                 End Select
                 If Not isUsed Then
                     frameCount = 0

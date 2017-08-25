@@ -6,7 +6,7 @@
     Public Overrides Property RenderImage As Image
     Public Property spriteSet As SpriteSet
     Public defaultLocationY As Integer
-    Public frameCount As Integer = 0
+
     Public isMoving As Boolean = False
 
     Public Sub New(width As Integer, height As Integer, location As Point, spriteSet As SpriteSet, scene As Scene)
