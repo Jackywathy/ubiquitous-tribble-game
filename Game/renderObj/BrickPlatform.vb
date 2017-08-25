@@ -23,7 +23,7 @@ Public Class BrickPlatform
     ''' </summary>
     ''' <param name="params"></param>
     Public Sub New (params As Object(), scene As Scene)
-        Me.New(params(2), params(3), New Point(params(0), params(1)), scene)
+        Me.New(params(2)*32, params(3)*32, New Point(params(0)*32, params(1)*32), scene)
     End Sub
 
 

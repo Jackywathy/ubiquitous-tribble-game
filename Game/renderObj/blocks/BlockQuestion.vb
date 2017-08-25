@@ -22,7 +22,7 @@
     ''' <param name="params"></param>
     ''' <param name="scene"></param>
     Sub New(params As Object, scene As Scene)
-        Me.New(New Point(params(0), params(1)), params(2), scene)
+        Me.New(New Point(params(0)*32, params(1)*32), params(2), scene)
     End Sub
 
     Public Overrides Sub animate()

@@ -216,9 +216,7 @@ Public Class Scene
     ''' <param name="numframes"></param>
     Sub UpdatePhysics(numframes As Integer)
         ' animate and update position of each entity
-
-        ' TODO - gravity is only applied to the player, in the handle input function
-        For Each item As RenderObject In AllObjAndEnt
+         For Each item As RenderObject In AllObjAndEnt
             If item.GetType.IsSubclassOf(GetType(Entity)) Then
                 'If CType(item, Entity).isDead = False Then
                 CType(item, Entity).UpdatePos()
