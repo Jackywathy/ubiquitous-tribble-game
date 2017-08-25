@@ -76,7 +76,8 @@ Public Class Scene
 
         outScene.player1 = player1
         outScene.AddEntity(player1)
-        outScene.AddEntity(New EntCoin(320, 96, New Point(64, 64), outScene))
+        outScene.AddEntity(New EntCoin(32, 32, New Point(320, 96), outScene))
+
         'outScene.AddEntity(New EntGoomba(New Point(320, 64), outScene))
         Dim x As New StaticText(New RectangleF(0,0,ScreenGridWidth/4, ScreenGridHeight/32), "MARIO", CustomFontFamily.NES.GetFontFamily(), 18, New SolidBrush(Color.White), StringAlignment.Near, StringAlignment.Near)
         outScene.AddItem(x)

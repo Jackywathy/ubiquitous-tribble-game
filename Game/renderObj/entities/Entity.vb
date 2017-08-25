@@ -40,16 +40,6 @@ Public MustInherit Class Entity
     Public Sub CheckPotentialCollision(sender As RenderObject)
         collidedX = False
 
-        If Me.GetType = GetType(EntPlayer) Then
-            Dim player As EntPlayer = Me
-            If player.isDead And player.veloc.y < 0 Then
-                Me.ID += 0
-            End If
-        End If
-        If Double.IsNan(me.veloc.X)
-            Me.ID += 0
-        End If
-
         Dim selfNextPoint = New Point(Me.Location.X + Me.veloc.x, Me.Location.Y + Me.veloc.y)
 
         Dim selfCentre = New Point((Me.Location.X + (0.5 * Me.Width)), (Me.Location.Y + (0.5 * Me.CollisionHeight)))
@@ -108,7 +98,7 @@ Public MustInherit Class Entity
                 Me.willCollideFromBelow = True
             End If
 
-            If Me.veloc.y = 0 And senderIsEntity Then
+            If Me.veloc.y = 0 And isInsideFromBelow And senderIsEntity Then
 
                 ' NO entity's collisionBottom() should set veloc.y of sender to 0!
                 sender.CollisionBottom(Me)
@@ -201,18 +191,6 @@ Public MustInherit Class Entity
             player.allowedToUncrouch = Not willCollideFromBelow
         End If
 
-        If Double.IsNan(me.veloc.X)
-            Me.ID += 0
-        End If
-
-        ' MAIN ISSUE  TODO FIX!
-        If Sender.GetType().IsSubclassOf(GetType(Entity))
-            If Double.IsNan(CType(sender, Entity).veloc.X)
-                Me.ID += 0
-            End If
-        End If
-
-
     End Sub
 
     Public Overrides Sub CollisionBottom(sender As Entity)
@@ -234,7 +212,11 @@ Public MustInherit Class Entity
             Me.veloc.x += magnitude
         Else
             Dim reduction = (Me.moveSpeed.x - Forces.airResist) * 0.7
-            Me.veloc.x += magnitude - (magnitude / Math.Abs(magnitude)) * reduction
+            Dim sign = 1
+            If magnitude < 0 Then
+                sign = -1
+            End If
+            Me.veloc.x += magnitude - (sign * reduction)
         End If
 
         If Me.veloc.x <> 0 And Math.Abs(Me.veloc.x) > Me.maxVeloc.x Then
@@ -244,6 +226,7 @@ Public MustInherit Class Entity
             End If
             Me.veloc.x = sign * Me.maxVeloc.x
         End If
+
     End Sub
 
     ''' <summary>
@@ -273,14 +256,13 @@ Public MustInherit Class Entity
 
         Dim signBeforeIsNegative As Boolean = velocity < 0
 
-        velocity -=  magnitude * If(signBeforeIsNegative, -1, 1)
+        velocity -= magnitude * If(signBeforeIsNegative, -1, 1)
 
         Dim signOfVelocAfter As Boolean = velocity < 0
 
         If signOfVelocAfter <> signBeforeIsNegative Then
             velocity = 0
         End If
-        
 
         ' Just in case
         'If magnitude > 0 Then
@@ -334,23 +316,17 @@ Public MustInherit Class Entity
         ' check collision of all entities with all existing RenderObj, including other entities
         'For entityCount = 0 To (Me.MyScene.AllEntities.Count - 1)
             For each other As RenderObject in MyScene.AllObjAndEnt
-         
 
-               
+            ' Don't check collisions using the same obj
+            ' and ensure entities are valid
+            If other IsNot Nothing And Me <> other Then
+                Me.CheckPotentialCollision(other)
+                'If Me.nextMoveLocation <> Nothing Then
+                'Me.Location = Me.nextMoveLocation
+                'End If
 
-                ' Don't check collisions using the same obj
-                ' and ensure entities are valid
-                If other IsNot Nothing And Me <> other Then
-                    Me.CheckPotentialCollision(other)
-                    'If Me.nextMoveLocation <> Nothing Then
-                    'Me.Location = Me.nextMoveLocation
-                    'End If
-                    
-                End If
-                If Double.IsNan(me.veloc.X)
-                    Me.ID += 0
-                End If
-            Next
+            End If
+        Next
        ' Next
 
         ' If entity is going to collide, clear veloc so that it never moves INSIDE the object
@@ -410,5 +386,4 @@ Public Enum Direction
     Right
     Bottom
     Left
-    
 End Enum
