@@ -1,7 +1,7 @@
 ﻿''' <summary>
 ''' items that are simply added onto the screen - no hitboxes
 ''' </summary>
-Public MustInherit Class RenderItem
+Public MustInherit Class StaticItem
     Public MustOverride Sub Render(g As Graphics)
 
 End Class
@@ -10,7 +10,7 @@ End Class
 ''' Items that have hitboxes
 ''' </summary>
 Public MustInherit Class RenderObject
-    Inherits RenderItem
+    Inherits StaticItem
     Public Property Width As Integer
     Public Property Height As Integer
 
@@ -78,7 +78,7 @@ Public MustInherit Class RenderObject
     End Sub
 
     ''' <summary>
-    ''' Checks if the RenderItem is in the current screen
+    ''' Checks if the StaticItem is in the current screen
     ''' </summary>
     ''' <returns></returns>
     Public Overridable Function InScene()

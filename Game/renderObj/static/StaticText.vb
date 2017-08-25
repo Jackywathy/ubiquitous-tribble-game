@@ -1,5 +1,5 @@
 ﻿Public Class StaticText
-    Inherits RenderItem
+    Inherits StaticItem
 
 
     Private sf As StringFormat

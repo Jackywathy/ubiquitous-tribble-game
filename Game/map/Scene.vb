@@ -1,5 +1,4 @@
-﻿Imports System.Data.Common
-Imports Newtonsoft.Json
+﻿Imports Newtonsoft.Json
 
 Public Class Scene
     ' Contains all objects (no entityes)
@@ -18,7 +17,8 @@ Public Class Scene
     Private toRemoveObjects As New HashSet(Of RenderObject)
     Private toAddObjects As New HashSet(Of RenderObject)
     
-    Public AllItems As New HashSet(Of RenderItem)
+
+    Public AllStaticItems As New HashSet(Of StaticItem)
 
 
     Public Player1 As EntPlayer
@@ -61,9 +61,9 @@ Public Class Scene
         Next
     End Sub
 
-    Sub AddItem(ByVal ParamArray args() As RenderItem)
-        For Each item As RenderItem In args
-            AllItems.Add(item)
+    Sub AddItem(ByVal ParamArray args() As StaticItem)
+        For Each item As StaticItem In args
+            AllStaticItems.Add(item)
         Next
     End Sub
 
@@ -132,7 +132,7 @@ Public Class Scene
     End Sub
 
     ''' <summary>
-    ''' Sets the background of the scene. Uses the resource name string.
+    ''' Sets the background of the scene, using a hex color
     ''' </summary>
     ''' <param name="hexColor"></param>
     Sub SetBackground(hexColor As String, width As Integer, height As Integer)
@@ -254,7 +254,7 @@ Public Class Scene
         background.Render(g)
 
         ' all text & stuff
-        For Each item As RenderItem In AllItems
+        For Each item As StaticItem In AllStaticItems
             item.Render(g)
         Next
 
