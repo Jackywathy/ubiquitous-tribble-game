@@ -162,28 +162,32 @@ End Class
 ' ---------------------------
 
 Public Enum SpriteState
-    Constant = 0        ' The set to use if nothing is happening to the Ent. Also use .Constant if only one main animation
-    ConstantFlip = 1
-    Ground = 2
-    GroundFlip = 3
-    Air = 4
-    AirFlip = 5
+    ConstantRight = 0        ' The set to use if nothing is happening to the Ent. Also use .ConstantRight if only one main animation
+    Constant = 0
+    ConstantLeft = 1
+
+    GroundRight = 2
+    GroundLeft = 3
+
+    AirRight = 4
+    AirLeft = 5
+
     Spawn = 6
     Destroy = 7
-    Crouch = 8
-    CrouchFlip = 9
+
+    CrouchRight = 8
+    CrouchLeft = 9
 End Enum
 
 Public MustInherit Class Sprites
-
     Public Shared playerSmall As New SpriteSet(
         New Dictionary(Of SpriteState, List(Of Image)) From {
-            {SpriteState.Ground, New List(Of Image) From {My.Resources.mario_small_1, My.Resources.mario_small_2, My.Resources.mario_small_3, My.Resources.mario_small_4}},
-            {SpriteState.Constant, New List(Of Image) From {My.Resources.mario_small_1}},
-            {SpriteState.Air, New List(Of Image) From {My.Resources.mario_small_jump}},
-            {SpriteState.GroundFlip, New List(Of Image) From {My.Resources.mario_small_1r, My.Resources.mario_small_2r, My.Resources.mario_small_3r, My.Resources.mario_small_4r}},
-            {SpriteState.ConstantFlip, New List(Of Image) From {My.Resources.mario_small_1r}},
-            {SpriteState.AirFlip, New List(Of Image) From {My.Resources.mario_small_jumpr}},
+            {SpriteState.GroundRight, New List(Of Image) From {My.Resources.mario_small_1, My.Resources.mario_small_2, My.Resources.mario_small_3, My.Resources.mario_small_4}},
+            {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.mario_small_1}},
+            {SpriteState.AirRight, New List(Of Image) From {My.Resources.mario_small_jump}},
+            {SpriteState.GroundLeft, New List(Of Image) From {My.Resources.mario_small_1r, My.Resources.mario_small_2r, My.Resources.mario_small_3r, My.Resources.mario_small_4r}},
+            {SpriteState.ConstantLeft, New List(Of Image) From {My.Resources.mario_small_1r}},
+            {SpriteState.AirLeft, New List(Of Image) From {My.Resources.mario_small_jumpr}},
             {SpriteState.Destroy, New List(Of Image) From {My.Resources.mario_small_dead}}
         },
         32,
@@ -192,14 +196,14 @@ Public MustInherit Class Sprites
 
     Public Shared playerBig As New SpriteSet(
         New Dictionary(Of SpriteState, List(Of Image)) From {
-            {SpriteState.Ground, New List(Of Image) From {My.Resources.mario_big_1, My.Resources.mario_big_2, My.Resources.mario_big_3, My.Resources.mario_big_4}},
-            {SpriteState.Constant, New List(Of Image) From {My.Resources.mario_big_1}},
-            {SpriteState.Air, New List(Of Image) From {My.Resources.mario_big_jump}},
-            {SpriteState.Crouch, New List(Of Image) From {My.Resources.mario_big_crouch}},
-            {SpriteState.GroundFlip, New List(Of Image) From {My.Resources.mario_big_1r, My.Resources.mario_big_2r, My.Resources.mario_big_3r, My.Resources.mario_big_4r}},
-            {SpriteState.ConstantFlip, New List(Of Image) From {My.Resources.mario_big_1r}},
-            {SpriteState.AirFlip, New List(Of Image) From {My.Resources.mario_big_jumpr}},
-            {SpriteState.CrouchFlip, New List(Of Image) From {My.Resources.mario_big_crouchr}}
+            {SpriteState.GroundRight, New List(Of Image) From {My.Resources.mario_big_1, My.Resources.mario_big_2, My.Resources.mario_big_3, My.Resources.mario_big_4}},
+            {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.mario_big_1}},
+            {SpriteState.AirRight, New List(Of Image) From {My.Resources.mario_big_jump}},
+            {SpriteState.CrouchRight, New List(Of Image) From {My.Resources.mario_big_crouch}},
+            {SpriteState.GroundLeft, New List(Of Image) From {My.Resources.mario_big_1r, My.Resources.mario_big_2r, My.Resources.mario_big_3r, My.Resources.mario_big_4r}},
+            {SpriteState.ConstantLeft, New List(Of Image) From {My.Resources.mario_big_1r}},
+            {SpriteState.AirLeft, New List(Of Image) From {My.Resources.mario_big_jumpr}},
+            {SpriteState.CrouchLeft, New List(Of Image) From {My.Resources.mario_big_crouchr}}
         },
         32,
         64
@@ -207,14 +211,14 @@ Public MustInherit Class Sprites
 
     Public Shared playerBigFire As New SpriteSet(
         New Dictionary(Of SpriteState, List(Of Image)) From {
-            {SpriteState.Ground, New List(Of Image) From {My.Resources.mario_bigf_1, My.Resources.mario_bigf_2, My.Resources.mario_bigf_3, My.Resources.mario_bigf_4}},
-            {SpriteState.Constant, New List(Of Image) From {My.Resources.mario_bigf_1}},
-            {SpriteState.Air, New List(Of Image) From {My.Resources.mario_bigf_jump}},
-            {SpriteState.Crouch, New List(Of Image) From {My.Resources.mario_bigf_crouch}},
-            {SpriteState.GroundFlip, New List(Of Image) From {My.Resources.mario_bigf_1r, My.Resources.mario_bigf_2r, My.Resources.mario_bigf_3r, My.Resources.mario_bigf_4r}},
-            {SpriteState.ConstantFlip, New List(Of Image) From {My.Resources.mario_bigf_1r}},
-            {SpriteState.AirFlip, New List(Of Image) From {My.Resources.mario_bigf_jumpr}},
-            {SpriteState.CrouchFlip, New List(Of Image) From {My.Resources.mario_bigf_crouchr}}
+            {SpriteState.GroundRight, New List(Of Image) From {My.Resources.mario_bigf_1, My.Resources.mario_bigf_2, My.Resources.mario_bigf_3, My.Resources.mario_bigf_4}},
+            {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.mario_bigf_1}},
+            {SpriteState.AirRight, New List(Of Image) From {My.Resources.mario_bigf_jump}},
+            {SpriteState.CrouchRight, New List(Of Image) From {My.Resources.mario_bigf_crouch}},
+            {SpriteState.GroundLeft, New List(Of Image) From {My.Resources.mario_bigf_1r, My.Resources.mario_bigf_2r, My.Resources.mario_bigf_3r, My.Resources.mario_bigf_4r}},
+            {SpriteState.ConstantLeft, New List(Of Image) From {My.Resources.mario_bigf_1r}},
+            {SpriteState.AirLeft, New List(Of Image) From {My.Resources.mario_bigf_jumpr}},
+            {SpriteState.CrouchLeft, New List(Of Image) From {My.Resources.mario_bigf_crouchr}}
         },
         32,
         64
@@ -222,7 +226,7 @@ Public MustInherit Class Sprites
 
     Public Shared playerFireball As New SpriteSet(
         New Dictionary(Of SpriteState, List(Of Image)) From {
-            {SpriteState.Constant, New List(Of Image) From {My.Resources.fireball}},
+            {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.fireball}},
             {SpriteState.Destroy, New List(Of Image) From {My.Resources.fireball_expl_1, My.Resources.fireball_expl_2, My.Resources.fireball_expl_3}}
         },
         16,
@@ -233,7 +237,7 @@ Public MustInherit Class Sprites
     Public Shared f_flower As New SpriteSet(
         New Dictionary(Of SpriteState, List(Of Image)) From {
             {SpriteState.Spawn, New List(Of Image) From {My.Resources.f_flower_s1, My.Resources.f_flower_s2, My.Resources.f_flower_s3, My.Resources.f_flower_s4, My.Resources.f_flower_s5, My.Resources.f_flower_s6, My.Resources.f_flower_s7}},
-            {SpriteState.Constant, New List(Of Image) From {My.Resources.f_flower_1, My.Resources.f_flower_2, My.Resources.f_flower_3, My.Resources.f_flower_4}}
+            {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.f_flower_1, My.Resources.f_flower_2, My.Resources.f_flower_3, My.Resources.f_flower_4}}
         },
         32,
         32
@@ -242,7 +246,7 @@ Public MustInherit Class Sprites
     Public Shared mushroom As New SpriteSet(
         New Dictionary(Of SpriteState, List(Of Image)) From {
             {SpriteState.Spawn, New List(Of Image) From {My.Resources.mushroom_s1, My.Resources.mushroom_s2, My.Resources.mushroom_s3, My.Resources.mushroom_s4, My.Resources.mushroom_s5, My.Resources.mushroom_s6, My.Resources.mushroom_s7}},
-            {SpriteState.Constant, New List(Of Image) From {My.Resources.mushroom}}
+            {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.mushroom}}
         },
         32,
         32
@@ -250,7 +254,7 @@ Public MustInherit Class Sprites
 
     Public Shared itemBlock As New SpriteSet(
         New Dictionary(Of SpriteState, List(Of Image)) From {
-            {SpriteState.Constant, New List(Of Image) From {My.Resources.blockQuestion1, My.Resources.blockQuestion2, My.Resources.blockQuestion3}}
+            {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.blockQuestion1, My.Resources.blockQuestion2, My.Resources.blockQuestion3}}
         },
         32,
         32
@@ -258,7 +262,7 @@ Public MustInherit Class Sprites
 
     Public Shared brickBlock As New SpriteSet(
         New Dictionary(Of SpriteState, List(Of Image)) From {
-            {SpriteState.Constant, New List(Of Image) From {My.Resources.blockBrick}}
+            {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.blockBrick}}
         },
         32,
         32
@@ -266,7 +270,7 @@ Public MustInherit Class Sprites
 
     Public Shared blockMetal As New SpriteSet(
         New Dictionary(Of SpriteState, List(Of Image)) From {
-            {SpriteState.Constant, New List(Of Image) From {My.Resources.blockMetal}}
+            {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.blockMetal}}
         },
         32,
         32
@@ -274,7 +278,7 @@ Public MustInherit Class Sprites
 
     Public Shared koopaGreen As New SpriteSet(
     New Dictionary(Of SpriteState, List(Of Image)) From {
-            {SpriteState.Constant, New List(Of Image) From {My.Resources.koopa_green_1, My.Resources.koopa_green_2}},
+            {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.koopa_green_1, My.Resources.koopa_green_2}},
             {SpriteState.Destroy, New List(Of Image) From {My.Resources.koopa_green_shell1, My.Resources.koopa_green_shell2}}
         },
         32,
@@ -283,7 +287,7 @@ Public MustInherit Class Sprites
 
     Public Shared goomba As New SpriteSet(
         New Dictionary(Of SpriteState, List(Of Image)) From {
-            {SpriteState.Constant, New List(Of Image) From {My.Resources.goomba_1, My.Resources.goomba_2}},
+            {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.goomba_1, My.Resources.goomba_2}},
             {SpriteState.Destroy, New List(Of Image) From {My.Resources.goomba_d, My.Resources.goomba_d2}}
         },
         32,
@@ -292,7 +296,7 @@ Public MustInherit Class Sprites
 
     Public Shared coin As New SpriteSet(
         New Dictionary(Of SpriteState, List(Of Image)) From {
-            {SpriteState.Constant, New List(Of Image) From {My.Resources.coin_idle_1, My.Resources.coin_idle_2, My.Resources.coin_idle_3}}
+            {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.coin_idle_1, My.Resources.coin_idle_2, My.Resources.coin_idle_3}}
         },
         32,
         32
@@ -300,11 +304,19 @@ Public MustInherit Class Sprites
 
     Public Shared coinFromBlock As New SpriteSet(
         New Dictionary(Of SpriteState, List(Of Image)) From {
-            {SpriteState.Constant, New List(Of Image) From {My.Resources.coin_hit_1, My.Resources.coin_hit_2, My.Resources.coin_hit_3, My.Resources.coin_hit_4}}
+            {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.coin_hit_1, My.Resources.coin_hit_2, My.Resources.coin_hit_3, My.Resources.coin_hit_4}}
         },
         32,
         32
     )
+    Public Shared blockInvis As New SpriteSet(
+        New Dictionary(Of SpriteState,List(Of Image)) From {
+            {SpriteState.Constant, New List(Of Image) From {My.Resources.blockInvis}}
+        },
+        32,
+        32
+    )
+
 
     Private Sub New()
         ' make this class un-intializable

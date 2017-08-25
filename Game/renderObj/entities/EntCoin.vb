@@ -5,12 +5,12 @@ Public Class EntCoin
 
     Sub New(width As Integer, height As Integer, location As Point, scene As Scene)
         MyBase.New(width, height, location, Sprites.coin, scene)
-        Me.renderImage = Me.SpriteSet(SpriteState.Constant)(0)
+        Me.renderImage = Me.SpriteSet(SpriteState.ConstantRight)(0)
     End Sub
 
     Public Overrides Sub animate()
         Dim index = Math.Floor(frameCount / (animationInterval * 2)) Mod 3
-        Me.renderImage = Me.SpriteSet(SpriteState.Constant)(index)
+        Me.renderImage = Me.SpriteSet(SpriteState.ConstantRight)(index)
     End Sub
 
     Public Overrides Sub UpdatePos()

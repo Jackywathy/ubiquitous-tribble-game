@@ -145,6 +145,7 @@
     </Compile>
     <Compile Include="renderObj\blocks\Block.vb" />
     <Compile Include="renderObj\blocks\BlockBreakableBrick.vb" />
+    <Compile Include="renderObj\blocks\BlockInvis.vb" />
     <Compile Include="renderObj\blocks\BlockPipe.vb" />
     <Compile Include="renderObj\blocks\BlockQuestion.vb" />
     <Compile Include="renderObj\blocks\BlockMetal.vb" />
@@ -201,6 +202,7 @@
   <ItemGroup>
     <Content Include="images\blocks\blockGround.png" />
     <Content Include="images\blocks\blockGround_2x.png" />
+    <Content Include="images\blocks\blockInvis.png" />
     <Content Include="images\blocks\pipe\pipe_2x.png" />
     <Content Include="images\blocks\pipe\pipe_bottom.png" />
     <Content Include="images\decoration\cloud_big.png" />

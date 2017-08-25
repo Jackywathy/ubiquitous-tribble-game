@@ -30,7 +30,7 @@
         ' IFC = 0, 15, 30, 45 ...
         If MyScene.frameCount Mod (animationInterval * 3) = 0 And Not isUsed Then
             ' We need 0, 1 or 2
-            RenderImage = spriteSet(SpriteState.Constant)((MyScene.frameCount / (animationInterval * 3)) Mod 3)
+            RenderImage = spriteSet(SpriteState.ConstantRight)((MyScene.frameCount / (animationInterval * 3)) Mod 3)
         End If
         If isMoving Then
             ' bumps block

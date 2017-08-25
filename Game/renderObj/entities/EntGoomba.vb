@@ -38,7 +38,7 @@
 
         Else
             If veloc.x <> 0 And MyScene.frameCount Mod (2 * animationInterval) = 0 Then
-                Me.renderImage = SpriteSet.SendToBack(SpriteState.Constant)
+                Me.renderImage = SpriteSet.SendToBack(SpriteState.ConstantRight)
             End If
             ' just to check if it works
             If collidedX Then

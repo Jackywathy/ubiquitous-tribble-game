@@ -9,25 +9,28 @@
 
     Public Sub New(width As Integer, height As Integer, location As Point, action As String, scene As Scene)
         MyBase.New(width, height, location, scene)
-        If height <= 32
-            Throw New Exception("Height must be greater that 32 for pipes")
+        If height < 64
+            Throw New Exception("Height must be >= 64 for pipes")
         End If
+
         Dim pipeSprite As New SpriteSet(
             New Dictionary(Of SpriteState, List(Of Image)) From {
-                {SpriteState.Constant, New List(Of Image) From {My.Resources.pipe_2x}}
+                {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.pipe_2x}}
             },
             width,
             64,
-)
-        pipeTop = New BlockPipeTop(width, 64, New Point(location.X, location.Y + (height - 32)), pipeSprite, scene)
-        pipeSprite = New SpriteSet(
-            New Dictionary(Of SpriteState, List(Of Image)) From {
-                {SpriteState.Constant, New List(Of Image) From {My.Resources.pipe_bottom}}
-            },
-            width - width / 8,
-            height - 32,
-)
-        pipeBottom = New BlockPipeBottom(width-width/8, height-32, New Point(location.X+width/16, location.Y), action, pipeSprite, scene)
+        )
+        pipeTop = New BlockPipeTop(width, 64, New Point(location.X, location.Y + (height - 64)), pipeSprite, scene)
+        If height > 64
+            pipeSprite = New SpriteSet(
+                New Dictionary(Of SpriteState, List(Of Image)) From {
+                    {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.pipe_bottom}}
+                },
+                width,
+                height-64
+            )
+            pipeBottom = New BlockPipeBottom(width, height-64, New Point(location.X, location.Y), action, pipeSprite, scene)
+        End if
     End Sub
 
     ''' <summary>
@@ -45,7 +48,9 @@
 
     Public Overrides Sub AddSelfToScene()
         pipeTop.AddSelfToScene()
-        pipeBottom.AddSelfToScene()
+        if pipeBottom isnot nothing
+            pipeBottom.AddSelfToScene()
+        End if
     End Sub
 
 End Class

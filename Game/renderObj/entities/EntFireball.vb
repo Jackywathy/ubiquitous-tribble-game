@@ -17,7 +17,7 @@
 
     Public Overrides Sub Animate()
         If Not willDestroy Then
-            Me.renderImage = SpriteSet(SpriteState.Constant)(0)
+            Me.renderImage = SpriteSet(SpriteState.ConstantRight)(0)
             renderImage.RotateFlip(RotateFlipType.Rotate90FlipNone)
         Else
             Me.renderImage = SpriteSet(SpriteState.Destroy)(Math.Floor(MyScene.frameCount / animationInterval) Mod 3)

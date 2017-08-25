@@ -7,13 +7,13 @@
 
     Sub New(width As Integer, height As Integer, location As Point, scene As Scene)
         MyBase.New(width, height, location, Sprites.coinFromBlock, scene)
-        Me.renderImage = Me.SpriteSet(SpriteState.Constant)(0)
+        Me.renderImage = Me.SpriteSet(SpriteState.ConstantRight)(0)
         Me.defaultY = Me.Location.Y
     End Sub
 
     Public Overrides Sub animate()
         Dim index = Math.Floor(frameCount / animationInterval) Mod 4
-        Me.renderImage = Me.SpriteSet(SpriteState.Constant)(index)
+        Me.renderImage = Me.SpriteSet(SpriteState.ConstantRight)(index)
         If index = 3 Then
             Me.willDisappear = True
         End If

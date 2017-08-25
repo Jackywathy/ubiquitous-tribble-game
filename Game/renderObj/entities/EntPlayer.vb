@@ -188,7 +188,7 @@ Public Class EntPlayer
 
             ' If crouching
             If isCrouching Then
-                spriteStateToUse = SpriteState.Crouch
+                spriteStateToUse = SpriteState.CrouchRight
 
                 ' If grounded or falling off a platform
             ElseIf isGrounded Or (Not isGrounded And Not didJumpAndNotFall) Then
@@ -196,16 +196,16 @@ Public Class EntPlayer
                 ' If moving
                 If veloc.x <> 0 Then
 
-                    spriteStateToUse = SpriteState.Ground
+                    spriteStateToUse = SpriteState.GroundRight
 
 
                 ElseIf veloc.x = 0 Then 'If still
-                    spriteStateToUse = SpriteState.Constant
+                    spriteStateToUse = SpriteState.ConstantRight
                 End If
 
                 'If jumping
             ElseIf didJumpAndNotFall Then
-                spriteStateToUse = SpriteState.Air
+                spriteStateToUse = SpriteState.AirRight
             End If
 
             If Not isFacingForward Then
@@ -214,7 +214,7 @@ Public Class EntPlayer
 
             Select Case spriteStateToUse
             ' Multi-frame
-                Case SpriteState.Ground, SpriteState.GroundFlip
+                Case SpriteState.GroundRight, SpriteState.GroundLeft
                     If MyScene.frameCount Mod animationInterval = 0 Then
                         Me.renderImage = SpriteSet.SendToBack(spriteStateToUse)
                     End If

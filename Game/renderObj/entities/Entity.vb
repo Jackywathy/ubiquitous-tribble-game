@@ -13,7 +13,7 @@ Public MustInherit Class Entity
     Sub New(width As Integer, height As Integer, location As Point, spriteSet As SpriteSet, scene As Scene)
         MyBase.New(width, height, location, scene)
         Me.SpriteSet = spriteSet
-        Me.renderImage = Me.SpriteSet(SpriteState.Constant)(0)
+        Me.renderImage = Me.SpriteSet(SpriteState.ConstantRight)(0)
     End Sub
 
     ' all vincent
