@@ -197,11 +197,21 @@ Public MustInherit Class Entity
         ' Handle tracking of crouch allowance
         If Me.GetType = GetType(EntPlayer) Then
             Dim player As EntPlayer = Me
-            If blockLowermost = 96 And sender.Location.X = 192 Then
-                player.ID += 0
-            End If
+
             player.allowedToUncrouch = Not willCollideFromBelow
         End If
+
+        If Double.IsNan(me.veloc.X)
+            Me.ID += 0
+        End If
+
+        ' MAIN ISSUE  TODO FIX!
+        If Sender.GetType().IsSubclassOf(GetType(Entity))
+            If Double.IsNan(CType(sender, Entity).veloc.X)
+                Me.ID += 0
+            End If
+        End If
+
 
     End Sub
 

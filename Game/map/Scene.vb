@@ -307,7 +307,6 @@ Public Class Scene
 
                     ent.ID += 0
                 End If
-                'If CType(item, Entity).isDead = False Then
                 ent.UpdatePos()
                 'End If
                 If Double.IsNan(ent.veloc.X)
