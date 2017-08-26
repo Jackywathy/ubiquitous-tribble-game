@@ -119,8 +119,9 @@ Public Class Scene
                 AssertLength("blockInvis", 2, params.Length, params)
                 out = New BlockInvis(params, Me)
             Case RenderTypes.BlockBrickPowerUp
-                AssertLength("blockPowerBrickPowerUp", 3, params.Length, params)
+                AssertLength("blockPowerBrickPowerUp", New Integer() {3, 4}, params.Length, params)
                 out = New BlockBrickPowerUp(params, Me)
+           
 
 
             Case RenderTypes.BlockPipe
@@ -130,6 +131,9 @@ Public Class Scene
             Case RenderTypes.EntGoomba
                 AssertLength("entGoomba", 2, params.Length, params)
                 out = New EntGoomba(params, Me)
+            Case RenderTypes.EntKoopa
+                AssertLength("entKoopa", 2, params.Length, params)
+                out = New EntKoopa(New Point(params(0), params(1)), Me)
             
             Case Else
 

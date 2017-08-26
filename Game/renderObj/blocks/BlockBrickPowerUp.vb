@@ -12,6 +12,7 @@
     ''' 0 : x
     ''' 1 : y
     ''' 2 : type
+    ''' 3 : num of coins (of neccesarry)
     ''' </summary>
     ''' <param name="params"></param>
     ''' <param name="scene"></param>

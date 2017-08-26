@@ -6,7 +6,7 @@
         DefaultFire 
         Mushroom
         Coin
-
+        Star
     End Enum
 
 
