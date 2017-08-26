@@ -87,28 +87,50 @@ Public Class Scene
         Return outScene
     End Function
 
+    Public Enum RenderTypes
+        BlockBreakableBrick
+        BrickPlatform
+        BlockQuestion
+        BlockMetal
+        BlockPipe
+        BlockInvis
+        BlockBrickPowerUp
+
+        EntGoomba
+        EntKoopa
+    End Enum
 
     Private Function RenderItemFactory(name As String, params As Object()) As RenderObject
         Dim out As RenderObject
-        Select Case name
-            Case "blockBreakableBrick"
+        Select Case Helper.StrToEnum(Of RenderTypes)(name)
+            Case RenderTypes.BlockBreakableBrick
                 AssertLength("blockBreakableBrick", 2, params.Length, params)
                 out = New BlockBreakableBrick(params , Me)
-            Case "brickPlatform"
+            Case RenderTypes.BrickPlatform
                 AssertLength("brickPlatform", 4, params.Length, params)
                 out = New BrickPlatform(params, Me)
-            Case "blockQuestion"
+            Case RenderTypes.BlockQuestion
                 AssertLength("blockQuestion", 3, params.Length, params)
                 out = New BlockQuestion(params, Me)
-            Case "blockMetal"
+            Case RenderTypes.BlockMetal
                 AssertLength("blockMetal", 2, params.Length, params)
                 out = New BlockMetal(params, Me)
-            Case "blockPipe"
+            Case RenderTypes.BlockInvis
+                AssertLength("blockInvis", 2, params.Length, params)
+                out = New BlockInvis(params, Me)
+            Case RenderTypes.BlockBrickPowerUp
+                AssertLength("blockPowerBrickPowerUp", 3, params.Length, params)
+                out = New BlockBrickPowerUp(params, Me)
+
+
+            Case RenderTypes.BlockPipe
                 AssertLength("blockPipe", 5, params.Length, params)
                 out = New BlockPipe(params, Me)
-            Case "entGoomba"
+
+            Case RenderTypes.EntGoomba
                 AssertLength("entGoomba", 2, params.Length, params)
                 out = New EntGoomba(params, Me)
+            
             Case Else
 
                 Throw New Exception(String.Format("No object with name {0}", name))
@@ -302,17 +324,10 @@ Public Class Scene
     Sub UpdatePhysics(numframes As Integer)
         ' animate and update position of each entity
          For Each item As RenderObject In AllObjAndEnt
-            If item.GetType.IsSubclassOf(GetType(Entity)) Then
+            If Helper.IsEntity(item) Then
                 Dim ent As Entity = item
-                If Double.IsNan(ent.veloc.X)
-
-                    ent.ID += 0
-                End If
                 ent.UpdatePos()
                 'End If
-                If Double.IsNan(ent.veloc.X)
-                    ent.ID += 0
-                End If
             End If
             item.animate()
         Next
@@ -373,6 +388,15 @@ Public Class Scene
                                                          type, given, expected, String.Join(", ", array)))
         End If
     End Sub
+
+    Private Sub AssertLength(type As String, expected As Integer(), given As Integer, array As Object())
+
+        If Not expected.Contains(given) Then
+            Throw New InvalidJsonException(String.Format("Error in JSON, type={0}, given {1} elements when {2} expected - [ {3} ] ",
+                                                         type, given, expected, String.Join(", ", array)))
+        End If
+    End Sub
+
 
    
 

@@ -94,3 +94,28 @@ Public Module ImageManipulation
     End Function
 
 End Module
+
+Public NotInheritable Class Helper
+    Public Shared Function StrToEnum(Of T)(valueToParse As String) As T
+        Return [Enum].Parse(GetType(T), valueToParse, True)
+    End Function
+
+    Public Shared Function IsPlayer(item As RenderObject) As boolean
+        if item.GetType() = GetType(EntPlayer)
+            Return True
+        End If
+        Return False
+    End Function
+
+    Public Shared Function IsEntity(item As RenderObject) As Boolean
+        If item.GetType.IsSubclassOf(GetType(Entity)) Then
+            Return True
+        Else
+            return False
+        End If
+    End Function
+
+    Private Sub New
+
+    End Sub
+End Class

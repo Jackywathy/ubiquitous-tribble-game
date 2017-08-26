@@ -4,20 +4,6 @@
 Public MustInherit Class StaticItem
     Public MustOverride Sub Render(g As Graphics)
 
-End Class
-
-''' <summary>
-''' Items that have hitboxes
-''' </summary>
-Public MustInherit Class RenderObject
-    Inherits StaticItem
-    Public Property Width As Integer
-    Public Property Height As Integer
-
-    Public Property CollisionHeight As Integer
-
-    Friend Shared toolBarOffSet As Integer = 29
-
     Friend Property MyScene As Scene
     Private Shared _idCount As Integer
     
@@ -30,18 +16,72 @@ Public MustInherit Class RenderObject
 
     Public Property ID As Integer = GetNewID()
 
-    Public frameCount As Integer = 0
 
-    'Public internalFrameCounter = 0
-    Public Const animationInterval As Integer = 5 ' Frames to wait before proceeding to next image of animation
+    Public Shared Operator =(left as StaticItem, right as StaticItem)
+        return left.ID = right.ID
+    End Operator
+    Public Shared Operator <>(left as StaticItem, right As StaticItem)
+        if left IsNot Nothing And right IsNot nothing
+            return left.ID <> right.ID
+        Else 
+            return IsNothing(left) and IsNothing(right)
+        End if
+        
+    End Operator
 
+
+End Class
+
+Public MustInherit Class StaticImage
+    Inherits StaticItem
     Public MustOverride Property RenderImage As Image
+
+   
+    Public Property Width As Integer
+    Public Property Height As Integer
+
+    Friend Const ToolBarOffSet As Integer = 29
 
     ''' <summary>
     ''' Location of object from the very bottom left (0,0)
     ''' </summary>
     ''' <returns></returns>
     Public Property Location As Point
+
+    ''' <summary>
+    ''' Function run before RenderImage is rendered  - psst you can change it here if you dont wanna override Render()
+    ''' </summary>
+    Public Overridable Sub BeforeRender()
+       
+    End Sub
+
+    ''' <summary>
+    ''' Draws the image into the graphics object given
+    ''' </summary>
+    ''' <param name="g"></param>
+    Public Overrides Sub Render(g As Graphics)
+        BeforeRender()
+        g.DrawImage(RenderImage, New Point(Location.X - MyScene.screenLocation.X, Dimensions.ScreenGridHeight - Height - Location.Y + MyScene.screenLocation.Y - toolBarOffSet))
+    End Sub
+
+End Class
+
+''' <summary>
+''' Items that have hitboxes
+''' </summary>
+Public MustInherit Class RenderObject
+    Inherits StaticImage
+    
+
+    Public Property CollisionHeight As Integer
+
+    Public frameCount As Integer = 0
+
+    'Public internalFrameCounter = 0
+    Public Const animationInterval As Integer = 5 ' Frames to wait before proceeding to next image of animation
+
+   
+
 
     ''' <summary>
     ''' Base class
@@ -61,21 +101,7 @@ Public MustInherit Class RenderObject
         RenderImage = New Bitmap(width, height)
     End Sub
 
-    ''' <summary>
-    ''' Function run before RenderImage is rendered  - psst you can change it here if you dont wanna override Render()
-    ''' </summary>
-    Public Overridable Sub BeforeRender()
-       
-    End Sub
-
-    ''' <summary>
-    ''' Draws the image into the graphics object given
-    ''' </summary>
-    ''' <param name="g"></param>
-    Public Overrides Sub Render(g As Graphics)
-        BeforeRender()
-        g.DrawImage(RenderImage, New Point(Location.X - MyScene.screenLocation.X, Dimensions.ScreenGridHeight - Height - Location.Y + MyScene.screenLocation.Y - toolBarOffSet))
-    End Sub
+    
 
     ''' <summary>
     ''' Checks if the StaticItem is in the current screen
@@ -149,17 +175,7 @@ Public MustInherit Class RenderObject
         ' nothing by default
     End Sub
 
-    Public Shared Operator =(left as RenderObject, right as RenderObject)
-        return left.ID = right.ID
-    End Operator
-    Public Shared Operator <>(left as RenderObject, right As RenderObject)
-        if left IsNot Nothing And right IsNot nothing
-            return left.ID <> right.ID
-        Else 
-            return IsNothing(left) and IsNothing(right)
-        End if
-        
-    End Operator
+   
 
     Public Overridable Sub AddSelfToScene()
         If Me.GetType.IsSubclassOf(GetType(Entity))

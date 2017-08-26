@@ -145,6 +145,7 @@
     </Compile>
     <Compile Include="renderObj\blocks\Block.vb" />
     <Compile Include="renderObj\blocks\BlockBreakableBrick.vb" />
+    <Compile Include="renderObj\blocks\BlockBrickPowerUp.vb" />
     <Compile Include="renderObj\blocks\BlockInvis.vb" />
     <Compile Include="renderObj\blocks\BlockPipe.vb" />
     <Compile Include="renderObj\blocks\BlockQuestion.vb" />

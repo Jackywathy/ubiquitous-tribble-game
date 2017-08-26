@@ -1,5 +1,15 @@
 ﻿Public MustInherit Class Block
     Inherits RenderObject
+
+    Public Enum QuestionBlockReward
+        Fire
+        DefaultFire 
+        Mushroom
+        Coin
+
+    End Enum
+
+
     Friend Const blockWidth = 32
     Friend Const blockHeight = 32
 

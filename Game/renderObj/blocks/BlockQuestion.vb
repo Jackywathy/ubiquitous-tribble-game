@@ -1,17 +1,15 @@
 ﻿Public Class BlockQuestion
     Inherits Block
+    
     Public isUsed = False
-    Public type As String
+    Public type As QuestionBlockReward = -1
 
-    Private Shared ReadOnly PossibleStates As New List(Of String) From { "fire", "default_fire", "mushroom", "coin" }
 
     Sub New(location As Point, type As String, scene As Scene)
         MyBase.New(blockWidth, blockHeight, location, Sprites.itemBlock, scene)
         Me.spriteset = spriteset
-        Me.type = type
-        If Not PossibleStates.Contains(type)
-            Throw New ArgumentException("type must be in PossibleStates (fire, default_fire, mushroom)")
-        End If
+        Me.type = Helper.StrToEnum(Of QuestionBlockReward)(type)
+        
     End Sub
 
     ''' <summary>
@@ -49,10 +47,10 @@
         MyBase.CollisionBottom(sender)
         If Not isUsed Then
             ' only player is allowed to activate block
-            If sender.GetType() = GetType(EntPlayer) Then
+            If Helper.IsPlayer(sender) Then
                 Dim player As EntPlayer = sender
                 Select Case type
-                    Case "default_fire"
+                    Case QuestionBlockReward.DefaultFire
                         ' check the current status of mario, then spawn the right
                         If player.state = PlayerStates.Small Then
                             Dim mushroom As New EntMushroom(32, 32, New Point(Me.Location.X, Me.Location.Y + Me.Height), MyScene)
@@ -61,13 +59,13 @@
                             Dim flower As New EntFireFlower(32, 32, New Point(Me.Location.X, Me.Location.Y + Me.Height), MyScene)
                             flower.Spawn()
                         End If
-                    Case "fire"
+                    Case QuestionBlockReward.Fire
                         Dim flower As New EntFireFlower(32, 32, New Point(Me.Location.X, Me.Location.Y + Me.Height), MyScene)
                         flower.Spawn()
-                    Case "mushroom"
+                    Case QuestionBlockReward.Mushroom
                         Dim mushroom As New EntMushroom(32, 32, New Point(Me.Location.X, Me.Location.Y + Me.Height), MyScene)
                         mushroom.Spawn()
-                    Case "coin"
+                    Case QuestionBlockReward.Coin
                         player.PickupCoin()
                         MyScene.PrepareAdd(New EntCoinFromBlock(32, 32, New Point(Me.Location.X, Me.Location.Y + Me.Height), MyScene))
                 End Select
