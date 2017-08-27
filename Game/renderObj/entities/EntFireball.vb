@@ -8,8 +8,8 @@
     Public willDestroy = False
     Public destroyTimer As Integer = 0
 
-    Sub New(width As Integer, height As Integer, location As Point, direction As Integer, shooter As EntPlayer, scene As Scene)
-        MyBase.New(width, height, location, Sprites.playerFireball, scene)
+    Sub New(width As Integer, height As Integer, location As Point, direction As Integer, shooter As EntPlayer, mapScene As MapScene)
+        MyBase.New(width, height, location, Sprites.playerFireball, mapScene)
         Me.moveSpeed = New Distance(Me.moveSpeed.x * direction, Me.moveSpeed.y)
         Me.owner = shooter
         Me.isGrounded = False

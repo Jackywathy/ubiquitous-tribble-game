@@ -11,8 +11,8 @@ Public MustInherit Class Entity
     Public isDead As Boolean = False
     Public killsOnContact As Boolean = False
 
-    Sub New(width As Integer, height As Integer, location As Point, spriteSet As SpriteSet, scene As Scene)
-        MyBase.New(width, height, location, scene)
+    Sub New(width As Integer, height As Integer, location As Point, spriteSet As SpriteSet, mapScene As MapScene)
+        MyBase.New(width, height, location, mapScene)
         Me.SpriteSet = spriteSet
         Me.renderImage = Me.SpriteSet(SpriteState.ConstantRight)(0)
     End Sub
@@ -359,7 +359,7 @@ Public MustInherit Class Entity
     End Sub
 
     ''' <summary>
-    ''' Removes entity from its scene
+    ''' Removes entity from its mapScene
     ''' </summary>
     Public Overridable Sub Destroy()
         MyScene.PrepareRemove(Me)

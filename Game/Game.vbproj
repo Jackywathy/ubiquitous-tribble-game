@@ -126,7 +126,8 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="main\Helper.vb" />
-    <Compile Include="map\Scene.vb" />
+    <Compile Include="map\MapScene.vb" />
+    <Compile Include="map\StartScene.vb" />
     <Compile Include="My Project\Resources.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -336,11 +337,7 @@
     <Error Condition="!Exists('..\packages\Costura.Fody.1.6.2\build\dotnet\Costura.Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Costura.Fody.1.6.2\build\dotnet\Costura.Fody.targets'))" />
   </Target>
   <Import Project="..\packages\Costura.Fody.1.6.2\build\dotnet\Costura.Fody.targets" Condition="Exists('..\packages\Costura.Fody.1.6.2\build\dotnet\Costura.Fody.targets')" />
-  <ProjectExtensions>
-    <VisualStudio>
-      <UserProperties map_4map_3testmap_1json__JSONSchema="0" />
-    </VisualStudio>
-  </ProjectExtensions>
+  <ProjectExtensions />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

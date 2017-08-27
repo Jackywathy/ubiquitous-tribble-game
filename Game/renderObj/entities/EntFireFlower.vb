@@ -11,8 +11,8 @@
 
    
 
-    Sub New(width As Integer, height As Integer, location As Point, scene As Scene)
-        MyBase.New(width, height, location, Sprites.f_flower, scene)
+    Sub New(width As Integer, height As Integer, location As Point, mapScene As MapScene)
+        MyBase.New(width, height, location, Sprites.f_flower, mapScene)
 
     End Sub
 

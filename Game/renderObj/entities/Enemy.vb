@@ -1,7 +1,7 @@
 ﻿Public MustInherit Class EntEnemy
     Inherits Entity
-    Public Sub New(width As Integer, height As Integer, location As Point, spriteSet As SpriteSet, scene As Scene)
-        MyBase.New(width, height, location, spriteSet, scene)
+    Public Sub New(width As Integer, height As Integer, location As Point, spriteSet As SpriteSet, mapScene As MapScene)
+        MyBase.New(width, height, location, spriteSet, mapScene)
     End Sub
     #Region "AI"
     Public Sub BasicGround
