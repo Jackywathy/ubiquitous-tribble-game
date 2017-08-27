@@ -43,7 +43,11 @@ Public Class EntPlayer
 
     Private _state As PlayerStates = PlayerStates.Small
 
-
+    ''' <summary>
+    ''' Sets/Gets the state of a player
+    ''' If player state is set to Dead, will commence killing player animation etc
+    ''' </summary>
+    ''' <returns></returns>
     Public Property State As PlayerStates
         Get
             return _state
@@ -52,6 +56,7 @@ Public Class EntPlayer
             Select Case value
                 Case PlayerStates.Dead : 
                     Me.KillPlayer()
+
                 Case PlayerStates.Small :
                     Me.SpriteSet = Sprites.playerSmall
                     Me.Height = MarioHeightS
@@ -144,8 +149,7 @@ Public Class EntPlayer
     ''' <summary>
     ''' Play outro mapScene and remove player / decrease lives
     ''' Do not use for player damage - use PlayerGotHit instead
-    ''' Me.State must be set appropriately
-    ''' TODO make it go to black backgroudn etc
+    ''' DO NOT USE - Instead set player.state to Dead
     ''' </summary>
     Private Sub KillPlayer()
         Me.isDead = True
@@ -154,7 +158,7 @@ Public Class EntPlayer
         Me.defaultY = Me.Location.Y
         Lives -= 1
         Sounds.PlayerDead.Play()
-        MusicPlayer.BackgroundPlayer._Stop()
+        MusicPlayer.BackgroundPlayer.Stop()
 
     End Sub
 

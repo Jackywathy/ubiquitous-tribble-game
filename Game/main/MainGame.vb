@@ -3,7 +3,11 @@
 ''' Main Form that is run on startup - this is controlled using <see cref="MapScene"/> objects
 ''' </summary>
 Public Class MainGame
-    Public Shared Property CurrentMapScene As BaseScene
+    ''' <summary>
+    ''' Holds the currently loaded scene
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property CurrentScene As BaseScene
 
     ''' <summary>
     ''' Debug buffer - this is written to top right of mapScene each tick, only if IsDebug is set to False in Helper.vb
@@ -23,8 +27,8 @@ Public Class MainGame
     End Sub
 
     Private Sub GameLoop_Tick(sender As Object, e As EventArgs) Handles GameLoop.Tick
-        CurrentMapScene.handleInput()
-        CurrentMapScene.UpdateTick()
+        CurrentScene.handleInput()
+        CurrentScene.UpdateTick()
         Me.Refresh()
     End Sub
 
@@ -35,12 +39,12 @@ Public Class MainGame
         Dim g = e.Graphics
         g.InterpolationMode = InterpolationMode.NearestNeighbor
         
-        CurrentMapScene.RenderScene(g)
+        CurrentScene.RenderScene(g)
         UpdateFPS()
 
-        if isDebug And CurrentMapScene.player1 IsNot Nothing
+        if isDebug And CurrentScene.player1 IsNot Nothing
             AddStringBuffer(String.Format("fps: {0}", FPS))
-            AddStringBuffer(String.Format("Mario Location: {0}, {1}", CurrentMapScene.player1.Location.X, CurrentMapScene.player1.Location.Y))
+            AddStringBuffer(String.Format("Mario Location: {0}, {1}", CurrentScene.player1.Location.X, CurrentScene.player1.Location.Y))
             DrawStringBuffer(g)
         End if
 
@@ -104,7 +108,7 @@ Public Class MainGame
     End Sub
 
     Private Sub MainGame_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        CurrentMapScene = MapScene.ReadMapFromResource("map_testmap")
+        CurrentScene = MapScene.ReadMapFromResource("map_testmap")
 
         MusicPlayer.PlayBackground(BackgroundMusic.GroundTheme)
         ' only start loop after init has finished

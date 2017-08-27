@@ -67,9 +67,9 @@ Public NotInheritable Class MusicPlayer
     End Sub
 
     ''' <summary>
-    ''' Stops playback - has  to be _stop cuz stop is a keyword in vb.Net for some reason
+    ''' Stops playback - [stop] = stop cuz stop is a keyword in vb.Net for some reason
     ''' </summary>
-    Public Sub _Stop()
+    Public Sub [Stop]()
         player.Stop()
     End Sub
 
