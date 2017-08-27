@@ -1,22 +1,26 @@
 ﻿Imports Newtonsoft.Json
+Imports WinGame
 
 ''' <summary>
 ''' Base scene:
 ''' given to MainGame to render scenes
 ''' </summary>
 Public MustInherit Class BaseScene
-    ' Background of scenes
-    Friend Background As BackgroundRender
-    Public ScreenLocation As Point
+    ''' <summary>
+    ''' FrameCount for each scene
+    ''' </summary>
+    Public FrameCount As Integer
 
-    ' a reference to the Background music playing
-    Public BackgroundSound As MusicPlayer
+    ''' <summary>
+    ''' Background of scene
+    ''' </summary>
+    Friend Background As BackgroundRender
 
     ''' <summary>
     ''' Run once per tick in game
     ''' </summary>
     Public MustOverride Sub UpdateTick()
-    
+
     ''' <summary>
     ''' Draws the completed scene onto the graphics object
     ''' </summary>
@@ -24,17 +28,22 @@ Public MustInherit Class BaseScene
     Public MustOverride Sub RenderScene(g As Graphics)
 
     ''' <summary>
-    ''' Handles input from user
+    ''' Handles input: default, do nothing
     ''' </summary>
     Public Overridable Sub HandleInput()
 
     End Sub
 
+    ''' <summary>
+    ''' Has all of keys which are held down etc.
+    ''' </summary>
+    Friend KeyControl As MainGame.KeyHandler
+
+    Sub New(keyControl As MainGame.KeyHandler)
+        Me.KeyControl = keyControl
+    End Sub
 
 
-    ' global framecounter for each different map
-    Public frameCount As Integer
-    Public player1 As EntPlayer
 
 
 End Class
@@ -46,42 +55,70 @@ End Class
 Public Class MapScene
     Inherits BaseScene
 
-    ' Contains all objects (no entityes)
+    ''' <summary>
+    ''' Contains all normal blocks
+    ''' </summary>
     Public AllObjects As New HashSet(Of RenderObject)
-    ' Contains all entityes (no objects)
+
+    ''' <summary>
+    ''' Contains all entities
+    ''' </summary>
     Public AllEntities As New HashSet(Of Entity)
-    ' contains everything
+
+    ''' <summary>
+    ''' Contains all objects that have collisionss
+    ''' </summary>
     Public AllObjAndEnt As New HashSet(Of RenderObject)
 
+    ''' <summary>
+    ''' Location that the scene is rendered at
+    ''' </summary>
+    Public ScreenLocation As Point
+
+    ''' <summary>
+    ''' Contains all objects in scene that need to be rendered
+    ''' </summary>
+    Private ReadOnly inSceneItems As New HashSet(Of RenderObject)
     
+    ''' <summary>
+    ''' Contains objects that will be removed once <see cref="RemoveAllDeleted"/> is run
+    ''' Used in for each loops to avoid mutating object immediately
+    ''' </summary>
+    Private ReadOnly toRemoveObjects As New HashSet(Of RenderObject)
 
-    ' all the objects in the mapScene
-    Private InSceneItems As New HashSet(Of RenderObject)
+    ''' <summary>
+    ''' Contains objects that will be added once <see cref="AddAllAdded"/> is run
+    ''' Used in for each loops to avoid mutating object immediately
+    ''' </summary>
+    Private ReadOnly toAddObjects As New HashSet(Of RenderObject)
 
-    Private toRemoveObjects As New HashSet(Of RenderObject)
-    Private toAddObjects As New HashSet(Of RenderObject)
-    
+    ''' <summary>
+    ''' List of staticitems. Items will be rendered in order inserted
+    ''' </summary>
+    Public AllStaticItems As New List(Of StaticItem)
 
-    Public AllStaticItems As New HashSet(Of StaticItem)
-
-
+    ''' <summary>
+    ''' Player1
+    ''' </summary>
     Public Player1 As EntPlayer
 
-
+    ''' <summary>
+    ''' Player2
+    ''' </summary>
+    Public Player2 As EntPlayer
 
    
 
-
-    ' dictionary containing all scenes : {map_name : mapScene}
-    Private allMapScenes As New Dictionary(Of String, MapScene)
-
+    Public Sub New(keyControl As MainGame.KeyHandler)
+        MyBase.New(keyControl)
+    End Sub
 
     ''' <summary>
     ''' Creates a new <see cref="MapScene">object, from a json file in resources</see>
     ''' </summary>
     ''' <param name="jsonName"></param>
     ''' <returns></returns>
-    Public Shared Function ReadMapFromResource(jsonName As String) As MapScene
+    Public Shared Function ReadMapFromResource(jsonName As String, keyControl As MainGame.KeyHandler) As MapScene
         Dim byteArray = CType(My.Resources.ResourceManager.GetObject(jsonName), Byte())
         If byteArray(0) = 239 And byteArray(1) = 187 And byteArray(2) = 191 Then
             byteArray = byteArray.Skip(3).Take(byteArray.Length - 2).ToArray()
@@ -91,7 +128,7 @@ Public Class MapScene
 
         Dim mapObject = JsonConvert.DeserializeObject(Of MapObject)(str)
 
-        Dim outScene As New MapScene
+        Dim outScene As New MapScene(keyControl)
 
         ' add the Background
         outScene.SetBackground(mapObject.background(0), mapObject.background(1), mapObject.background(2))
@@ -114,17 +151,15 @@ Public Class MapScene
         ' add all entities
         Dim player1 = New EntPlayer(32, 32, New Point(0, GroundHeight), outScene)
 
-        outScene.player1 = player1
+        outScene.Player1 = player1
         outScene.AddEntity(player1)
         outScene.AddEntity(New EntCoin(32, 32, New Point(320, 96), outScene))
 
-        outScene.AddEntity(New EntKoopa(New Point(160, 64), outScene))
+        Dim x As New StaticText(New RectangleF(0, 0, ScreenGridWidth / 4, ScreenGridHeight / 32), "MARIO", CustomFontFamily.NES.GetFontFamily(), 18, New SolidBrush(Color.White), StringAlignment.Near, StringAlignment.Near)
+        outScene.AddItem(x)
+        x = New StaticText(New RectangleF(0, ScreenGridHeight / 32, ScreenGridWidth / 4, ScreenGridHeight / 16), "000000", CustomFontFamily.NES.GetFontFamily(), 18, New SolidBrush(Color.White), StringAlignment.Near, StringAlignment.Near)
+        outScene.AddItem(x)
 
-        Dim x As New StaticText(New RectangleF(0,0,ScreenGridWidth/4, ScreenGridHeight/32), "MARIO", CustomFontFamily.NES.GetFontFamily(), 18, New SolidBrush(Color.White), StringAlignment.Near, StringAlignment.Near)
-        outScene.AddItem(x)
-        x = New StaticText(New RectangleF(0,ScreenGridHeight/32,ScreenGridWidth/4,ScreenGridHeight/16 ), "000000", CustomFontFamily.NES.GetFontFamily(), 18, New SolidBrush(Color.White), StringAlignment.Near, StringAlignment.Near)
-        outScene.AddItem(x)
-        
         Return outScene
     End Function
 
@@ -146,7 +181,7 @@ Public Class MapScene
         Select Case Helper.StrToEnum(Of RenderTypes)(name)
             Case RenderTypes.BlockBreakableBrick
                 AssertLength("blockBreakableBrick", 2, params.Length, params)
-                out = New BlockBreakableBrick(params , Me)
+                out = New BlockBreakableBrick(params, Me)
             Case RenderTypes.BrickPlatform
                 AssertLength("brickPlatform", 4, params.Length, params)
                 out = New BrickPlatform(params, Me)
@@ -162,9 +197,6 @@ Public Class MapScene
             Case RenderTypes.BlockBrickPowerUp
                 AssertLength("blockPowerBrickPowerUp", New Integer() {3, 4}, params.Length, params)
                 out = New BlockBrickPowerUp(params, Me)
-           
-
-
             Case RenderTypes.BlockPipe
                 AssertLength("blockPipe", 5, params.Length, params)
                 out = New BlockPipe(params, Me)
@@ -174,8 +206,8 @@ Public Class MapScene
                 out = New EntGoomba(params, Me)
             Case RenderTypes.EntKoopa
                 AssertLength("entKoopa", 2, params.Length, params)
-                out = New EntKoopa(New Point(params(0), params(1)), Me)
-            
+                out = New EntKoopa(params, Me)
+
             Case Else
 
                 Throw New Exception(String.Format("No object with name {0}", name))
@@ -233,8 +265,8 @@ Public Class MapScene
     ''' </summary>
     ''' <param name="args"></param>
     Sub PrepareRemove(ByVal ParamArray args() As RenderObject)
-        For each item As RenderObject in args
-            ToRemoveObjects.Add(item)
+        For Each item As RenderObject In args
+            toRemoveObjects.Add(item)
         Next
     End Sub
 
@@ -243,7 +275,7 @@ Public Class MapScene
     ''' </summary>
     ''' <param name="args"></param>
     Sub PrepareAdd(ByVal ParamArray args() As RenderObject)
-        For each item As RenderObject in args
+        For Each item As RenderObject In args
             toAddObjects.Add(item)
         Next
     End Sub
@@ -252,10 +284,10 @@ Public Class MapScene
     ''' Actually remove all entities
     ''' </summary>
     Sub RemoveAllDeleted()
-        For each item As RenderObject In ToRemoveObjects
+        For Each item As RenderObject In toRemoveObjects
             If item.GetType.IsSubclassOf(GetType(Entity))
                 AllEntities.Remove(item)
-            Else 
+            Else
                 AllObjects.Remove(item)
             End If
             AllObjAndEnt.Remove(item)
@@ -267,10 +299,10 @@ Public Class MapScene
     ''' Actually add all items
     ''' </summary>
     Sub AddAllAdded()
-        For each item As RenderObject In toAddObjects
+        For Each item As RenderObject In toAddObjects
             If item.GetType.IsSubclassOf(GetType(Entity))
                 AllEntities.Add(item)
-            Else 
+            Else
                 AllObjects.Add(item)
             End If
             AllObjAndEnt.Add(item)
@@ -283,18 +315,16 @@ Public Class MapScene
     ''' </summary>
     ''' <param name="hexColor"></param>
     Sub SetBackground(hexColor As String, width As Integer, height As Integer)
-        if background IsNot Nothing
-            background.Dispose()
+        If Background IsNot Nothing
+            Background.Dispose()
         End If
-        Me.background = New BackgroundRender(width, height, hexColor, Me)
+        Me.Background = New BackgroundRender(width, height, hexColor, Me)
     End Sub
 
     ''' <summary>
     ''' Handles/ticks input from the user
-    ''' This also 
     ''' </summary>
-    Public OVerrides Sub HandleInput()
-
+    Public Overrides Sub HandleInput()
         Dim xToMove = 0
         Dim yToMove = 0
 
@@ -358,7 +388,7 @@ Public Class MapScene
     Public Overrides Sub UpdateTick()
         ' animate and update position of each entity
 
-         For Each item As RenderObject In AllObjAndEnt
+        For Each item As RenderObject In AllObjAndEnt
             If Helper.IsEntity(item) Then
                 Dim ent As Entity = item
                 ent.UpdatePos()
@@ -371,22 +401,22 @@ Public Class MapScene
         RemoveAllDeleted()
 
         ' TODO - chuck into function - scrolls screen if player is close to edge
-        If Player1.Location.X - Me.screenLocation.X > (ScreenGridWidth / 4 * 3) Then
+        If Player1.Location.X - Me.ScreenLocation.X > (ScreenGridWidth / 4 * 3) Then
             ' on right 1/4
-            Me.Background.ScrollHorizontal((400 - (ScreenGridWidth - (Player1.Location.X - Me.screenLocation.X))) / 50)
+            Me.Background.ScrollHorizontal((400 - (ScreenGridWidth - (Player1.Location.X - Me.ScreenLocation.X))) / 50)
 
-        ElseIf Player1.Location.X - Me.screenLocation.X < (ScreenGridWidth / 4) Then
+        ElseIf Player1.Location.X - Me.ScreenLocation.X < (ScreenGridWidth / 4) Then
             ' on left 1/4
             'Me.Background.ScrollHorizontal(Player1.Location.X - RenderObject.ScreenLocation.X)
-            Me.Background.ScrollHorizontal(-(400 - (Player1.Location.X - Me.screenLocation.X)) / 50)
+            Me.Background.ScrollHorizontal(-(400 - (Player1.Location.X - Me.ScreenLocation.X)) / 50)
         End If
-        frameCount += 1
+        FrameCount += 1
     End Sub
 
     Public Overrides Sub RenderScene(g As Graphics)
-        
 
-        background.Render(g)
+
+        Background.Render(g)
 
         ' all text & stuff
         For Each item As StaticItem In AllStaticItems
@@ -403,13 +433,13 @@ Public Class MapScene
         For Each item In AllEntities
             item.Render(g)
         Next
-        Me.frameCount += 1
+        Me.FrameCount += 1
     End Sub
 
 
     Private Sub AssertLength(type As String, expected As Integer, given As Integer, array As Object())
         If expected = -1
-            return
+            Return
         End If
 
         If expected <> given Then
@@ -427,7 +457,7 @@ Public Class MapScene
     End Sub
 
 
-   
+
 
     Private Class InvalidJsonException
         Inherits Exception

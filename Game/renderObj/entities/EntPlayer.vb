@@ -36,10 +36,10 @@ Public Class EntPlayer
         End Set
     End Property
 
-    Public AllowJumpInput = True
-    Public AllowShoot = True
-    Public IsCrouching = False
-    Public AllowedToUncrouch = True
+    Public AllowJumpInput As Boolean = True
+    Public AllowShoot As Boolean = True
+    Public IsCrouching As Boolean = False
+    Public AllowedToUncrouch As Boolean = True
 
     Private _state As PlayerStates = PlayerStates.Small
 

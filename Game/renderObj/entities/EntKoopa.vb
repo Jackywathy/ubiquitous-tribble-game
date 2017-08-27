@@ -1,29 +1,37 @@
 ﻿Public Class EntKoopa
     Inherits Entity
 
-    Public deathTimer = 0
-    Public inShell = False
-    Public defaultY = 0
-    Public willDie = False
+    Public deathTimer As Integer = 0
+    Public inShell As Integer  = False
+    Public defaultY  As Integer = 0
+    Public willDie As Integer = False
 
     ' Amount of time the player cannot be killed by shell immediately after kicking it
-    Public gracePeriodTimerForPlayer = 0
+    Public gracePeriodTimerForPlayer As Integer = 0
 
     Public gettingKicked = False
 
     ' Positive for right
     ' Negative for left
-    Public directionMoving = 1
+    Public directionMoving As Integer = 1
 
     Public Overrides Property moveSpeed As Distance = New Distance(1, 0)
     Public Overrides Property maxVeloc As Distance = New Distance(1.8, 0)
+
+    Public Overrides Property RenderImage As Image 
 
     Public Sub New(location As Point, mapScene As MapScene)
         MyBase.New(32, 64, location, Sprites.koopaGreen, mapScene)
     End Sub
 
-
-    Public Overrides Property RenderImage As Image = SpriteSet.AllSprites(0)(0)
+    ''' <summary>
+    ''' 0 : x
+    ''' 1 : y
+    ''' </summary>
+    Public Sub New(params As Object(), mapScene As MapScene)
+        Me.New(New Point(params(0)*32, params(1)*32), mapScene)
+    End Sub
+    
 
     Public Sub GoIntoShell()
         inShell = True

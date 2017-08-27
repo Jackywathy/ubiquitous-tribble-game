@@ -185,7 +185,7 @@
     <None Include="fonts\NES+.ttf" />
     <None Include="fonts\SuperMario256.ttf" />
     <None Include="map\map_startmap.json" />
-    <None Include="map\map_testmap.json" />
+    <None Include="map\map1_1.json" />
     <None Include="My Project\app.manifest">
       <SubType>Designer</SubType>
     </None>

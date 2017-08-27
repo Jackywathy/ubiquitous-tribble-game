@@ -64,7 +64,6 @@ Public Class EntGoomba
         End If
 
     End Sub
-    'Dim temp As Integer = -1
 
     Public Overrides Sub UpdatePos()
 
@@ -87,7 +86,7 @@ Public Class EntGoomba
     End Sub
 
     Public Overrides Sub CollisionTop(sender As Entity)
-        If sender.GetType() = GetType(EntPlayer) Then
+        If Helper.IsPlayer(sender) Then
             If Not Me.willDie Then
                 Dim player As EntPlayer = sender
                 player.veloc = New Distance(player.veloc.x, 0)
