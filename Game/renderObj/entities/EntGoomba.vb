@@ -1,10 +1,18 @@
-﻿Public Class EntGoomba
+﻿Imports WinGame
+
+Public Class EntGoomba
     Inherits Entity
 
     Public deathTimer As Integer
     Public squashed As Boolean = True
     Public willDie = False ' Set to true when enemy is killed (but not necessarily removed from the screen yet)
     Private defaultY As Integer
+
+    ' 1 for right, -1 for left
+    Public directionMoving = 1
+
+    Public Overrides Property moveSpeed As Distance = New Distance(1, 0)
+    Public Overrides Property maxVeloc As Distance = New Distance(2, 0)
 
     Public Sub New(location As Point, scene As Scene)
         MyBase.New(32, 32, location, Sprites.goomba, scene)
@@ -18,7 +26,7 @@
     ''' <param name="params"></param>
     ''' <param name="scene"></param>
     Public Sub New(params As Object(), scene As Scene)
-        Me.New(New Point(params(0)*32, params(1)*32), scene)
+        Me.New(New Point(params(0) * 32, params(1) * 32), scene)
     End Sub
 
     Public Overrides Sub animate()
@@ -44,19 +52,19 @@
             End If
 
         Else
-            If veloc.x <> 0 And MyScene.frameCount Mod (2 * animationInterval) = 0 Then
-                Me.renderImage = SpriteSet.SendToBack(SpriteState.ConstantRight)
+            If veloc.x <> 0 And MyScene.frameCount Mod (3 * animationInterval) = 0 Then
+                Me.renderImage = SpriteSet(SpriteState.ConstantRight)((MyScene.frameCount / (3 * animationInterval)) Mod 2)
             End If
             ' just to check if it works
-            If collidedX Then
-                collidedX = False
-                temp *= -1
-            End If
-            Me.veloc.X = temp
+            'If collidedX Then
+            'collidedX = False
+            'temp *= -1
+            'End If
+            'Me.veloc.X = temp
         End If
 
     End Sub
-    Dim temp As Integer = -1
+    'Dim temp As Integer = -1
 
     Public Overrides Sub UpdatePos()
 
@@ -68,7 +76,14 @@
             Me.Destroy()
         End If
 
+        Me.AccelerateX(directionMoving * Me.moveSpeed.x)
+
         MyBase.UpdatePos()
+
+        If Me.willCollideFromLeft Or Me.willCollideFromRight Then
+            Me.directionMoving *= -1
+        End If
+
     End Sub
 
     Public Overrides Sub CollisionTop(sender As Entity)
@@ -80,7 +95,7 @@
             End If
             willDie = True
             squashed = True
-        ElseIf sender.GetType() = GetType(EntFireball) Then
+        ElseIf sender.killsOnContact Then
             willDie = True
             squashed = False
             Me.defaultY = Me.Location.Y
@@ -93,7 +108,7 @@
             If Not Me.willDie Then
                 HurtPlayer(sender)
             End If
-        ElseIf sender.GetType() = GetType(EntFireball) Then
+        ElseIf sender.killsOnContact Then
             willDie = True
             squashed = False
             Me.defaultY = Me.Location.Y
@@ -106,7 +121,7 @@
             If Not Me.willDie Then
                 HurtPlayer(sender)
             End If
-        ElseIf sender.GetType() = GetType(EntFireball) Then
+        ElseIf sender.killsOnContact Then
             willDie = True
             squashed = False
             Me.defaultY = Me.Location.Y
@@ -119,13 +134,13 @@
             If Not Me.willDie Then
                 HurtPlayer(sender)
             End If
-        ElseIf sender.GetType() = GetType(EntFireball) Then
+        ElseIf sender.killsOnContact Then
             willDie = True
             squashed = False
             Me.defaultY = Me.Location.Y
         End If
     End Sub
-    
+
     Private Sub HurtPlayer(player As EntPlayer)
         player.PlayerGotHit()
     End Sub

@@ -4,7 +4,7 @@
     Private spawnCounter = 0
     Public Overrides Property state As UInt16 = PlayerStates.Big
     Public Overrides Property moveSpeed As Distance = New Distance(1, 0)
-    Public Overrides ReadOnly Property maxVeloc As Distance = New Distance(1.5, Forces.terminalVeloc)
+    Public Overrides Property maxVeloc As Distance = New Distance(1.5, Forces.terminalVeloc)
 
     Public Overrides Property PickupSound As MusicPlayer = Sounds.MushroomPickup
 

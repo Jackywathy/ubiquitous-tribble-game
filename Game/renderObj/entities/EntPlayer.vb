@@ -72,8 +72,7 @@ Public Class EntPlayer
     Private invulnerableTime As Integer = 0
 
     Public Overrides Property moveSpeed As Distance = New Distance(0.8, 15)
-    Public Overrides ReadOnly Property maxVeloc As Distance = New Distance(6, -15)
-
+    Public Overrides Property maxVeloc As Distance = New Distance(6, -15)
     ''' <summary>
     ''' Creates a new player
     ''' </summary>
@@ -151,6 +150,7 @@ Public Class EntPlayer
     Private Sub KillPlayer()
         Me.isDead = True
         Me.veloc.x = 0
+        Me.veloc.y = 0
         Me.defaultY = Me.Location.Y
         Lives -= 1
         Sounds.PlayerDead.Play()

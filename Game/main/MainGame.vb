@@ -26,6 +26,7 @@ Public Class MainGame
     Private Sub GameLoop_Tick(sender As Object, e As EventArgs) Handles GameLoop.Tick
         CurrentScene.handleInput()
         CurrentScene.UpdatePhysics(numFrames)
+        CurrentScene.frameCount += 1
         Me.Refresh()
     End Sub
 

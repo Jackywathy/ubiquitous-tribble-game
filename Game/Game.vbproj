@@ -218,9 +218,12 @@
     <Content Include="images\enemy\koopa\flying\koopa_greenf_1.png" />
     <Content Include="images\enemy\koopa\flying\koopa_greenf_2.png" />
     <Content Include="images\enemy\koopa\ground\koopa_green_1.png" />
+    <Content Include="images\enemy\koopa\ground\koopa_green_1r.png" />
     <Content Include="images\enemy\koopa\ground\koopa_green_2.png" />
+    <Content Include="images\enemy\koopa\ground\koopa_green_2r.png" />
     <Content Include="images\enemy\koopa\koopa_green_shell1.png" />
     <Content Include="images\enemy\koopa\koopa_green_shell2.png" />
+    <Content Include="images\enemy\koopa\koopa_green_shellr.png" />
     <Content Include="images\other\coin\coin_hit_1.png" />
     <Content Include="images\other\coin\coin_hit_2.png" />
     <Content Include="images\other\coin\coin_hit_3.png" />

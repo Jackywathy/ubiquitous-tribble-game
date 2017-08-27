@@ -1,8 +1,8 @@
 ﻿Public Class EntFireball
     Inherits Entity
 
-    Public Overrides Property moveSpeed As Distance = New Distance(3, 10)
-    Public Overrides ReadOnly Property maxVeloc As Distance = New Distance(8, Forces.terminalVeloc)
+    Public Overrides Property moveSpeed As Distance = New Distance(3, 5)
+    Public Overrides Property maxVeloc As Distance = New Distance(8, Forces.terminalVeloc)
 
     Public owner As EntPlayer
     Public willDestroy = False
@@ -13,6 +13,7 @@
         Me.moveSpeed = New Distance(Me.moveSpeed.x * direction, Me.moveSpeed.y)
         Me.owner = shooter
         Me.isGrounded = False
+        Me.killsOnContact = True
     End Sub
 
     Public Overrides Sub Animate()

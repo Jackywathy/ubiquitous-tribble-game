@@ -433,4 +433,13 @@
   <data name="blockInvis" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\blocks\blockinvis.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="koopa_green_1r" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\enemy\koopa\ground\koopa_green_1r.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="koopa_green_2r" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\enemy\koopa\ground\koopa_green_2r.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="koopa_green_shellr" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\enemy\koopa\koopa_green_shellr.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

@@ -148,7 +148,7 @@ Public MustInherit Class RenderObject
         'sender.veloc.y = 0
     End Sub
 
-    Public collidedX As Boolean = False
+    'Public collidedX As Boolean = False
 
     ''' <summary>
     '''  Called when an entity collides into this RenderObject from the left
@@ -156,7 +156,7 @@ Public MustInherit Class RenderObject
     ''' <param name="sender"></param>
     Public Overridable Sub CollisionLeft(sender As Entity)
         'sender.veloc.x = 0
-        collidedX = True
+        'collidedX = True
     End Sub
 
     ''' <summary>
@@ -165,7 +165,7 @@ Public MustInherit Class RenderObject
     ''' <param name="sender"></param>
     Public Overridable Sub CollisionRight(sender As Entity)
         'sender.veloc.x = 0
-        collidedX = True
+        'collidedX = True
     End Sub
 
     ''' <summary>

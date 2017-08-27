@@ -9,6 +9,7 @@ Public MustInherit Class Entity
     Public Property SpriteSet As SpriteSet
     Public Overrides Property renderImage As Image
     Public isDead As Boolean = False
+    Public killsOnContact As Boolean = False
 
     Sub New(width As Integer, height As Integer, location As Point, spriteSet As SpriteSet, scene As Scene)
         MyBase.New(width, height, location, scene)
@@ -18,7 +19,7 @@ Public MustInherit Class Entity
 
     ' all vincent
     Public Overridable Property moveSpeed As Distance
-    Public Overridable ReadOnly Property maxVeloc As Distance
+    Public Overridable Property maxVeloc As Distance
 
     Public willCollideFromAbove = False
     Public willCollideFromBelow = False
@@ -38,7 +39,7 @@ Public MustInherit Class Entity
     ''' <param name="sender"></param>
 
     Public Sub CheckPotentialCollision(sender As RenderObject)
-        collidedX = False
+        'collidedX = False
 
         Dim selfNextPoint = New Point(Me.Location.X + Me.veloc.x, Me.Location.Y + Me.veloc.y)
 
@@ -297,60 +298,64 @@ Public MustInherit Class Entity
         Return Direction.None
     End Function
 
-
     ''' <summary>
     ''' Updates the position of this entity, using its velocity and location.
     ''' </summary>
     Public Overridable Sub UpdatePos()
-        ' stop the player from walking off
 
-        Me.ApplyConstantForces()
+        If Not Me.isDead Then
 
-        ' Check direction
-        If veloc.x < 0 And isFacingForward Then
-            isFacingForward = False
-        ElseIf veloc.x > 0 And Not isFacingForward Then
-            isFacingForward = True
-        End If
+            ' Reset collision variables
+            Me.willCollideFromAbove = False
+            Me.willCollideFromBelow = False
+            Me.willCollideFromLeft = False
+            Me.willCollideFromRight = False
 
-        ' check collision of all entities with all existing RenderObj, including other entities
-        'For entityCount = 0 To (Me.MyScene.AllEntities.Count - 1)
-            For each other As RenderObject in MyScene.AllObjAndEnt
+            ' stop the player from walking off
 
-            ' Don't check collisions using the same obj
-            ' and ensure entities are valid
-            If other IsNot Nothing And Me <> other Then
-                Me.CheckPotentialCollision(other)
-                'If Me.nextMoveLocation <> Nothing Then
-                'Me.Location = Me.nextMoveLocation
-                'End If
+            Me.ApplyConstantForces()
 
+            ' Check direction
+            If veloc.x < 0 And isFacingForward Then
+                isFacingForward = False
+            ElseIf veloc.x > 0 And Not isFacingForward Then
+                isFacingForward = True
             End If
-        Next
-       ' Next
 
-        ' If entity is going to collide, clear veloc so that it never moves INSIDE the object
-        If Me.willCollideFromAbove And Me.veloc.y < 0 Then
-            Me.veloc.y = 0
-        End If
-        If Me.willCollideFromBelow And Me.veloc.y > 0 Then
-            Me.veloc.y = 0
-        End If
-        If Me.willCollideFromLeft And Me.veloc.x > 0 Then
-            Me.veloc.x = 0
-        End If
-        If Me.willCollideFromRight And Me.veloc.x < 0 Then
-            Me.veloc.x = 0
+            ' check collision of all entities with all existing RenderObj, including other entities
+            'For entityCount = 0 To (Me.MyScene.AllEntities.Count - 1)
+            For Each other As RenderObject In MyScene.AllObjAndEnt
+
+                ' Don't check collisions using the same obj
+                ' and ensure entities are valid
+                If other IsNot Nothing And Me <> other Then
+                    Me.CheckPotentialCollision(other)
+                    'If Me.nextMoveLocation <> Nothing Then
+                    'Me.Location = Me.nextMoveLocation
+                    'End If
+
+                End If
+            Next
+
+            ' If entity is going to collide, clear veloc so that it never moves INSIDE the object
+            If Me.willCollideFromAbove And Me.veloc.y < 0 Then
+                Me.veloc.y = 0
+            End If
+            If Me.willCollideFromBelow And Me.veloc.y > 0 Then
+                Me.veloc.y = 0
+            End If
+            If Me.willCollideFromLeft And Me.veloc.x > 0 Then
+                Me.veloc.x = 0
+            End If
+            If Me.willCollideFromRight And Me.veloc.x < 0 Then
+                Me.veloc.x = 0
+            End If
+
         End If
 
         ' Update location
         Me.Location = New Point(Me.Location.X + Me.veloc.x, Me.Location.Y + Me.veloc.y)
 
-        ' Reset collision variables
-        Me.willCollideFromAbove = False
-        Me.willCollideFromBelow = False
-        Me.willCollideFromLeft = False
-        Me.willCollideFromRight = False
     End Sub
 
     ''' <summary>

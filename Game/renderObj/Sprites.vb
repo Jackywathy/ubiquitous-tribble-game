@@ -278,11 +278,13 @@ Public MustInherit Class Sprites
 
     Public Shared koopaGreen As New SpriteSet(
     New Dictionary(Of SpriteState, List(Of Image)) From {
+            {SpriteState.ConstantLeft, New List(Of Image) From {My.Resources.koopa_green_1r, My.Resources.koopa_green_2r}},
             {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.koopa_green_1, My.Resources.koopa_green_2}},
-            {SpriteState.Destroy, New List(Of Image) From {My.Resources.koopa_green_shell1, My.Resources.koopa_green_shell2}}
+            {SpriteState.Destroy, New List(Of Image) From {My.Resources.koopa_green_shell1, My.Resources.koopa_green_shell2, My.Resources.koopa_green_shellr}}
         },
         32,
-        64
+        64,
+        New Dictionary(Of SpriteState, Size) From {{SpriteState.Destroy, New Size(32, 32)}}
     )
 
     Public Shared goomba As New SpriteSet(

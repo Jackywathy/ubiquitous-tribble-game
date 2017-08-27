@@ -77,8 +77,8 @@ Public Class Scene
         outScene.player1 = player1
         outScene.AddEntity(player1)
         outScene.AddEntity(New EntCoin(32, 32, New Point(320, 96), outScene))
+        outScene.AddEntity(New EntKoopa(New Point(160, 64), outScene))
 
-        'outScene.AddEntity(New EntGoomba(New Point(320, 64), outScene))
         Dim x As New StaticText(New RectangleF(0,0,ScreenGridWidth/4, ScreenGridHeight/32), "MARIO", CustomFontFamily.NES.GetFontFamily(), 18, New SolidBrush(Color.White), StringAlignment.Near, StringAlignment.Near)
         outScene.AddItem(x)
         x = New StaticText(New RectangleF(0,ScreenGridHeight/32,ScreenGridWidth/4,ScreenGridHeight/16 ), "000000", CustomFontFamily.NES.GetFontFamily(), 18, New SolidBrush(Color.White), StringAlignment.Near, StringAlignment.Near)
@@ -326,12 +326,12 @@ Public Class Scene
     ''' </summary>
     ''' <param name="numframes"></param>
     Sub UpdatePhysics(numframes As Integer)
+
         ' animate and update position of each entity
-         For Each item As RenderObject In AllObjAndEnt
+        For Each item As RenderObject In AllObjAndEnt
             If Helper.IsEntity(item) Then
                 Dim ent As Entity = item
                 ent.UpdatePos()
-                'End If
             End If
             item.animate()
         Next
@@ -340,14 +340,14 @@ Public Class Scene
         RemoveAllDeleted()
 
         ' TODO - chuck into function - scrolls screen if player is close to edge
-        If Player1.Location.X - Me.screenLocation.X > (ScreenGridWidth / 4 * 3) Then
+        If Player1.Location.X - Me.ScreenLocation.X > (ScreenGridWidth / 4 * 3) Then
             ' on right 1/4
-            Me.Background.ScrollHorizontal((400 - (ScreenGridWidth - (Player1.Location.X - Me.screenLocation.X))) / 50)
+            Me.background.ScrollHorizontal((400 - (ScreenGridWidth - (Player1.Location.X - Me.ScreenLocation.X))) / 50)
 
-        ElseIf Player1.Location.X - Me.screenLocation.X < (ScreenGridWidth / 4) Then
+        ElseIf Player1.Location.X - Me.ScreenLocation.X < (ScreenGridWidth / 4) Then
             ' on left 1/4
             'Me.Background.ScrollHorizontal(Player1.Location.X - RenderObject.ScreenLocation.X)
-            Me.Background.ScrollHorizontal(-(400 - (Player1.Location.X - Me.screenLocation.X)) / 50)
+            Me.background.ScrollHorizontal(-(400 - (Player1.Location.X - Me.ScreenLocation.X)) / 50)
         End If
 
     End Sub
@@ -358,7 +358,7 @@ Public Class Scene
     ''' <param name="g"></param>
     Sub RenderScene(g As Graphics)
 
-        Me.frameCount += 1
+
 
         background.Render(g)
 
