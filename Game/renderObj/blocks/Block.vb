@@ -19,15 +19,15 @@
 
     Public isMoving As Boolean = False
 
-    Public Sub New(width As Integer, height As Integer, location As Point, spriteSet As SpriteSet, scene As Scene)
-        MyBase.New(width, height, location, scene)
+    Public Sub New(width As Integer, height As Integer, location As Point, spriteSet As SpriteSet, mapScene As MapScene)
+        MyBase.New(width, height, location, mapScene)
         Me.spriteSet = spriteSet
         Me.RenderImage = spriteSet(0)(0)
         Me.defaultLocationY = location.Y
     End Sub
 
-    Public Sub New(width As Integer, height As Integer, location As Point, scene As Scene)
-        MyBase.New(width, height, location, scene)
+    Public Sub New(width As Integer, height As Integer, location As Point, mapScene As MapScene)
+        MyBase.New(width, height, location, mapScene)
         Me.defaultLocationY = location.Y
     End Sub
 

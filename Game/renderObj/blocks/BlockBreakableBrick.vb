@@ -3,8 +3,8 @@
 
 
 
-    Public Sub New(location As Point, scene As Scene)
-        MyBase.New(32, 32, location, Sprites.brickBlock, scene)
+    Public Sub New(location As Point, mapScene As MapScene)
+        MyBase.New(32, 32, location, Sprites.brickBlock, mapScene)
 
     End Sub
 
@@ -41,8 +41,8 @@
     ''' 0 : y
     ''' </summary>
     ''' <param name="params"></param>
-    Public Sub New(params As Object(), scene As Scene)
-        Me.New(New Point(params(0)*32, params(1)*32), scene)
+    Public Sub New(params As Object(), mapScene As MapScene)
+        Me.New(New Point(params(0)*32, params(1)*32), mapScene)
     End Sub
 
     Public Overrides Sub CollisionBottom(sender As Entity)

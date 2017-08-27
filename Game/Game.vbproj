@@ -126,7 +126,8 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="main\Helper.vb" />
-    <Compile Include="map\Scene.vb" />
+    <Compile Include="map\MapScene.vb" />
+    <Compile Include="map\StartScene.vb" />
     <Compile Include="My Project\Resources.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

@@ -7,8 +7,8 @@
 
     
 
-    Public Sub New(width As Integer, height As Integer, location As Point, action As String, scene As Scene)
-        MyBase.New(width, height, location, scene)
+    Public Sub New(width As Integer, height As Integer, location As Point, action As String, mapScene As MapScene)
+        MyBase.New(width, height, location, mapScene)
         If height < 64
             Throw New Exception("Height must be >= 64 for pipes")
         End If
@@ -20,7 +20,7 @@
             width,
             64,
         )
-        pipeTop = New BlockPipeTop(width, 64, New Point(location.X, location.Y + (height - 64)), pipeSprite, scene)
+        pipeTop = New BlockPipeTop(width, 64, New Point(location.X, location.Y + (height - 64)), pipeSprite, mapScene)
         If height > 64
             pipeSprite = New SpriteSet(
                 New Dictionary(Of SpriteState, List(Of Image)) From {
@@ -29,7 +29,7 @@
                 width,
                 height-64
             )
-            pipeBottom = New BlockPipeBottom(width, height-64, New Point(location.X, location.Y), action, pipeSprite, scene)
+            pipeBottom = New BlockPipeBottom(width, height-64, New Point(location.X, location.Y), action, pipeSprite, mapScene)
         End if
     End Sub
 
@@ -41,9 +41,9 @@
     ''' 4 : action
     ''' </summary>
     ''' <param name="params"></param>
-    ''' <param name="scene"></param>
-    Public Sub New(params As Object(), scene As Scene)
-        Me.New(params(2)*32, params(3)*32, New Point(params(0)*32, params(1)*32), params(4), scene)
+    ''' <param name="mapScene"></param>
+    Public Sub New(params As Object(), mapScene As MapScene)
+        Me.New(params(2)*32, params(3)*32, New Point(params(0)*32, params(1)*32), params(4), mapScene)
     End Sub
 
     Public Overrides Sub AddSelfToScene()
@@ -58,8 +58,8 @@ End Class
 Friend Class BlockPipeTop
     Inherits Block
 
-    Public Sub New(width As Integer, height As Integer, location As Point, spriteSet As SpriteSet, scene As Scene)
-        MyBase.New(width, height, location, spriteSet, scene)
+    Public Sub New(width As Integer, height As Integer, location As Point, spriteSet As SpriteSet, mapScene As MapScene)
+        MyBase.New(width, height, location, spriteSet, mapScene)
     End Sub
 End Class
 
@@ -68,8 +68,8 @@ End Class
 Friend Class BlockPipeBottom
     Inherits Block
     Public Action As string
-    Public Sub New(width As Integer, height As Integer, location As Point, action As String, spriteSet As SpriteSet, scene As Scene)
-        MyBase.New(width, height, location, spriteSet, scene)
+    Public Sub New(width As Integer, height As Integer, location As Point, action As String, spriteSet As SpriteSet, mapScene As MapScene)
+        MyBase.New(width, height, location, spriteSet, mapScene)
         Me.Action = action
     End Sub
 End Class

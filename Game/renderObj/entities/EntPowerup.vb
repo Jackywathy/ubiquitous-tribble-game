@@ -60,14 +60,14 @@ Public MustInherit Class EntPowerup
     End Sub
 
     ''' <summary>
-    ''' Adds a new instance into the scene
+    ''' Adds a new instance into the mapScene
 	''' </summary>
     Public Sub Spawn()
         MyScene.PrepareAdd(Me)
     End Sub
 
-    Sub New(width As Integer, height As Integer, location As Point, spriteSet As SpriteSet, scene As Scene)
-        MyBase.New(width, height, location, spriteSet, scene)
+    Sub New(width As Integer, height As Integer, location As Point, spriteSet As SpriteSet, mapScene As MapScene)
+        MyBase.New(width, height, location, spriteSet, mapScene)
     End Sub
 
 End Class

@@ -4,7 +4,7 @@
 Public MustInherit Class StaticItem
     Public MustOverride Sub Render(g As Graphics)
 
-    Friend Property MyScene As Scene
+    Friend Property MyScene As MapScene
     Private Shared _idCount As Integer
     
     Private Shared Function GetNewID() As Integer
@@ -89,14 +89,14 @@ Public MustInherit Class RenderObject
     ''' <param name="width">Width, in grid units</param>
     ''' <param name="height">Height, in grid units</param>
     ''' <param name="location">Location, a point of grid units</param>
-    Public Sub New(width As Integer, height As Integer, location As Point, scene As Scene)
+    Public Sub New(width As Integer, height As Integer, location As Point, mapScene As MapScene)
         Me.Width = width
         Me.Height = height
 
         Me.CollisionHeight = height
 
         Me.Location = location
-        Me.MyScene = scene
+        Me.MyScene = mapScene
 
         RenderImage = New Bitmap(width, height)
     End Sub
@@ -109,23 +109,23 @@ Public MustInherit Class RenderObject
     ''' <returns></returns>
     Public Overridable Function InScene()
         ' checks if levelWidth/levelHeight is in the screen properly
-        ' it is in sceen if the location of itself is in the scene to be rendered
+        ' it is in sceen if the location of itself is in the mapScene to be rendered
         If Me.Location.X + Me.Width < MyScene.screenLocation.X Then
             ' if most right point of block < most left point of screen
             ' left of the screen
             Return False
         ElseIf Me.Location.X > MyScene.screenLocation.X + Dimensions.ScreenGridWidth Then
             ' if msot left of block > most right of screen
-            ' it is to the right of the scene
+            ' it is to the right of the mapScene
             Return False
 
         ElseIf Me.Location.Y > MyScene.screenLocation.Y + Dimensions.ScreenGridHeight Then
             ' if lowest bit of block > highest bit of screen
-            ' it is above scene
+            ' it is above mapScene
             Return False
         ElseIf Me.Location.Y + Me.Height < MyScene.screenLocation.Y Then
             ' if highest bit of block < lowest bit of screen
-            ' it is below scene
+            ' it is below mapScene
             Return False
         End If
         Return True

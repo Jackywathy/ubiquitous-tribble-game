@@ -14,8 +14,8 @@ Public Class EntGoomba
     Public Overrides Property moveSpeed As Distance = New Distance(1, 0)
     Public Overrides Property maxVeloc As Distance = New Distance(2, 0)
 
-    Public Sub New(location As Point, scene As Scene)
-        MyBase.New(32, 32, location, Sprites.goomba, scene)
+    Public Sub New(location As Point, mapScene As MapScene)
+        MyBase.New(32, 32, location, Sprites.goomba, mapScene)
     End Sub
 
 
@@ -24,9 +24,9 @@ Public Class EntGoomba
     ''' 1 : y
     ''' </summary>
     ''' <param name="params"></param>
-    ''' <param name="scene"></param>
-    Public Sub New(params As Object(), scene As Scene)
-        Me.New(New Point(params(0) * 32, params(1) * 32), scene)
+    ''' <param name="mapScene"></param>
+    Public Sub New(params As Object(), mapScene As MapScene)
+        Me.New(New Point(params(0)*32, params(1)*32), mapScene)
     End Sub
 
     Public Overrides Sub animate()

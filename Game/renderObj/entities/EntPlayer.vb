@@ -79,9 +79,9 @@ Public Class EntPlayer
     ''' <param name="width"></param>
     ''' <param name="height"></param>
     ''' <param name="location"></param>
-    ''' <param name="scene"></param>
-    Sub New(width As Integer, height As Integer, location As Point, scene As Scene)
-        MyBase.New(width, height, location, Sprites.playerSmall, scene)
+    ''' <param name="mapScene"></param>
+    Sub New(width As Integer, height As Integer, location As Point, mapScene As MapScene)
+        MyBase.New(width, height, location, Sprites.playerSmall, mapScene)
     End Sub
 
     ''' <summary>
@@ -142,7 +142,7 @@ Public Class EntPlayer
     End Sub
 
     ''' <summary>
-    ''' Play outro scene and remove player / decrease lives
+    ''' Play outro mapScene and remove player / decrease lives
     ''' Do not use for player damage - use PlayerGotHit instead
     ''' Me.State must be set appropriately
     ''' TODO make it go to black backgroudn etc

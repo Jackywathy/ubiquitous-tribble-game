@@ -18,9 +18,8 @@
     Public Overrides Property moveSpeed As Distance = New Distance(1, 0)
     Public Overrides Property maxVeloc As Distance = New Distance(1.8, 0)
 
-    Public Sub New(location As Point, scene As Scene)
-        MyBase.New(32, 64, location, Sprites.koopaGreen, scene)
-        Me.CollisionHeight = 32
+    Public Sub New(location As Point, mapScene As MapScene)
+        MyBase.New(32, 64, location, Sprites.koopaGreen, mapScene)
     End Sub
 
 

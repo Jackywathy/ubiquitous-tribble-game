@@ -5,8 +5,8 @@
     Public type As QuestionBlockReward = -1
 
 
-    Sub New(location As Point, type As String, scene As Scene)
-        MyBase.New(blockWidth, blockHeight, location, Sprites.itemBlock, scene)
+    Sub New(location As Point, type As String, mapScene As MapScene)
+        MyBase.New(blockWidth, blockHeight, location, Sprites.itemBlock, mapScene)
         Me.spriteset = spriteset
         Me.type = Helper.StrToEnum(Of QuestionBlockReward)(type)
         
@@ -18,9 +18,9 @@
     ''' 2 : "default_fire" or "fire" or "mushroom"
     ''' </summary>
     ''' <param name="params"></param>
-    ''' <param name="scene"></param>
-    Sub New(params As Object, scene As Scene)
-        Me.New(New Point(params(0)*32, params(1)*32), params(2), scene)
+    ''' <param name="mapScene"></param>
+    Sub New(params As Object, mapScene As MapScene)
+        Me.New(New Point(params(0)*32, params(1)*32), params(2), mapScene)
     End Sub
 
     Public Overrides Sub animate()

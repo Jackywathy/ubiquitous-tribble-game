@@ -3,8 +3,8 @@
 Public Class EntCoin
     Inherits Entity
 
-    Sub New(width As Integer, height As Integer, location As Point, scene As Scene)
-        MyBase.New(width, height, location, Sprites.coin, scene)
+    Sub New(width As Integer, height As Integer, location As Point, mapScene As MapScene)
+        MyBase.New(width, height, location, Sprites.coin, mapScene)
         Me.renderImage = Me.SpriteSet(SpriteState.ConstantRight)(0)
     End Sub
 

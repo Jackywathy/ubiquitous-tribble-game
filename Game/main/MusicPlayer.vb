@@ -22,7 +22,7 @@ Public NotInheritable Class MusicPlayer
     End Sub
 
     ''' <summary>
-    ''' Stops the current background music if necessary and plays the given sound on repeat
+    ''' Stops the current Background music if necessary and plays the given sound on repeat
     ''' </summary>
     ''' <param name="music"></param>
     Public Shared Sub PlayBackground(music As MusicPlayer)

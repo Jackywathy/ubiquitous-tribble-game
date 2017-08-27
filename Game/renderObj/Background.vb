@@ -1,8 +1,8 @@
 ﻿Imports System.Drawing.Drawing2D
 
 ''' <summary>
-''' This class represents the background image (just decoration)
-''' NO Bricks, players, items, enemies etc, are drawn on (this should just be a backgroud image)
+''' This class represents the Background image (just decoration)
+''' NO Bricks, players, items, enemies etc, are drawn on (just color)
 ''' </summary>
 Public Class BackgroundRender
     Inherits RenderObject
@@ -20,8 +20,8 @@ Public Class BackgroundRender
     End Sub
 
 
-    Sub New(width As Integer, height As Integer, backgroundColor As String, scene As Scene)
-        MyBase.New(Dimensions.ScreenGridWidth, Dimensions.ScreenGridHeight, New Point(0, 0), scene)
+    Sub New(width As Integer, height As Integer, backgroundColor As String, marioScene As BaseScene)
+        MyBase.New(Dimensions.ScreenGridWidth, Dimensions.ScreenGridHeight, New Point(0, 0), marioScene)
         Me.BackgroundColor = New SolidBrush(New ColorConverter().ConvertFrom(backgroundColor))
         levelWidth = width
         levelHeight = height
