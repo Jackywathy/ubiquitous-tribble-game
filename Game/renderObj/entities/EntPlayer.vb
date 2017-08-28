@@ -31,7 +31,7 @@ Public Class EntPlayer
             _lives = value
             If _lives <= 0
                 ' TODO make player unaviable etc
-                Throw New Exception("out of lives!")
+                'Throw New Exception("out of lives!")
             End If
         End Set
     End Property
@@ -157,8 +157,9 @@ Public Class EntPlayer
         Me.veloc.y = 0
         Me.defaultY = Me.Location.Y
         Lives -= 1
-        Sounds.PlayerDead.Play()
         MusicPlayer.BackgroundPlayer.Stop()
+        Sounds.PlayerDead.Play()
+        
 
     End Sub
 

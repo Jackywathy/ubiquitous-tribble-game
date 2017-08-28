@@ -401,8 +401,8 @@ Public Class MapScene
         RemoveAllDeleted()
 
         ' TODO - chuck into function - scrolls screen if player is close to edge
-        If Player1.Location.X - Me.ScreenLocation.X > (ScreenGridWidth / 4 * 3) Then
-            ' on right 1/4
+        If Player1.Location.X - Me.ScreenLocation.X > (ScreenGridWidth / 3 * 2) Then
+            ' on right 1/3
             Me.Background.ScrollHorizontal((400 - (ScreenGridWidth - (Player1.Location.X - Me.ScreenLocation.X))) / 50)
 
         ElseIf Player1.Location.X - Me.ScreenLocation.X < (ScreenGridWidth / 4) Then
@@ -410,7 +410,6 @@ Public Class MapScene
             'Me.Background.ScrollHorizontal(Player1.Location.X - RenderObject.ScreenLocation.X)
             Me.Background.ScrollHorizontal(-(400 - (Player1.Location.X - Me.ScreenLocation.X)) / 50)
         End If
-        FrameCount += 1
     End Sub
 
     Public Overrides Sub RenderScene(g As Graphics)
