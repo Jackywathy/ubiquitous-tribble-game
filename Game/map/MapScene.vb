@@ -1,5 +1,4 @@
 ﻿Imports Newtonsoft.Json
-Imports WinGame
 
 ''' <summary>
 ''' Base scene:

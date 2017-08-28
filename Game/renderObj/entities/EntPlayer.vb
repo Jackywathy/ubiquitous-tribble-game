@@ -7,7 +7,6 @@
 End Enum
 
 
-
 Public Class EntPlayer
     Inherits Entity
 
@@ -19,10 +18,7 @@ Public Class EntPlayer
     ''' Time invulnerable in ticks (60 ticks / second)
     ''' </summary>
     Public Const FramesInvulnerableIfHit = 60
-
-    ''' <summary>
-    ''' </summary>
-    ''' <returns></returns>
+    
     Public Property Lives As Integer 
         Get
             return _lives
@@ -76,7 +72,7 @@ Public Class EntPlayer
     Public NumFireballs As Integer = 0
     Private invulnerableTime As Integer = 0
 
-    Public Overrides Property moveSpeed As Distance = New Distance(0.8, 15)
+    Public Overrides Property moveSpeed As Distance = New Distance(0.55, 14)
     Public Overrides Property maxVeloc As Distance = New Distance(6, -15)
     ''' <summary>
     ''' Creates a new player

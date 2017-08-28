@@ -372,6 +372,7 @@ Public Module Forces
     ' CANNOT exceed moveSpeed values of any entity otherwise it will not be able to move
     Public Const gravity = 0.8
     Public Const friction = 0.3
+    ' ice map = 0.2
     Public Const airResist = 0.5
     Public Const terminalVeloc = -15.0
 End Module
