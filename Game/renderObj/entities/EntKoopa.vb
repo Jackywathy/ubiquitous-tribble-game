@@ -22,6 +22,7 @@
 
     Public Sub New(location As Point, mapScene As MapScene)
         MyBase.New(32, 64, location, Sprites.koopaGreen, mapScene)
+        Me.CollisionHeight = 32
     End Sub
 
     ''' <summary>
@@ -30,6 +31,7 @@
     ''' </summary>
     Public Sub New(params As Object(), mapScene As MapScene)
         Me.New(New Point(params(0)*32, params(1)*32), mapScene)
+
     End Sub
     
 
@@ -38,7 +40,7 @@
         Me.veloc.x = 0
         Me.moveSpeed = New Distance(0, 0)
         Me.RenderImage = Me.SpriteSet(SpriteState.Destroy)(1)
-        Me.CollisionHeight = 32
+        
         Me.Height = 32
 
     End Sub
