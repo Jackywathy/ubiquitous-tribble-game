@@ -66,9 +66,7 @@
             If Me.Location.Y < 0 Then
                 Me.isDead = True
             End If
-        If MyScene.frameCount Mod (2 * animationInterval) = 0
-                me.ID += 0
-        End If
+
         ElseIf Not Me.inShell Then
             If veloc.x <> 0 And MyScene.frameCount Mod (2 * animationInterval) = 0 Then
                 Dim index = MyScene.frameCount / (2 * animationInterval)

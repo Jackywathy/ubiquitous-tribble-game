@@ -242,9 +242,9 @@ Public Class EntPlayer
                 Dim x = (Me.deathTimer - 60) / (animationInterval * 5)
 
                 ' Use displacement/time function
-                ' f(x) = 50(2x - x^2)
+                ' f(x) = 100(2x - x^2)
 
-                Dim heightFunc = 50 * (2 * (x) - (x * x))
+                Dim heightFunc = 100 * (2 * (x) - (x * x))
                 Me.Location = New Point(Me.Location.X, defaultY + heightFunc)
                 If Me.Location.Y < 0 Then
                     Me.KillPlayer()

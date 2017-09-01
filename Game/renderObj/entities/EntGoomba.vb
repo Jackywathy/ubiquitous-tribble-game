@@ -69,13 +69,15 @@ Public Class EntGoomba
 
         If Me.willDie Then
             Me.deathTimer += 1
+        Else
+            Me.AccelerateX(directionMoving * Me.moveSpeed.x)
         End If
 
         If Me.isDead Then
             Me.Destroy()
         End If
 
-        Me.AccelerateX(directionMoving * Me.moveSpeed.x)
+
 
         MyBase.UpdatePos()
 

@@ -215,16 +215,22 @@ Public MustInherit Class Entity
         If isGrounded Then
             Me.veloc.x += magnitude
         Else
-            Dim reduction = (Me.moveSpeed.x - Forces.airResist) * Forces.aerialDirectionReversePenalty
-            Dim sign = 1
-            If magnitude < 0 Then
-                sign = -1
-            End If
 
-            Me.veloc.x += magnitude - (sign * reduction)
+            If ((magnitude < 0) = (Me.veloc.x + magnitude < 0)) Then
+                Me.veloc.x += magnitude
+            Else
+                Dim sign = 1
+                If magnitude < 0 Then
+                    sign = -1
+                End If
+                Dim mag = magnitude
+                Dim reduction = (Me.moveSpeed.x - Forces.airResist) * Forces.aerialDirectionReversePenalty
+                DecreaseMagnitude(mag, reduction)
+                Me.veloc.x += mag
+            End If
         End If
 
-        If Me.veloc.x <> 0 And Math.Abs(Me.veloc.x) > Me.maxVeloc.x Then
+            If Me.veloc.x <> 0 And Math.Abs(Me.veloc.x) > Me.maxVeloc.x Then
             Dim sign = 1
             If Me.veloc.x < 0 Then
                 sign = -1
@@ -377,7 +383,7 @@ Public Module Forces
     Public Const gravity = 0.6
     Public Const friction = 0.3
     ' ice map = 0.2
-    Public Const airResist = 0.5
+    Public Const airResist = 0.3
     Public Const terminalVeloc = -15.0
 
     Public Const aerialDirectionReversePenalty = 3.0
