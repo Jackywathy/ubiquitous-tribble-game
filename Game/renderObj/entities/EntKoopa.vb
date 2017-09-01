@@ -16,7 +16,7 @@
     Public directionMoving As Integer = 1
 
     Public Overrides Property moveSpeed As Distance = New Distance(1, 0)
-    Public Overrides Property maxVeloc As Distance = New Distance(1.8, 0)
+    Public Overrides Property maxVeloc As Distance = New Distance(1.8, -15)
 
     Public Overrides Property RenderImage As Image 
 
@@ -124,14 +124,16 @@
                     Me.veloc.x = 0
                     Me.moveSpeed = New Distance(0, 0)
                     Dim player As EntPlayer = sender
-                    player.veloc = New Distance(player.veloc.x, 0)
-                    player.AccelerateY(player.moveSpeed.y * 0.75, True)
+                    player.IsBouncingOffEntity = True
+                    'player.veloc = New Distance(player.veloc.x, 0)
+                    'player.AccelerateY(player.moveSpeed.y * 0.75, True)
                 End If
             Else
                 Me.GoIntoShell()
                 Dim player As EntPlayer = sender
-                player.veloc = New Distance(player.veloc.x, 0)
-                player.AccelerateY(player.moveSpeed.y * 0.75, True)
+                player.IsBouncingOffEntity = True
+                'player.veloc = New Distance(player.veloc.x, 0)
+                'player.AccelerateY(player.moveSpeed.y * 0.75, True)
             End If
         ElseIf sender.killsOnContact Then
             willDie = True

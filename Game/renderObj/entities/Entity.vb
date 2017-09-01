@@ -171,6 +171,9 @@ Public MustInherit Class Entity
                 'Console.WriteLine(currentGroundObjects.Count)
                 If currentGroundObjects.Count = 0 Then
                     Me.isGrounded = False
+                    If Me.GetType = GetType(EntKoopa) Then
+                        Me.ID += 0
+                    End If
 
                     If Me.veloc.y <= 0 Then
                         didJumpAndNotFall = False
@@ -212,11 +215,12 @@ Public MustInherit Class Entity
         If isGrounded Then
             Me.veloc.x += magnitude
         Else
-            Dim reduction = (Me.moveSpeed.x - Forces.airResist) * 0.7
+            Dim reduction = (Me.moveSpeed.x - Forces.airResist) * Forces.aerialDirectionReversePenalty
             Dim sign = 1
             If magnitude < 0 Then
                 sign = -1
             End If
+
             Me.veloc.x += magnitude - (sign * reduction)
         End If
 
@@ -370,11 +374,13 @@ End Class
 Public Module Forces
     ' may need to tweak
     ' CANNOT exceed moveSpeed values of any entity otherwise it will not be able to move
-    Public Const gravity = 0.8
+    Public Const gravity = 0.6
     Public Const friction = 0.3
     ' ice map = 0.2
     Public Const airResist = 0.5
     Public Const terminalVeloc = -15.0
+
+    Public Const aerialDirectionReversePenalty = 3.0
 End Module
 
 Public Structure Distance

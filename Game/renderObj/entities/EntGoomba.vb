@@ -12,7 +12,7 @@ Public Class EntGoomba
     Public directionMoving = 1
 
     Public Overrides Property moveSpeed As Distance = New Distance(1, 0)
-    Public Overrides Property maxVeloc As Distance = New Distance(2, 0)
+    Public Overrides Property maxVeloc As Distance = New Distance(2, -15)
 
     Public Sub New(location As Point, mapScene As MapScene)
         MyBase.New(32, 32, location, Sprites.goomba, mapScene)
@@ -89,8 +89,9 @@ Public Class EntGoomba
         If Helper.IsPlayer(sender) Then
             If Not Me.willDie Then
                 Dim player As EntPlayer = sender
-                player.veloc = New Distance(player.veloc.x, 0)
-                player.AccelerateY(player.moveSpeed.y * 0.75, True)
+                player.IsBouncingOffEntity = True
+                'player.veloc = New Distance(player.veloc.x, 0)
+                'player.AccelerateY(player.moveSpeed.y * 0.75, True)
             End If
             willDie = True
             squashed = True

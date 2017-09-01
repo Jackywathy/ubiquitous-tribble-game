@@ -36,6 +36,7 @@ Public Class EntPlayer
     Public AllowShoot As Boolean = True
     Public IsCrouching As Boolean = False
     Public AllowedToUncrouch As Boolean = True
+    Public IsBouncingOffEntity As Boolean = False
 
     Private _state As PlayerStates = PlayerStates.Small
 
@@ -72,7 +73,7 @@ Public Class EntPlayer
     Public NumFireballs As Integer = 0
     Private invulnerableTime As Integer = 0
 
-    Public Overrides Property moveSpeed As Distance = New Distance(0.55, 14)
+    Public Overrides Property moveSpeed As Distance = New Distance(0.6, 12)
     Public Overrides Property maxVeloc As Distance = New Distance(6, -15)
     ''' <summary>
     ''' Creates a new player
@@ -178,6 +179,16 @@ Public Class EntPlayer
             Me.numFireballs += 1
         End If
     End Sub
+
+    Public Sub BounceOffEntity(holdingJump As Boolean)
+        Me.veloc = New Distance(Me.veloc.x, 0)
+        If holdingJump Then
+            Me.AccelerateY(Me.moveSpeed.y * 1.1, True)
+        Else
+            Me.AccelerateY(Me.moveSpeed.y * 0.8, True)
+        End If
+    End Sub
+
 
     Private defaultY As Integer
     Private deathTimer As Integer

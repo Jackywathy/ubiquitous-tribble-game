@@ -381,6 +381,10 @@ Public Class MapScene
             Player1.AccelerateY(yToMove, False)
         End If
 
+        If Player1.IsBouncingOffEntity Then
+            Player1.BounceOffEntity(MainGame.KeyHandler.MoveUp)
+            Player1.IsBouncingOffEntity = False
+        End If
 
     End Sub
 
