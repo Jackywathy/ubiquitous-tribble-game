@@ -24,7 +24,7 @@ Public MustInherit Class EntPowerup
     End Sub
 
 
-    Public Sub TryActivate(sender As Entity)
+    Public Overridable Sub TryActivate(sender As Entity)
         If sender.GetType = GetType(EntPlayer) Then
             Dim player As EntPlayer = sender
 

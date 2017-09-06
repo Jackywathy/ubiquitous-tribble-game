@@ -18,7 +18,8 @@ Public Class EntPlayer
     ''' Time invulnerable in ticks (60 ticks / second)
     ''' </summary>
     Public Const FramesInvulnerableIfHit = 60
-    
+    Public Const StarInvincibilityDuration = 600
+
     Public Property Lives As Integer 
         Get
             return _lives
@@ -38,6 +39,8 @@ Public Class EntPlayer
     Public AllowedToUncrouch As Boolean = True
     Public IsBouncingOffEntity As Boolean = False
 
+    Public InvinicibilityTimer = 0
+
     Private _state As PlayerStates = PlayerStates.Small
 
     ''' <summary>
@@ -51,9 +54,8 @@ Public Class EntPlayer
         End Get
         Set(value As PlayerStates)
             Select Case value
-                Case PlayerStates.Dead : 
+                Case PlayerStates.Dead
                     Me.KillPlayer()
-
                 Case PlayerStates.Small :
                     Me.SpriteSet = Sprites.playerSmall
                     Me.Height = MarioHeightS
@@ -119,23 +121,23 @@ Public Class EntPlayer
     ''' Will set/check invulnerability time
     ''' </summary>
     Public Sub PlayerGotHit()
-        If invulnerableTime = 0
+        If InvinicibilityTimer = 0 Then
+        ElseIf invulnerableTime = 0 Then
             Select Case Me.State
-                Case PlayerStates.Small:
+                Case PlayerStates.Small
                     State = PlayerStates.Dead
-                Case PlayerStates.Big:
+                Case PlayerStates.Big
                     State = PlayerStates.Small
                 Case PlayerStates.Fire
-                    state = PlayerStates.Big
+                    State = PlayerStates.Big
                 Case PlayerStates.Ice
-                    state = PlayerStates.Big
+                    State = PlayerStates.Big
             End Select
             invulnerableTime = FramesInvulnerableIfHit
-            If Me.State <> PlayerStates.Dead
+            If Me.State <> PlayerStates.Dead Then
                 Sounds.Warp.Play()
             End If
         End If
-
     End Sub
 
     Public Sub PickupCoin
@@ -269,10 +271,14 @@ Public Class EntPlayer
         If Me.isCrouching And Not isGrounded Then
             Me.onCrouch(False)
         End If
-        If invulnerableTime <> 0
+        If invulnerableTime <> 0 Then
             invulnerableTime -= 1
         End If
-        
+
+        If InvinicibilityTimer > 0 Then
+            InvinicibilityTimer -= 1
+        End If
+
     End Sub
 
     Private Shared _coins As Integer = 0

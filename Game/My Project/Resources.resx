@@ -442,4 +442,46 @@
   <data name="map1_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\map\map1_1.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="flagpole_flag" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\other\flag\flagpole_flag.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="flagpole_head" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\other\flag\flagpole_head.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="flagpole_stem" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\other\flag\flagpole_stem.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="star_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\powerups\star\star_1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="star_2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\powerups\star\star_2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="star_3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\powerups\star\star_3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="star_4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\powerups\star\star_4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="star_s1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\powerups\star\star_s1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="star_s2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\powerups\star\star_s2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="star_s3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\powerups\star\star_s3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="star_s4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\powerups\star\star_s4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="star_s5" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\powerups\star\star_s5.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="star_s6" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\powerups\star\star_s6.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="star_s7" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\powerups\star\star_s7.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

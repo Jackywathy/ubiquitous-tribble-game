@@ -252,6 +252,15 @@ Public MustInherit Class Sprites
         32
     )
 
+    Public Shared star As New SpriteSet(
+        New Dictionary(Of SpriteState, List(Of Image)) From {
+            {SpriteState.Spawn, New List(Of Image) From {My.Resources.star_s1, My.Resources.star_s2, My.Resources.star_s3, My.Resources.star_s4, My.Resources.star_s5, My.Resources.star_s6, My.Resources.star_s7}},
+            {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.star_1, My.Resources.star_2, My.Resources.star_3, My.Resources.star_4}}
+        },
+        32,
+        32
+    )
+
     Public Shared itemBlock As New SpriteSet(
         New Dictionary(Of SpriteState, List(Of Image)) From {
             {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.blockQuestion1, My.Resources.blockQuestion2, My.Resources.blockQuestion3}}

@@ -111,6 +111,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EntStar.vb" />
     <Compile Include="fonts\FontController.vb" />
     <Compile Include="main\MainGame.Designer.vb">
       <DependentUpon>MainGame.vb</DependentUpon>
@@ -232,6 +233,9 @@
     <Content Include="images\other\coin\coin_idle_1.png" />
     <Content Include="images\other\coin\coin_idle_2.png" />
     <Content Include="images\other\coin\coin_idle_3.png" />
+    <Content Include="images\other\flag\flagpole_flag.png" />
+    <Content Include="images\other\flag\flagpole_head.png" />
+    <Content Include="images\other\flag\flagpole_stem.png" />
     <Content Include="images\other\pipe\pipebottom.png" />
     <Content Include="images\other\pipe\pipetop.png" />
     <Content Include="images\player\fire\fireball.png" />
@@ -263,6 +267,17 @@
     <Content Include="images\player\small\mario_small_4r.png" />
     <Content Include="images\player\small\mario_small_dead.png" />
     <Content Include="images\player\small\mario_small_jumpr.png" />
+    <Content Include="images\powerups\star\star_1.png" />
+    <Content Include="images\powerups\star\star_2.png" />
+    <Content Include="images\powerups\star\star_3.png" />
+    <Content Include="images\powerups\star\star_4.png" />
+    <Content Include="images\powerups\star\star_s1.png" />
+    <Content Include="images\powerups\star\star_s2.png" />
+    <Content Include="images\powerups\star\star_s3.png" />
+    <Content Include="images\powerups\star\star_s4.png" />
+    <Content Include="images\powerups\star\star_s5.png" />
+    <Content Include="images\powerups\star\star_s6.png" />
+    <Content Include="images\powerups\star\star_s7.png" />
     <Content Include="sounds\sfx\1_up.mp3" />
     <Content Include="sounds\sfx\brick_smash.mp3" />
     <Content Include="sounds\sfx\mushroom_pickup.mp3" />
