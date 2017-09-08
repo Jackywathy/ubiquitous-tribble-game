@@ -1,5 +1,5 @@
 ﻿Public MustInherit Class Block
-    Inherits RenderObject
+    Inherits HitboxItem
 
     Public Enum QuestionBlockReward
         Fire
@@ -31,15 +31,17 @@
         Me.defaultLocationY = location.Y
     End Sub
 
-    ' Takes a raw frame counter and defaultLocationY and returns a new point
-    Public Function bounceFunction(x As Integer, defLocY As Integer)
+    ' Takes a raw frame counter and returns a new point
+    Public Function bounceFunction(x As Integer) As Point
         x /= animationInterval
         Dim heightFunc = 6 * (2 * (x) - (x * x))
+
+        ' f(x) = 0 when x = 2
         If frameCount / animationInterval >= 2 Then
             Me.isMoving = False
-            Return New Point(Me.Location.X, defLocY)
+            Return New Point(Me.Location.X, defaultLocationY)
         Else
-            Return New Point(Me.Location.X, defLocY + heightFunc)
+            Return New Point(Me.Location.X, defaultLocationY + heightFunc)
         End If
     End Function
 

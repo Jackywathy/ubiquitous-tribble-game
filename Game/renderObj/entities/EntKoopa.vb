@@ -46,8 +46,8 @@
     End Sub
 
     Public Sub Kick(direction As Integer)
-        Me.moveSpeed = New Distance(7, 0)
-        Me.maxVeloc = New Distance(7, 0)
+        Me.moveSpeed = New Distance(8, 0)
+        Me.maxVeloc = New Distance(8, 0)
         Me.directionMoving = direction
         Me.gettingKicked = True
     End Sub
@@ -80,7 +80,7 @@
 
     End Sub
 
-    Public Overrides Sub UpdatePos()
+    Public Overrides Sub UpdateItem()
 
         If Me.inShell And Me.veloc.x <> 0 Then
             Me.killsOnContact = True
@@ -106,7 +106,7 @@
 
         Me.AccelerateX(directionMoving * Me.moveSpeed.x)
 
-        MyBase.UpdatePos()
+        MyBase.UpdateItem()
 
         If Me.willCollideFromLeft Or Me.willCollideFromRight Then
             Me.directionMoving *= -1

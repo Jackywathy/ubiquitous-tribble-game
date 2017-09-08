@@ -75,7 +75,7 @@
       
     ],
 
-    "brickPlatform": [
+    "groundPlatform": [
       [ 0, 0, 68, 2 ],
       [ 70, 0, 15, 2 ],
       [ 88, 0, 65, 2 ],
@@ -251,6 +251,6 @@
   },
     
   "background": [ "#6495ED", 100000000, 1000 ],
-  "background_music": "ground_theme",
+  "theme" :  "overworld", 
   "default_entry": [ 0, 64 ] 
 }

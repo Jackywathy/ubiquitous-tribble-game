@@ -3,7 +3,7 @@
 ' ---------------------------
 
 Public MustInherit Class Entity
-    Inherits RenderObject
+    Inherits HitboxItem
     Public veloc As New Distance(0, 0)
 
     Public Property SpriteSet As SpriteSet
@@ -31,14 +31,14 @@ Public MustInherit Class Entity
     Public isFacingForward = True
     Public didJumpAndNotFall = True
 
-    Public currentGroundObjects As New List(Of RenderObject)
+    Public currentGroundObjects As New List(Of HitboxItem)
 
     ''' <summary>
     ''' Checks for overlap between Me and sender. Handles change of: location of Me, and variables such as isGrounded and didJumpAndNotFall.
     ''' </summary>
     ''' <param name="sender"></param>
 
-    Public Sub CheckPotentialCollision(sender As RenderObject)
+    Public Sub CheckPotentialCollision(sender As HitboxItem)
         'collidedX = False
 
         Dim selfNextPoint = New Point(Me.Location.X + Me.veloc.x, Me.Location.Y + Me.veloc.y)
@@ -192,7 +192,7 @@ Public MustInherit Class Entity
         If Me.GetType = GetType(EntPlayer) Then
             Dim player As EntPlayer = Me
 
-            player.allowedToUncrouch = Not willCollideFromBelow
+            player.AllowedToUncrouch = Not willCollideFromBelow
         End If
 
     End Sub
@@ -230,7 +230,7 @@ Public MustInherit Class Entity
             End If
         End If
 
-            If Me.veloc.x <> 0 And Math.Abs(Me.veloc.x) > Me.maxVeloc.x Then
+        If Me.veloc.x <> 0 And Math.Abs(Me.veloc.x) > Me.maxVeloc.x Then
             Dim sign = 1
             If Me.veloc.x < 0 Then
                 sign = -1
@@ -298,12 +298,19 @@ Public MustInherit Class Entity
 
     End Sub
 
-
+    ''' <summary>
+    ''' Returns which direction that the item is out of 
+    ''' </summary>
+    ''' <returns></returns>
     Public Function IsOutOfMap() As Direction
         If Me.Location.X < 0 Then
             Return Direction.Left
-        ElseIf (Me.Location.X - MyScene.screenLocation.X + Me.veloc.X) > ScreenGridWidth Then
+        ElseIf (Me.Location.X - MyScene.ScreenLocation.X) > ScreenGridWidth Then
             Return Direction.Right
+        ElseIf (Me.Location.Y < 0) Then
+            Return Direction.Bottom
+        ElseIf (Me.Location.Y - MyScene.ScreenLocation.Y > ScreenGridHeight) Then
+            Return Direction.Top
         End If
         Return Direction.None
     End Function
@@ -311,7 +318,7 @@ Public MustInherit Class Entity
     ''' <summary>
     ''' Updates the position of this entity, using its velocity and location.
     ''' </summary>
-    Public Overridable Sub UpdatePos()
+    Public Overrides Sub UpdateItem()
 
         If Not Me.isDead Then
 
@@ -334,7 +341,7 @@ Public MustInherit Class Entity
 
             ' check collision of all entities with all existing RenderObj, including other entities
             'For entityCount = 0 To (Me.MyScene.AllEntities.Count - 1)
-            For Each other As RenderObject In MyScene.AllObjAndEnt
+            For Each other As HitboxItem In MyScene.AllObjAndEnt
 
                 ' Don't check collisions using the same obj
                 ' and ensure entities are valid

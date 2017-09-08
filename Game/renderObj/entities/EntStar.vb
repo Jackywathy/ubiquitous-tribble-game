@@ -21,7 +21,7 @@ Public Class EntStar
         If sender.GetType = GetType(EntPlayer) Then
             Dim player As EntPlayer = sender
 
-            player.InvinicibilityTimer = player.StarInvincibilityDuration
+            player.InvinicibilityTimer = EntPlayer.StarInvincibilityDuration
 
             If PickupSound IsNot Nothing Then
                 Me.PickupSound.Play()
@@ -46,7 +46,7 @@ Public Class EntStar
         End If
     End Sub
 
-    Public Overrides Sub UpdatePos()
+    Public Overrides Sub UpdateItem()
         If IsOutOfMap() <> Direction.None Then
             Me.Destroy()
         End If
@@ -57,7 +57,7 @@ Public Class EntStar
             Me.AccelerateY(moveSpeed.y, False)
         End If
 
-        MyBase.UpdatePos()
+        MyBase.UpdateItem()
     End Sub
 
     Sub New(width As Integer, height As Integer, location As Point, mapScene As MapScene)

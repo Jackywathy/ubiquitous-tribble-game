@@ -100,14 +100,14 @@ Public NotInheritable Class Helper
         Return [Enum].Parse(GetType(T), valueToParse, True)
     End Function
 
-    Public Shared Function IsPlayer(item As RenderObject) As boolean
+    Public Shared Function IsPlayer(item As HitboxItem) As boolean
         if item.GetType() = GetType(EntPlayer)
             Return True
         End If
         Return False
     End Function
 
-    Public Shared Function IsEntity(item As RenderObject) As Boolean
+    Public Shared Function IsEntity(item As HitboxItem) As Boolean
         If item.GetType.IsSubclassOf(GetType(Entity)) Then
             Return True
         Else

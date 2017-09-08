@@ -1,6 +1,4 @@
-﻿Imports WinGame
-
-Public Class EntCoin
+﻿Public Class EntCoin
     Inherits Entity
 
     Sub New(width As Integer, height As Integer, location As Point, mapScene As MapScene)
@@ -13,7 +11,7 @@ Public Class EntCoin
         Me.renderImage = Me.SpriteSet(SpriteState.ConstantRight)(index)
     End Sub
 
-    Public Overrides Sub UpdatePos()
+    Public Overrides Sub UpdateItem()
         Me.frameCount += 1
     End Sub
 

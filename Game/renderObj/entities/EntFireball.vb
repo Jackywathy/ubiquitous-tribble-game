@@ -1,7 +1,7 @@
 ﻿Public Class EntFireball
     Inherits Entity
 
-    Public Overrides Property moveSpeed As Distance = New Distance(3, 5)
+    Public Overrides Property moveSpeed As Distance = New Distance(3, 4)
     Public Overrides Property maxVeloc As Distance = New Distance(8, Forces.terminalVeloc)
 
     Public owner As EntPlayer
@@ -26,7 +26,7 @@
         End If
     End Sub
 
-    Public Overrides Sub UpdatePos()
+    Public Overrides Sub UpdateItem()
         If IsOutOfMap() <> Direction.None
             Me.Destroy()
         End If
@@ -38,7 +38,7 @@
                 Me.AccelerateY(moveSpeed.y, False)
             End If
 
-            MyBase.UpdatePos()
+            MyBase.UpdateItem()
         Else
             If Me.destroyTimer >= 3 Then
                 MyBase.Destroy()

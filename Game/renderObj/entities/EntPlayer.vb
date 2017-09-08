@@ -121,8 +121,7 @@ Public Class EntPlayer
     ''' Will set/check invulnerability time
     ''' </summary>
     Public Sub PlayerGotHit()
-        If InvinicibilityTimer = 0 Then
-        ElseIf invulnerableTime = 0 Then
+        If InvinicibilityTimer = 0 And invulnerableTime = 0 Then
             Select Case Me.State
                 Case PlayerStates.Small
                     State = PlayerStates.Dead
@@ -134,6 +133,7 @@ Public Class EntPlayer
                     State = PlayerStates.Big
             End Select
             invulnerableTime = FramesInvulnerableIfHit
+
             If Me.State <> PlayerStates.Dead Then
                 Sounds.Warp.Play()
             End If
@@ -255,12 +255,12 @@ Public Class EntPlayer
         End If
     End Sub
 
-    Public Overrides Sub UpdatePos()
+    Public Overrides Sub UpdateItem()
         If Double.IsNan(me.veloc.X)
             Me.ID += 0
         End If
 
-        MyBase.UpdatePos()
+        MyBase.UpdateItem()
 
         Dim outOfMap = IsOutOfMap()
         if (outOfMap = Direction.Right And Me.veloc.X > 0) Or (outOfMap = Direction.Left And Me.veloc.X < 0)

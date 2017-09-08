@@ -14,11 +14,11 @@
     End Sub
 
 
-    Public Overrides Sub UpdatePos()
+    Public Overrides Sub UpdateItem()
         If Not isSpawning Then
             Me.AccelerateX(moveSpeed.x)
         End If
-        MyBase.UpdatePos()
+        MyBase.UpdateItem()
     End Sub
 
 End Class

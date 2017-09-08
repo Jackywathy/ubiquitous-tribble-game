@@ -1,6 +1,4 @@
-﻿Imports WinGame
-
-Public Class EntGoomba
+﻿Public Class EntGoomba
     Inherits Entity
 
     Public deathTimer As Integer
@@ -65,7 +63,7 @@ Public Class EntGoomba
 
     End Sub
 
-    Public Overrides Sub UpdatePos()
+    Public Overrides Sub UpdateItem()
 
         If Me.willDie Then
             Me.deathTimer += 1
@@ -79,7 +77,7 @@ Public Class EntGoomba
 
 
 
-        MyBase.UpdatePos()
+        MyBase.UpdateItem()
 
         If Me.willCollideFromLeft Or Me.willCollideFromRight Then
             Me.directionMoving *= -1

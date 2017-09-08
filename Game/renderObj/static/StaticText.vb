@@ -1,5 +1,5 @@
 ﻿Public Class StaticText
-    Inherits StaticItem
+    Inherits GameItem
 
 
     Private sf As StringFormat
@@ -12,7 +12,9 @@
         g.DrawString(str, font, brush, drawnRect, sf)
     End Sub
 
-    Sub New (drawnRect As RectangleF, str As String, fontFam As FontFamily, emSize As Integer, brush As Brush, horAlignment As StringAlignment, vertAlignment As StringAlignment)
+    Sub New (drawnRect As RectangleF, str As String, fontFam As FontFamily, emSize As Integer, brush As Brush, horAlignment As StringAlignment, vertAlignment As StringAlignment, scene As BaseScene)
+        Mybase.New(scene)
+
         sf = New StringFormat()
         sf.Alignment = horAlignment
         sf.LineAlignment = vertAlignment

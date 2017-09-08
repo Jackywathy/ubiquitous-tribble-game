@@ -11,6 +11,11 @@ Public MustInherit Class BaseScene
     Public FrameCount As Integer
 
     ''' <summary>
+    ''' Location that the scene is rendered at - default = 0, 0
+    ''' </summary>
+    Public ScreenLocation As New Point(0, 0)
+
+    ''' <summary>
     ''' Background of scene
     ''' </summary>
     Friend Background As BackgroundRender
@@ -57,7 +62,7 @@ Public Class MapScene
     ''' <summary>
     ''' Contains all normal blocks
     ''' </summary>
-    Public AllObjects As New HashSet(Of RenderObject)
+    Public AllObjects As New HashSet(Of HitboxItem)
 
     ''' <summary>
     ''' Contains all entities
@@ -67,34 +72,29 @@ Public Class MapScene
     ''' <summary>
     ''' Contains all objects that have collisionss
     ''' </summary>
-    Public AllObjAndEnt As New HashSet(Of RenderObject)
-
-    ''' <summary>
-    ''' Location that the scene is rendered at
-    ''' </summary>
-    Public ScreenLocation As Point
+    Public AllObjAndEnt As New HashSet(Of HitboxItem)
 
     ''' <summary>
     ''' Contains all objects in scene that need to be rendered
     ''' </summary>
-    Private ReadOnly inSceneItems As New HashSet(Of RenderObject)
+    Private ReadOnly inSceneItems As New HashSet(Of HitboxItem)
     
     ''' <summary>
     ''' Contains objects that will be removed once <see cref="RemoveAllDeleted"/> is run
     ''' Used in for each loops to avoid mutating object immediately
     ''' </summary>
-    Private ReadOnly toRemoveObjects As New HashSet(Of RenderObject)
+    Private ReadOnly toRemoveObjects As New HashSet(Of HitboxItem)
 
     ''' <summary>
     ''' Contains objects that will be added once <see cref="AddAllAdded"/> is run
     ''' Used in for each loops to avoid mutating object immediately
     ''' </summary>
-    Private ReadOnly toAddObjects As New HashSet(Of RenderObject)
+    Private ReadOnly toAddObjects As New HashSet(Of HitboxItem)
 
     ''' <summary>
     ''' List of staticitems. Items will be rendered in order inserted
     ''' </summary>
-    Public AllStaticItems As New List(Of StaticItem)
+    Public AllStaticItems As New List(Of GameItem)
 
     ''' <summary>
     ''' Player1
@@ -125,7 +125,7 @@ Public Class MapScene
         Dim str = Text.Encoding.UTF8.GetString(byteArray)
 
 
-        Dim mapObject = JsonConvert.DeserializeObject(Of MapObject)(str)
+        Dim mapObject = JsonConvert.DeserializeObject(Of JsonMapObject)(str)
 
         Dim outScene As New MapScene(keyControl)
 
@@ -136,14 +136,14 @@ Public Class MapScene
         For Each pair As KeyValuePair(Of String, IList(Of Object())) In mapObject.blocks
             Dim name = pair.Key
             For Each params As Object() In pair.Value
-                outScene.RenderItemFactory(name, params).AddSelfToScene()
+                outScene.RenderItemFactory(name, params, mapObject.theme).AddSelfToScene()
             Next
         Next
 
         For Each pair As KeyValuePair(Of String, IList(Of Object())) In mapObject.entities
             Dim name = pair.Key
             For Each params As Object() In pair.Value
-                outScene.RenderItemFactory(name, params).AddSelfToScene()
+                outScene.RenderItemFactory(name, params, mapObject.theme).AddSelfToScene()
             Next
         Next
 
@@ -154,17 +154,25 @@ Public Class MapScene
         outScene.AddEntity(player1)
         outScene.AddEntity(New EntCoin(32, 32, New Point(320, 96), outScene))
 
-        Dim x As New StaticText(New RectangleF(0, 0, ScreenGridWidth / 4, ScreenGridHeight / 32), "MARIO", CustomFontFamily.NES.GetFontFamily(), 18, New SolidBrush(Color.White), StringAlignment.Near, StringAlignment.Near)
+        Dim x As New StaticText(New RectangleF(0, 0, ScreenGridWidth / 4, ScreenGridHeight / 32), "MARIO", CustomFontFamily.NES.GetFontFamily(), 18, New SolidBrush(Color.White), StringAlignment.Near, StringAlignment.Near, outScene)
         outScene.AddItem(x)
-        x = New StaticText(New RectangleF(0, ScreenGridHeight / 32, ScreenGridWidth / 4, ScreenGridHeight / 16), "000000", CustomFontFamily.NES.GetFontFamily(), 18, New SolidBrush(Color.White), StringAlignment.Near, StringAlignment.Near)
+        x = New StaticText(New RectangleF(0, ScreenGridHeight / 32, ScreenGridWidth / 4, ScreenGridHeight / 16), "000000", CustomFontFamily.NES.GetFontFamily(), 18, New SolidBrush(Color.White), StringAlignment.Near, StringAlignment.Near, outScene)
         outScene.AddItem(x)
+
+        Dim y As New BlockMultipleCoins(New Point(32*5, 32*5), outScene)
+        y.AddSelfToScene()
 
         Return outScene
     End Function
 
+    ''' <summary>
+    ''' To add a new block:
+    ''' add it to RenderTypes
+    ''' put a case in RenderItemFactory
+    ''' </summary>
     Public Enum RenderTypes
         BlockBreakableBrick
-        BrickPlatform
+        GroundPlatform
         BlockQuestion
         BlockMetal
         BlockPipe
@@ -175,24 +183,30 @@ Public Class MapScene
         EntKoopa
     End Enum
 
-    Private Function RenderItemFactory(name As String, params As Object()) As RenderObject
-        Dim out As RenderObject
+    
+    Private Function RenderItemFactory(name As String, params As Object(), theme As RenderTheme) As HitboxItem
+        Dim out As HitboxItem
         Select Case Helper.StrToEnum(Of RenderTypes)(name)
             Case RenderTypes.BlockBreakableBrick
-                AssertLength("blockBreakableBrick", 2, params.Length, params)
-                out = New BlockBreakableBrick(params, Me)
-            Case RenderTypes.BrickPlatform
-                AssertLength("brickPlatform", 4, params.Length, params)
-                out = New BrickPlatform(params, Me)
+                AssertLength(name, 2, params.Length, params)
+                out = New BlockBreakableBrick(params, theme, Me)
+
+            Case RenderTypes.GroundPlatform
+                AssertLength(name, 4, params.Length, params)
+                out = New GroundPlatform(params, theme, Me)
+
             Case RenderTypes.BlockQuestion
-                AssertLength("blockQuestion", 3, params.Length, params)
-                out = New BlockQuestion(params, Me)
+                AssertLength(name, 3, params.Length, params)
+                out = New BlockQuestion(params, theme, Me)
+
             Case RenderTypes.BlockMetal
                 AssertLength("blockMetal", 2, params.Length, params)
                 out = New BlockMetal(params, Me)
+
             Case RenderTypes.BlockInvis
                 AssertLength("blockInvis", 2, params.Length, params)
                 out = New BlockInvis(params, Me)
+
             Case RenderTypes.BlockBrickPowerUp
                 AssertLength("blockPowerBrickPowerUp", New Integer() {3, 4}, params.Length, params)
                 out = New BlockBrickPowerUp(params, Me)
@@ -221,9 +235,9 @@ Public Class MapScene
     ''' Should be called once per physics tick
     ''' </summary>
     ''' <returns>Objects in mapScene</returns>
-    Public Function GetObjInScene() As HashSet(Of RenderObject)
+    Public Function GetObjInScene() As HashSet(Of HitboxItem)
         InSceneItems.Clear()
-        For Each item As RenderObject In AllObjects
+        For Each item As HitboxItem In AllObjects
             If item.InScene() Then
                 InSceneItems.Add(item)
             End If
@@ -235,15 +249,15 @@ Public Class MapScene
     ''' Adds a obj (not entity to the mapScene)
     ''' </summary>
     ''' <param name="args"></param>
-    Sub AddObject(ByVal ParamArray args() As RenderObject)
-        For Each item As RenderObject In args
+    Sub AddObject(ByVal ParamArray args() As HitboxItem)
+        For Each item As HitboxItem In args
             AllObjects.Add(item)
             AllObjAndEnt.Add(item)
         Next
     End Sub
 
-    Sub AddItem(ByVal ParamArray args() As StaticItem)
-        For Each item As StaticItem In args
+    Sub AddItem(ByVal ParamArray args() As GameItem)
+        For Each item As GameItem In args
             AllStaticItems.Add(item)
         Next
     End Sub
@@ -263,8 +277,8 @@ Public Class MapScene
     ''' Prepares item to be removed once <see cref="RemoveAllDeleted">is run</see>
     ''' </summary>
     ''' <param name="args"></param>
-    Sub PrepareRemove(ByVal ParamArray args() As RenderObject)
-        For Each item As RenderObject In args
+    Sub PrepareRemove(ByVal ParamArray args() As HitboxItem)
+        For Each item As HitboxItem In args
             toRemoveObjects.Add(item)
         Next
     End Sub
@@ -273,8 +287,8 @@ Public Class MapScene
     ''' Prepares item to be added
     ''' </summary>
     ''' <param name="args"></param>
-    Sub PrepareAdd(ByVal ParamArray args() As RenderObject)
-        For Each item As RenderObject In args
+    Sub PrepareAdd(ByVal ParamArray args() As HitboxItem)
+        For Each item As HitboxItem In args
             toAddObjects.Add(item)
         Next
     End Sub
@@ -283,7 +297,7 @@ Public Class MapScene
     ''' Actually remove all entities
     ''' </summary>
     Sub RemoveAllDeleted()
-        For Each item As RenderObject In toRemoveObjects
+        For Each item As HitboxItem In toRemoveObjects
             If item.GetType.IsSubclassOf(GetType(Entity))
                 AllEntities.Remove(item)
             Else
@@ -298,7 +312,7 @@ Public Class MapScene
     ''' Actually add all items
     ''' </summary>
     Sub AddAllAdded()
-        For Each item As RenderObject In toAddObjects
+        For Each item As HitboxItem In toAddObjects
             If item.GetType.IsSubclassOf(GetType(Entity))
                 AllEntities.Add(item)
             Else
@@ -391,12 +405,8 @@ Public Class MapScene
     Public Overrides Sub UpdateTick()
         ' animate and update position of each entity
 
-        For Each item As RenderObject In AllObjAndEnt
-            If Helper.IsEntity(item) Then
-                Dim ent As Entity = item
-                ent.UpdatePos()
-                'End If
-            End If
+        For Each item As HitboxItem In AllObjAndEnt
+            item.UpdateItem()
             item.animate()
         Next
 
@@ -421,14 +431,14 @@ Public Class MapScene
         Background.Render(g)
 
         ' all text & stuff
-        For Each item As StaticItem In AllStaticItems
+        For Each item As GameItem In AllStaticItems
             item.Render(g)
         Next
 
         Dim objects = GetObjInScene()
 
         ' render objects
-        For Each item As RenderObject In objects
+        For Each item As HitboxItem In objects
             item.Render(g)
         Next
         ' render entities
@@ -445,7 +455,7 @@ Public Class MapScene
         End If
 
         If expected <> given Then
-            Throw New InvalidJsonException(String.Format("Error in JSON, type={0}, given {1} elements when {2} expected - [ {3} ] ",
+            Throw New InvalidJsonException(String.Format("Error in JSON, powerup={0}, given {1} elements when {2} expected - [ {3} ] ",
                                                          type, given, expected, String.Join(", ", array)))
         End If
     End Sub
@@ -453,7 +463,7 @@ Public Class MapScene
     Private Sub AssertLength(type As String, expected As Integer(), given As Integer, array As Object())
 
         If Not expected.Contains(given) Then
-            Throw New InvalidJsonException(String.Format("Error in JSON, type={0}, given {1} elements when {2} expected - [ {3} ] ",
+            Throw New InvalidJsonException(String.Format("Error in JSON, powerup={0}, given {1} elements when {2} expected - [ {3} ] ",
                                                          type, given, expected, String.Join(", ", array)))
         End If
     End Sub
@@ -471,12 +481,18 @@ Public Class MapScene
 End Class
 
 <JsonObject(ItemRequired:=Required.Always)>
-Public Class MapObject
+Public Class JsonMapObject
     Public Property map_name As String
     Public Property blocks As Dictionary(Of String, IList(Of Object()))
     Public Property entities As Dictionary(Of String, IList(Of Object()))
     Public Property background As List(Of Object)
-    Public Property background_music As String
+    Public Property theme As RenderTheme
 
 
 End Class
+
+Public Enum RenderTheme
+    Overworld
+    Underground
+    Castle
+End Enum

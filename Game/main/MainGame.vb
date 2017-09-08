@@ -7,7 +7,7 @@ Public Class MainGame
     ''' Holds the currently loaded scene
     ''' </summary>
     ''' <returns></returns>
-    Public Property CurrentScene As BaseScene
+    Public Property CurrentScene As MapScene
 
     ''' <summary>
     ''' All the names of the JsonMaps as resource name
@@ -27,7 +27,7 @@ Public Class MainGame
     ''' <summary>
     ''' Contains all Scenes
     ''' </summary>
-    Private allMapScenes As Dictionary(Of String, MapScene) = LoadScenes()
+    Private allMapScenes As Dictionary(Of String, MapScene) 
 
     ''' <summary>
     ''' Run when game is loaded 
@@ -36,6 +36,7 @@ Public Class MainGame
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub MainGame_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        allMapScenes = LoadScenes()
         CurrentScene = allMapScenes("map1_1")
 
         MusicPlayer.PlayBackground(BackgroundMusic.GroundTheme)

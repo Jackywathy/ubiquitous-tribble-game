@@ -1,14 +1,14 @@
 ﻿Public Class BlockQuestion
     Inherits Block
-    
+
     Public isUsed = False
-    Public type As QuestionBlockReward = -1
+    Public powerup As QuestionBlockReward = -1
 
 
-    Sub New(location As Point, type As String, mapScene As MapScene)
+    Sub New(location As Point, powerup As String, theme As RenderTheme, mapScene As MapScene)
         MyBase.New(blockWidth, blockHeight, location, Sprites.itemBlock, mapScene)
         Me.spriteset = spriteset
-        Me.type = Helper.StrToEnum(Of QuestionBlockReward)(type)
+        Me.powerup = Helper.StrToEnum(Of QuestionBlockReward)(powerup)
         
     End Sub
 
@@ -19,8 +19,8 @@
     ''' </summary>
     ''' <param name="params"></param>
     ''' <param name="mapScene"></param>
-    Sub New(params As Object, mapScene As MapScene)
-        Me.New(New Point(params(0)*32, params(1)*32), params(2), mapScene)
+    Sub New(params As Object,  theme As RenderTheme, mapScene As MapScene)
+        Me.New(New Point(params(0)*32, params(1)*32), params(2), theme, mapScene)
     End Sub
 
     Public Overrides Sub animate()
@@ -34,12 +34,8 @@
             ' bumps block
             Me.frameCount += 1
 
-            Me.Location = bounceFunction(Me.frameCount, Me.defaultLocationY)
+            Me.Location = bounceFunction(Me.frameCount)
 
-            ' f(x) = 0 when x = 2
-            If frameCount / animationInterval >= 2 Then
-                Me.isMoving = False
-            End If
         End If
     End Sub
 
@@ -49,7 +45,7 @@
             ' only player is allowed to activate block
             If Helper.IsPlayer(sender) Then
                 Dim player As EntPlayer = sender
-                Select Case type
+                Select Case powerup
                     Case QuestionBlockReward.DefaultFire
                         ' check the current status of mario, then spawn the right
                         If player.state = PlayerStates.Small Then
@@ -67,7 +63,8 @@
                         mushroom.Spawn()
                     Case QuestionBlockReward.Coin
                         player.PickupCoin()
-                        MyScene.PrepareAdd(New EntCoinFromBlock(32, 32, New Point(Me.Location.X, Me.Location.Y + Me.Height), MyScene))
+                        Dim coin = New EntCoinFromBlock(32, 32, New Point(Me.Location.X, Me.Location.Y + Me.Height), MyScene)
+                        coin.spawn()
                 End Select
                 If Not isUsed Then
                     frameCount = 0

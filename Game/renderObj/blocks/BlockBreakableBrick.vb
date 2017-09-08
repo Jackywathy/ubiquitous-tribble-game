@@ -2,8 +2,13 @@
     Inherits Block
 
 
-
-    Public Sub New(location As Point, mapScene As MapScene)
+    ''' <summary>
+    ''' TODO make theme work!
+    ''' </summary>
+    ''' <param name="location"></param>
+    ''' <param name="theme"></param>
+    ''' <param name="mapScene"></param>
+    Public Sub New(location As Point, theme As RenderTheme, mapScene As MapScene)
         MyBase.New(32, 32, location, Sprites.brickBlock, mapScene)
 
     End Sub
@@ -24,6 +29,7 @@
             '      |/      \  x-intercept at 2
             ' -----+--------o------> x
             '     /|         \
+            '    V            V
 
             Dim heightFunc = 6 * (2 * (x) - (x * x))
             Me.Location = New Point(Me.Location.X, defaultLocationY + heightFunc)
@@ -41,8 +47,8 @@
     ''' 0 : y
     ''' </summary>
     ''' <param name="params"></param>
-    Public Sub New(params As Object(), mapScene As MapScene)
-        Me.New(New Point(params(0)*32, params(1)*32), mapScene)
+    Public Sub New(params As Object(), theme As RenderTheme, mapScene As MapScene)
+        Me.New(New Point(params(0)*32, params(1)*32), theme, mapScene)
     End Sub
 
     Public Overrides Sub CollisionBottom(sender As Entity)

@@ -11,7 +11,7 @@
     ''' <summary>
     ''' 0 : x
     ''' 1 : y
-    ''' 2 : type
+    ''' 2 : powerup
     ''' 3 : num of coins (of neccesarry)
     ''' </summary>
     ''' <param name="params"></param>

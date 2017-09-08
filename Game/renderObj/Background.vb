@@ -1,11 +1,9 @@
-﻿Imports System.Drawing.Drawing2D
-
-''' <summary>
+﻿''' <summary>
 ''' This class represents the Background image (just decoration)
 ''' NO Bricks, players, items, enemies etc, are drawn on (just color)
 ''' </summary>
 Public Class BackgroundRender
-    Inherits RenderObject
+    Inherits HitboxItem
     Implements IDisposable
 
     Public Overrides Property RenderImage As Image = New Bitmap(ScreenGridWidth, ScreenGridHeight)

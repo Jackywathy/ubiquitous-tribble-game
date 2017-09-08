@@ -1,12 +1,13 @@
 ﻿''' <summary>
-''' items that are simply added onto the screen - no hitboxes
+''' Ultimate base class for all items rended into the game
 ''' </summary>
-Public MustInherit Class StaticItem
+Public MustInherit Class GameItem
     Public MustOverride Sub Render(g As Graphics)
+   ' Public Shared GlobalFrameCount As ULong = 0
 
-    Friend Property MyScene As MapScene
+    Friend Overridable Property MyScene As MapScene
     Private Shared _idCount As Integer
-    
+
     Private Shared Function GetNewID() As Integer
         Dim temp = _idCount
         _idCount += 1
@@ -17,30 +18,42 @@ Public MustInherit Class StaticItem
     Public Property ID As Integer = GetNewID()
 
 
-    Public Shared Operator =(left as StaticItem, right as StaticItem)
-        return left.ID = right.ID
+    Public Shared Operator =(left As GameItem, right As GameItem)
+        Return left.ID = right.ID
     End Operator
-    Public Shared Operator <>(left as StaticItem, right As StaticItem)
-        if left IsNot Nothing And right IsNot nothing
-            return left.ID <> right.ID
-        Else 
-            return IsNothing(left) and IsNothing(right)
-        End if
-        
+    Public Shared Operator <>(left As GameItem, right As GameItem)
+        If left IsNot Nothing And right IsNot Nothing
+            Return left.ID <> right.ID
+        Else
+            Return IsNothing(left) And IsNothing(right)
+        End If
     End Operator
+
+    Sub New(scene As BaseScene)
+        Me.MyScene = scene
+    End Sub
 
 
 End Class
 
+''' <summary>
+''' An image that is drawing into the game, using a default Render(). Supply it with 
+''' </summary>
 Public MustInherit Class StaticImage
-    Inherits StaticItem
-    Public MustOverride Property RenderImage As Image
+    Inherits GameItem
 
-   
+    Public Overridable Property RenderImage As Image
+
+
     Public Property Width As Integer
     Public Property Height As Integer
 
     Friend Const ToolBarOffSet As Integer = 29
+
+    Public Sub New(image As Image, scene As BaseScene)
+        MyBase.New(scene)
+        Me.RenderImage = image
+    End Sub
 
     ''' <summary>
     ''' Location of object from the very bottom left (0,0)
@@ -49,19 +62,11 @@ Public MustInherit Class StaticImage
     Public Property Location As Point
 
     ''' <summary>
-    ''' Function run before RenderImage is rendered  - psst you can change it here if you dont wanna override Render()
-    ''' </summary>
-    Public Overridable Sub BeforeRender()
-       
-    End Sub
-
-    ''' <summary>
     ''' Draws the image into the graphics object given
     ''' </summary>
     ''' <param name="g"></param>
     Public Overrides Sub Render(g As Graphics)
-        BeforeRender()
-        g.DrawImage(RenderImage, New Point(Location.X - MyScene.screenLocation.X, Dimensions.ScreenGridHeight - Height - Location.Y + MyScene.screenLocation.Y - toolBarOffSet))
+        g.DrawImage(RenderImage, New Point(Location.X - MyScene.ScreenLocation.X, Dimensions.ScreenGridHeight - Height - Location.Y + MyScene.ScreenLocation.Y - ToolBarOffSet))
     End Sub
 
 End Class
@@ -69,9 +74,9 @@ End Class
 ''' <summary>
 ''' Items that have hitboxes
 ''' </summary>
-Public MustInherit Class RenderObject
+Public MustInherit Class HitboxItem
     Inherits StaticImage
-    
+
 
     Public Property CollisionHeight As Integer
 
@@ -80,7 +85,7 @@ Public MustInherit Class RenderObject
     'Public internalFrameCounter = 0
     Public Const animationInterval As Integer = 5 ' Frames to wait before proceeding to next image of animation
 
-   
+
 
 
     ''' <summary>
@@ -90,6 +95,7 @@ Public MustInherit Class RenderObject
     ''' <param name="height">Height, in grid units</param>
     ''' <param name="location">Location, a point of grid units</param>
     Public Sub New(width As Integer, height As Integer, location As Point, mapScene As MapScene)
+        Mybase.New(New Bitmap(width, height), mapScene)
         Me.Width = width
         Me.Height = height
 
@@ -98,10 +104,14 @@ Public MustInherit Class RenderObject
         Me.Location = location
         Me.MyScene = mapScene
 
-        RenderImage = New Bitmap(width, height)
     End Sub
 
-    
+    ''' <summary>
+    ''' Do nothing, by default
+    ''' </summary>
+    Public Overridable Sub UpdateItem()
+
+    End Sub
 
     ''' <summary>
     ''' Checks if the StaticItem is in the current screen
@@ -110,20 +120,20 @@ Public MustInherit Class RenderObject
     Public Overridable Function InScene()
         ' checks if levelWidth/levelHeight is in the screen properly
         ' it is in sceen if the location of itself is in the mapScene to be rendered
-        If Me.Location.X + Me.Width < MyScene.screenLocation.X Then
+        If Me.Location.X + Me.Width < MyScene.ScreenLocation.X Then
             ' if most right point of block < most left point of screen
             ' left of the screen
             Return False
-        ElseIf Me.Location.X > MyScene.screenLocation.X + Dimensions.ScreenGridWidth Then
+        ElseIf Me.Location.X > MyScene.ScreenLocation.X + Dimensions.ScreenGridWidth Then
             ' if msot left of block > most right of screen
             ' it is to the right of the mapScene
             Return False
 
-        ElseIf Me.Location.Y > MyScene.screenLocation.Y + Dimensions.ScreenGridHeight Then
+        ElseIf Me.Location.Y > MyScene.ScreenLocation.Y + Dimensions.ScreenGridHeight Then
             ' if lowest bit of block > highest bit of screen
             ' it is above mapScene
             Return False
-        ElseIf Me.Location.Y + Me.Height < MyScene.screenLocation.Y Then
+        ElseIf Me.Location.Y + Me.Height < MyScene.ScreenLocation.Y Then
             ' if highest bit of block < lowest bit of screen
             ' it is below mapScene
             Return False
@@ -175,12 +185,12 @@ Public MustInherit Class RenderObject
         ' nothing by default
     End Sub
 
-   
+
 
     Public Overridable Sub AddSelfToScene()
-        If Me.GetType.IsSubclassOf(GetType(Entity))
+        If Me.GetType.IsSubclassOf(GetType(Entity)) Then
             MyScene.AddEntity(Me)
-        Else 
+        Else
             MyScene.AddObject(Me)
         End If
     End Sub
