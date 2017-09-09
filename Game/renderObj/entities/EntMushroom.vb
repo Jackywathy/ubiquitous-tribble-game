@@ -20,5 +20,9 @@
         End If
         MyBase.UpdateItem()
     End Sub
+    Public Overrides Sub Activate(sender As EntPlayer)
+        MyBase.Activate(sender)
+        sender.State = PlayerStates.Big
+    End Sub
 
 End Class
