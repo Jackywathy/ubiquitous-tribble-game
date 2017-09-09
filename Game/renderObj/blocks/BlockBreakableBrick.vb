@@ -9,7 +9,7 @@
     ''' <param name="theme"></param>
     ''' <param name="mapScene"></param>
     Public Sub New(location As Point, theme As RenderTheme, mapScene As MapScene)
-        MyBase.New(32, 32, location, Sprites.brickBlock, mapScene)
+        MyBase.New(StandardWidth, StandardHeight, location, Sprites.brickBlock, mapScene)
 
     End Sub
 

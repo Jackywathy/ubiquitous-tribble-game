@@ -2,7 +2,7 @@
     Inherits BlockBumpable
 
     Sub New(location As Point, mapScene As MapScene)
-        MyBase.New(blockWidth, blockHeight, location, sprites.blockMetal, mapScene)
+        MyBase.New(StandardWidth, StandardHeight, location, sprites.blockMetal, mapScene)
     End Sub
 
     Sub New(params As Object(), mapScene As MapScene)

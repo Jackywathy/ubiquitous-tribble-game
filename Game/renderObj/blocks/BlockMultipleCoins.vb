@@ -28,7 +28,7 @@
     
 
     Public Sub New(location As Point, mapScene As MapScene)
-        MyBase.New(32, 32, location, Sprites.brickBlock, mapScene)
+        MyBase.New(StandardWidth, StandardHeight, location, Sprites.brickBlock, mapScene)
     End Sub
     
     Public Overrides Sub UpdateItem()

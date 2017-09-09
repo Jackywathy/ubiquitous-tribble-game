@@ -1,11 +1,10 @@
 ﻿Public MustInherit Class BlockBumpable
     Inherits Block
+
     Friend IsMoving As Boolean = False
 
-    
-
     ' Takes a raw frame counter and returns a new point
-    Friend Function bounceFunction(x As Integer) As Point
+    Friend Function BounceFunction(x As Integer) As Point
         x /= animationInterval
         Dim heightFunc = 6 * (2 * (x) - (x * x))
 

@@ -14,6 +14,6 @@
     ''' </summary>
     ''' <param name="params"></param>
     Public Sub New(params As Object(), mapScene As MapScene) 
-        Me.New(32, 32, New Point(params(0)*32, params(1)*32), sprites.blockInvis, mapScene)
+        Me.New(StandardWidth, StandardHeight, New Point(params(0)*32, params(1)*32), sprites.blockInvis, mapScene)
     End SUb
 End Class

@@ -1,8 +1,8 @@
 ﻿Public MustInherit Class Block
     Inherits HitboxItem
 
-    
-
+    Public Const StandardWidth = 32
+    Public Const StandardHeight = 32
 
     Public Enum QuestionBlockReward
         Fire
@@ -12,15 +12,10 @@
         Star
     End Enum
 
-
-    Friend Const blockWidth = 32
-    Friend Const blockHeight = 32
-
     Public Overrides Property RenderImage As Image
-    Public Property spriteSet As SpriteSet
-    Public defaultLocationY As Integer
+    Friend ReadOnly Property SpriteSet As SpriteSet
+    Friend DefaultLocationY As Integer
 
-    
 
     Public Sub New(width As Integer, height As Integer, location As Point, spriteSet As SpriteSet, mapScene As MapScene)
         MyBase.New(width, height, location, mapScene)
@@ -34,8 +29,6 @@
         Me.defaultLocationY = location.Y
     End Sub
 
-    
-
 
     Public Overrides Sub CollisionTop(sender As Entity)
         MyBase.CollisionTop(sender)
@@ -45,13 +38,13 @@
     End Sub
 
     Public Overrides Sub CollisionLeft(sender As Entity)
-
         If sender.GetType = GetType(EntFireball) Then
             sender.Destroy()
         Else
             MyBase.CollisionLeft(sender)
         End If
     End Sub
+
     Public Overrides Sub CollisionRight(sender As Entity)
 
         If sender.GetType = GetType(EntFireball) Then
@@ -60,5 +53,4 @@
             MyBase.CollisionRight(sender)
         End If
     End Sub
-
 End Class

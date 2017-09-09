@@ -6,10 +6,8 @@
 
 
     Sub New(location As Point, powerup As String, theme As RenderTheme, mapScene As MapScene)
-        MyBase.New(blockWidth, blockHeight, location, Sprites.itemBlock, mapScene)
-        Me.spriteset = spriteset
+        MyBase.New(StandardWidth, StandardHeight, location, Sprites.itemBlock, mapScene)
         Me.powerup = Helper.StrToEnum(Of QuestionBlockReward)(powerup)
-        
     End Sub
 
     ''' <summary>

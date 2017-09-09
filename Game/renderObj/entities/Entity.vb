@@ -1,12 +1,12 @@
-﻿' ===========================
-' Physics 
-' ---------------------------
-
+﻿''' <summary>
+''' Entity with physics!
+''' </summary>
 Public MustInherit Class Entity
     Inherits HitboxItem
     Public veloc As New Distance(0, 0)
 
     Public Property SpriteSet As SpriteSet
+
     Public Overrides Property renderImage As Image
     Public isDead As Boolean = False
     Public killsOnContact As Boolean = False
@@ -17,7 +17,7 @@ Public MustInherit Class Entity
         Me.renderImage = Me.SpriteSet(SpriteState.ConstantRight)(0)
     End Sub
 
-    ' all vincent
+   
     Public Overridable Property moveSpeed As Distance
     Public Overridable Property maxVeloc As Distance
 
@@ -37,7 +37,6 @@ Public MustInherit Class Entity
     ''' Checks for overlap between Me and sender. Handles change of: location of Me, and variables such as isGrounded and didJumpAndNotFall.
     ''' </summary>
     ''' <param name="sender"></param>
-
     Public Sub CheckPotentialCollision(sender As HitboxItem)
         'collidedX = False
 
@@ -113,16 +112,6 @@ Public MustInherit Class Entity
 
                     newPositionToMoveTo = New Point(Me.Location.X, blockLowermost - Me.CollisionHeight) ' - 0.2 * c ?
 
-                    ' check for another collision; allows collision with several objects at once
-                    'For objCount = 0 To (Me.MyScene.AllObjects.Count - 1)
-                    'If Me.MyScene.AllObjects(objCount) <> sender And Me.MyScene.AllObjects(objCount) IsNot Nothing Then
-                    'Dim otherBlock As RenderObject = Me.MyScene.AllObjects(objCount)
-                    'If Me.veloc.y > 0 And Me.Location.Y + Me.Height <= otherBlock.Location.Y And (selfUppermost + (0.05 * Me.Height)) > otherBlock.Location.Y And selfRightmost - (10) > otherBlock.Location.X And selfLeftmost + (10) < otherBlock.Location.X + otherBlock.Width Then
-                    'Me.MyScene.AllObjects(objCount).CollisionBottom(Me)
-                    'End If
-                    'End If
-                    '   Next
-
                 End If
                 sender.CollisionBottom(Me)
             End If
@@ -160,15 +149,11 @@ Public MustInherit Class Entity
 
                 currentGroundObjects.Add(sender)
                 Me.isGrounded = True
-                'Console.WriteLine("Added")
-                'Console.WriteLine(currentGroundObjects.Count)
 
             End If
 
             If ((Not (isInsideFromLeft_v And isInsideFromRight_v)) Or Me.Location.Y > blockUppermost) And currentGroundObjects.Contains(sender) Then
                 currentGroundObjects.RemoveAt(currentGroundObjects.IndexOf(sender))
-                'Console.WriteLine("Removed")
-                'Console.WriteLine(currentGroundObjects.Count)
                 If currentGroundObjects.Count = 0 Then
                     Me.isGrounded = False
                     If Me.GetType = GetType(EntKoopa) Then
