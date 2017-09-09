@@ -1,17 +1,31 @@
-﻿
-Public Class BlockMultipleCoins
+﻿Public Class BlockMultipleCoins
     Inherits BlockBumpable
 
     ''' <summary> 
     ''' Set when block is first hit 
     ''' </summary> 
-    Private FramesPassedSinceHit As Integer = -1 
-    Private ShouldIncrementTimer As Boolean = False 
+    Private framesPastSinceFirstHit As Integer = -1 
+
+    ''' <summary>
+    ''' Set after first time player hits the block
+    ''' </summary>
+    Private hasBeenHit As Boolean = False 
+
+    ''' <summary>
+    ''' Timer ran out - next hit will set isUsed to True and change the image
+    ''' </summary>
+    Private timerRanOut As Boolean = False
+
+    ''' <summary>
+    ''' Set after the block has been used (timer ran out)
+    ''' </summary>
+    Private isUsed As Boolean = False 
  
-    Private TimerRanOut As Boolean = False 
- 
+    ''' <summary>
+    ''' The total time before the block gets used
+    ''' </summary>
     Private Const AmountOfTimeYouHaveToGetCoins As Integer = 60 * 3 
-    Public isUsed = False 
+    
 
     Public Sub New(location As Point, mapScene As MapScene)
         MyBase.New(32, 32, location, Sprites.brickBlock, mapScene)
@@ -19,40 +33,49 @@ Public Class BlockMultipleCoins
     
     Public Overrides Sub UpdateItem()
         MyBase.UpdateItem()
-        If ShouldIncrementTimer Then 
-            FramesPassedSinceHit += 1 
+
+        If HasBeenHit Then 
+            framesPastSinceFirstHit += 1
+            If Not timerRanOut And framesPastSinceFirstHit >= AmountOfTimeYouHaveToGetCoins Then 
+                timerRanOut = True
+            End If 
         End If 
  
-        If Not TimerRanOut And FramesPassedSinceHit >= AmountOfTimeYouHaveToGetCoins Then 
-            ShouldIncrementTimer = False 
-            TimerRanOut = True 
-        End If 
+        
+    End Sub
 
-
+    Public Overrides Sub Animate
+        If IsUsed
+            Me.RenderImage = spriteSet.GetFirst(SpriteState.Destroy)
+        End If
     End Sub
 
 
 
 
     Public Overrides Sub CollisionBottom(sender As Entity)
-        If Not Me.isMoving And Not Me.isUsed And Helper.IsPlayer(sender) Then
+        If Not Me.isMoving And Not isUsed And Helper.IsPlayer(sender) Then
             Dim player As EntPlayer = sender
             player.PickupCoin()
             Dim coin = New EntCoinFromBlock(32, 32, New Point(Me.Location.X, Me.Location.Y + Me.Height), MyScene)
             coin.Spawn()
 
-            If Not Me.ShouldIncrementTimer Then
-                ShouldIncrementTimer = True
-                FramesPassedSinceHit = 0
+            If Not Me.HasBeenHit Then
+                HasBeenHit = True
+                framesPastSinceFirstHit = 0
             End If
-            If Me.TimerRanOut Then
-                Me.isUsed = True
+
+
+            If timerRanOut Then
+                isUsed = True
+            Else
+                StartBump()
             End If
-            StartBump()
+                
         End If
 
-    End Sub
-    Private Sub HitBlock
+        
 
     End Sub
+   
 End Class

@@ -8,10 +8,38 @@
     </TypeIdentifier>
   </Class>
   <Class Name="WinGame.BlockBumpable" Collapsed="true">
-    <Position X="5" Y="3.25" Width="1.5" />
+    <Position X="3.75" Y="3.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAIAAAGAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAQAAAAAAAAAAQAAAAAAAAAAIAAAGAAAAAAAAAAAA=</HashCode>
       <FileName>renderObj\blocks\BlockBumpable.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WinGame.BlockPipe" Collapsed="true">
+    <Position X="0.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAABAAAAAAAAAEAAAEAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>renderObj\blocks\BlockPipe.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WinGame.BlockQuestion" Collapsed="true">
+    <Position X="1.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAAAAAAQAAAAAgAAAAAAAAAQAAAA=</HashCode>
+      <FileName>renderObj\blocks\BlockQuestion.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WinGame.BlockBreakableBrick" Collapsed="true">
+    <Position X="3.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>renderObj\blocks\BlockBreakableBrick.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WinGame.BlockMultipleCoins" Collapsed="true">
+    <Position X="5.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAAAAAAAAAQAQAAAAAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>renderObj\blocks\BlockMultipleCoins.vb</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

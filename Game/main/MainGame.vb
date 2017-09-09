@@ -66,6 +66,7 @@ Public Class MainGame
         SetStyle(ControlStyles.UserPaint, True)
         SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
         SetStyle(ControlStyles.AllPaintingInWmPaint, True)
+        Randomize()
     End Sub
 
     ''' <summary>
@@ -150,46 +151,6 @@ Public Class MainGame
         keyControl.KeyDown(e.KeyData)
     End Sub
 
-    Public Class KeyHandler
-        Public Shared MoveRight As Boolean
-        Public Shared MoveLeft As Boolean
-        Public Shared MoveUp As Boolean
-        Public Shared MoveDown As Boolean
-        Private Sub KeyHelp(key As Keys, vset As Boolean)
-            If key = Keys.Right Or key = Keys.D Then
-                MoveRight = vset
-            End If
-
-            If key = Keys.Left Or key = Keys.A Then
-                MoveLeft = vset
-            End If
-
-            If key = Keys.Up Or key = Keys.W Then
-                MoveUp = vset
-            End If
-
-            If key = Keys.Down Or key = Keys.S Then
-                MoveDown = vset
-            End If
-
-        End Sub
-
-        Public Sub KeyDown(key As Keys)
-            KeyHelp(key, True)
-        End Sub
-
-        Public Sub KeyUp(key as Keys)
-            KeyHelp(key, False)
-        End Sub
-
-        Public Sub Reset()
-            MoveRight = False
-            MoveLeft = False
-            MoveUp = False
-            MoveDown = False
-        End Sub
-    End Class
-
     ''' <summary>
     ''' Returns a dictionary of all maps loaded 
     ''' </summary>
@@ -201,4 +162,44 @@ Public Class MainGame
         Next
         Return scenes
     End Function
+End Class
+
+Public Class KeyHandler
+    Public Shared MoveRight As Boolean
+    Public Shared MoveLeft As Boolean
+    Public Shared MoveUp As Boolean
+    Public Shared MoveDown As Boolean
+    Private Sub KeyHelp(key As Keys, vset As Boolean)
+        If key = Keys.Right Or key = Keys.D Then
+            MoveRight = vset
+        End If
+
+        If key = Keys.Left Or key = Keys.A Then
+            MoveLeft = vset
+        End If
+
+        If key = Keys.Up Or key = Keys.W Then
+            MoveUp = vset
+        End If
+
+        If key = Keys.Down Or key = Keys.S Then
+            MoveDown = vset
+        End If
+
+    End Sub
+
+    Public Sub KeyDown(key As Keys)
+        KeyHelp(key, True)
+    End Sub
+
+    Public Sub KeyUp(key as Keys)
+        KeyHelp(key, False)
+    End Sub
+
+    Public Sub Reset()
+        MoveRight = False
+        MoveLeft = False
+        MoveUp = False
+        MoveDown = False
+    End Sub
 End Class

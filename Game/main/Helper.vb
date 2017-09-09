@@ -30,7 +30,12 @@ Module Debug
         Console.Out.WriteLine(str.ToString)
     End Sub
 
+#if DEBUG
     Public IsDebug = True
+#Else
+    Public IsDebug = False
+#End If
+
 End Module
 
 
@@ -118,4 +123,18 @@ Public NotInheritable Class Helper
     Private Sub New
 
     End Sub
+    ''' <summary>
+    ''' Generates a number between start (inclusive) and end (not exclusive)
+    ''' This is because Rnd() returns a number &gt;= 0 , and &lt; 1
+    ''' </summary>
+    ''' <param name="start"></param>
+    ''' <param name="end"></param>
+    ''' <returns></returns>
+    Public Shared Function Random(start As Integer, [end] as Double) As Integer
+        return CInt(Math.Floor(([end] - start + 1) * Rnd())) + start
+
+   End Function
+
+
+       
 End Class

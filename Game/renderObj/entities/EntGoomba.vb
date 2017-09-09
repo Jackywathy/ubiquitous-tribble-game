@@ -27,7 +27,7 @@
         Me.New(New Point(params(0)*32, params(1)*32), mapScene)
     End Sub
 
-    Public Overrides Sub animate()
+    Public Overrides Sub Animate()
         If willDie Then
             Me.deathTimer += 1
             If squashed Then

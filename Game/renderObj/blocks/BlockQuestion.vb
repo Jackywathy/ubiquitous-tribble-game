@@ -57,7 +57,7 @@
         End If
     End Sub
 
-    Public Overrides Sub animate()
+    Public Overrides Sub Animate()
         ' IFC mod 15 = 0
         ' IFC = 0, 15, 30, 45 ...
         If IsUsed Then

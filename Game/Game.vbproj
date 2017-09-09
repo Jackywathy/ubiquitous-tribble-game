@@ -111,6 +111,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="renderObj\blocks\BlockBrickStar.vb" />
     <Compile Include="renderObj\blocks\BlockBumpable.vb" />
     <Compile Include="renderObj\entities\EntStar.vb" />
     <Compile Include="fonts\FontController.vb" />
@@ -153,6 +154,7 @@
     <Compile Include="renderObj\blocks\BlockPipe.vb" />
     <Compile Include="renderObj\blocks\BlockQuestion.vb" />
     <Compile Include="renderObj\blocks\BlockMetal.vb" />
+    <Compile Include="renderObj\entities\IStateChanger.vb" />
     <Compile Include="renderObj\GroundPlatform.vb" />
     <Compile Include="renderObj\entities\Enemy.vb" />
     <Compile Include="renderObj\entities\EntCoin.vb" />

@@ -80,16 +80,13 @@ Public MustInherit Class HitboxItem
 
     Public Property CollisionHeight As Integer
 
-    Public localFrameCount As Integer = 0
+    Friend FramesSinceHit As Integer = 0
 
-    'Public internalFrameCounter = 0
-    Public Const animationInterval As Integer = 5 ' Frames to wait before proceeding to next image of animation
-
-
+    Public Const AnimationInterval As Integer = 5 ' Frames to wait before proceeding to next image of animation
 
 
     ''' <summary>
-    ''' Base class
+    ''' Constructor for <see cref="HitboxItem"/>
     ''' </summary>
     ''' <param name="width">Width, in grid units</param>
     ''' <param name="height">Height, in grid units</param>
@@ -155,18 +152,13 @@ Public MustInherit Class HitboxItem
     ''' </summary>
     ''' <param name="sender"></param>
     Public Overridable Sub CollisionTop(sender As Entity)
-        'sender.veloc.y = 0
     End Sub
-
-    'Public collidedX As Boolean = False
 
     ''' <summary>
     '''  Called when an entity collides into this RenderObject from the left
     ''' </summary>
     ''' <param name="sender"></param>
     Public Overridable Sub CollisionLeft(sender As Entity)
-        'sender.veloc.x = 0
-        'collidedX = True
     End Sub
 
     ''' <summary>
@@ -174,21 +166,16 @@ Public MustInherit Class HitboxItem
     ''' </summary>
     ''' <param name="sender"></param>
     Public Overridable Sub CollisionRight(sender As Entity)
-        'sender.veloc.x = 0
-        'collidedX = True
     End Sub
 
     ''' <summary>
     ''' Changes the animation of the object, if necessary
     ''' </summary>
-    Public Overridable Sub animate()
-        ' nothing by default
+    Public Overridable Sub Animate()
     End Sub
 
-
-
     Public Overridable Sub AddSelfToScene()
-        If Me.GetType.IsSubclassOf(GetType(Entity)) Then
+        If Helper.IsEntity(Me) Then
             MyScene.AddEntity(Me)
         Else
             MyScene.AddObject(Me)

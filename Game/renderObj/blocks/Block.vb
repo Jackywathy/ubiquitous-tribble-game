@@ -1,6 +1,9 @@
 ﻿Public MustInherit Class Block
     Inherits HitboxItem
 
+    
+
+
     Public Enum QuestionBlockReward
         Fire
         DefaultFire 

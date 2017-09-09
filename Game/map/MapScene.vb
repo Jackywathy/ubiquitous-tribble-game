@@ -41,9 +41,9 @@ Public MustInherit Class BaseScene
     ''' <summary>
     ''' Has all of keys which are held down etc.
     ''' </summary>
-    Friend KeyControl As MainGame.KeyHandler
+    Friend KeyControl As KeyHandler
 
-    Sub New(keyControl As MainGame.KeyHandler)
+    Sub New(keyControl As KeyHandler)
         Me.KeyControl = keyControl
     End Sub
 
@@ -62,22 +62,22 @@ Public Class MapScene
     ''' <summary>
     ''' Contains all normal blocks
     ''' </summary>
-    Public AllObjects As New HashSet(Of HitboxItem)
+    Public AllObjects As New List(Of HitboxItem)
 
     ''' <summary>
     ''' Contains all entities
     ''' </summary>
-    Public AllEntities As New HashSet(Of Entity)
+    Public AllEntities As New List(Of Entity)
 
     ''' <summary>
     ''' Contains all objects that have collisionss
     ''' </summary>
-    Public AllObjAndEnt As New HashSet(Of HitboxItem)
+    Public AllObjAndEnt As New List(Of HitboxItem)
 
     ''' <summary>
     ''' Contains all objects in scene that need to be rendered
     ''' </summary>
-    Private ReadOnly inSceneItems As New HashSet(Of HitboxItem)
+    Private ReadOnly inSceneItems As New List(Of HitboxItem)
     
     ''' <summary>
     ''' Contains objects that will be removed once <see cref="RemoveAllDeleted"/> is run
@@ -108,7 +108,7 @@ Public Class MapScene
 
    
 
-    Public Sub New(keyControl As MainGame.KeyHandler)
+    Public Sub New(keyControl As KeyHandler)
         MyBase.New(keyControl)
     End Sub
 
@@ -117,7 +117,7 @@ Public Class MapScene
     ''' </summary>
     ''' <param name="jsonName"></param>
     ''' <returns></returns>
-    Public Shared Function ReadMapFromResource(jsonName As String, keyControl As MainGame.KeyHandler) As MapScene
+    Public Shared Function ReadMapFromResource(jsonName As String, keyControl As KeyHandler) As MapScene
         Dim byteArray = CType(My.Resources.ResourceManager.GetObject(jsonName), Byte())
         If byteArray(0) = 239 And byteArray(1) = 187 And byteArray(2) = 191 Then
             byteArray = byteArray.Skip(3).Take(byteArray.Length - 2).ToArray()
@@ -154,13 +154,15 @@ Public Class MapScene
         outScene.AddEntity(player1)
         outScene.AddEntity(New EntCoin(32, 32, New Point(320, 96), outScene))
 
-        Dim x As New StaticText(New RectangleF(0, 0, ScreenGridWidth / 4, ScreenGridHeight / 32), "MARIO", CustomFontFamily.NES.GetFontFamily(), 18, New SolidBrush(Color.White), StringAlignment.Near, StringAlignment.Near, outScene)
+        Dim x As New StaticText(New RectangleF(0, 0, ScreenGridWidth / 4, ScreenGridHeight / 32), "MARIO", NES.GetFontFamily(), 18, New SolidBrush(Color.White), outScene)
         outScene.AddItem(x)
-        x = New StaticText(New RectangleF(0, ScreenGridHeight / 32, ScreenGridWidth / 4, ScreenGridHeight / 16), "000000", CustomFontFamily.NES.GetFontFamily(), 18, New SolidBrush(Color.White), StringAlignment.Near, StringAlignment.Near, outScene)
+        x = New StaticText(New RectangleF(0, ScreenGridHeight / 32, ScreenGridWidth / 4, ScreenGridHeight / 16), "000000", NES.GetFontFamily(),
+                           18, New SolidBrush(Color.White), outScene, paddingChar := "0", paddingWidth := 6)
         outScene.AddItem(x)
 
         Dim y As New BlockMultipleCoins(New Point(32*5, 32*5), outScene)
         y.AddSelfToScene()
+        EntPlayer.ScoreCallback = x
 
         Return outScene
     End Function
@@ -231,7 +233,7 @@ Public Class MapScene
     ''' Should be called once per physics tick
     ''' </summary>
     ''' <returns>Objects in mapScene</returns>
-    Public Function GetObjInScene() As HashSet(Of HitboxItem)
+    Public Function GetObjInScene() As List(Of HitboxItem)
         InSceneItems.Clear()
         For Each item As HitboxItem In AllObjects
             If item.InScene() Then
@@ -339,39 +341,39 @@ Public Class MapScene
         
 
         ' LEFT
-        If MainGame.KeyHandler.MoveLeft Then
+        If KeyHandler.MoveLeft Then
             If Not Player1.IsCrouching Then
                 xToMove = -Player1.moveSpeed.x
             End If
 
             ' Yes this is really badly hard-coded
-            If Player1.IsCrouching And Not Player1.AllowedToUncrouch And MainGame.KeyHandler.MoveUp And Player1.AllowJumpInput Then
+            If Player1.IsCrouching And Not Player1.AllowedToUncrouch And KeyHandler.MoveUp And Player1.AllowJumpInput Then
                 xToMove = -Player1.moveSpeed.x
             End If
         End If
 
         ' RIGHT
-        If MainGame.KeyHandler.MoveRight Then
+        If KeyHandler.MoveRight Then
             If Not Player1.IsCrouching Then
                 xToMove = Player1.moveSpeed.x
 
             End If
-            If Player1.IsCrouching And Not Player1.AllowedToUncrouch And MainGame.KeyHandler.MoveUp And Player1.AllowJumpInput Then
+            If Player1.IsCrouching And Not Player1.AllowedToUncrouch And KeyHandler.MoveUp And Player1.AllowJumpInput Then
                 xToMove = Player1.moveSpeed.x
             End If
         End If
 
         ' UP
-        If MainGame.KeyHandler.MoveUp And Player1.AllowJumpInput Then
+        If KeyHandler.MoveUp And Player1.AllowJumpInput Then
             yToMove = Player1.moveSpeed.y
             Player1.AllowJumpInput = False
             Sounds.Jump.Play(fromStart:=True)
-        ElseIf MainGame.KeyHandler.MoveUp = False Then
+        ElseIf KeyHandler.MoveUp = False Then
             Player1.AllowJumpInput = True
         End If
 
         ' DOWN
-        If MainGame.KeyHandler.MoveDown Then
+        If KeyHandler.MoveDown Then
             If Player1.State > PlayerStates.Small And Player1.isGrounded = True Then 'crouch
                 Player1.OnCrouch(True)
             End If
@@ -380,10 +382,10 @@ Public Class MapScene
             Player1.OnCrouch(False)
         End If
 
-        If Player1.State = PlayerStates.Fire And MainGame.KeyHandler.MoveDown And Player1.AllowShoot Then
+        If Player1.State = PlayerStates.Fire And KeyHandler.MoveDown And Player1.AllowShoot Then
             Player1.TryShootFireball()
             Player1.AllowShoot = False
-        ElseIf Not MainGame.KeyHandler.MoveDown Then
+        ElseIf Not KeyHandler.MoveDown Then
             Player1.AllowShoot = True
         End If
 
@@ -393,14 +395,14 @@ Public Class MapScene
         End If
 
         If Player1.IsBouncingOffEntity Then
-            Player1.BounceOffEntity(MainGame.KeyHandler.MoveUp)
+            Player1.BounceOffEntity(KeyHandler.MoveUp)
             Player1.IsBouncingOffEntity = False
         End If
 
     End Sub
 
     Public Overrides Sub UpdateTick()
-        ' animate and update position of each entity
+        ' Animate and update position of each entity
 
         For Each item As HitboxItem In AllObjAndEnt
             item.UpdateItem()

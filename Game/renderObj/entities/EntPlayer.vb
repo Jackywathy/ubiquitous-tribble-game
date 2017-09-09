@@ -10,17 +10,57 @@ End Enum
 Public Class EntPlayer
     Inherits Entity
 
-    Public Const CoinsToLives = 100
-
-    Private _lives As Integer = 5
-
+    
     ''' <summary>
     ''' Time invulnerable in ticks (60 ticks / second)
     ''' </summary>
     Public Const FramesInvulnerableIfHit = 60
+    ''' <summary>
+    ''' Time invulnerable due to star power ( 60 ticks / second)
+    ''' </summary>
     Public Const StarInvincibilityDuration = 600
+    ''' <summary>
+    ''' Coin to lives conversion
+    ''' </summary>
+    Public Const CoinsToLives = 100
+    ''' <summary>
+    ''' how many points given per coin
+    ''' </summary>
+    
 
-    Public Property Lives As Integer 
+   
+    Private Shared _lives As Integer = 5
+    Private Shared _coins As Integer = 0
+
+    Private _score As Integer = 0
+
+    ''' <summary>
+    ''' Total score accumated by all players. Shared!
+    ''' </summary>
+    ''' <returns></returns>
+    Public Shared Property TotalScore As Integer
+    ''' <summary>
+    ''' Coins are shared between all players
+    ''' </summary>
+    ''' <returns></returns>
+    Public Shared Property Coins
+        Get
+            Return _coins
+        End Get
+        Set(value)
+            If value >= CoinsToLives Then
+                _coins = value - CoinsToLives
+                _lives += 1
+            Else
+                _coins += 1
+            End If
+        End Set
+    End Property
+    ''' <summary>
+    ''' Lives are shared between all players
+    ''' </summary>
+    ''' <returns></returns>
+    Public Shared Property Lives As Integer 
         Get
             return _lives
         End Get
@@ -32,6 +72,27 @@ Public Class EntPlayer
             End If
         End Set
     End Property
+    ''' <summary>
+    ''' Score is not shared, but totalScore is
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property Score As Integer
+        Get
+            Return _score
+        End Get
+        Set(value As Integer)
+            TotalScore += (value - Score)
+
+            _score = value
+            
+            If ScoreCallBack IsNot Nothing
+                ScoreCallback.Text = TotalScore.ToString()
+            End If
+        End Set
+    End Property
+
+    Public Shared Property ScoreCallback As StaticText = Nothing
+
 
     Public AllowJumpInput As Boolean = True
     Public AllowShoot As Boolean = True
@@ -143,6 +204,7 @@ Public Class EntPlayer
     Public Sub PickupCoin
         Sounds.CoinPickup.Play()
         Coins += 1
+        Score += PlayerPoints.Coin
     End Sub
 
     ''' <summary>
@@ -195,7 +257,7 @@ Public Class EntPlayer
     Private defaultY As Integer
     Private deathTimer As Integer
 
-    Public Overrides Sub animate()
+    Public Overrides Sub Animate()
         If Not Me.isDead Then
             ' Make sure this is exhaustive
             Dim spriteStateToUse = -2
@@ -281,19 +343,14 @@ Public Class EntPlayer
 
     End Sub
 
-    Private Shared _coins As Integer = 0
+    
+End Class
 
-    Public Shared Property Coins
-        Get
-            Return _coins
-        End Get
-        Set(value)
-            If value >= CoinsToLives Then
-                _coins = value - CoinsToLives
-            Else
-                _coins += 1
-            End If
 
-        End Set
-    End Property
+Public Class PlayerPoints
+    Public Const Coin = 100
+    Public Const Goomba = 500
+    Public Const Koopa = 700
+    Public Const Mushroom = 2000
+    Public Const Firefire = 4000
 End Class

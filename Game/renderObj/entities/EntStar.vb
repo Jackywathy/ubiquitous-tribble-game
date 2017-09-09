@@ -1,12 +1,10 @@
-﻿Imports WinGame
-
-Public Class EntStar
+﻿Public Class EntStar
     Inherits EntPowerup
 
     Public Overrides Property moveSpeed As Distance = New Distance(3, 5)
     Public Overrides Property maxVeloc As Distance = New Distance(6, Forces.terminalVeloc)
+    Public Overrides Property state As UInt16
 
-    Public Overrides Property state As UShort = 5
     Private spawnCounter = 0
     Public Overrides Property PickupSound As MusicPlayer
         Get
@@ -17,30 +15,26 @@ Public Class EntStar
         End Set
     End Property
 
-    Public Overrides Sub TryActivate(sender As Entity)
-        If sender.GetType = GetType(EntPlayer) Then
-            Dim player As EntPlayer = sender
+    Public Overrides Sub Activate(sender As EntPlayer)
+        sender.InvinicibilityTimer = EntPlayer.StarInvincibilityDuration
 
-            player.InvinicibilityTimer = EntPlayer.StarInvincibilityDuration
-
-            If PickupSound IsNot Nothing Then
-                Me.PickupSound.Play()
-            End If
-
-            MyScene.PrepareRemove(Me)
+        If PickupSound IsNot Nothing Then
+            Me.PickupSound.Play()
         End If
+
+        MyScene.PrepareRemove(Me)
     End Sub
 
-    Public Overrides Sub animate()
-        If Not isSpawning And MyScene.FrameCount Mod (animationInterval) = 0 Then
+    Public Overrides Sub Animate()
+        If Not isSpawning And MyScene.FrameCount Mod (AnimationInterval) = 0 Then
             Me.RenderImage = Me.SpriteSet.SendToBack(SpriteState.ConstantRight)
         ElseIf isSpawning Then
-            If (Math.Floor(spawnCounter / animationInterval) Mod 7) = Me.SpriteSet(SpriteState.Spawn).Count - 1 Then
+            If (Math.Floor(spawnCounter / AnimationInterval) Mod 7) = Me.SpriteSet(SpriteState.Spawn).Count - 1 Then
                 isSpawning = False
                 Me.RenderImage = Me.SpriteSet(SpriteState.ConstantRight)(0)
             Else
                 Me.spawnCounter += 1
-                Me.RenderImage = Me.SpriteSet(SpriteState.Spawn)(Math.Floor(spawnCounter / animationInterval) Mod 7)
+                Me.RenderImage = Me.SpriteSet(SpriteState.Spawn)(Math.Floor(spawnCounter / AnimationInterval) Mod 7)
             End If
 
         End If

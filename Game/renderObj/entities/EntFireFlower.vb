@@ -13,10 +13,9 @@
 
     Sub New(width As Integer, height As Integer, location As Point, mapScene As MapScene)
         MyBase.New(width, height, location, Sprites.f_flower, mapScene)
-
     End Sub
 
-    Public Overrides Sub animate()
+    Public Overrides Sub Animate()
         If Not isSpawning And MyScene.frameCount Mod (animationInterval) = 0 Then
             Me.RenderImage = Me.SpriteSet.SendToBack(SpriteState.ConstantRight)
         ElseIf isSpawning Then
@@ -31,4 +30,8 @@
         End If
     End Sub
 
+    Public Overrides Sub Activate(sender As EntPlayer)
+        MyBase.Activate(sender)
+        sender.Score += PlayerPoints.Firefire
+    End Sub
 End Class

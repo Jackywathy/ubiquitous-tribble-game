@@ -280,7 +280,8 @@ Public MustInherit Class Sprites
 
     Public Shared brickBlock As New SpriteSet(
         New Dictionary(Of SpriteState, List(Of Image)) From {
-            {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.blockBrick}}
+            {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.blockBrick}},
+            {SpriteState.Destroy, New List(Of Image) From {My.Resources.blockQuestionUsed}}
         },
         32,
         32

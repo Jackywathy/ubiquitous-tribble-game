@@ -10,8 +10,8 @@
         Me.defaultY = Me.Location.Y
     End Sub
 
-    Public Overrides Sub animate()
-        Dim index = Math.Floor(localFrameCount / animationInterval) Mod 4
+    Public Overrides Sub Animate()
+        Dim index = Math.Floor(framesSinceHit / animationInterval) Mod 4
         Me.RenderImage = Me.SpriteSet(SpriteState.ConstantRight)(index)
         If index = 3 Then
             Me.willDisappear = True
@@ -19,8 +19,8 @@
     End Sub
 
     Public Overrides Sub UpdateItem()
-        Me.localFrameCount += 1
-        Me.Location = New Point(Me.Location.X, Me.defaultY + (localFrameCount * 4))
+        Me.framesSinceHit += 1
+        Me.Location = New Point(Me.Location.X, Me.defaultY + (framesSinceHit * 4))
         If Me.willDisappear Then
             Me.Destroy()
         End If

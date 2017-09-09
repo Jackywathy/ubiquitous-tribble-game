@@ -52,7 +52,7 @@
         Me.gettingKicked = True
     End Sub
 
-    Public Overrides Sub animate()
+    Public Overrides Sub Animate()
         If willDie Then
             Me.deathTimer += 1
             Me.RenderImage = SpriteSet(SpriteState.Destroy)(2)
