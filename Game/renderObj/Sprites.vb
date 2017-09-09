@@ -68,6 +68,14 @@
         Return ret
     End Function
 
+    ''' <summary>
+    ''' Gets the first
+    ''' </summary>
+    ''' <returns></returns>
+    Public Function GetFirst(state As SpriteState) As Image
+        Return AllSprites(state)(0)
+    End Function
+
 
     #Region "IDictionary"
     Public ReadOnly Property Count As Integer Implements ICollection(Of KeyValuePair(Of SpriteState, List(Of Image))).Count
@@ -263,7 +271,8 @@ Public MustInherit Class Sprites
 
     Public Shared itemBlock As New SpriteSet(
         New Dictionary(Of SpriteState, List(Of Image)) From {
-            {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.blockQuestion1, My.Resources.blockQuestion2, My.Resources.blockQuestion3}}
+            {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.blockQuestion1, My.Resources.blockQuestion2, My.Resources.blockQuestion3}},
+            {SpriteState.Destroy, New List(Of Image) From {My.Resources.blockQuestionUsed}}
         },
         32,
         32

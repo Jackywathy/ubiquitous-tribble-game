@@ -177,7 +177,6 @@ Public Class MapScene
         BlockMetal
         BlockPipe
         BlockInvis
-        BlockBrickPowerUp
 
         EntGoomba
         EntKoopa
@@ -207,9 +206,6 @@ Public Class MapScene
                 AssertLength("blockInvis", 2, params.Length, params)
                 out = New BlockInvis(params, Me)
 
-            Case RenderTypes.BlockBrickPowerUp
-                AssertLength("blockPowerBrickPowerUp", New Integer() {3, 4}, params.Length, params)
-                out = New BlockBrickPowerUp(params, Me)
             Case RenderTypes.BlockPipe
                 AssertLength("blockPipe", 5, params.Length, params)
                 out = New BlockPipe(params, Me)
@@ -340,6 +336,7 @@ Public Class MapScene
     Public Overrides Sub HandleInput()
         Dim xToMove = 0
         Dim yToMove = 0
+        
 
         ' LEFT
         If MainGame.KeyHandler.MoveLeft Then

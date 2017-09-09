@@ -1,6 +1,6 @@
 ﻿
 Public Class BlockMultipleCoins
-    Inherits Block
+    Inherits BlockBumpable
 
     ''' <summary> 
     ''' Set when block is first hit 
@@ -18,6 +18,7 @@ Public Class BlockMultipleCoins
     End Sub
     
     Public Overrides Sub UpdateItem()
+        MyBase.UpdateItem()
         If ShouldIncrementTimer Then 
             FramesPassedSinceHit += 1 
         End If 
@@ -26,21 +27,12 @@ Public Class BlockMultipleCoins
             ShouldIncrementTimer = False 
             TimerRanOut = True 
         End If 
- 
-        If isMoving Then 
-            Me.frameCount += 1 
-            Me.Location = bounceFunction(Me.frameCount) 
-        End If 
 
 
     End Sub
 
 
-    Public Overrides Sub animate()
 
-       
-
-    End Sub
 
     Public Overrides Sub CollisionBottom(sender As Entity)
         If Not Me.isMoving And Not Me.isUsed And Helper.IsPlayer(sender) Then
@@ -56,6 +48,7 @@ Public Class BlockMultipleCoins
             If Me.TimerRanOut Then
                 Me.isUsed = True
             End If
+            StartBump()
         End If
 
     End Sub

@@ -1,5 +1,5 @@
 ﻿Public Class BlockInvis
-    Inherits Block
+    Inherits BlockBumpable
 
     Private revealed As Boolean = False
 

@@ -1,5 +1,5 @@
 ﻿Public Class BlockMetal
-    Inherits Block
+    Inherits BlockBumpable
 
     Sub New(location As Point, mapScene As MapScene)
         MyBase.New(blockWidth, blockHeight, location, sprites.blockMetal, mapScene)

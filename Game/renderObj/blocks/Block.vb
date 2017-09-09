@@ -17,7 +17,7 @@
     Public Property spriteSet As SpriteSet
     Public defaultLocationY As Integer
 
-    Public isMoving As Boolean = False
+    
 
     Public Sub New(width As Integer, height As Integer, location As Point, spriteSet As SpriteSet, mapScene As MapScene)
         MyBase.New(width, height, location, mapScene)
@@ -31,19 +31,7 @@
         Me.defaultLocationY = location.Y
     End Sub
 
-    ' Takes a raw frame counter and returns a new point
-    Public Function bounceFunction(x As Integer) As Point
-        x /= animationInterval
-        Dim heightFunc = 6 * (2 * (x) - (x * x))
-
-        ' f(x) = 0 when x = 2
-        If frameCount / animationInterval >= 2 Then
-            Me.isMoving = False
-            Return New Point(Me.Location.X, defaultLocationY)
-        Else
-            Return New Point(Me.Location.X, defaultLocationY + heightFunc)
-        End If
-    End Function
+    
 
 
     Public Overrides Sub CollisionTop(sender As Entity)

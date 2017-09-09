@@ -7,12 +7,12 @@
     End Sub
 
     Public Overrides Sub animate()
-        Dim index = Math.Floor(frameCount / (animationInterval * 2)) Mod 3
+        Dim index = Math.Floor(localFrameCount / (animationInterval * 2)) Mod 3
         Me.renderImage = Me.SpriteSet(SpriteState.ConstantRight)(index)
     End Sub
 
     Public Overrides Sub UpdateItem()
-        Me.frameCount += 1
+        Me.localFrameCount += 1
     End Sub
 
     Private Sub collect(collector As EntPlayer)

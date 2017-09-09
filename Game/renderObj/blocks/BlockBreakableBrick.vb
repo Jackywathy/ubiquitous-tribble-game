@@ -1,5 +1,5 @@
 ﻿Public Class BlockBreakableBrick
-    Inherits Block
+    Inherits BlockBumpable
 
 
     ''' <summary>
@@ -10,35 +10,6 @@
     ''' <param name="mapScene"></param>
     Public Sub New(location As Point, theme As RenderTheme, mapScene As MapScene)
         MyBase.New(32, 32, location, Sprites.brickBlock, mapScene)
-
-    End Sub
-
-    Public Overrides Sub animate()
-        If isMoving Then
-            ' bumps block
-            Me.frameCount += 1
-            Dim x = frameCount / animationInterval
-
-            ' Use displacement/time function
-            ' f(x) = 6(2x - x^2)
-            '      = -6x^2 + 12x
-
-            '    y ^  
-            '      |  .--.
-            '      | /    \
-            '      |/      \  x-intercept at 2
-            ' -----+--------o------> x
-            '     /|         \
-            '    V            V
-
-            Dim heightFunc = 6 * (2 * (x) - (x * x))
-            Me.Location = New Point(Me.Location.X, defaultLocationY + heightFunc)
-
-            ' f(x) = 0 when x = 2
-            If frameCount / animationInterval >= 2 Then
-                Me.isMoving = False
-            End If
-        End If
 
     End Sub
 
@@ -59,9 +30,7 @@
                 MyScene.PrepareRemove(Me)
                 Sounds.BrickSmash.Play()
             Else
-                ' bump block
-                frameCount = 0
-                Me.isMoving = True
+                StartBump()
             End If
         End If
     End Sub

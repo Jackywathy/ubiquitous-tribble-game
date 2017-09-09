@@ -80,7 +80,7 @@ Public MustInherit Class HitboxItem
 
     Public Property CollisionHeight As Integer
 
-    Public frameCount As Integer = 0
+    Public localFrameCount As Integer = 0
 
     'Public internalFrameCounter = 0
     Public Const animationInterval As Integer = 5 ' Frames to wait before proceeding to next image of animation

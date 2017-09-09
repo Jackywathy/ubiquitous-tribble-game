@@ -111,6 +111,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="renderObj\blocks\BlockBumpable.vb" />
     <Compile Include="renderObj\entities\EntStar.vb" />
     <Compile Include="fonts\FontController.vb" />
     <Compile Include="main\MainGame.Designer.vb">
@@ -147,7 +148,6 @@
     </Compile>
     <Compile Include="renderObj\blocks\Block.vb" />
     <Compile Include="renderObj\blocks\BlockBreakableBrick.vb" />
-    <Compile Include="renderObj\blocks\BlockBrickPowerUp.vb" />
     <Compile Include="renderObj\blocks\BlockInvis.vb" />
     <Compile Include="renderObj\blocks\BlockMultipleCoins.vb" />
     <Compile Include="renderObj\blocks\BlockPipe.vb" />
@@ -202,6 +202,7 @@
     </None>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="renderObj\blocks\ClassDiagram1.cd" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="images\blocks\blockGround.png" />

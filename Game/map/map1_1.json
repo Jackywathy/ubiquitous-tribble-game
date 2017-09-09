@@ -96,11 +96,7 @@
     "blockInvis": [
       [ 63, 7 ]
     ],
-    "blockBrickPowerUp": [
-      [ 94, 5, "coin", 10 ],
 
-      [ 101, 5, "star" ]
-    ],
     "blockMetal": [
       [ 134, 2 ],
 
