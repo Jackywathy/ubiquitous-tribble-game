@@ -1,15 +1,11 @@
 ﻿Public Class StartScene
-    Inherits BaseScene
+    Inherits MapScene
 
     Public Sub New(keyControl As MainGame.KeyHandler)
         MyBase.New(keyControl)
     End Sub
 
-    Public Overrides Sub RenderScene(g As Graphics)
-        Throw New NotImplementedException()
-    End Sub
-
-    Public Overrides Sub UpdateTick()
-        Throw New NotImplementedException()
+    Public Overrides Sub HandleInput()
+        ' scroll select 1/2 player
     End Sub
 End Class
