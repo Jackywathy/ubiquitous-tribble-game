@@ -1,46 +1,24 @@
-﻿
-Public MustInherit Class EntPowerup
+﻿Public MustInherit Class EntPowerup
     Inherits Entity
 
-    Public isSpawning = True
-    Public MustOverride Property state as UInt16
+    Friend IsSpawning As Boolean = True
+    Public MustOverride ReadOnly Property PickupScore As Integer
 
     ' The state the powerup changes the player to
     Public MustOverride Property PickupSound As MusicPlayer
     Public Overrides Property RenderImage As Image = Me.SpriteSet(SpriteState.Spawn)(0)
     Private spawnCounter = 0
-
-    Public Overrides Sub CollisionBottom(sender As Entity)
-        If Helper.IsPlayer(sender) Then
-            Me.Activate(sender)
-        End If
-    End Sub
-    Public Overrides Sub CollisionTop(sender As Entity)
-        If Helper.IsPlayer(sender) Then
-            Me.Activate(sender)
-        End If
-    End Sub
-    Public Overrides Sub CollisionLeft(sender As Entity)
-        If Helper.IsPlayer(sender) Then
-            Me.Activate(sender)
-        End If
-    End Sub
-    Public Overrides Sub CollisionRight(sender As Entity)
-        If Helper.IsPlayer(sender) Then
-            Me.Activate(sender)
-        End If
-    End Sub
-
+   
     ''' <summary>
     ''' Run when player hits the powerup
-    ''' by default will set it to it state
+    ''' By default, plays a sound and removes itself
     ''' </summary>
     ''' <param name="sender"></param>
     Public Overridable Sub Activate(sender As EntPlayer)
+        sender.Score += PickupScore
         If PickupSound IsNot Nothing Then
             Me.PickupSound.Play()
         End If
-
         MyScene.PrepareRemove(Me)
     End Sub
 
@@ -75,5 +53,28 @@ Public MustInherit Class EntPowerup
     Sub New(width As Integer, height As Integer, location As Point, spriteSet As SpriteSet, mapScene As MapScene)
         MyBase.New(width, height, location, spriteSet, mapScene)
     End Sub
+
+#Region "collisions"
+    Public Overrides Sub CollisionBottom(sender As Entity)
+        If Helper.IsPlayer(sender) Then
+            Me.Activate(sender)
+        End If
+    End Sub
+    Public Overrides Sub CollisionTop(sender As Entity)
+        If Helper.IsPlayer(sender) Then
+            Me.Activate(sender)
+        End If
+    End Sub
+    Public Overrides Sub CollisionLeft(sender As Entity)
+        If Helper.IsPlayer(sender) Then
+            Me.Activate(sender)
+        End If
+    End Sub
+    Public Overrides Sub CollisionRight(sender As Entity)
+        If Helper.IsPlayer(sender) Then
+            Me.Activate(sender)
+        End If
+    End Sub
+#End Region
 
 End Class

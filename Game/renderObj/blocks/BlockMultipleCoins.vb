@@ -24,7 +24,7 @@
     ''' <summary>
     ''' The total time before the block gets used
     ''' </summary>
-    Private Const AmountOfTimeYouHaveToGetCoins As Integer = 60 * 3 
+    Private ReadOnly amountOfTimeYouHaveToGetCoins As Integer = Helper.Random(3*60, 4*60)
     
 
     Public Sub New(location As Point, mapScene As MapScene)

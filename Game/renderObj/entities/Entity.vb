@@ -340,16 +340,11 @@ Public MustInherit Class Entity
             End If
 
             ' check collision of all entities with all existing RenderObj, including other entities
-            'For entityCount = 0 To (Me.MyScene.AllEntities.Count - 1)
             For Each other As HitboxItem In MyScene.AllObjAndEnt
 
                 ' Don't check collisions using the same obj
-                ' and ensure entities are valid
-                If other IsNot Nothing And Me <> other Then
+                If Me <> other Then
                     Me.CheckPotentialCollision(other)
-                    'If Me.nextMoveLocation <> Nothing Then
-                    'Me.Location = Me.nextMoveLocation
-                    'End If
 
                 End If
             Next

@@ -353,4 +353,6 @@ Public Class PlayerPoints
     Public Const Koopa = 700
     Public Const Mushroom = 2000
     Public Const Firefire = 4000
+
+    Public Const Star = 5000
 End Class

@@ -53,12 +53,7 @@
             If veloc.x <> 0 And MyScene.frameCount Mod (3 * animationInterval) = 0 Then
                 Me.renderImage = SpriteSet(SpriteState.ConstantRight)((MyScene.frameCount / (3 * animationInterval)) Mod 2)
             End If
-            ' just to check if it works
-            'If collidedX Then
-            'collidedX = False
-            'temp *= -1
-            'End If
-            'Me.veloc.X = temp
+
         End If
 
     End Sub
@@ -89,13 +84,14 @@
         If Helper.IsPlayer(sender) Then
             If Not Me.willDie Then
                 Dim player As EntPlayer = sender
+                player.Score += PlayerPoints.Goomba
                 player.IsBouncingOffEntity = True
-                'player.veloc = New Distance(player.veloc.x, 0)
-                'player.AccelerateY(player.moveSpeed.y * 0.75, True)
             End If
             willDie = True
             squashed = True
+            
         ElseIf sender.killsOnContact Then
+            DirectCast(sender, EntPlayer).Score += PlayerPoints.Goomba
             willDie = True
             squashed = False
             Me.defaultY = Me.Location.Y

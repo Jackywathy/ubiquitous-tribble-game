@@ -1,10 +1,10 @@
 ﻿Public Class EntMushroom
     Inherits EntPowerup
 
-    Private spawnCounter = 0
-    Public Overrides Property state As UInt16 = PlayerStates.Big
     Public Overrides Property moveSpeed As Distance = New Distance(3, 0)
     Public Overrides Property maxVeloc As Distance = New Distance(2, Forces.terminalVeloc)
+    
+    Public Overrides ReadOnly Property PickupScore As Integer = PlayerPoints.Mushroom
 
     Public Overrides Property PickupSound As MusicPlayer = Sounds.MushroomPickup
 

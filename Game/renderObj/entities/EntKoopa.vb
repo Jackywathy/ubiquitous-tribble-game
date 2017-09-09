@@ -113,6 +113,10 @@
         End If
     End Sub
 
+    ''' <summary>
+    ''' TODO 
+    ''' </summary>
+    ''' <param name="sender"></param>
     Public Overrides Sub CollisionTop(sender As Entity)
         If sender.GetType() = GetType(EntPlayer) Then
             If Me.inShell Then
@@ -123,8 +127,7 @@
                     Me.moveSpeed = New Distance(0, 0)
                     Dim player As EntPlayer = sender
                     player.IsBouncingOffEntity = True
-                    'player.veloc = New Distance(player.veloc.x, 0)
-                    'player.AccelerateY(player.moveSpeed.y * 0.75, True)
+                   
                 End If
             Else
                 Me.GoIntoShell()

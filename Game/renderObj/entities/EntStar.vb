@@ -3,17 +3,11 @@
 
     Public Overrides Property moveSpeed As Distance = New Distance(3, 5)
     Public Overrides Property maxVeloc As Distance = New Distance(6, Forces.terminalVeloc)
-    Public Overrides Property state As UInt16
 
     Private spawnCounter = 0
     Public Overrides Property PickupSound As MusicPlayer
-        Get
-            Throw New NotImplementedException()
-        End Get
-        Set(value As MusicPlayer)
-            Throw New NotImplementedException()
-        End Set
-    End Property
+
+    Public Overrides ReadOnly Property PickupScore As Integer = PlayerPoints.Star
 
     Public Overrides Sub Activate(sender As EntPlayer)
         sender.InvinicibilityTimer = EntPlayer.StarInvincibilityDuration

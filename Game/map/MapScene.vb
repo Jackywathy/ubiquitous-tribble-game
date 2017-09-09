@@ -403,11 +403,16 @@ Public Class MapScene
 
     Public Overrides Sub UpdateTick()
         ' Animate and update position of each entity
+        If player1.IsDead Then
+            player1.UpdateItem()
+            Player1.Animate()
+        Else
+            For Each item As HitboxItem In AllObjAndEnt
 
-        For Each item As HitboxItem In AllObjAndEnt
-            item.UpdateItem()
-            item.animate()
-        Next
+                item.UpdateItem()
+                item.Animate()
+            Next
+        End If
 
         AddAllAdded()
         RemoveAllDeleted()
