@@ -38,5 +38,4 @@
             Me.Location = bounceFunction(framesSinceHit)
         End If
     End Sub
-    
 End Class

@@ -71,7 +71,13 @@ Public MustInherit Class StaticImage
     ''' <param name="g"></param>
     Public Overrides Sub Render(g As Graphics)
         if RenderImage IsNot Nothing
-            g.DrawImage(RenderImage, New Point(Location.X - MyScene.ScreenLocation.X, Dimensions.ScreenGridHeight - Height - Location.Y + MyScene.ScreenLocation.Y - ToolBarOffSet))
+            Dim drawnRect As New Rectangle(Location.X - MyScene.ScreenLocation.X, 
+                                      Dimensions.ScreenGridHeight - Height - Location.Y + MyScene.ScreenLocation.Y - ToolBarOffSet,
+                                           width, height)
+            ' top right x, top right y, width, heigh
+
+            g.DrawImage(RenderImage, drawnRect)
+            g.DrawRectangle(DrawingPrimitives.BlackPen, drawnRect)
         End if
     End Sub
 
@@ -101,6 +107,20 @@ Public MustInherit Class HitboxItem
         Mybase.New(width, height, location, image, mapScene)
         Me.CollisionHeight = height
 
+    End Sub
+
+    ''' <summary>
+    ''' Overriding to add hitbox rendering
+    ''' </summary>
+    ''' <param name="g"></param>
+    Public Overrides Sub Render(g As Graphics)
+        MyBase.Render(g)
+        If ShowBoundingBox Then
+            Dim drawnRect As New Rectangle(Location.X - MyScene.ScreenLocation.X, 
+                    Dimensions.ScreenGridHeight - CollisionHeight - Location.Y + MyScene.ScreenLocation.Y - ToolBarOffSet,
+                                       width, CollisionHeight)
+            g.DrawRectangle(DrawingPrimitives.RedPen, drawnRect)
+      End If
     End Sub
 
     ''' <summary>
