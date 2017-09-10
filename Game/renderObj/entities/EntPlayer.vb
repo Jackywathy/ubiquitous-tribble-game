@@ -318,10 +318,6 @@ Public Class EntPlayer
     End Sub
 
     Public Overrides Sub UpdateVeloc()
-        If Double.IsNan(me.veloc.X)
-            Me.ID += 0
-        End If
-
         MyBase.UpdateVeloc()
 
         Dim outOfMap = IsOutOfMap()
@@ -333,6 +329,7 @@ Public Class EntPlayer
         If Me.isCrouching And Not isGrounded Then
             Me.onCrouch(False)
         End If
+
         If invulnerableTime <> 0 Then
             invulnerableTime -= 1
         End If
@@ -340,8 +337,15 @@ Public Class EntPlayer
         If InvinicibilityTimer > 0 Then
             InvinicibilityTimer -= 1
         End If
-
     End Sub
+
+    Public Overrides Sub UpdateLocation()
+        MyBase.UpdateLocation()
+        If Me.Location.Y < 0
+            KillPlayer()
+        End If
+    End Sub
+    
 
     
 End Class

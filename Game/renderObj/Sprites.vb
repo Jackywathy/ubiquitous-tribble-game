@@ -4,11 +4,12 @@
     Public Readonly AllSprites As Dictionary(Of SpriteState, List(Of Image)) ' Dict (SpriteEnum.Walk, List(Of Image) )
     Private ReadOnly counter As New Dictionary(Of SpriteState, Integer) ' Dict (SpriteEnum, Integer)
 
-
-    Sub New(spriteSet As Dictionary(Of SpriteState, List(Of Image)), width As Integer, height As Integer, Optional otherWidth As Dictionary(Of SpriteState, Size) = Nothing, Optional autoRotate As Boolean = True)
+    Public ReadOnly Property Name As String
+    Sub New(name As String, spriteSet As Dictionary(Of SpriteState,List(Of Image)), width As Integer, height As Integer, Optional otherWidth As Dictionary(Of SpriteState,Size) = Nothing, Optional autoRotate As Boolean = True)
         If otherWidth Is Nothing
             otherWidth = New Dictionary(Of SpriteState, Size)
         End If
+        Me.Name = name
 
         ' images do NOT have to be disposed here - they are references to 
         ' my.resources.<image>, and by disposing them, you wil make them
@@ -188,154 +189,141 @@ Public Enum SpriteState
 End Enum
 
 Public MustInherit Class Sprites
-    Public Shared playerSmall As New SpriteSet(
-        New Dictionary(Of SpriteState, List(Of Image)) From {
-            {SpriteState.GroundRight, New List(Of Image) From {My.Resources.mario_small_1, My.Resources.mario_small_2, My.Resources.mario_small_3, My.Resources.mario_small_4}},
-            {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.mario_small_1}},
-            {SpriteState.AirRight, New List(Of Image) From {My.Resources.mario_small_jump}},
-            {SpriteState.GroundLeft, New List(Of Image) From {My.Resources.mario_small_1r, My.Resources.mario_small_2r, My.Resources.mario_small_3r, My.Resources.mario_small_4r}},
-            {SpriteState.ConstantLeft, New List(Of Image) From {My.Resources.mario_small_1r}},
-            {SpriteState.AirLeft, New List(Of Image) From {My.Resources.mario_small_jumpr}},
-            {SpriteState.Destroy, New List(Of Image) From {My.Resources.mario_small_dead}}
-        },
+    Public Shared playerSmall As New SpriteSet("playersmall", New Dictionary(Of SpriteState, List(Of Image)) From {
+                                                  {SpriteState.GroundRight, New List(Of Image) From {My.Resources.mario_small_1, My.Resources.mario_small_2, My.Resources.mario_small_3, My.Resources.mario_small_4}},
+                                                  {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.mario_small_1}},
+                                                  {SpriteState.AirRight, New List(Of Image) From {My.Resources.mario_small_jump}},
+                                                  {SpriteState.GroundLeft, New List(Of Image) From {My.Resources.mario_small_1r, My.Resources.mario_small_2r, My.Resources.mario_small_3r, My.Resources.mario_small_4r}},
+                                                  {SpriteState.ConstantLeft, New List(Of Image) From {My.Resources.mario_small_1r}},
+                                                  {SpriteState.AirLeft, New List(Of Image) From {My.Resources.mario_small_jumpr}},
+                                                  {SpriteState.Destroy, New List(Of Image) From {My.Resources.mario_small_dead}}
+                                                  },
         32,
-        32
+        32, Nothing, True 
+    )
+    ' TODO fix MARIO big dead (small rn)
+    Public Shared playerBig As New SpriteSet("playerbig", New Dictionary(Of SpriteState, List(Of Image)) From {
+                                                {SpriteState.GroundRight, New List(Of Image) From {My.Resources.mario_big_1, My.Resources.mario_big_2, My.Resources.mario_big_3, My.Resources.mario_big_4}},
+                                                {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.mario_big_1}},
+                                                {SpriteState.AirRight, New List(Of Image) From {My.Resources.mario_big_jump}},
+                                                {SpriteState.CrouchRight, New List(Of Image) From {My.Resources.mario_big_crouch}},
+                                                {SpriteState.GroundLeft, New List(Of Image) From {My.Resources.mario_big_1r, My.Resources.mario_big_2r, My.Resources.mario_big_3r, My.Resources.mario_big_4r}},
+                                                {SpriteState.ConstantLeft, New List(Of Image) From {My.Resources.mario_big_1r}},
+                                                {SpriteState.AirLeft, New List(Of Image) From {My.Resources.mario_big_jumpr}},
+                                                {SpriteState.CrouchLeft, New List(Of Image) From {My.Resources.mario_big_crouchr}},
+                                                {SpriteState.Destroy, New List(Of Image) From {My.Resources.mario_small_dead}}
+                                                },
+        32,
+        64, Nothing, True 
+    )
+    ' TODO fix MARIO fire dead (small rn)
+    Public Shared playerBigFire As New SpriteSet("playerfire", New Dictionary(Of SpriteState, List(Of Image)) From {
+                                                    {SpriteState.GroundRight, New List(Of Image) From {My.Resources.mario_bigf_1, My.Resources.mario_bigf_2, My.Resources.mario_bigf_3, My.Resources.mario_bigf_4}},
+                                                    {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.mario_bigf_1}},
+                                                    {SpriteState.AirRight, New List(Of Image) From {My.Resources.mario_bigf_jump}},
+                                                    {SpriteState.CrouchRight, New List(Of Image) From {My.Resources.mario_bigf_crouch}},
+                                                    {SpriteState.GroundLeft, New List(Of Image) From {My.Resources.mario_bigf_1r, My.Resources.mario_bigf_2r, My.Resources.mario_bigf_3r, My.Resources.mario_bigf_4r}},
+                                                    {SpriteState.ConstantLeft, New List(Of Image) From {My.Resources.mario_bigf_1r}},
+                                                    {SpriteState.AirLeft, New List(Of Image) From {My.Resources.mario_bigf_jumpr}},
+                                                    {SpriteState.CrouchLeft, New List(Of Image) From {My.Resources.mario_bigf_crouchr}},
+                                                    {SpriteState.Destroy, New List(Of Image) From {My.Resources.mario_small_dead}}
+                                                    },
+        32,
+        64, Nothing, True 
     )
 
-    Public Shared playerBig As New SpriteSet(
-        New Dictionary(Of SpriteState, List(Of Image)) From {
-            {SpriteState.GroundRight, New List(Of Image) From {My.Resources.mario_big_1, My.Resources.mario_big_2, My.Resources.mario_big_3, My.Resources.mario_big_4}},
-            {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.mario_big_1}},
-            {SpriteState.AirRight, New List(Of Image) From {My.Resources.mario_big_jump}},
-            {SpriteState.CrouchRight, New List(Of Image) From {My.Resources.mario_big_crouch}},
-            {SpriteState.GroundLeft, New List(Of Image) From {My.Resources.mario_big_1r, My.Resources.mario_big_2r, My.Resources.mario_big_3r, My.Resources.mario_big_4r}},
-            {SpriteState.ConstantLeft, New List(Of Image) From {My.Resources.mario_big_1r}},
-            {SpriteState.AirLeft, New List(Of Image) From {My.Resources.mario_big_jumpr}},
-            {SpriteState.CrouchLeft, New List(Of Image) From {My.Resources.mario_big_crouchr}}
-        },
-        32,
-        64
-    )
-
-    Public Shared playerBigFire As New SpriteSet(
-        New Dictionary(Of SpriteState, List(Of Image)) From {
-            {SpriteState.GroundRight, New List(Of Image) From {My.Resources.mario_bigf_1, My.Resources.mario_bigf_2, My.Resources.mario_bigf_3, My.Resources.mario_bigf_4}},
-            {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.mario_bigf_1}},
-            {SpriteState.AirRight, New List(Of Image) From {My.Resources.mario_bigf_jump}},
-            {SpriteState.CrouchRight, New List(Of Image) From {My.Resources.mario_bigf_crouch}},
-            {SpriteState.GroundLeft, New List(Of Image) From {My.Resources.mario_bigf_1r, My.Resources.mario_bigf_2r, My.Resources.mario_bigf_3r, My.Resources.mario_bigf_4r}},
-            {SpriteState.ConstantLeft, New List(Of Image) From {My.Resources.mario_bigf_1r}},
-            {SpriteState.AirLeft, New List(Of Image) From {My.Resources.mario_bigf_jumpr}},
-            {SpriteState.CrouchLeft, New List(Of Image) From {My.Resources.mario_bigf_crouchr}}
-        },
-        32,
-        64
-    )
-
-    Public Shared playerFireball As New SpriteSet(
-        New Dictionary(Of SpriteState, List(Of Image)) From {
-            {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.fireball}},
-            {SpriteState.Destroy, New List(Of Image) From {My.Resources.fireball_expl_1, My.Resources.fireball_expl_2, My.Resources.fireball_expl_3}}
-        },
+    Public Shared playerFireball As New SpriteSet("fireball", New Dictionary(Of SpriteState, List(Of Image)) From {
+                                                     {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.fireball}},
+                                                     {SpriteState.Destroy, New List(Of Image) From {My.Resources.fireball_expl_1, My.Resources.fireball_expl_2, My.Resources.fireball_expl_3}}
+                                                     },
         16,
         16,
-        New Dictionary(Of SpriteState, Size) From {{SpriteState.Destroy, New Size(32, 32)}}
+        New Dictionary(Of SpriteState, Size) From {{SpriteState.Destroy, New Size(32, 32)}}, True 
     )
 
-    Public Shared f_flower As New SpriteSet(
-        New Dictionary(Of SpriteState, List(Of Image)) From {
-            {SpriteState.Spawn, New List(Of Image) From {My.Resources.f_flower_s1, My.Resources.f_flower_s2, My.Resources.f_flower_s3, My.Resources.f_flower_s4, My.Resources.f_flower_s5, My.Resources.f_flower_s6, My.Resources.f_flower_s7}},
-            {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.f_flower_1, My.Resources.f_flower_2, My.Resources.f_flower_3, My.Resources.f_flower_4}}
-        },
+    Public Shared f_flower As New SpriteSet("fireflower", New Dictionary(Of SpriteState, List(Of Image)) From {
+                                               {SpriteState.Spawn, New List(Of Image) From {My.Resources.f_flower_s1, My.Resources.f_flower_s2, My.Resources.f_flower_s3, My.Resources.f_flower_s4, My.Resources.f_flower_s5, My.Resources.f_flower_s6, My.Resources.f_flower_s7}},
+                                               {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.f_flower_1, My.Resources.f_flower_2, My.Resources.f_flower_3, My.Resources.f_flower_4}}
+                                               },
         32,
-        32
+        32, Nothing, True 
     )
 
-    Public Shared mushroom As New SpriteSet(
-        New Dictionary(Of SpriteState, List(Of Image)) From {
-            {SpriteState.Spawn, New List(Of Image) From {My.Resources.mushroom_s1, My.Resources.mushroom_s2, My.Resources.mushroom_s3, My.Resources.mushroom_s4, My.Resources.mushroom_s5, My.Resources.mushroom_s6, My.Resources.mushroom_s7}},
-            {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.mushroom}}
-        },
+    Public Shared mushroom As New SpriteSet("mushroom", New Dictionary(Of SpriteState, List(Of Image)) From {
+                                               {SpriteState.Spawn, New List(Of Image) From {My.Resources.mushroom_s1, My.Resources.mushroom_s2, My.Resources.mushroom_s3, My.Resources.mushroom_s4, My.Resources.mushroom_s5, My.Resources.mushroom_s6, My.Resources.mushroom_s7}},
+                                               {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.mushroom}}
+                                               },
         32,
-        32
+        32, Nothing, True 
     )
 
-    Public Shared star As New SpriteSet(
-        New Dictionary(Of SpriteState, List(Of Image)) From {
-            {SpriteState.Spawn, New List(Of Image) From {My.Resources.star_s1, My.Resources.star_s2, My.Resources.star_s3, My.Resources.star_s4, My.Resources.star_s5, My.Resources.star_s6, My.Resources.star_s7}},
-            {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.star_1, My.Resources.star_2, My.Resources.star_3, My.Resources.star_4}}
-        },
+    Public Shared star As New SpriteSet("star", New Dictionary(Of SpriteState, List(Of Image)) From {
+                                           {SpriteState.Spawn, New List(Of Image) From {My.Resources.star_s1, My.Resources.star_s2, My.Resources.star_s3, My.Resources.star_s4, My.Resources.star_s5, My.Resources.star_s6, My.Resources.star_s7}},
+                                           {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.star_1, My.Resources.star_2, My.Resources.star_3, My.Resources.star_4}}
+                                           },
         32,
-        32
+        32, Nothing, True 
     )
 
-    Public Shared itemBlock As New SpriteSet(
-        New Dictionary(Of SpriteState, List(Of Image)) From {
-            {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.blockQuestion1, My.Resources.blockQuestion2, My.Resources.blockQuestion3}},
-            {SpriteState.Destroy, New List(Of Image) From {My.Resources.blockQuestionUsed}}
-        },
+    Public Shared itemBlock As New SpriteSet("questionBlock", New Dictionary(Of SpriteState, List(Of Image)) From {
+                                                {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.blockQuestion1, My.Resources.blockQuestion2, My.Resources.blockQuestion3}},
+                                                {SpriteState.Destroy, New List(Of Image) From {My.Resources.blockQuestionUsed}}
+                                                },
         32,
-        32
+        32, Nothing, True 
     )
 
-    Public Shared brickBlock As New SpriteSet(
-        New Dictionary(Of SpriteState, List(Of Image)) From {
-            {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.blockBrick}},
-            {SpriteState.Destroy, New List(Of Image) From {My.Resources.blockQuestionUsed}}
-        },
+    Public Shared brickBlock As New SpriteSet("brickBlock", New Dictionary(Of SpriteState, List(Of Image)) From {
+                                                 {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.blockBrick}},
+                                                 {SpriteState.Destroy, New List(Of Image) From {My.Resources.blockQuestionUsed}}
+                                                 },
         32,
-        32
+        32, Nothing, True 
     )
 
-    Public Shared blockMetal As New SpriteSet(
-        New Dictionary(Of SpriteState, List(Of Image)) From {
-            {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.blockMetal}}
-        },
+    Public Shared blockMetal As New SpriteSet("metalBlock", New Dictionary(Of SpriteState, List(Of Image)) From {
+                                                 {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.blockMetal}}
+                                                 },
         32,
-        32
+        32, Nothing, True 
         )
 
-    Public Shared koopaGreen As New SpriteSet(
-    New Dictionary(Of SpriteState, List(Of Image)) From {
-            {SpriteState.ConstantLeft, New List(Of Image) From {My.Resources.koopa_green_1r, My.Resources.koopa_green_2r}},
-            {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.koopa_green_1, My.Resources.koopa_green_2}},
-            {SpriteState.Destroy, New List(Of Image) From {My.Resources.koopa_green_shell1, My.Resources.koopa_green_shell2, My.Resources.koopa_green_shellr}}
-        },
+    Public Shared koopaGreen As New SpriteSet("greenKoopa", New Dictionary(Of SpriteState, List(Of Image)) From {
+                                                 {SpriteState.ConstantLeft, New List(Of Image) From {My.Resources.koopa_green_1r, My.Resources.koopa_green_2r}},
+                                                 {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.koopa_green_1, My.Resources.koopa_green_2}},
+                                                 {SpriteState.Destroy, New List(Of Image) From {My.Resources.koopa_green_shell1, My.Resources.koopa_green_shell2, My.Resources.koopa_green_shellr}}
+                                                 },
         32,
         64,
-        New Dictionary(Of SpriteState, Size) From {{SpriteState.Destroy, New Size(32, 32)}}
+        New Dictionary(Of SpriteState, Size) From {{SpriteState.Destroy, New Size(32, 32)}}, True 
     )
 
-    Public Shared goomba As New SpriteSet(
-        New Dictionary(Of SpriteState, List(Of Image)) From {
-            {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.goomba_1, My.Resources.goomba_2}},
-            {SpriteState.Destroy, New List(Of Image) From {My.Resources.goomba_d, My.Resources.goomba_d2}}
-        },
+    Public Shared goomba As New SpriteSet("goomba", New Dictionary(Of SpriteState, List(Of Image)) From {
+                                             {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.goomba_1, My.Resources.goomba_2}},
+                                             {SpriteState.Destroy, New List(Of Image) From {My.Resources.goomba_d, My.Resources.goomba_d2}}
+                                             },
         32,
-        32
+        32, Nothing, True 
     )
 
-    Public Shared coin As New SpriteSet(
-        New Dictionary(Of SpriteState, List(Of Image)) From {
-            {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.coin_idle_1, My.Resources.coin_idle_2, My.Resources.coin_idle_3}}
-        },
+    Public Shared coin As New SpriteSet("coin", New Dictionary(Of SpriteState, List(Of Image)) From {
+                                           {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.coin_idle_1, My.Resources.coin_idle_2, My.Resources.coin_idle_3}}
+                                           },
         32,
-        32
+        32, Nothing, True 
     )
 
-    Public Shared coinFromBlock As New SpriteSet(
-        New Dictionary(Of SpriteState, List(Of Image)) From {
-            {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.coin_hit_1, My.Resources.coin_hit_2, My.Resources.coin_hit_3, My.Resources.coin_hit_4}}
-        },
+    Public Shared coinFromBlock As New SpriteSet("coinFromBlock", New Dictionary(Of SpriteState, List(Of Image)) From {
+                                                    {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.coin_hit_1, My.Resources.coin_hit_2, My.Resources.coin_hit_3, My.Resources.coin_hit_4}}
+                                                    },
         32,
-        32
+        32, Nothing, True 
     )
-    Public Shared blockInvis As New SpriteSet(
-        New Dictionary(Of SpriteState,List(Of Image)) From {
-            {SpriteState.Constant, New List(Of Image) From {My.Resources.blockInvis}}
-        },
+    Public Shared blockInvis As New SpriteSet("invisBlock", New Dictionary(Of SpriteState,List(Of Image)) From {
+                                                 {SpriteState.Constant, New List(Of Image) From {My.Resources.blockInvis}}
+                                                 },
         32,
-        32
+        32, Nothing, True 
     )
 
 

@@ -401,10 +401,10 @@ Public NotInheritable Class JsonMapReader
         outScene.Player1 = player1
         outScene.AddEntity(player1)
 
-        OutScene.AddItem(New StaticText(New RectangleF(0, 0, ScreenGridWidth / 4, ScreenGridHeight / 32), "MARIO", NES.GetFontFamily(), 18, 
+        OutScene.AddItem(New StaticText(New Rectangle(0, 0, ScreenGridWidth / 4, ScreenGridHeight / 32), "MARIO", NES.GetFontFamily(), 18, 
                                         New SolidBrush(Color.White), outScene))
 
-        Dim scoreText = New StaticText(New RectangleF(0, ScreenGridHeight / 32, ScreenGridWidth / 4, ScreenGridHeight / 16), "000000", NES.GetFontFamily(), 18, 
+        Dim scoreText = New StaticText(New Rectangle(0, ScreenGridHeight / 32, ScreenGridWidth / 4, ScreenGridHeight / 16), "000000", NES.GetFontFamily(), 18, 
                                         New SolidBrush(Color.White), outScene, paddingChar := "0", paddingWidth := 6)
         outScene.AddItem(scoreText)
         EntPlayer.ScoreCallback = scoreText

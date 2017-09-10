@@ -30,17 +30,21 @@ Module Debug
         Console.Out.WriteLine(str.ToString)
     End Sub
 
+    
+
 #if DEBUG
     ''' <summary>
     ''' Use this to add additional objects on in DEBUG configuration
     ''' </summary>
     ''' <param name="scene"></param>
     Public Sub DebugMapHook(scene As MapScene)
-        scene.AddItem(New StaticCoin(New Point(100,100), scene))
+        scene.AddItem(New StaticCoin(New Point(700,500), scene))
         scene.AddEntity(New EntCoin(32, 32, New Point(320, 96), scene))
         scene.AddObject(New BlockMultipleCoins(New Point(32*5, 32*5), scene))
     End Sub
+    Public ShowBoundingBox As Boolean = True
 #Else
+    Public ShowBoundingBox As Boolean = False
 #End If
 
 End Module

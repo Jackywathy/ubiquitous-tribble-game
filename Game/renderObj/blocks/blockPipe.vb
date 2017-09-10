@@ -13,21 +13,19 @@
             Throw New Exception("Height must be >= 64 for pipes")
         End If
 
-        Dim pipeSprite As New SpriteSet(
-            New Dictionary(Of SpriteState, List(Of Image)) From {
-                {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.pipe_2x}}
-            },
+        Dim pipeSprite As New SpriteSet("PipeTop", New Dictionary(Of SpriteState, List(Of Image)) From {
+                                           {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.pipe_2x}}
+                                           },
             width,
             64,
-        )
+, True)
         pipeTop = New BlockPipeTop(width, 64, New Point(location.X, location.Y + (height - 64)), pipeSprite, mapScene)
         If height > 64
-            pipeSprite = New SpriteSet(
-                New Dictionary(Of SpriteState, List(Of Image)) From {
-                    {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.pipe_bottom}}
-                },
+            pipeSprite = New SpriteSet("pipeBottom", New Dictionary(Of SpriteState, List(Of Image)) From {
+                                          {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.pipe_bottom}}
+                                          },
                 width,
-                height-64
+                height-64, Nothing, True 
             )
             pipeBottom = New BlockPipeBottom(width, height-64, New Point(location.X, location.Y), action, pipeSprite, mapScene)
         End if
