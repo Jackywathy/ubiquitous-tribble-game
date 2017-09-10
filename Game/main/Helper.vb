@@ -30,7 +30,7 @@ Module Debug
         Console.Out.WriteLine(str.ToString)
     End Sub
 
-    
+    Public ShowBoundingBox As Boolean = True
 
 #if DEBUG
     ''' <summary>
@@ -42,7 +42,7 @@ Module Debug
         scene.AddEntity(New EntCoin(32, 32, New Point(320, 96), scene))
         scene.AddObject(New BlockMultipleCoins(New Point(32*5, 32*5), scene))
     End Sub
-    Public ShowBoundingBox As Boolean = True
+    
 #Else
     Public ShowBoundingBox As Boolean = False
 #End If
