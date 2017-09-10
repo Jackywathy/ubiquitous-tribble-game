@@ -12,24 +12,23 @@ Public MustInherit Class Entity
     Public killsOnContact As Boolean = False
 
     Sub New(width As Integer, height As Integer, location As Point, spriteSet As SpriteSet, mapScene As MapScene)
-        MyBase.New(width, height, location, mapScene)
+        MyBase.New(width, height, location, spriteSet.GetFirst(SpriteState.ConstantRight), mapScene)
         Me.SpriteSet = spriteSet
-        Me.renderImage = Me.SpriteSet(SpriteState.ConstantRight)(0)
     End Sub
 
    
     Public Overridable Property moveSpeed As Distance
     Public Overridable Property maxVeloc As Distance
 
-    Public willCollideFromAbove = False
-    Public willCollideFromBelow = False
-    Public willCollideFromLeft = False
-    Public willCollideFromRight = False
+    Public willCollideFromAbove As Boolean = False
+    Public willCollideFromBelow As Boolean = False
+    Public willCollideFromLeft As Boolean = False
+    Public willCollideFromRight As Boolean  = False
 
-    Public isGrounded = True
-    Public isJumping = False
-    Public isFacingForward = True
-    Public didJumpAndNotFall = True
+    Public isGrounded As Boolean = True
+    Public isJumping As Boolean = False
+    Public isFacingForward As Boolean = True
+    Public didJumpAndNotFall As Boolean = True
 
     Public currentGroundObjects As New List(Of HitboxItem)
 
@@ -300,10 +299,8 @@ Public MustInherit Class Entity
         Return Direction.None
     End Function
 
-    ''' <summary>
-    ''' Updates the position of this entity, using its velocity and location.
-    ''' </summary>
-    Public Overrides Sub UpdateItem()
+    
+    Public Overrides Sub UpdateVeloc()
 
         If Not Me.isDead Then
 
@@ -324,7 +321,7 @@ Public MustInherit Class Entity
                 isFacingForward = True
             End If
 
-            ' check collision of all entities with all existing RenderObj, including other entities
+            ' check collision of all Entities with all existing RenderObj, including other Entities
             For Each other As HitboxItem In MyScene.AllObjAndEnt
 
                 ' Don't check collisions using the same obj
@@ -349,10 +346,10 @@ Public MustInherit Class Entity
             End If
 
         End If
+    End Sub
 
-        ' Update location
+    Public OVerrides Sub UpdateLocation
         Me.Location = New Point(Me.Location.X + Me.veloc.x, Me.Location.Y + Me.veloc.y)
-
     End Sub
 
     ''' <summary>

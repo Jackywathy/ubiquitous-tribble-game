@@ -14,11 +14,11 @@
     End Sub
 
 
-    Public Overrides Sub UpdateItem()
+    Public Overrides Sub UpdateVeloc()
         If Not isSpawning Then
             Me.AccelerateX(moveSpeed.x)
         End If
-        MyBase.UpdateItem()
+        MyBase.UpdateVeloc()
     End Sub
     Public Overrides Sub Activate(sender As EntPlayer)
         MyBase.Activate(sender)

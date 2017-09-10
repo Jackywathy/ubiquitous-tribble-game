@@ -9,7 +9,5 @@
 
     Sub New(handler As KeyHandler)
         Mybase.New(handler)
-
     End Sub
-
 End Class

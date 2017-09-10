@@ -20,7 +20,7 @@
     End Sub
 
     Public Overrides Sub Animate()
-        If Not isSpawning And MyScene.FrameCount Mod (AnimationInterval) = 0 Then
+        If Not isSpawning And MyScene.GlobalFrameCount Mod (AnimationInterval) = 0 Then
             Me.RenderImage = Me.SpriteSet.SendToBack(SpriteState.ConstantRight)
         ElseIf isSpawning Then
             If (Math.Floor(spawnCounter / AnimationInterval) Mod 7) = Me.SpriteSet(SpriteState.Spawn).Count - 1 Then
@@ -34,7 +34,7 @@
         End If
     End Sub
 
-    Public Overrides Sub UpdateItem()
+    Public Overrides Sub UpdateVeloc()
         If IsOutOfMap() <> Direction.None Then
             Me.Destroy()
         End If
@@ -45,7 +45,7 @@
             Me.AccelerateY(moveSpeed.y, False)
         End If
 
-        MyBase.UpdateItem()
+        MyBase.UpdateVeloc()
     End Sub
 
     Sub New(width As Integer, height As Integer, location As Point, mapScene As MapScene)

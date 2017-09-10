@@ -31,9 +31,16 @@ Module Debug
     End Sub
 
 #if DEBUG
-    Public IsDebug = True
+    ''' <summary>
+    ''' Use this to add additional objects on in DEBUG configuration
+    ''' </summary>
+    ''' <param name="scene"></param>
+    Public Sub DebugMapHook(scene As MapScene)
+        scene.AddItem(New StaticCoin(New Point(100,100), scene))
+        scene.AddEntity(New EntCoin(32, 32, New Point(320, 96), scene))
+        scene.AddObject(New BlockMultipleCoins(New Point(32*5, 32*5), scene))
+    End Sub
 #Else
-    Public IsDebug = False
 #End If
 
 End Module

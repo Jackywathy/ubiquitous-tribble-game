@@ -11,7 +11,7 @@
         Me.renderImage = SpriteSet(SpriteState.ConstantRight)(index)
     End Sub
 
-    Public Overrides Sub UpdateItem()
+    Public Overrides Sub UpdateVeloc()
         Me.framesSinceHit += 1
     End Sub
 

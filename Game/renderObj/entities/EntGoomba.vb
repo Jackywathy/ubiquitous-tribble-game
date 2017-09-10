@@ -1,13 +1,11 @@
 ﻿Public Class EntGoomba
-    Inherits Entity
+    Inherits EntEnemy
 
     Public deathTimer As Integer
     Public squashed As Boolean = True
     Public willDie = False ' Set to true when enemy is killed (but not necessarily removed from the screen yet)
     Private defaultY As Integer
 
-    ' 1 for right, -1 for left
-    Public directionMoving = 1
 
     Public Overrides Property moveSpeed As Distance = New Distance(1, 0)
     Public Overrides Property maxVeloc As Distance = New Distance(2, -15)
@@ -50,16 +48,15 @@
             End If
 
         Else
-            If veloc.x <> 0 And MyScene.frameCount Mod (3 * animationInterval) = 0 Then
-                Me.renderImage = SpriteSet(SpriteState.ConstantRight)((MyScene.frameCount / (3 * animationInterval)) Mod 2)
+            If veloc.x <> 0 And MyScene.GlobalFrameCount Mod (3 * animationInterval) = 0 Then
+                Me.renderImage = SpriteSet(SpriteState.ConstantRight)((MyScene.GlobalFrameCount / (3 * animationInterval)) Mod 2)
             End If
 
         End If
 
     End Sub
 
-    Public Overrides Sub UpdateItem()
-
+    Public Overrides Sub UpdateVeloc()
         If Me.willDie Then
             Me.deathTimer += 1
         Else
@@ -72,12 +69,9 @@
 
 
 
-        MyBase.UpdateItem()
+        MyBase.UpdateVeloc()
 
-        If Me.willCollideFromLeft Or Me.willCollideFromRight Then
-            Me.directionMoving *= -1
-        End If
-
+        AiBasicGround()
     End Sub
 
     Public Overrides Sub CollisionTop(sender As Entity)

@@ -31,7 +31,7 @@
         Me.framesSinceHit = 0
     End Sub
 
-    Public Overrides Sub UpdateItem()
+    Public Overrides Sub UpdateVeloc()
         If isMoving Then
             ' bumps block
             Me.framesSinceHit += 1

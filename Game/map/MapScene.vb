@@ -8,7 +8,7 @@ Public MustInherit Class BaseScene
     ''' <summary>
     ''' FrameCount for each scene
     ''' </summary>
-    Public FrameCount As Integer
+    Public GlobalFrameCount As Integer
 
     ''' <summary>
     ''' Location that the scene is rendered at - default = 0, 0
@@ -54,7 +54,7 @@ End Class
 
 
 ''' <summary>
-''' Scene that represents a map, (probably loaded from json using <see cref="MapScene.ReadMapFromResource"/>
+''' Scene that represents a map, (probably loaded from json using <see cref="JsonMapReader.ReadMapFromResource"/>
 ''' </summary>
 Public Class MapScene
     Inherits BaseScene
@@ -65,7 +65,7 @@ Public Class MapScene
     Public AllObjects As New List(Of HitboxItem)
 
     ''' <summary>
-    ''' Contains all entities
+    ''' Contains all Entities
     ''' </summary>
     Public AllEntities As New List(Of Entity)
 
@@ -112,121 +112,6 @@ Public Class MapScene
         MyBase.New(keyControl)
     End Sub
 
-    ''' <summary>
-    ''' Creates a new <see cref="MapScene">object, from a json file in resources</see>
-    ''' </summary>
-    ''' <param name="jsonName"></param>
-    ''' <returns></returns>
-    Public Shared Function ReadMapFromResource(jsonName As String, keyControl As KeyHandler) As MapScene
-        Dim byteArray = CType(My.Resources.ResourceManager.GetObject(jsonName), Byte())
-        If byteArray(0) = 239 And byteArray(1) = 187 And byteArray(2) = 191 Then
-            byteArray = byteArray.Skip(3).Take(byteArray.Length - 2).ToArray()
-        End If
-        Dim str = Text.Encoding.UTF8.GetString(byteArray)
-
-
-        Dim mapObject = JsonConvert.DeserializeObject(Of JsonMapObject)(str)
-
-        Dim outScene As New MapScene(keyControl)
-
-        ' add the Background
-        outScene.SetBackground(mapObject.background(0), mapObject.background(1), mapObject.background(2))
-
-        ' add all blocks
-        For Each pair As KeyValuePair(Of String, IList(Of Object())) In mapObject.blocks
-            Dim name = pair.Key
-            For Each params As Object() In pair.Value
-                outScene.RenderItemFactory(name, params, mapObject.theme).AddSelfToScene()
-            Next
-        Next
-
-        For Each pair As KeyValuePair(Of String, IList(Of Object())) In mapObject.entities
-            Dim name = pair.Key
-            For Each params As Object() In pair.Value
-                outScene.RenderItemFactory(name, params, mapObject.theme).AddSelfToScene()
-            Next
-        Next
-
-        ' add all entities
-        Dim player1 = New EntPlayer(32, 32, New Point(0, GroundHeight), outScene)
-
-        outScene.Player1 = player1
-        outScene.AddEntity(player1)
-        outScene.AddEntity(New EntCoin(32, 32, New Point(320, 96), outScene))
-
-        Dim x As New StaticText(New RectangleF(0, 0, ScreenGridWidth / 4, ScreenGridHeight / 32), "MARIO", NES.GetFontFamily(), 18, New SolidBrush(Color.White), outScene)
-        outScene.AddItem(x)
-        x = New StaticText(New RectangleF(0, ScreenGridHeight / 32, ScreenGridWidth / 4, ScreenGridHeight / 16), "000000", NES.GetFontFamily(),
-                           18, New SolidBrush(Color.White), outScene, paddingChar := "0", paddingWidth := 6)
-        outScene.AddItem(x)
-
-        Dim y As New BlockMultipleCoins(New Point(32*5, 32*5), outScene)
-        y.AddSelfToScene()
-        EntPlayer.ScoreCallback = x
-
-        Return outScene
-    End Function
-
-    ''' <summary>
-    ''' To add a new block:
-    ''' add it to RenderTypes
-    ''' put a case in RenderItemFactory
-    ''' </summary>
-    Public Enum RenderTypes
-        BlockBreakableBrick
-        GroundPlatform
-        BlockQuestion
-        BlockMetal
-        BlockPipe
-        BlockInvis
-
-        EntGoomba
-        EntKoopa
-    End Enum
-
-    
-    Private Function RenderItemFactory(name As String, params As Object(), theme As RenderTheme) As HitboxItem
-        Dim out As HitboxItem
-        Select Case Helper.StrToEnum(Of RenderTypes)(name)
-            Case RenderTypes.BlockBreakableBrick
-                AssertLength(name, 2, params.Length, params)
-                out = New BlockBreakableBrick(params, theme, Me)
-
-            Case RenderTypes.GroundPlatform
-                AssertLength(name, 4, params.Length, params)
-                out = New GroundPlatform(params, theme, Me)
-
-            Case RenderTypes.BlockQuestion
-                AssertLength(name, 3, params.Length, params)
-                out = New BlockQuestion(params, theme, Me)
-
-            Case RenderTypes.BlockMetal
-                AssertLength("blockMetal", 2, params.Length, params)
-                out = New BlockMetal(params, Me)
-
-            Case RenderTypes.BlockInvis
-                AssertLength("blockInvis", 2, params.Length, params)
-                out = New BlockInvis(params, Me)
-
-            Case RenderTypes.BlockPipe
-                AssertLength("blockPipe", 5, params.Length, params)
-                out = New BlockPipe(params, Me)
-
-            Case RenderTypes.EntGoomba
-                AssertLength("entGoomba", 2, params.Length, params)
-                out = New EntGoomba(params, Me)
-            Case RenderTypes.EntKoopa
-                AssertLength("entKoopa", 2, params.Length, params)
-                out = New EntKoopa(params, Me)
-
-            Case Else
-
-                Throw New Exception(String.Format("No object with name {0}", name))
-        End Select
-
-        Return out
-
-    End Function
 
     ''' <summary>
     ''' Gets/Updates the blocks that are in the mapScene and need to be rendened.
@@ -254,6 +139,10 @@ Public Class MapScene
         Next
     End Sub
 
+    ''' <summary>
+    ''' Adds a non-collidable item
+    ''' </summary>
+    ''' <param name="args"></param>
     Sub AddItem(ByVal ParamArray args() As GameItem)
         For Each item As GameItem In args
             AllStaticItems.Add(item)
@@ -292,7 +181,7 @@ Public Class MapScene
     End Sub
 
     ''' <summary>
-    ''' Actually remove all entities
+    ''' Actually remove all Entities
     ''' </summary>
     Sub RemoveAllDeleted()
         For Each item As HitboxItem In toRemoveObjects
@@ -326,10 +215,7 @@ Public Class MapScene
     ''' </summary>
     ''' <param name="hexColor"></param>
     Sub SetBackground(hexColor As String, width As Integer, height As Integer)
-        If Background IsNot Nothing
-            Background.Dispose()
-        End If
-        Me.Background = New BackgroundRender(width, height, hexColor, Me)
+        Background = New BackgroundRender(width, height, hexColor, Me)
     End Sub
 
     ''' <summary>
@@ -401,15 +287,19 @@ Public Class MapScene
 
     End Sub
 
+    ''' <summary>
+    ''' Updates the position of all Entities and items
+    ''' </summary>
     Public Overrides Sub UpdateTick()
         ' Animate and update position of each entity
         If player1.IsDead Then
-            player1.UpdateItem()
+            player1.UpdateVeloc()
+            player1.UpdateLocation()
             Player1.Animate()
         Else
             For Each item As HitboxItem In AllObjAndEnt
-
-                item.UpdateItem()
+                item.UpdateVeloc()
+                item.UpdateLocation()
                 item.Animate()
             Next
         End If
@@ -430,8 +320,6 @@ Public Class MapScene
     End Sub
 
     Public Overrides Sub RenderScene(g As Graphics)
-
-
         Background.Render(g)
 
         ' all text & stuff
@@ -445,54 +333,22 @@ Public Class MapScene
         For Each item As HitboxItem In objects
             item.Render(g)
         Next
-        ' render entities
+
+        ' render Entities
         For Each item In AllEntities
             item.Render(g)
         Next
-        Me.FrameCount += 1
+        Me.GlobalFrameCount += 1
     End Sub
-
-
-    Private Sub AssertLength(type As String, expected As Integer, given As Integer, array As Object())
-        If expected = -1
-            Return
-        End If
-
-        If expected <> given Then
-            Throw New InvalidJsonException(String.Format("Error in JSON, powerup={0}, given {1} elements when {2} expected - [ {3} ] ",
-                                                         type, given, expected, String.Join(", ", array)))
-        End If
-    End Sub
-
-    Private Sub AssertLength(type As String, expected As Integer(), given As Integer, array As Object())
-
-        If Not expected.Contains(given) Then
-            Throw New InvalidJsonException(String.Format("Error in JSON, powerup={0}, given {1} elements when {2} expected - [ {3} ] ",
-                                                         type, given, expected, String.Join(", ", array)))
-        End If
-    End Sub
-
-
-
-
-    Private Class InvalidJsonException
-        Inherits Exception
-        Sub New(message As String)
-            MyBase.New(message)
-        End Sub
-
-    End Class
 End Class
 
 <JsonObject(ItemRequired:=Required.Always)>
 Public Class JsonMapObject
-    Public Property map_name As String
-    Public Property blocks As Dictionary(Of String, IList(Of Object()))
-    Public Property entities As Dictionary(Of String, IList(Of Object()))
-    Public Property background As List(Of Object)
-    Public Property theme As RenderTheme
-
-
+    Public Property MapName As String
+    Public Property Blocks As Dictionary(Of String, IList(Of Object()))
+    Public Property Entities As Dictionary(Of String, IList(Of Object()))
+    Public Property Background As List(Of Object)
+    Public Property Theme As RenderTheme
 End Class
 
 Public Enum RenderTheme
@@ -500,3 +356,159 @@ Public Enum RenderTheme
     Underground
     Castle
 End Enum
+
+
+Public NotInheritable Class JsonMapReader
+    ''' <summary>
+    ''' Creates a new <see cref="MapScene">object, from a json file in resources</see>
+    ''' </summary>
+    ''' <param name="jsonName"></param>
+    ''' <returns></returns>
+    Public Shared Function ReadMapFromResource(jsonName As String, keyControl As KeyHandler) As MapScene
+        Dim byteArray = CType(My.Resources.ResourceManager.GetObject(jsonName), Byte())
+        If byteArray(0) = 239 And byteArray(1) = 187 And byteArray(2) = 191 Then
+            byteArray = byteArray.Skip(3).Take(byteArray.Length - 2).ToArray()
+        End If
+        Dim str = Text.Encoding.UTF8.GetString(byteArray)
+
+
+        Dim mapObject = JsonConvert.DeserializeObject(Of JsonMapObject)(str)
+
+        Dim outScene As New MapScene(keyControl)
+
+        ' add the Background
+        outScene.SetBackground(mapObject.background(0), mapObject.background(1), mapObject.background(2))
+
+        ' add all blocks
+        For Each pair As KeyValuePair(Of String, IList(Of Object())) In mapObject.blocks
+            Dim name = pair.Key
+            For Each params As Object() In pair.Value
+                RenderItemFactory(name, params, mapObject.theme, outScene).AddSelfToScene()
+            Next
+        Next
+
+        For Each pair As KeyValuePair(Of String, IList(Of Object())) In mapObject.entities
+            Dim name = pair.Key
+            For Each params As Object() In pair.Value
+                RenderItemFactory(name, params, mapObject.theme, outScene).AddSelfToScene()
+            Next
+        Next
+
+
+        ' add all Entities
+        Dim player1 = New EntPlayer(32, 32, New Point(0, GroundHeight), outScene)
+
+        outScene.Player1 = player1
+        outScene.AddEntity(player1)
+
+        OutScene.AddItem(New StaticText(New RectangleF(0, 0, ScreenGridWidth / 4, ScreenGridHeight / 32), "MARIO", NES.GetFontFamily(), 18, 
+                                        New SolidBrush(Color.White), outScene))
+
+        Dim scoreText = New StaticText(New RectangleF(0, ScreenGridHeight / 32, ScreenGridWidth / 4, ScreenGridHeight / 16), "000000", NES.GetFontFamily(), 18, 
+                                        New SolidBrush(Color.White), outScene, paddingChar := "0", paddingWidth := 6)
+        outScene.AddItem(scoreText)
+        EntPlayer.ScoreCallback = scoreText
+
+        
+#If DEBUG
+        DebugMapHook(outScene)
+#End If
+        
+ 
+        Return outScene
+
+    End Function
+
+    ''' <summary>
+    ''' To add a new block:
+    ''' add it to RenderTypes
+    ''' put a case in RenderItemFactory
+    ''' </summary>
+    Public Enum RenderTypes
+        BlockBreakableBrick
+        GroundPlatform
+        BlockQuestion
+        BlockMetal
+        BlockPipe
+        BlockInvis
+
+        EntGoomba
+        EntKoopa
+    End Enum
+
+    Public Class InvalidJsonException
+        Inherits Exception
+        Sub New(message As String)
+            MyBase.New(message)
+        End Sub
+
+    End Class
+
+    Public Shared Function RenderItemFactory(name As String, params As Object(), theme As RenderTheme, scene As MapScene) As HitboxItem
+        Dim out As HitboxItem
+        Select Case Helper.StrToEnum(Of JsonMapReader.RenderTypes)(name)
+            Case JsonMapReader.RenderTypes.BlockBreakableBrick
+                AssertLength(name, 2, params.Length, params)
+                out = New BlockBreakableBrick(params, theme, scene)
+
+            Case JsonMapReader.RenderTypes.GroundPlatform
+                AssertLength(name, 4, params.Length, params)
+                out = New GroundPlatform(params, theme, scene)
+
+            Case JsonMapReader.RenderTypes.BlockQuestion
+                AssertLength(name, 3, params.Length, params)
+                out = New BlockQuestion(params, theme, scene)
+
+            Case JsonMapReader.RenderTypes.BlockMetal
+                AssertLength("blockMetal", 2, params.Length, params)
+                out = New BlockMetal(params, scene)
+
+            Case JsonMapReader.RenderTypes.BlockInvis
+                AssertLength("blockInvis", 2, params.Length, params)
+                out = New BlockInvis(params, scene)
+
+            Case JsonMapReader.RenderTypes.BlockPipe
+                AssertLength("blockPipe", 5, params.Length, params)
+                out = New BlockPipe(params, scene)
+
+            Case JsonMapReader.RenderTypes.EntGoomba
+                AssertLength("entGoomba", 2, params.Length, params)
+                out = New EntGoomba(params, scene)
+            Case JsonMapReader.RenderTypes.EntKoopa
+                AssertLength("entKoopa", 2, params.Length, params)
+                out = New EntKoopa(params, scene)
+
+            Case Else
+
+                Throw New Exception(String.Format("No object with name {0}", name))
+        End Select
+
+        Return out
+
+    End Function
+
+    Private Shared Sub AssertLength(type As String, expected As Integer, given As Integer, array As Object())
+        If expected = -1
+            Return
+        End If
+
+        If expected <> given Then
+            Throw New JsonMapReader.InvalidJsonException(String.Format("Error in JSON, powerup={0}, given {1} elements when {2} expected - [ {3} ] ",
+                                                                       type, given, expected, String.Join(", ", array)))
+        End If
+    End Sub
+
+    Private Shared Sub AssertLength(type As String, expected As Integer(), given As Integer, array As Object())
+
+        If Not expected.Contains(given) Then
+            Throw New JsonMapReader.InvalidJsonException(String.Format("Error in JSON, powerup={0}, given {1} elements when {2} expected - [ {3} ] ",
+                                                                       type, given, expected, String.Join(", ", array)))
+        End If
+    End Sub
+    ''' <summary>
+    ''' Dont let this class be instantialised
+    ''' </summary>
+    Private Sub New
+
+    End Sub
+End Class

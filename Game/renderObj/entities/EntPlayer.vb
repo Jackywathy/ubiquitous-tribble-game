@@ -291,7 +291,7 @@ Public Class EntPlayer
             Select Case spriteStateToUse
             ' Multi-frame
                 Case SpriteState.GroundRight, SpriteState.GroundLeft
-                    If MyScene.frameCount Mod animationInterval = 0 Then
+                    If MyScene.GlobalFrameCount Mod animationInterval = 0 Then
                         Me.renderImage = SpriteSet.SendToBack(spriteStateToUse)
                     End If
 
@@ -317,12 +317,12 @@ Public Class EntPlayer
         End If
     End Sub
 
-    Public Overrides Sub UpdateItem()
+    Public Overrides Sub UpdateVeloc()
         If Double.IsNan(me.veloc.X)
             Me.ID += 0
         End If
 
-        MyBase.UpdateItem()
+        MyBase.UpdateVeloc()
 
         Dim outOfMap = IsOutOfMap()
         if (outOfMap = Direction.Right And Me.veloc.X > 0) Or (outOfMap = Direction.Left And Me.veloc.X < 0)

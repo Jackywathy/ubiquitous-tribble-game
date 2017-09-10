@@ -12,12 +12,12 @@ Public Class MainGame
     ''' <summary>
     ''' All the names of the JsonMaps as resource name
     ''' </summary>
-    Private ReadOnly JsonMaps As New List(Of String) From {"map1_1" }
+    Private ReadOnly JsonMaps As New List(Of String) From {"map1_1"}
 
     ''' <summary>
     ''' Debug buffer - this is written to top right of mapScene each tick, only if IsDebug is set to False in Helper.vb
     ''' </summary>
-    Private Readonly strBuffer As New List(Of String)
+    Private ReadOnly strBuffer As New List(Of String)
 
     ''' <summary>
     ''' Handles/stores all the keys being pressed
@@ -27,7 +27,7 @@ Public Class MainGame
     ''' <summary>
     ''' Contains all Scenes
     ''' </summary>
-    Private allMapScenes As Dictionary(Of String, MapScene) 
+    Private allMapScenes As Dictionary(Of String, MapScene)
 
     ''' <summary>
     ''' Run when game is loaded 
@@ -50,7 +50,7 @@ Public Class MainGame
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub GameLoop_Tick(sender As Object, e As EventArgs) Handles GameLoop.Tick
-        CurrentScene.handleInput()
+        CurrentScene.HandleInput()
         CurrentScene.UpdateTick()
         Me.RenderMain()
     End Sub
@@ -84,16 +84,15 @@ Public Class MainGame
         MyBase.OnPaint(e)
         Dim g = e.Graphics
         g.InterpolationMode = InterpolationMode.NearestNeighbor
-        
-        CurrentScene.RenderScene(g)
-        UpdateFPS()
 
-        if isDebug And CurrentScene.GetType().IsSubclassOf(GetType(MapScene))
-            Dim sc As MapScene = CurrentScene
-            AddStringBuffer(String.Format("fps: {0}", FPS))
-            AddStringBuffer(String.Format("Mario Location: {0}, {1}", sc.Player1.Location.X, sc.Player1.Location.Y))
-            DrawStringBuffer(g)
-        End if
+        CurrentScene.RenderScene(g)
+        updateFps()
+
+#If DEBUG Then
+        AddStringBuffer(String.Format("fps: {0}", FPS))
+        AddStringBuffer(String.Format("Mario Location: {0}, {1}", CurrentScene.Player1.Location.X, CurrentScene.Player1.Location.Y))
+        DrawStringBuffer(g)
+#End If
 
 
     End Sub
@@ -113,10 +112,10 @@ Public Class MainGame
     ''' <param name="g"></param>
     Private Sub DrawStringBuffer(g As Graphics)
         Dim height = 0
-        For each str As String In strBuffer
+        For Each str As String In strBuffer
             Dim size = TextRenderer.MeasureText(str, fpsFont)
             Dim offset = ScreenGridWidth - size.Width - 5
-            g.DrawString(str, fpsFont, fpsBrush,offset , height)
+            g.DrawString(str, fpsFont, fpsBrush, offset, height)
             height += size.Height
         Next
         strBuffer.Clear()
@@ -125,18 +124,18 @@ Public Class MainGame
 
     Private numFrames As Integer = 0
     Private FPS As Integer = 0
-    Private ReadOnly fpsFont as New Font("Arial", 20)
+    Private ReadOnly fpsFont As New Font("Arial", 20)
     Private ReadOnly fpsBrush As New SolidBrush(Color.Red)
     Private lastFrame As DateTime = Date.UtcNow()
     Private Sub updateFps()
         Dim now = Date.UtcNow()
-        If (Now-lastFrame).Seconds >= 1 Then
-            fps = numFrames
+        If (now - lastFrame).Seconds >= 1 Then
+            FPS = numFrames
             numFrames = 0
             lastFrame = now
         End If
         numFrames += 1
-    End Sub 
+    End Sub
 
 
     Private Sub MainGame_KeyUp(sender As Object, e As KeyEventArgs) Handles MyBase.KeyUp
@@ -156,9 +155,9 @@ Public Class MainGame
     ''' </summary>
     ''' <returns></returns>
     Private Function LoadScenes() As Dictionary(Of String, MapScene)
-        Dim scenes as New Dictionary(Of String, MapScene)
-        For each str As String in JsonMaps
-            scenes.Add(str, MapScene.ReadMapFromResource(str, keyControl))
+        Dim scenes As New Dictionary(Of String, MapScene)
+        For Each str As String In JsonMaps
+            scenes.Add(str, JsonMapReader.ReadMapFromResource(str, keyControl))
         Next
         Return scenes
     End Function
@@ -192,7 +191,7 @@ Public Class KeyHandler
         KeyHelp(key, True)
     End Sub
 
-    Public Sub KeyUp(key as Keys)
+    Public Sub KeyUp(key As Keys)
         KeyHelp(key, False)
     End Sub
 

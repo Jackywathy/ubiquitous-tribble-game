@@ -26,17 +26,19 @@
     End Sub
 
     Sub New (drawnRect As RectangleF, str As String, fontFam As FontFamily, emSize As Integer, brush As Brush,scene As MapScene, Optional horAlignment As StringAlignment = StringAlignment.Near, Optional vertAlignment As StringAlignment=StringAlignment.Near, Optional paddingChar As Char = "0", Optional paddingWidth As Integer = 0)
-        Mybase.New(scene)
-        Me.paddingWidth = paddingWidth
-        Me.paddingChar = paddingChar
-
-        sf = New StringFormat()
+        Me.New(drawnRect, str, New Font(fontFam, emSize), brush, scene, New StringFormat(), paddingWidth, paddingChar)       
         sf.Alignment = horAlignment
         sf.LineAlignment = vertAlignment
+    End Sub
+
+    Sub New (drawnRect As RectangleF, str As String, font As Font, brush As Brush, scene As MapScene, format As StringFormat, paddingWidth As integer, paddingChar As Char)
+        MYBase.New(scene)
+        Me.sf = format
+        Me.paddingWidth = paddingWidth
+        Me.paddingChar = paddingChar
         Me.brush = brush
         Me.Text = str
-        Me.Font = New Font(fontFam, emSize)
+        Me.Font = font
         Me.drawnRect = drawnRect
-        
     End Sub
 End Class

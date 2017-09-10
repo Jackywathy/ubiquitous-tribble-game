@@ -3,26 +3,26 @@
 ''' NO Bricks, players, items, enemies etc, are drawn on (just color)
 ''' </summary>
 Public Class BackgroundRender
-    Inherits HitboxItem
-    Implements IDisposable
-
-    Public Overrides Property RenderImage As Image = New Bitmap(ScreenGridWidth, ScreenGridHeight)
+    Inherits Gameitem
 
     Private ReadOnly levelWidth As Integer
     Private ReadOnly levelHeight As Integer
 
     Private ReadOnly backgroundColor As SolidBrush
 
+    Private location As Point
+
     Public Overrides Sub Render(g As Graphics)
         g.FillRectangle(BackgroundColor, New Rectangle(0,0,ScreenGridWidth, ScreenGridHeight))
     End Sub
 
 
-    Sub New(width As Integer, height As Integer, backgroundColor As String, marioScene As BaseScene)
-        MyBase.New(Dimensions.ScreenGridWidth, Dimensions.ScreenGridHeight, New Point(0, 0), marioScene)
+    Sub New(width As Integer, height As Integer, backgroundColor As String, mapScene As MapScene)
+        MyBase.New(mapScene)
         Me.BackgroundColor = New SolidBrush(New ColorConverter().ConvertFrom(backgroundColor))
         levelWidth = width
         levelHeight = height
+        Me.location = New Point(0,0)
     End Sub
 
     Public Function CanScrollHorizontal(Optional amount As Integer = 0) As Boolean
@@ -65,12 +65,6 @@ Public Class BackgroundRender
         Return canScroll
     End Function
 
-    Public Sub Dispose() Implements IDisposable.Dispose
-        If RenderImage IsNot Nothing
-            RenderImage.Dispose()
-        End If
-
-    End Sub
 End Class
 
 

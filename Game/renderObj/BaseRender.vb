@@ -21,6 +21,7 @@ Public MustInherit Class GameItem
     Public Shared Operator =(left As GameItem, right As GameItem)
         Return left.ID = right.ID
     End Operator
+
     Public Shared Operator <>(left As GameItem, right As GameItem)
         If left IsNot Nothing And right IsNot Nothing
             Return left.ID <> right.ID
@@ -50,8 +51,11 @@ Public MustInherit Class StaticImage
 
     Friend Const ToolBarOffSet As Integer = 29
 
-    Public Sub New(image As Image, scene As BaseScene)
+    Public Sub New(width As Integer, height As Integer, location As Point, image As Image, scene As MapScene)
         MyBase.New(scene)
+        Me.Width = width
+        Me.Height = height
+        Me.Location = location
         Me.RenderImage = image
     End Sub
 
@@ -66,7 +70,9 @@ Public MustInherit Class StaticImage
     ''' </summary>
     ''' <param name="g"></param>
     Public Overrides Sub Render(g As Graphics)
-        g.DrawImage(RenderImage, New Point(Location.X - MyScene.ScreenLocation.X, Dimensions.ScreenGridHeight - Height - Location.Y + MyScene.ScreenLocation.Y - ToolBarOffSet))
+        if RenderImage IsNot Nothing
+            g.DrawImage(RenderImage, New Point(Location.X - MyScene.ScreenLocation.X, Dimensions.ScreenGridHeight - Height - Location.Y + MyScene.ScreenLocation.Y - ToolBarOffSet))
+        End if
     End Sub
 
 End Class
@@ -91,23 +97,24 @@ Public MustInherit Class HitboxItem
     ''' <param name="width">Width, in grid units</param>
     ''' <param name="height">Height, in grid units</param>
     ''' <param name="location">Location, a point of grid units</param>
-    Public Sub New(width As Integer, height As Integer, location As Point, mapScene As MapScene)
-        Mybase.New(New Bitmap(width, height), mapScene)
-        Me.Width = width
-        Me.Height = height
-
+    Public Sub New(width As Integer, height As Integer, location As Point, image As Image, mapScene As MapScene)
+        Mybase.New(width, height, location, image, mapScene)
         Me.CollisionHeight = height
-
-        Me.Location = location
-        Me.MyScene = mapScene
 
     End Sub
 
     ''' <summary>
-    ''' Do nothing, by default
+    ''' Updates veloc
     ''' </summary>
-    Public Overridable Sub UpdateItem()
+    Public Overridable Sub UpdateVeloc()
 
+    End Sub
+
+    ''' <summary>
+    ''' Updates Location by adding veloc to location, if nessecary
+    ''' </summary>
+    Public Overridable Sub UpdateLocation()
+        
     End Sub
 
     ''' <summary>

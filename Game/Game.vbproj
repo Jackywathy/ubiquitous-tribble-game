@@ -154,7 +154,6 @@
     <Compile Include="renderObj\blocks\BlockPipe.vb" />
     <Compile Include="renderObj\blocks\BlockQuestion.vb" />
     <Compile Include="renderObj\blocks\BlockMetal.vb" />
-    <Compile Include="renderObj\entities\IStateChanger.vb" />
     <Compile Include="renderObj\GroundPlatform.vb" />
     <Compile Include="renderObj\entities\Enemy.vb" />
     <Compile Include="renderObj\entities\EntCoin.vb" />
@@ -169,6 +168,7 @@
     <Compile Include="renderObj\entities\EntPowerup.vb" />
     <Compile Include="renderObj\BaseRender.vb" />
     <Compile Include="renderObj\Sprites.vb" />
+    <Compile Include="renderObj\static\StaticCoin.vb" />
     <Compile Include="renderObj\static\StaticText.vb" />
   </ItemGroup>
   <ItemGroup>

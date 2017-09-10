@@ -21,12 +21,12 @@
             Me.renderImage = SpriteSet(SpriteState.ConstantRight)(0)
             renderImage.RotateFlip(RotateFlipType.Rotate90FlipNone)
         Else
-            Me.renderImage = SpriteSet(SpriteState.Destroy)(Math.Floor(MyScene.frameCount / animationInterval) Mod 3)
+            Me.renderImage = SpriteSet(SpriteState.Destroy)(Math.Floor(MyScene.GlobalFrameCount / animationInterval) Mod 3)
             Me.destroyTimer += 1
         End If
     End Sub
 
-    Public Overrides Sub UpdateItem()
+    Public Overrides Sub UpdateVeloc()
         If IsOutOfMap() <> Direction.None
             Me.Destroy()
         End If
@@ -38,7 +38,7 @@
                 Me.AccelerateY(moveSpeed.y, False)
             End If
 
-            MyBase.UpdateItem()
+            MyBase.UpdateVeloc()
         Else
             If Me.destroyTimer >= 3 Then
                 MyBase.Destroy()

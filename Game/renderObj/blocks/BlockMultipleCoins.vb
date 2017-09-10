@@ -31,8 +31,8 @@
         MyBase.New(StandardWidth, StandardHeight, location, Sprites.brickBlock, mapScene)
     End Sub
     
-    Public Overrides Sub UpdateItem()
-        MyBase.UpdateItem()
+    Public Overrides Sub UpdateVeloc()
+        MyBase.UpdateVeloc()
 
         If HasBeenHit Then 
             framesPastSinceFirstHit += 1

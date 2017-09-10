@@ -18,14 +18,13 @@
 
 
     Public Sub New(width As Integer, height As Integer, location As Point, spriteSet As SpriteSet, mapScene As MapScene)
-        MyBase.New(width, height, location, mapScene)
+        MyBase.New(width, height, location, spriteSet.GetFirst(SpriteState.Constant), mapScene)
         Me.spriteSet = spriteSet
-        Me.RenderImage = spriteSet(0)(0)
         Me.defaultLocationY = location.Y
     End Sub
 
     Public Sub New(width As Integer, height As Integer, location As Point, mapScene As MapScene)
-        MyBase.New(width, height, location, mapScene)
+        MyBase.New(width, height, location, Nothing, mapScene)
         Me.defaultLocationY = location.Y
     End Sub
 

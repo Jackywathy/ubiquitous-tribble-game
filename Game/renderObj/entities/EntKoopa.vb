@@ -1,5 +1,5 @@
 ﻿Public Class EntKoopa
-    Inherits Entity
+    Inherits EntEnemy
 
     Public deathTimer As Integer = 0
     Public inShell As Integer  = False
@@ -11,9 +11,7 @@
 
     Public gettingKicked = False
 
-    ' Positive for right
-    ' Negative for left
-    Public directionMoving As Integer = 1
+    
 
     Public Overrides Property moveSpeed As Distance = New Distance(1, 0)
     Public Overrides Property maxVeloc As Distance = New Distance(1.8, -15)
@@ -68,8 +66,8 @@
             End If
 
         ElseIf Not Me.inShell Then
-            If veloc.x <> 0 And MyScene.frameCount Mod (2 * animationInterval) = 0 Then
-                Dim index = MyScene.frameCount / (2 * animationInterval)
+            If veloc.x <> 0 And MyScene.GlobalFrameCount Mod (2 * animationInterval) = 0 Then
+                Dim index = MyScene.GlobalFrameCount / (2 * animationInterval)
                 If isFacingForward Then
                     Me.RenderImage = SpriteSet(SpriteState.ConstantRight)(index Mod 2)
                 Else
@@ -80,8 +78,7 @@
 
     End Sub
 
-    Public Overrides Sub UpdateItem()
-
+    Public Overrides Sub UpdateVeloc()
         If Me.inShell And Me.veloc.x <> 0 Then
             Me.killsOnContact = True
         Else
@@ -106,11 +103,10 @@
 
         Me.AccelerateX(directionMoving * Me.moveSpeed.x)
 
-        MyBase.UpdateItem()
+        MyBase.UpdateVeloc()
 
-        If Me.willCollideFromLeft Or Me.willCollideFromRight Then
-            Me.directionMoving *= -1
-        End If
+        AiBasicGround()
+        
     End Sub
 
     ''' <summary>

@@ -60,9 +60,9 @@
         ' IFC = 0, 15, 30, 45 ...
         If IsUsed Then
             Me.RenderImage = spriteSet(SpriteState.Destroy)(0)
-        Else If MyScene.frameCount Mod (animationInterval * 3) = 0 And Not isUsed Then
+        Else If MyScene.GlobalFrameCount Mod (animationInterval * 3) = 0 And Not isUsed Then
             ' We need 0, 1 or 2
-            RenderImage = spriteSet(SpriteState.ConstantRight)((MyScene.frameCount / (animationInterval * 3)) Mod 3)
+            RenderImage = spriteSet(SpriteState.ConstantRight)((MyScene.GlobalFrameCount / (animationInterval * 3)) Mod 3)
         End If
     End Sub
 
