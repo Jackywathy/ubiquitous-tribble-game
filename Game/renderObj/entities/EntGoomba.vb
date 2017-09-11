@@ -30,7 +30,7 @@
             Me.deathTimer += 1
             If squashed Then
                 Me.RenderImage = SpriteSet(SpriteState.Destroy)(0)
-                If Math.Floor(Me.deathTimer / animationInterval) = 5 Then
+                If CInt(Math.Floor(Me.deathTimer / animationInterval)) = 5 Then
                     Me.isDead = True
                 End If
             Else

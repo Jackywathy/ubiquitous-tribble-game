@@ -3,6 +3,7 @@
 ''' </summary>
 Public MustInherit Class GameItem
     Public MustOverride Sub Render(g As Graphics)    
+    Friend Const ToolBarOffSet As Integer = 29
 
     Private Shared _idCount As Integer
 
@@ -37,7 +38,7 @@ End Class
 Public MustInherit Class GameImage
     Inherits GameItem
 
-    Friend Const ToolBarOffSet As Integer = 29
+    
 
     ''' <summary>
     ''' width of image

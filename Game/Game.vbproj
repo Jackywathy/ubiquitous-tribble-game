@@ -169,6 +169,7 @@
     <Compile Include="renderObj\BaseRender.vb" />
     <Compile Include="renderObj\Sprites.vb" />
     <Compile Include="renderObj\static\StaticCoin.vb" />
+    <Compile Include="renderObj\static\StaticCross.vb" />
     <Compile Include="renderObj\static\StaticImage.vb" />
     <Compile Include="renderObj\static\StaticText.vb" />
   </ItemGroup>
@@ -231,6 +232,7 @@
     <Content Include="images\enemy\koopa\koopa_green_shell1.png" />
     <Content Include="images\enemy\koopa\koopa_green_shell2.png" />
     <Content Include="images\enemy\koopa\koopa_green_shellr.png" />
+    <Content Include="images\hud\cross.png" />
     <Content Include="images\other\coin\coin_hit_1.png" />
     <Content Include="images\other\coin\coin_hit_2.png" />
     <Content Include="images\other\coin\coin_hit_3.png" />

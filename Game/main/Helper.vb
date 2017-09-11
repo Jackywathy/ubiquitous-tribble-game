@@ -38,7 +38,14 @@ Module Debug
     ''' </summary>
     ''' <param name="scene"></param>
     Public Sub DebugMapHook(scene As MapScene)
-        scene.AddItem(New StaticCoin(New Point(700,500), scene))
+        scene.AddItem(New StaticCoin(New Point(700,500)))
+        scene.AddItem(New StaticCross(New Point(732, 500)))
+        Dim coinCallback As New StaticText(New Rectangle(764, 500, 100,32), "0", CustomFontFamily.NES.GetFontFamily(), 32,
+                                           DrawingPrimitives.WhiteBrush, scene)
+        scene.AddItem(coinCallback)
+        EntPlayer.CoinCallback = coinCallback
+
+                                           
         scene.AddEntity(New EntCoin(32, 32, New Point(320, 96), scene))
         scene.AddObject(New BlockMultipleCoins(New Point(32*5, 32*5), scene))
     End Sub

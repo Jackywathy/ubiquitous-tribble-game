@@ -54,6 +54,7 @@ Public Class EntPlayer
             Else
                 _coins += 1
             End If
+            CoinCallback.Text = _coins.ToString()
         End Set
     End Property
     ''' <summary>
@@ -92,6 +93,7 @@ Public Class EntPlayer
     End Property
 
     Public Shared Property ScoreCallback As StaticText = Nothing
+    Public Shared Property CoinCallback As StaticText = Nothing
 
 
     Public AllowJumpInput As Boolean = True

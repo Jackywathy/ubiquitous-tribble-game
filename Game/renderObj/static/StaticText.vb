@@ -43,6 +43,7 @@
         Me.Text = str
         Me.Font = font
         Me.drawnRect = drawnRect
+        Me.drawnRect.Y = Dimensions.ScreenGridHeight - drawnRect.Height - drawnRect.Y - toolbaroffset
     End Sub
 End Class
 
@@ -50,6 +51,7 @@ Public NotInheritable Class DrawingPrimitives
     Public Shared BlackPen As New Pen(Color.Black)  
     Public Shared RedPen As New Pen(Color.Red) 
     Public Shared BluePen As New Pen(Color.Blue) 
+    Public Shared WhiteBrush As New SolidBrush(color.White)
     Private Sub New
 
     End Sub

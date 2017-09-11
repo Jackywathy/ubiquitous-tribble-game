@@ -3,11 +3,21 @@
 ''' </summary>
 Public MustInherit Class StaticImage
     Inherits GameImage
-
+    ''' <summary>
+    ''' Constructor for <see cref="StaticImage"/>
+    ''' </summary>
+    ''' <param name="width"></param>
+    ''' <param name="height"></param>
+    ''' <param name="location"></param>
+    ''' <param name="image"></param>
     Public Sub New(width As Integer, height As Integer, location As point, image As Image)
         MyBase.New(width, height, location, image)
     End Sub
 
+    ''' <summary>
+    ''' Renders the image onto a graphics object
+    ''' </summary>
+    ''' <param name="g"></param>
     Public Overrides Sub Render(g As Graphics)
         if RenderImage IsNot Nothing
             Dim drawnRect As New Rectangle(Location.X,
