@@ -28,8 +28,6 @@ Public MustInherit Class GameItem
             Return IsNothing(left) And IsNothing(right)
         End If
     End Operator
-
-
 End Class
 
 ''' <summary>
@@ -74,6 +72,11 @@ Public MustInherit Class GameImage
         Me.RenderImage = image
         Me.location = location
     End Sub
+
+    Friend Function TranslateY(topY As Integer) As Integer
+        Return Dimensions.ScreenGridHeight - topY - height
+    End Function
+
 End Class
 
 

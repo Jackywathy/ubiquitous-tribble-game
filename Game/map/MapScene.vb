@@ -405,7 +405,6 @@ Public Enum RenderTheme
     Castle
 End Enum
 
-
 Public NotInheritable Class JsonMapReader
     ''' <summary>
     ''' Creates a new <see cref="MapScene">object, from a json file in resources</see>
@@ -449,10 +448,10 @@ Public NotInheritable Class JsonMapReader
         outScene.Setplayer(MapScene.PlayerId.Player1,player1)
         outScene.AddEntity(player1)
 
-        OutScene.AddItem(New StaticText(New Rectangle(0, 0, ScreenGridWidth / 4, ScreenGridHeight / 32), "MARIO", NES.GetFontFamily(), 18, 
+        OutScene.AddItem(New StaticText(New Rectangle(0, Helper.TopToBottom(0, ScreenGridHeight/16), ScreenGridWidth / 4, ScreenGridHeight / 16), "MARIO", NES.GetFontFamily(), 18, 
                                         New SolidBrush(Color.White), outScene))
 
-        Dim scoreText = New StaticText(New Rectangle(0, ScreenGridHeight / 32, ScreenGridWidth / 4, ScreenGridHeight / 16), "000000", NES.GetFontFamily(), 18, 
+        Dim scoreText = New StaticText(New Rectangle(0, Helper.TopToBottom(ScreenGridHeight/16, ScreenGridHeight/16), ScreenGridWidth / 4, ScreenGridHeight / 16), "000000", NES.GetFontFamily(), 18, 
                                         New SolidBrush(Color.White), outScene, paddingChar := "0", paddingWidth := 6)
         outScene.AddItem(scoreText)
         EntPlayer.ScoreCallback = scoreText
@@ -553,10 +552,10 @@ Public NotInheritable Class JsonMapReader
                                                                        type, given, expected, String.Join(", ", array)))
         End If
     End Sub
+
     ''' <summary>
     ''' Dont let this class be instantialised
     ''' </summary>
     Private Sub New
-
     End Sub
 End Class

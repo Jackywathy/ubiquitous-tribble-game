@@ -38,9 +38,9 @@ Module Debug
     ''' </summary>
     ''' <param name="scene"></param>
     Public Sub DebugMapHook(scene As MapScene)
-        scene.AddItem(New StaticCoin(New Point(700,500)))
-        scene.AddItem(New StaticCross(New Point(732, 500)))
-        Dim coinCallback As New StaticText(New Rectangle(764, 500, 100,32), "0", CustomFontFamily.NES.GetFontFamily(), 32,
+        scene.AddItem(New StaticCoin(New Point(700, Helper.TopToBottom(0, 32))))
+        scene.AddItem(New StaticCross(New Point(732, Helper.TopToBottom(0, 32))))
+        Dim coinCallback As New StaticText(New Rectangle(764, Helper.TopToBottom(0, 32), 100, 32), "0", CustomFontFamily.NES.GetFontFamily(), 24,
                                            DrawingPrimitives.WhiteBrush, scene)
         scene.AddItem(coinCallback)
         EntPlayer.CoinCallback = coinCallback
@@ -138,6 +138,14 @@ Public NotInheritable Class Helper
         End If
     End Function
 
+    Private Const ToolbarOffset = 29
+    Public Shared Function TopToBottom(y As Integer, height As integer) As Integer
+        Return Dimensions.ScreenGridHeight - y - ToolbarOffset - height
+    End Function
+
+    ''' <summary>
+    ''' Dont let it be instantalisd
+    ''' </summary>
     Private Sub New
 
     End Sub
