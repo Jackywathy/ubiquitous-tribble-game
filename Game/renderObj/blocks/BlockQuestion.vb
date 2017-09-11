@@ -1,7 +1,7 @@
 ﻿Public Class BlockQuestion
     Inherits BlockBumpable
 
-    Private isUsed = False
+    Private isUsed As Boolean = False
     Private ReadOnly powerup As QuestionBlockReward = -1
 
 

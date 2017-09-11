@@ -1,8 +1,8 @@
 ﻿Public Class EntStar
     Inherits EntPowerup
 
-    Public Overrides Property moveSpeed As Distance = New Distance(3, 5)
-    Public Overrides Property maxVeloc As Distance = New Distance(6, Forces.terminalVeloc)
+    Public Overrides Property moveSpeed As Distance = New Distance(0.4, 5)
+    Public Overrides Property maxVeloc As Distance = New Distance(3, Forces.terminalVeloc)
 
     Private spawnCounter = 0
     Public Overrides Property PickupSound As MusicPlayer
@@ -48,8 +48,8 @@
         MyBase.UpdateVeloc()
     End Sub
 
-    Sub New(width As Integer, height As Integer, location As Point, mapScene As MapScene)
-        MyBase.New(width, height, location, Sprites.star, mapScene)
+    Sub New(location As Point, mapScene As MapScene)
+        MyBase.New(StandardWidth, StandardHeight, location, Sprites.star, mapScene)
     End Sub
 
 End Class

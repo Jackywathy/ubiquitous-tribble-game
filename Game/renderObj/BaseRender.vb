@@ -77,6 +77,14 @@ Public MustInherit Class GameImage
         Return Dimensions.ScreenGridHeight - topY - height
     End Function
 
+    ''' <summary>
+    ''' TODO make mustoverride
+    ''' </summary>
+    ''' <param name="scene"></param>
+    Public Overridable Sub AddToScene(scene As BaseScene)
+
+    End Sub
+
 End Class
 
 
@@ -135,6 +143,8 @@ End Class
 Public MustInherit Class HitboxItem
     Inherits MovingImage
 
+    Friend Const StandardWidth = 32
+    Friend Const StandardHeight = 32
 
     Public Property CollisionHeight As Integer
 
@@ -216,8 +226,7 @@ Public MustInherit Class HitboxItem
     ''' </summary>
     ''' <param name="sender"></param>
     Public Overridable Sub CollisionBottom(sender As Entity)
-        ' default behaviour = stop player
-        'sender.veloc.y = 0
+
     End Sub
 
     ''' <summary>

@@ -1,8 +1,7 @@
 ﻿Public MustInherit Class Block
     Inherits HitboxItem
 
-    Public Const StandardWidth = 32
-    Public Const StandardHeight = 32
+    
 
     Public Enum QuestionBlockReward
         Fire

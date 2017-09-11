@@ -154,6 +154,7 @@ Public Class EntPlayer
     ''' <summary>
     ''' Called when up/jump key is pressed
     ''' Will check if already jumping etc etc
+    ''' TODO IMplement JUMP
     ''' </summary>
     Public Sub Jump()
 

@@ -11,16 +11,6 @@ Public MustInherit Class BaseScene
     Public GlobalFrameCount As Integer
 
     ''' <summary>
-    ''' Location that the scene is rendered at - default = 0, 0
-    ''' </summary>
-    Public ScreenLocation As New Point(0, 0)
-
-    ''' <summary>
-    ''' Background of scene
-    ''' </summary>
-    Friend Background As BackgroundRender
-
-    ''' <summary>
     ''' Run once per tick in game
     ''' </summary>
     Public MustOverride Sub UpdateTick()
@@ -55,7 +45,34 @@ Public MustInherit Class BaseScene
     ''' </summary>
     ''' <returns></returns>
     Public Property IsFrozen As Boolean = False
+
+    ' There are 4 types of GameObjects
+    ' Static - stuff that doesnt move ever, e.g. HUD elements, points
+    ' Moving - stuff that moves, but doesnt have collisions
+    ' Hitbox - stuff that has a hitbox
+    ' Entity - stuff that ALWAYS moves
+
+     ''' <summary>
+    ''' List of staticitems. Items will be rendered in order inserted
+    ''' </summary>
+    Public Readonly Property AllStaticItems As New List(Of GameItem)
+
+    ''' <summary>
+    ''' Adds a static object
+    ''' </summary>
+    ''' <param name="args"></param>
+    Public Overridable Sub AddStatic(ByVal ParamArray args() As GameItem)
+         For Each item As GameItem In args
+            AllStaticItems.Add(item)
+        Next
+    End Sub
+
+    
+
+   
 End Class
+
+
 
 
 ''' <summary>
@@ -63,8 +80,20 @@ End Class
 ''' </summary>
 Public Class MapScene
     Inherits BaseScene
+    ''' <summary>
+    ''' Background of scene
+    ''' </summary>
+    Friend Background As BackgroundRender
 
+    ''' <summary>
+    ''' Location that the scene is rendered at - default = 0, 0
+    ''' </summary>
+    Public ScreenLocation As New Point(0, 0)
 
+    ''' <summary>
+    ''' Constructor for <see cref="MapScene"/>
+    ''' </summary>
+    ''' <param name="keyControl"></param>
     Public Sub New(keyControl As KeyHandler)
         MyBase.New(keyControl)
     End Sub
@@ -74,7 +103,7 @@ Public Class MapScene
     ''' Should be called once per physics tick
     ''' </summary>
     ''' <returns>Objects in mapScene</returns>
-    Public Function GetHitboxObjectsInScene() As List(Of MovingImage)
+    Public Function GetHitboxObjectsInScene() As List(Of HitBoxItem)
         InSceneItems.Clear()
         For Each item As HitboxItem In AllHitboxItems
             If item.InScene() Then
@@ -86,7 +115,26 @@ Public Class MapScene
 
     
 
-   
+    ' There are 4 types of GameObjects
+    ' Static - stuff that doesnt move ever, e.g. HUD elements, points
+    ' Moving - stuff that moves, but doesnt have collisions
+    ' Hitbox - stuff that has a hitbox
+    ' Entity - stuff that ALWAYS moves
+
+     ''' <summary>
+    ''' Contains all normal blocks
+    ''' </summary>
+    Public Readonly Property AllHitboxItems As New List(Of HitboxItem)
+
+    ''' <summary>
+    ''' Contains all Entities
+    ''' </summary> 
+    Public Readonly Property AllEntities As New List(Of Entity)
+
+    ''' <summary>
+    ''' Contains all objects that have collisionss
+    ''' </summary>
+    Public Readonly Property AllObjAndEnt As New List(Of HitboxItem)
 
     ''' <summary>
     ''' Adds a obj (not entity to the mapScene)
@@ -99,15 +147,7 @@ Public Class MapScene
         Next
     End Sub
 
-    ''' <summary>
-    ''' Adds a non-collidable item
-    ''' </summary>
-    ''' <param name="args"></param>
-    Sub AddItem(ByVal ParamArray args() As GameItem)
-        For Each item As GameItem In args
-            AllStaticItems.Add(item)
-        Next
-    End Sub
+    
 
     ''' <summary>
     ''' Adds entity to the mapScene
@@ -171,33 +211,12 @@ Public Class MapScene
     End Sub
 
 
-    ''' <summary>
-    ''' Contains all normal blocks
-    ''' </summary>
-    Public Readonly Property AllHitboxItems As New List(Of HitboxItem)
-
-    ''' <summary>
-    ''' Contains all Entities
-    ''' </summary> 
-    Public Readonly Property AllEntities As New List(Of Entity)
-
-    ''' <summary>
-    ''' Contains all objects that have collisionss
-    ''' </summary>
-    Public Readonly Property AllObjAndEnt As New List(Of HitboxItem)
+   
 
     ''' <summary>
     ''' Contains all objects in scene that need to be rendered
     ''' </summary>
-    Public ReadOnly Property inSceneItems As New List(Of MovingImage)
-
-
-   ''' <summary>
-   ''' HUD elements that are rendered on top
-   ''' </summary>
-   ''' <returns></returns>
-    Public ReadOnly Property HUDElements As List(Of GameItem)
-
+    Public ReadOnly Property inSceneItems As New List(Of HitboxItem)
     
     ''' <summary>
     ''' Contains objects that will be removed once <see cref="RemoveAllDeleted"/> is run
@@ -211,11 +230,7 @@ Public Class MapScene
     ''' </summary>
     Public ReadOnly toAddObjects As New HashSet(Of HitboxItem)
 
-    ''' <summary>
-    ''' List of staticitems. Items will be rendered in order inserted
-    ''' </summary>
-    Public ReadONly Property AllStaticItems As New List(Of GameItem)
-
+   
      ''' <summary>
     ''' Player1
     ''' </summary>
@@ -448,12 +463,12 @@ Public NotInheritable Class JsonMapReader
         outScene.Setplayer(MapScene.PlayerId.Player1,player1)
         outScene.AddEntity(player1)
 
-        OutScene.AddItem(New StaticText(New Rectangle(0, Helper.TopToBottom(0, ScreenGridHeight/16), ScreenGridWidth / 4, ScreenGridHeight / 16), "MARIO", NES.GetFontFamily(), 18, 
+        OutScene.AddStatic(New StaticText(New Rectangle(0, Helper.TopToBottom(0, ScreenGridHeight/16), ScreenGridWidth / 4, ScreenGridHeight / 16), "MARIO", NES.GetFontFamily(), 18, 
                                         New SolidBrush(Color.White), outScene))
 
         Dim scoreText = New StaticText(New Rectangle(0, Helper.TopToBottom(ScreenGridHeight/16, ScreenGridHeight/16), ScreenGridWidth / 4, ScreenGridHeight / 16), "000000", NES.GetFontFamily(), 18, 
                                         New SolidBrush(Color.White), outScene, paddingChar := "0", paddingWidth := 6)
-        outScene.AddItem(scoreText)
+        outScene.AddStatic(scoreText)
         EntPlayer.ScoreCallback = scoreText
 
         

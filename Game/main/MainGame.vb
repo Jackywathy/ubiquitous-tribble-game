@@ -13,7 +13,7 @@ Class MainGame
     ''' Holds the currently loaded scene
     ''' </summary>
     ''' <returns></returns>
-    Public Property CurrentScene As MapScene
+    Public Property CurrentScene As BaseScene
 
     ''' <summary>
     ''' All the names of the JsonMaps as resource name
