@@ -6,11 +6,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{40DC8744-2CB8-4E68-8F32-4CC57BFEE5E5}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <StartupObject>WinGame.My.MyApplication</StartupObject>
+    <StartupObject>Sub Main</StartupObject>
     <RootNamespace>WinGame</RootNamespace>
     <AssemblyName>MarioGame</AssemblyName>
     <FileAlignment>512</FileAlignment>
-    <MyType>WindowsForms</MyType>
+    <MyType>WindowsFormsWithCustomSubMain</MyType>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <PublishUrl>publish\</PublishUrl>
@@ -111,16 +111,11 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="main\MainGame.vb" />
     <Compile Include="renderObj\blocks\BlockBrickStar.vb" />
     <Compile Include="renderObj\blocks\BlockBumpable.vb" />
     <Compile Include="renderObj\entities\EntStar.vb" />
     <Compile Include="fonts\FontController.vb" />
-    <Compile Include="main\MainGame.Designer.vb">
-      <DependentUpon>MainGame.vb</DependentUpon>
-    </Compile>
-    <Compile Include="main\MainGame.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="main\MusicPlayer.vb" />
     <Compile Include="main\TestImage.designer.vb">
       <DependentUpon>TestImage.vb</DependentUpon>
@@ -174,9 +169,6 @@
     <Compile Include="renderObj\static\StaticText.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="main\MainGame.resx">
-      <DependentUpon>MainGame.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="main\TestImage.resx">
       <DependentUpon>TestImage.vb</DependentUpon>
     </EmbeddedResource>

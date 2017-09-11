@@ -1,8 +1,14 @@
 ﻿Imports System.Drawing.Drawing2D
+
+' Disable the damm DESIGNER!
 ''' <summary>
-''' Main Form that is run on startup - this is controlled using <see cref="BaseScene"/> objects
+''' MainGame, handles updating and rendering the screen
 ''' </summary>
-Public Class MainGame
+<ComponentModel.DesignerCategory("")>
+Class MainGame
+    Inherits Form
+    Friend WithEvents GameLoop As New Timer
+
     ''' <summary>
     ''' Holds the currently loaded scene
     ''' </summary>
@@ -59,14 +65,28 @@ Public Class MainGame
     ''' Constructor for <see cref="MainGame"/>
     ''' </summary>
     Sub New()
-        ' This call is required by the designer.
-        InitializeComponent()
+        InitalizeComponent()
         ' enable double buffering and custom paint
         SetStyle(ControlStyles.DoubleBuffer, True)
         SetStyle(ControlStyles.UserPaint, True)
         SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
         SetStyle(ControlStyles.AllPaintingInWmPaint, True)
         Randomize()
+    End Sub
+
+
+    Public Sub InitalizeComponent()
+        Me.GameLoop.Interval = 10
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.ClientSize = New System.Drawing.Size(1264, 681)
+        Me.KeyPreview = True
+        Me.MaximumSize = New System.Drawing.Size(1280, 720)
+        Me.MinimumSize = New System.Drawing.Size(1280, 720)
+        Me.Name = "MainGame"
+        Me.Text = "Mario123"
+        Me.ResumeLayout(False)
     End Sub
 
     ''' <summary>
@@ -89,11 +109,11 @@ Public Class MainGame
         updateFps()
 
 #If DEBUG Then
-        Dim players = currentScene.GetPlayers()
+        Dim players = CurrentScene.GetPlayers()
         AddStringBuffer(String.Format("fps: {0}", FPS))
         If players IsNot Nothing Then
             AddStringBuffer(String.Format("Mario Location: {0}, {1}", players(0).Location.X, players(0).Location.Y))
-        End if
+        End If
         DrawStringBuffer(g)
 #End If
 
@@ -130,6 +150,7 @@ Public Class MainGame
     Private ReadOnly fpsFont As New Font("Arial", 20)
     Private ReadOnly fpsBrush As New SolidBrush(Color.Red)
     Private lastFrame As DateTime = Date.UtcNow()
+
     Private Sub updateFps()
         Dim now = Date.UtcNow()
         If (now - lastFrame).Seconds >= 1 Then
@@ -205,3 +226,12 @@ Public Class KeyHandler
         MoveDown = False
     End Sub
 End Class
+
+
+Public Module MainProgram
+    Public Sub Main()
+        Application.EnableVisualStyles()
+        Application.SetCompatibleTextRenderingDefault(False)
+        Application.Run(New MainGame)
+    End Sub
+End Module
