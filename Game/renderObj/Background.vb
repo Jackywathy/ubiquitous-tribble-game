@@ -3,12 +3,14 @@
 ''' NO Bricks, players, items, enemies etc, are drawn on (just color)
 ''' </summary>
 Public Class BackgroundRender
-    Inherits Gameitem
+    Inherits GameItem
 
     Private ReadOnly levelWidth As Integer
     Private ReadOnly levelHeight As Integer
 
     Private ReadOnly backgroundColor As SolidBrush
+
+    Private myScene As MapScene
 
     Private location As Point
 
@@ -18,11 +20,10 @@ Public Class BackgroundRender
 
 
     Sub New(width As Integer, height As Integer, backgroundColor As String, mapScene As MapScene)
-        MyBase.New(mapScene)
         Me.BackgroundColor = New SolidBrush(New ColorConverter().ConvertFrom(backgroundColor))
         levelWidth = width
         levelHeight = height
-        Me.location = New Point(0,0)
+        Me.myScene = mapScene
     End Sub
 
     Public Function CanScrollHorizontal(Optional amount As Integer = 0) As Boolean

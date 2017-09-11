@@ -32,11 +32,9 @@ Public MustInherit Class BaseScene
     Public MustOverride Sub RenderScene(g As Graphics)
 
     ''' <summary>
-    ''' Handles input: default, do nothing
+    ''' Handles input
     ''' </summary>
-    Public Overridable Sub HandleInput()
-
-    End Sub
+    Public MustOVerride Sub HandleInput()
 
     ''' <summary>
     ''' Has all of keys which are held down etc.
@@ -47,73 +45,16 @@ Public MustInherit Class BaseScene
         Me.KeyControl = keyControl
     End Sub
 
+    Public Overridable Function GetPlayers() As IList(Of EntPlayer)
+        Return Nothing
+    End Function
 
-    ''' <summary>
-    ''' Contains all normal blocks
-    ''' </summary>
-    Public Readonly Property AllHitboxItems As New List(Of HitboxItem)
-
-    ''' <summary>
-    ''' Contains all Entities
-    ''' </summary> 
-    Public Readonly Property AllEntities As New List(Of Entity)
-
-    ''' <summary>
-    ''' Contains all objects that have collisionss
-    ''' </summary>
-    Public Readonly Property AllObjAndEnt As New List(Of HitboxItem)
-
-    ''' <summary>
-    ''' Contains all objects in scene that need to be rendered
-    ''' </summary>
-    Public ReadOnly Property inSceneItems As New List(Of StaticImage)
-
-
-   ''' <summary>
-   ''' HUD elements that are rendered on top
-   ''' </summary>
-   ''' <returns></returns>
-    Public ReadOnly Property HUDElements As List(Of GameItem)
-
-    
-    ''' <summary>
-    ''' Contains objects that will be removed once <see cref="RemoveAllDeleted"/> is run
-    ''' Used in for each loops to avoid mutating object immediately
-    ''' </summary>
-    Public ReadOnly toRemoveObjects As New HashSet(Of HitboxItem)
-
-    ''' <summary>
-    ''' Contains objects that will be added once <see cref="AddAllAdded"/> is run
-    ''' Used in for each loops to avoid mutating object immediately
-    ''' </summary>
-    Public ReadOnly toAddObjects As New HashSet(Of HitboxItem)
-
-    ''' <summary>
-    ''' List of staticitems. Items will be rendered in order inserted
-    ''' </summary>
-    Public ReadONly Property AllStaticItems As New List(Of GameItem)
 
     ''' <summary>
     ''' If the scene is frozen
     ''' </summary>
     ''' <returns></returns>
     Public Property IsFrozen As Boolean = False
-
-    ''' <summary>
-    ''' Gets/Updates the blocks that are in the mapScene and need to be rendened.
-    ''' Should be called once per physics tick
-    ''' </summary>
-    ''' <returns>Objects in mapScene</returns>
-    Public Function GetHitboxObjectsInScene() As List(Of StaticImage)
-        InSceneItems.Clear()
-        For Each item As HitboxItem In AllHitboxItems
-            If item.InScene() Then
-                InSceneItems.Add(item)
-            End If
-        Next
-        Return InSceneItems
-    End Function
-
 End Class
 
 
@@ -123,24 +64,29 @@ End Class
 Public Class MapScene
     Inherits BaseScene
 
-    ''' <summary>
-    ''' Player1
-    ''' </summary>
-    Public Player1 As EntPlayer
-
-    ''' <summary>
-    ''' Player2
-    ''' </summary>
-    Public Player2 As EntPlayer
-
-   
 
     Public Sub New(keyControl As KeyHandler)
         MyBase.New(keyControl)
     End Sub
 
+    ''' <summary>
+    ''' Gets/Updates the blocks that are in the mapScene and need to be rendened.
+    ''' Should be called once per physics tick
+    ''' </summary>
+    ''' <returns>Objects in mapScene</returns>
+    Public Function GetHitboxObjectsInScene() As List(Of MovingImage)
+        InSceneItems.Clear()
+        For Each item As HitboxItem In AllHitboxItems
+            If item.InScene() Then
+                InSceneItems.Add(item)
+            End If
+        Next
+        Return InSceneItems
+    End Function
 
     
+
+   
 
     ''' <summary>
     ''' Adds a obj (not entity to the mapScene)
@@ -223,6 +169,90 @@ Public Class MapScene
         Next
         toAddObjects.Clear()
     End Sub
+
+
+    ''' <summary>
+    ''' Contains all normal blocks
+    ''' </summary>
+    Public Readonly Property AllHitboxItems As New List(Of HitboxItem)
+
+    ''' <summary>
+    ''' Contains all Entities
+    ''' </summary> 
+    Public Readonly Property AllEntities As New List(Of Entity)
+
+    ''' <summary>
+    ''' Contains all objects that have collisionss
+    ''' </summary>
+    Public Readonly Property AllObjAndEnt As New List(Of HitboxItem)
+
+    ''' <summary>
+    ''' Contains all objects in scene that need to be rendered
+    ''' </summary>
+    Public ReadOnly Property inSceneItems As New List(Of MovingImage)
+
+
+   ''' <summary>
+   ''' HUD elements that are rendered on top
+   ''' </summary>
+   ''' <returns></returns>
+    Public ReadOnly Property HUDElements As List(Of GameItem)
+
+    
+    ''' <summary>
+    ''' Contains objects that will be removed once <see cref="RemoveAllDeleted"/> is run
+    ''' Used in for each loops to avoid mutating object immediately
+    ''' </summary>
+    Public ReadOnly toRemoveObjects As New HashSet(Of HitboxItem)
+
+    ''' <summary>
+    ''' Contains objects that will be added once <see cref="AddAllAdded"/> is run
+    ''' Used in for each loops to avoid mutating object immediately
+    ''' </summary>
+    Public ReadOnly toAddObjects As New HashSet(Of HitboxItem)
+
+    ''' <summary>
+    ''' List of staticitems. Items will be rendered in order inserted
+    ''' </summary>
+    Public ReadONly Property AllStaticItems As New List(Of GameItem)
+
+     ''' <summary>
+    ''' Player1
+    ''' </summary>
+    Private Player1 As EntPlayer
+
+    ''' <summary>
+    ''' Player2
+    ''' </summary>
+    Private Player2 As EntPlayer
+
+    Public Enum PlayerId
+        Player1
+        Player2
+    End Enum
+
+    Public Overridable Sub SetPlayer(id as PlayerId, player As EntPlayer)
+        if id = PlayerId.Player1
+            player1 = player
+        ElseIf id = PlayerId.Player2
+            player2 = player
+        Else
+            throw New Exception()
+        End If
+    End Sub
+
+    
+    Public Overrides Function GetPlayers() As IList(Of EntPlayer)
+        If player1 IsNot Nothing And Player2 IsNot Nothing Then
+            Return New EntPlayer() {player1, Player2}
+        ElseIf player1 IsNot Nothing Then
+            Return New EntPlayer() {player1}
+        ElseIf player2 IsNot Nothing Then
+            Return New EntPlayer() {Player2}
+        Else
+            return Nothing
+        End If
+    End Function
 
     ''' <summary>
     ''' Sets the Background of the mapScene, using a hex color
@@ -333,6 +363,10 @@ Public Class MapScene
         End If
     End Sub
 
+    ''' <summary>
+    ''' Renders scene onto g
+    ''' </summary>
+    ''' <param name="g"></param>
     Public Overrides Sub RenderScene(g As Graphics)
         Background.Render(g)
 
@@ -412,7 +446,7 @@ Public NotInheritable Class JsonMapReader
         ' add all Entities
         Dim player1 = New EntPlayer(32, 32, New Point(0, GroundHeight), outScene)
 
-        outScene.Player1 = player1
+        outScene.Setplayer(MapScene.PlayerId.Player1,player1)
         outScene.AddEntity(player1)
 
         OutScene.AddItem(New StaticText(New Rectangle(0, 0, ScreenGridWidth / 4, ScreenGridHeight / 32), "MARIO", NES.GetFontFamily(), 18, 

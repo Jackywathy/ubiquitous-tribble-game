@@ -3,12 +3,12 @@
 
     Sub New(width As Integer, height As Integer, location As Point, mapScene As MapScene)
         MyBase.New(width, height, location, Sprites.coin, mapScene)
-        Me.renderImage = SpriteSet(SpriteState.ConstantRight)(0)
+        Me.RenderImage = SpriteSet.GetFirst(SpriteState.ConstantRight)
     End Sub
 
     Public Overrides Sub Animate()
         Dim index = Math.Floor(framesSinceHit / (animationInterval * 2)) Mod 3
-        Me.renderImage = SpriteSet(SpriteState.ConstantRight)(index)
+        Me.RenderImage = SpriteSet(SpriteState.ConstantRight)(index)
     End Sub
 
     Public Overrides Sub UpdateVeloc()

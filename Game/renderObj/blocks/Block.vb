@@ -12,7 +12,6 @@
         Star
     End Enum
 
-    Public Overrides Property RenderImage As Image
     Friend ReadOnly Property SpriteSet As SpriteSet
     Friend DefaultLocationY As Integer
 

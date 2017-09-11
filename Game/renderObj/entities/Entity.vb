@@ -7,7 +7,6 @@ Public MustInherit Class Entity
 
     Public Property SpriteSet As SpriteSet
 
-    Public Overrides Property renderImage As Image
     Public isDead As Boolean = False
     Public killsOnContact As Boolean = False
 

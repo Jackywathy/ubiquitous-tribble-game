@@ -89,8 +89,11 @@ Public Class MainGame
         updateFps()
 
 #If DEBUG Then
+        Dim players = currentScene.GetPlayers()
         AddStringBuffer(String.Format("fps: {0}", FPS))
-        AddStringBuffer(String.Format("Mario Location: {0}, {1}", CurrentScene.Player1.Location.X, CurrentScene.Player1.Location.Y))
+        If players IsNot Nothing Then
+            AddStringBuffer(String.Format("Mario Location: {0}, {1}", players(0).Location.X, players(0).Location.Y))
+        End if
         DrawStringBuffer(g)
 #End If
 

@@ -29,12 +29,12 @@
         If willDie Then
             Me.deathTimer += 1
             If squashed Then
-                Me.renderImage = SpriteSet(SpriteState.Destroy)(0)
+                Me.RenderImage = SpriteSet(SpriteState.Destroy)(0)
                 If Math.Floor(Me.deathTimer / animationInterval) = 5 Then
                     Me.isDead = True
                 End If
             Else
-                Me.renderImage = SpriteSet(SpriteState.Destroy)(1)
+                Me.RenderImage = SpriteSet(SpriteState.Destroy)(1)
                 Dim x = Me.deathTimer / (animationInterval * 5)
 
                 ' Use displacement/time function
@@ -49,7 +49,7 @@
 
         Else
             If veloc.x <> 0 And MyScene.GlobalFrameCount Mod (3 * animationInterval) = 0 Then
-                Me.renderImage = SpriteSet(SpriteState.ConstantRight)((MyScene.GlobalFrameCount / (3 * animationInterval)) Mod 2)
+                Me.RenderImage = SpriteSet(SpriteState.ConstantRight)((MyScene.GlobalFrameCount / (3 * animationInterval)) Mod 2)
             End If
 
         End If

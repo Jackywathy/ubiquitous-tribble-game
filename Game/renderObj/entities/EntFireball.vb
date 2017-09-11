@@ -16,12 +16,15 @@
         Me.killsOnContact = True
     End Sub
 
+    ''' <summary>
+    ''' TODO - avoid
+    ''' </summary>
     Public Overrides Sub Animate()
         If Not willDestroy Then
-            Me.renderImage = SpriteSet(SpriteState.ConstantRight)(0)
-            renderImage.RotateFlip(RotateFlipType.Rotate90FlipNone)
+            Me.RenderImage = (SpriteSet(SpriteState.ConstantRight)(0))
+            RenderImage.RotateFlip(RotateFlipType.Rotate90FlipNone)
         Else
-            Me.renderImage = SpriteSet(SpriteState.Destroy)(Math.Floor(MyScene.GlobalFrameCount / animationInterval) Mod 3)
+            Me.RenderImage = SpriteSet(SpriteState.Destroy)(Math.Floor(MyScene.GlobalFrameCount / animationInterval) Mod 3)
             Me.destroyTimer += 1
         End If
     End Sub

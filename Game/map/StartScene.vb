@@ -1,5 +1,5 @@
 ﻿Public Class StartScene
-    Inherits MapScene
+    Inherits BaseScene
 
     Private text As List(Of StaticText)
 
@@ -9,5 +9,13 @@
 
     Sub New(handler As KeyHandler)
         Mybase.New(handler)
+    End Sub
+
+    Public Overrides Sub UpdateTick()
+        Throw New NotImplementedException()
+    End Sub
+
+    Public Overrides Sub RenderScene(g As Graphics)
+        Throw New NotImplementedException()
     End Sub
 End Class

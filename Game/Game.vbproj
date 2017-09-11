@@ -169,6 +169,7 @@
     <Compile Include="renderObj\BaseRender.vb" />
     <Compile Include="renderObj\Sprites.vb" />
     <Compile Include="renderObj\static\StaticCoin.vb" />
+    <Compile Include="renderObj\static\StaticImage.vb" />
     <Compile Include="renderObj\static\StaticText.vb" />
   </ItemGroup>
   <ItemGroup>

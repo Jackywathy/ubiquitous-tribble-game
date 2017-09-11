@@ -2,10 +2,8 @@
 ''' Ultimate base class for all items rended into the game
 ''' </summary>
 Public MustInherit Class GameItem
-    Public MustOverride Sub Render(g As Graphics)
-   ' Public Shared GlobalFrameCount As ULong = 0
+    Public MustOverride Sub Render(g As Graphics)    
 
-    Friend Overridable Property MyScene As MapScene
     Private Shared _idCount As Integer
 
     Private Shared Function GetNewID() As Integer
@@ -30,48 +28,90 @@ Public MustInherit Class GameItem
         End If
     End Operator
 
-    Sub New(scene As BaseScene)
-        Me.MyScene = scene
-    End Sub
-
 
 End Class
 
 ''' <summary>
-''' An image that is drawing into the game, using a default Render(). Supply it with 
+''' Base class for all images rendered onto the game
 ''' </summary>
-Public MustInherit Class StaticImage
+Public MustInherit Class GameImage
     Inherits GameItem
-
-    Public Overridable Property RenderImage As Image
-
-
-    Public Property Width As Integer
-    Public Property Height As Integer
 
     Friend Const ToolBarOffSet As Integer = 29
 
-    Public Sub New(width As Integer, height As Integer, location As Point, image As Image, scene As MapScene)
-        MyBase.New(scene)
-        Me.Width = width
-        Me.Height = height
-        Me.Location = location
-        Me.RenderImage = image
-    End Sub
-
+    ''' <summary>
+    ''' width of image
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property Width As Integer
+    ''' <summary>
+    ''' Height of image
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property Height As Integer
     ''' <summary>
     ''' Location of object from the very bottom left (0,0)
     ''' </summary>
     ''' <returns></returns>
     Public Property Location As Point
+    ''' <summary>
+    ''' Image to be drawn onto the screen in the next refresh   
+    ''' </summary>
+    ''' <returns></returns>
+    Friend Property RenderImage As Image
 
+    ''' <summary>
+    ''' Constructor for <see cref="GameImage"/>
+    ''' </summary>
+    ''' <param name="width"></param>
+    ''' <param name="height"></param>
+    ''' <param name="location"></param>
+    ''' <param name="image"></param>
+     Public Sub New(width As Integer, height As Integer, location As point, image As Image)
+        Me.Width = width
+        Me.Height = height
+        Me.RenderImage = image
+        Me.location = location
+    End Sub
+End Class
+
+
+
+
+
+''' <summary>
+''' This is a non-changing image that moves with the player/game
+''' </summary>
+Public MustInherit Class MovingImage
+    Inherits GameImage
+
+    ''' <summary>
+    ''' A reference to the scene to use it's screenlocation
+    ''' </summary>
+    ''' <returns></returns>
+    Friend Property MyScene As MapScene
+
+
+    ''' <summary>
+    ''' Constructor for <see cref="MovingImage"/>
+    ''' </summary>
+    ''' <param name="width"></param>
+    ''' <param name="height"></param>
+    ''' <param name="location"></param>
+    ''' <param name="image"></param>
+    ''' <param name="scene"></param>
+    Public Sub New(width As Integer, height As Integer, location As Point, image As Image, scene As MapScene)
+        MyBase.New(width, height, location, image)
+        MyScene = scene
+    End Sub
+   
     ''' <summary>
     ''' Draws the image into the graphics object given
     ''' </summary>
     ''' <param name="g"></param>
     Public Overrides Sub Render(g As Graphics)
         if RenderImage IsNot Nothing
-            Dim drawnRect As New Rectangle(Location.X - MyScene.ScreenLocation.X, 
+            Dim drawnRect As New Rectangle(Location.X - MyScene.ScreenLocation.X,
                                       Dimensions.ScreenGridHeight - Height - Location.Y + MyScene.ScreenLocation.Y - ToolBarOffSet,
                                            width, height)
             ' top right x, top right y, width, heigh
@@ -89,7 +129,7 @@ End Class
 ''' Items that have hitboxes
 ''' </summary>
 Public MustInherit Class HitboxItem
-    Inherits StaticImage
+    Inherits MovingImage
 
 
     Public Property CollisionHeight As Integer
@@ -118,11 +158,11 @@ Public MustInherit Class HitboxItem
     Public Overrides Sub Render(g As Graphics)
         MyBase.Render(g)
         If ShowBoundingBox Then
-            Dim drawnRect As New Rectangle(Location.X - MyScene.ScreenLocation.X, 
+            Dim drawnRect As New Rectangle(Location.X - MyScene.ScreenLocation.X,
                     Dimensions.ScreenGridHeight - CollisionHeight - Location.Y + MyScene.ScreenLocation.Y - ToolBarOffSet,
                                        width, CollisionHeight)
             g.DrawRectangle(DrawingPrimitives.RedPen, drawnRect)
-      End If
+        End If
     End Sub
 
     ''' <summary>
@@ -136,7 +176,7 @@ Public MustInherit Class HitboxItem
     ''' Updates Location by adding veloc to location, if nessecary
     ''' </summary>
     Public Overridable Sub UpdateLocation()
-        
+
     End Sub
 
     ''' <summary>

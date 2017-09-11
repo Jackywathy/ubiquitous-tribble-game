@@ -2,12 +2,13 @@
     Inherits Entity
 
     Friend IsSpawning As Boolean = True
+
     Public MustOverride ReadOnly Property PickupScore As Integer
 
     ' The state the powerup changes the player to
     Public MustOverride Property PickupSound As MusicPlayer
-    Public Overrides Property RenderImage As Image = Me.SpriteSet(SpriteState.Spawn)(0)
-    Private spawnCounter = 0
+
+    Private spawnCounter As Integer = 0
    
     ''' <summary>
     ''' Run when player hits the powerup

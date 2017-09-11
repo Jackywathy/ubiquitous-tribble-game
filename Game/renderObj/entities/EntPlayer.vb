@@ -292,15 +292,15 @@ Public Class EntPlayer
             ' Multi-frame
                 Case SpriteState.GroundRight, SpriteState.GroundLeft
                     If MyScene.GlobalFrameCount Mod animationInterval = 0 Then
-                        Me.renderImage = SpriteSet.SendToBack(spriteStateToUse)
+                        Me.RenderImage = SpriteSet.SendToBack(spriteStateToUse)
                     End If
 
                     ' Single frame
                 Case Else
-                    Me.renderImage = SpriteSet(spriteStateToUse)(0)
+                    Me.RenderImage = SpriteSet(spriteStateToUse)(0)
             End Select
         Else
-            Me.renderImage = SpriteSet(SpriteState.Destroy)(0)
+            Me.RenderImage  = SpriteSet(SpriteState.Destroy)(0)
             Me.deathTimer += 1
             If deathTimer > 60 Then
                 Dim x = (Me.deathTimer - 60) / (animationInterval * 5)

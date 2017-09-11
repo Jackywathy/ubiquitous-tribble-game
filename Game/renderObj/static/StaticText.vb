@@ -35,7 +35,7 @@
     End Sub
 
     Sub New (drawnRect As Rectangle, str As String, font As Font, brush As Brush, scene As MapScene, format As StringFormat, paddingWidth As integer, paddingChar As Char)
-        MYBase.New(scene)
+        MYBase.New()
         Me.sf = format
         Me.paddingWidth = paddingWidth
         Me.paddingChar = paddingChar
@@ -48,7 +48,8 @@ End Class
 
 Public NotInheritable Class DrawingPrimitives
     Public Shared BlackPen As New Pen(Color.Black)  
-    Public Shared RedPen As New Pen(Color.Red)  
+    Public Shared RedPen As New Pen(Color.Red) 
+    Public Shared BluePen As New Pen(Color.Blue) 
     Private Sub New
 
     End Sub
