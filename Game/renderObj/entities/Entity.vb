@@ -321,7 +321,7 @@ Public MustInherit Class Entity
             End If
 
             ' check collision of all Entities with all existing RenderObj, including other Entities
-            For Each other As HitboxItem In MyScene.AllObjAndEnt
+            For Each other As HitboxItem In MyScene.AllHitboxItems
 
                 ' Don't check collisions using the same obj
                 If Me <> other Then

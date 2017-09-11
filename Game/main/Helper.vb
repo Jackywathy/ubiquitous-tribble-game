@@ -47,9 +47,13 @@ Module Debug
 
         scene.AddObject(New BlockBrickStar(New Point(32*7, 32*5), scene))
 
+        Dim y as new StaticHudPowerup(New Point(ScreenGridWidth/2-24, Helper.TopToBottom(0, 48)))
+        y.AddToScene(scene)
+
                                            
         scene.AddEntity(New EntCoin(32, 32, New Point(320, 96), scene))
         scene.AddObject(New BlockMultipleCoins(New Point(32*5, 32*5), scene))
+
     End Sub
     
 #Else

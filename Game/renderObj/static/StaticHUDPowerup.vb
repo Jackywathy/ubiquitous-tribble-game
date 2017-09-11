@@ -10,6 +10,7 @@
 
     Public Overrides Sub AddToScene(scene As BaseScene)
         scene.AddStatic(Me)
+        scene.AddStatic(powerupImage)
     End Sub
 End Class
 

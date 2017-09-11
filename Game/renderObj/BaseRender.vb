@@ -82,7 +82,7 @@ Public MustInherit Class GameImage
     ''' </summary>
     ''' <param name="scene"></param>
     Public Overridable Sub AddToScene(scene As BaseScene)
-
+        
     End Sub
 
 End Class

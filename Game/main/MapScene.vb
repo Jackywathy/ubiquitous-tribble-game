@@ -132,18 +132,12 @@ Public Class MapScene
     Public Readonly Property AllEntities As New List(Of Entity)
 
     ''' <summary>
-    ''' Contains all objects that have collisionss
-    ''' </summary>
-    Public Readonly Property AllObjAndEnt As New List(Of HitboxItem)
-
-    ''' <summary>
     ''' Adds a obj (not entity to the mapScene)
     ''' </summary>
     ''' <param name="args"></param>
     Sub AddObject(ByVal ParamArray args() As HitboxItem)
         For Each item As HitboxItem In args
             AllHitboxItems.Add(item)
-            AllObjAndEnt.Add(item)
         Next
     End Sub
 
@@ -156,7 +150,7 @@ Public Class MapScene
     Public Sub AddEntity(ByVal ParamArray args() As Entity)
         For Each item As Entity In args
             AllEntities.Add(item)
-            AllObjAndEnt.Add(item)
+            AllHitboxItems.Add(item)
         Next
     End Sub
 
@@ -187,10 +181,10 @@ Public Class MapScene
         For Each item As HitboxItem In toRemoveObjects
             If item.GetType.IsSubclassOf(GetType(Entity))
                 AllEntities.Remove(item)
+                AllHitboxItems.Remove(item)
             Else
                 AllHitboxItems.Remove(item)
             End If
-            AllObjAndEnt.Remove(item)
         Next
         toRemoveObjects.Clear()
     End Sub
@@ -202,10 +196,10 @@ Public Class MapScene
         For Each item As HitboxItem In toAddObjects
             If item.GetType.IsSubclassOf(GetType(Entity))
                 AllEntities.Add(item)
+                AllHitboxItems.Add(item)
             Else
                 AllHitboxItems.Add(item)
             End If
-            AllObjAndEnt.Add(item)
         Next
         toAddObjects.Clear()
     End Sub
@@ -356,7 +350,7 @@ Public Class MapScene
             player1.UpdateLocation()
             Player1.Animate()
         Else
-            For Each item As HitboxItem In AllObjAndEnt
+            For Each item As HitboxItem In AllHitboxItems
                 item.UpdateVeloc()
                 item.UpdateLocation()
                 item.Animate()
