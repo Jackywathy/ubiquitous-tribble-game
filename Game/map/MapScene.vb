@@ -2,7 +2,7 @@
 
 ''' <summary>
 ''' Base scene:
-''' given to MainGame to render scenes
+''' given to MainGame to render 
 ''' </summary>
 Public MustInherit Class BaseScene
     ''' <summary>
@@ -48,7 +48,71 @@ Public MustInherit Class BaseScene
     End Sub
 
 
+    ''' <summary>
+    ''' Contains all normal blocks
+    ''' </summary>
+    Public Readonly Property AllHitboxItems As New List(Of HitboxItem)
 
+    ''' <summary>
+    ''' Contains all Entities
+    ''' </summary> 
+    Public Readonly Property AllEntities As New List(Of Entity)
+
+    ''' <summary>
+    ''' Contains all objects that have collisionss
+    ''' </summary>
+    Public Readonly Property AllObjAndEnt As New List(Of HitboxItem)
+
+    ''' <summary>
+    ''' Contains all objects in scene that need to be rendered
+    ''' </summary>
+    Public ReadOnly Property inSceneItems As New List(Of StaticImage)
+
+
+   ''' <summary>
+   ''' HUD elements that are rendered on top
+   ''' </summary>
+   ''' <returns></returns>
+    Public ReadOnly Property HUDElements As List(Of GameItem)
+
+    
+    ''' <summary>
+    ''' Contains objects that will be removed once <see cref="RemoveAllDeleted"/> is run
+    ''' Used in for each loops to avoid mutating object immediately
+    ''' </summary>
+    Public ReadOnly toRemoveObjects As New HashSet(Of HitboxItem)
+
+    ''' <summary>
+    ''' Contains objects that will be added once <see cref="AddAllAdded"/> is run
+    ''' Used in for each loops to avoid mutating object immediately
+    ''' </summary>
+    Public ReadOnly toAddObjects As New HashSet(Of HitboxItem)
+
+    ''' <summary>
+    ''' List of staticitems. Items will be rendered in order inserted
+    ''' </summary>
+    Public ReadONly Property AllStaticItems As New List(Of GameItem)
+
+    ''' <summary>
+    ''' If the scene is frozen
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property IsFrozen As Boolean = False
+
+    ''' <summary>
+    ''' Gets/Updates the blocks that are in the mapScene and need to be rendened.
+    ''' Should be called once per physics tick
+    ''' </summary>
+    ''' <returns>Objects in mapScene</returns>
+    Public Function GetHitboxObjectsInScene() As List(Of StaticImage)
+        InSceneItems.Clear()
+        For Each item As HitboxItem In AllHitboxItems
+            If item.InScene() Then
+                InSceneItems.Add(item)
+            End If
+        Next
+        Return InSceneItems
+    End Function
 
 End Class
 
@@ -58,43 +122,6 @@ End Class
 ''' </summary>
 Public Class MapScene
     Inherits BaseScene
-
-    ''' <summary>
-    ''' Contains all normal blocks
-    ''' </summary>
-    Public AllObjects As New List(Of HitboxItem)
-
-    ''' <summary>
-    ''' Contains all Entities
-    ''' </summary>
-    Public AllEntities As New List(Of Entity)
-
-    ''' <summary>
-    ''' Contains all objects that have collisionss
-    ''' </summary>
-    Public AllObjAndEnt As New List(Of HitboxItem)
-
-    ''' <summary>
-    ''' Contains all objects in scene that need to be rendered
-    ''' </summary>
-    Private ReadOnly inSceneItems As New List(Of HitboxItem)
-    
-    ''' <summary>
-    ''' Contains objects that will be removed once <see cref="RemoveAllDeleted"/> is run
-    ''' Used in for each loops to avoid mutating object immediately
-    ''' </summary>
-    Private ReadOnly toRemoveObjects As New HashSet(Of HitboxItem)
-
-    ''' <summary>
-    ''' Contains objects that will be added once <see cref="AddAllAdded"/> is run
-    ''' Used in for each loops to avoid mutating object immediately
-    ''' </summary>
-    Private ReadOnly toAddObjects As New HashSet(Of HitboxItem)
-
-    ''' <summary>
-    ''' List of staticitems. Items will be rendered in order inserted
-    ''' </summary>
-    Public AllStaticItems As New List(Of GameItem)
 
     ''' <summary>
     ''' Player1
@@ -113,20 +140,7 @@ Public Class MapScene
     End Sub
 
 
-    ''' <summary>
-    ''' Gets/Updates the blocks that are in the mapScene and need to be rendened.
-    ''' Should be called once per physics tick
-    ''' </summary>
-    ''' <returns>Objects in mapScene</returns>
-    Public Function GetObjInScene() As List(Of HitboxItem)
-        InSceneItems.Clear()
-        For Each item As HitboxItem In AllObjects
-            If item.InScene() Then
-                InSceneItems.Add(item)
-            End If
-        Next
-        Return InSceneItems
-    End Function
+    
 
     ''' <summary>
     ''' Adds a obj (not entity to the mapScene)
@@ -134,7 +148,7 @@ Public Class MapScene
     ''' <param name="args"></param>
     Sub AddObject(ByVal ParamArray args() As HitboxItem)
         For Each item As HitboxItem In args
-            AllObjects.Add(item)
+            AllHitboxItems.Add(item)
             AllObjAndEnt.Add(item)
         Next
     End Sub
@@ -188,7 +202,7 @@ Public Class MapScene
             If item.GetType.IsSubclassOf(GetType(Entity))
                 AllEntities.Remove(item)
             Else
-                AllObjects.Remove(item)
+                AllHitboxItems.Remove(item)
             End If
             AllObjAndEnt.Remove(item)
         Next
@@ -203,7 +217,7 @@ Public Class MapScene
             If item.GetType.IsSubclassOf(GetType(Entity))
                 AllEntities.Add(item)
             Else
-                AllObjects.Add(item)
+                AllHitboxItems.Add(item)
             End If
             AllObjAndEnt.Add(item)
         Next
@@ -327,7 +341,7 @@ Public Class MapScene
             item.Render(g)
         Next
 
-        Dim objects = GetObjInScene()
+        Dim objects = GetHitboxObjectsInScene()
 
         ' render objects
         For Each item As HitboxItem In objects
