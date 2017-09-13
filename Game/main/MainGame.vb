@@ -114,7 +114,9 @@ Class MainGame
         If players IsNot Nothing Then
             AddStringBuffer(String.Format("Mario Location: {0}, {1}", players(0).Location.X, players(0).Location.Y))
         End If
+        AddStringBuffer(String.Format("Mouse - x: {0}, y: {1}", Cursor.Position.X, Cursor.Position.Y))
         DrawStringBuffer(g)
+        
 #End If
 
 

@@ -165,6 +165,7 @@
     <Compile Include="renderObj\Sprites.vb" />
     <Compile Include="renderObj\static\StaticCoin.vb" />
     <Compile Include="renderObj\static\StaticCross.vb" />
+    <Compile Include="renderObj\static\StaticFireFlower.vb" />
     <Compile Include="renderObj\static\StaticHUDPowerup.vb" />
     <Compile Include="renderObj\static\StaticImage.vb" />
     <Compile Include="renderObj\static\StaticText.vb" />

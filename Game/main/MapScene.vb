@@ -91,6 +91,12 @@ Public Class MapScene
     Public ScreenLocation As New Point(0, 0)
 
     ''' <summary>
+    ''' 
+    ''' </summary>
+    Private Sub handleMouse()
+    End Sub
+
+    ''' <summary>
     ''' Constructor for <see cref="MapScene"/>
     ''' </summary>
     ''' <param name="keyControl"></param>
@@ -132,16 +138,15 @@ Public Class MapScene
     Public Readonly Property AllEntities As New List(Of Entity)
 
     ''' <summary>
-    ''' Adds a obj (not entity to the mapScene)
+    ''' Adds a hitboxitem (not entity to the mapScene)
     ''' </summary>
     ''' <param name="args"></param>
-    Sub AddObject(ByVal ParamArray args() As HitboxItem)
+    Sub AddHitbox(ByVal ParamArray args() As HitboxItem)
         For Each item As HitboxItem In args
             AllHitboxItems.Add(item)
         Next
     End Sub
 
-    
 
     ''' <summary>
     ''' Adds entity to the mapScene
@@ -337,7 +342,8 @@ Public Class MapScene
             Player1.BounceOffEntity(KeyHandler.MoveUp)
             Player1.IsBouncingOffEntity = False
         End If
-
+        ' handle mouse evenst
+        handleMouse()
     End Sub
 
     ''' <summary>

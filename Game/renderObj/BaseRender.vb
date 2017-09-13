@@ -260,7 +260,7 @@ Public MustInherit Class HitboxItem
         If Helper.IsEntity(Me) Then
             MyScene.AddEntity(Me)
         Else
-            MyScene.AddObject(Me)
+            MyScene.AddHitbox(Me)
         End If
     End Sub
 

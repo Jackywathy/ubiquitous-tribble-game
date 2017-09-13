@@ -45,14 +45,15 @@ Module Debug
         scene.AddStatic(coinCallback)
         EntPlayer.CoinCallback = coinCallback
 
-        scene.AddObject(New BlockBrickStar(New Point(32*7, 32*5), scene))
+        scene.AddHitbox(New BlockBrickStar(New Point(32*7, 32*5), scene))
 
         Dim y as new StaticHudPowerup(New Point(ScreenGridWidth/2-24, Helper.TopToBottom(0, 48)))
         y.AddToScene(scene)
+        y.ChangeItem(New StaticFireFlower(New Point()))
 
                                            
         scene.AddEntity(New EntCoin(32, 32, New Point(320, 96), scene))
-        scene.AddObject(New BlockMultipleCoins(New Point(32*5, 32*5), scene))
+        scene.AddHitbox(New BlockMultipleCoins(New Point(32*5, 32*5), scene))
 
     End Sub
     

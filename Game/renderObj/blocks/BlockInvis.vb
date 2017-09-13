@@ -15,5 +15,18 @@
     ''' <param name="params"></param>
     Public Sub New(params As Object(), mapScene As MapScene) 
         Me.New(StandardWidth, StandardHeight, New Point(params(0)*32, params(1)*32), sprites.blockInvis, mapScene)
-    End SUb
+    End Sub
+
+    Public Overrides Sub CollisionBottom(sender As Entity)
+        MyBase.CollisionBottom(sender)
+        If sender.GetType = GetType(EntPlayer) Then
+            revealed = True
+        End If
+    End Sub
+
+    Public Overrides Sub Animate()
+        If revealed
+            RenderImage = My.Resources.blockBrick
+        End If
+    End Sub
 End Class
