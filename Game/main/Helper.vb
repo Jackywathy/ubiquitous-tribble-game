@@ -31,6 +31,7 @@ Module Debug
     End Sub
 
     Public ShowBoundingBox As Boolean = True
+    Public ShowHitBox As Boolean = True
 
 #if DEBUG
     ''' <summary>
@@ -48,7 +49,8 @@ Module Debug
         scene.AddHitbox(New BlockBrickStar(New Point(32*7, 32*5), scene))
 
         Dim y as new StaticHudPowerup(New Point(ScreenGridWidth/2-24, Helper.TopToBottom(0, 48)))
-        y.AddToScene(scene)
+        scene.AddStatic(y)
+        scene.hudPowerup = y
         y.ChangeItem(New StaticFireFlower(New Point()))
 
                                            
@@ -59,6 +61,7 @@ Module Debug
     
 #Else
     Public ShowBoundingBox As Boolean = False
+    Public ShowHitBox As Boolean = False
 #End If
 
 End Module

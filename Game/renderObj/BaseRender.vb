@@ -73,17 +73,13 @@ Public MustInherit Class GameImage
         Me.location = location
     End Sub
 
-    Friend Function TranslateY(topY As Integer) As Integer
-        Return Dimensions.ScreenGridHeight - topY - height
+    Friend Function BottomToTop(botY As Integer) As Integer
+        Return Dimensions.ScreenGridHeight - botY - height
     End Function
 
-    ''' <summary>
-    ''' TODO make mustoverride
-    ''' </summary>
-    ''' <param name="scene"></param>
-    Public Overridable Sub AddToScene(scene As BaseScene)
-        
-    End Sub
+    Friend Function TopToButtom(topY As Integer) As Integer
+        Return topY + height
+    End Function
 
 End Class
 
@@ -165,17 +161,20 @@ Public MustInherit Class HitboxItem
 
     End Sub
 
+
     ''' <summary>
     ''' Overriding to add hitbox rendering
     ''' </summary>
     ''' <param name="g"></param>
     Public Overrides Sub Render(g As Graphics)
         MyBase.Render(g)
-        If ShowBoundingBox Then
-            Dim drawnRect As New Rectangle(Location.X - MyScene.ScreenLocation.X,
-                    Dimensions.ScreenGridHeight - CollisionHeight - Location.Y + MyScene.ScreenLocation.Y - ToolBarOffSet,
-                                       width, CollisionHeight)
-            g.DrawRectangle(DrawingPrimitives.RedPen, drawnRect)
+
+        If ShowHitBox Then
+            ' 
+            Dim rect As New Rectangle(Location.X - MyScene.ScreenLocation.X,
+                          Dimensions.ScreenGridHeight - CollisionHeight - Location.Y + MyScene.ScreenLocation.Y - ToolBarOffSet,
+                          width, CollisionHeight)
+            g.DrawRectangle(DrawingPrimitives.RedPen, rect)
         End If
     End Sub
 

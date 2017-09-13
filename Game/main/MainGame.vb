@@ -5,7 +5,7 @@
 ''' MainGame, handles updating and rendering the screen
 ''' </summary>
 <ComponentModel.DesignerCategory("")>
-Class MainGame
+Public Class MainGame
     Inherits Form
     Friend WithEvents GameLoop As New Timer
 
@@ -109,17 +109,17 @@ Class MainGame
         updateFps()
 
 #If DEBUG Then
-        Dim players = CurrentScene.GetPlayers()
-        AddStringBuffer(String.Format("fps: {0}", FPS))
-        If players IsNot Nothing Then
-            AddStringBuffer(String.Format("Mario Location: {0}, {1}", players(0).Location.X, players(0).Location.Y))
-        End If
-        AddStringBuffer(String.Format("Mouse - x: {0}, y: {1}", Cursor.Position.X, Cursor.Position.Y))
+        Me.DrawDebugStrings()
+        CurrentScene.DrawDebugStrings(Me)
         DrawStringBuffer(g)
         
 #End If
 
 
+    End Sub
+
+    Public Sub DrawDebugStrings()
+        AddStringBuffer(String.Format("fps: {0}", FPS))
     End Sub
 
     ''' <summary>

@@ -1,4 +1,5 @@
-﻿Imports Newtonsoft.Json
+﻿Imports System.Text
+Imports Newtonsoft.Json
 
 ''' <summary>
 ''' Base scene:
@@ -66,10 +67,10 @@ Public MustInherit Class BaseScene
             AllStaticItems.Add(item)
         Next
     End Sub
+    Public Overridable Sub DrawDebugStrings(form As MainGame)
 
-    
 
-   
+    End Sub
 End Class
 
 
@@ -80,6 +81,13 @@ End Class
 ''' </summary>
 Public Class MapScene
     Inherits BaseScene
+    
+    Public Overrides Sub DrawDebugStrings(form as MainGame)
+        form.AddStringBuffer(String.Format("Mario Location: {0}, {1}", player1.Location.X, player1.Location.Y))
+        form.AddStringBuffer(String.Format("Mouse - x: {0}, y: {1}", Cursor.Position.X, Cursor.Position.Y))
+        form.AddStringBuffer(String.Format("Is over box: {0}", If(Me.HudPowerUp.GetRect().Contains(Cursor.Position), "yes", "no")))
+    End Sub
+
     ''' <summary>
     ''' Background of scene
     ''' </summary>
@@ -94,6 +102,8 @@ Public Class MapScene
     ''' 
     ''' </summary>
     Private Sub handleMouse()
+        
+        HudPowerUp.GetRect().Contains(Control.MousePosition)
     End Sub
 
     ''' <summary>
@@ -228,6 +238,8 @@ Public Class MapScene
     ''' Used in for each loops to avoid mutating object immediately
     ''' </summary>
     Public ReadOnly toAddObjects As New HashSet(Of HitboxItem)
+
+    Public HudPowerUp As StaticHudPowerup
 
    
      ''' <summary>

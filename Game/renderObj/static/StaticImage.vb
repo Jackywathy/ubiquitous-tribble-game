@@ -30,4 +30,12 @@ Public MustInherit Class StaticImage
             End If
         End if
     End Sub
+
+    ''' <summary>
+    ''' Gets a rectangle
+    ''' </summary>
+    ''' <returns></returns>
+    Public Overridable Function GetRect As Rectangle
+        REturn New Rectangle(location.X, TopToButtom(Location.y), width, height)
+    End Function
 End Class

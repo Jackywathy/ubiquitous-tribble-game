@@ -7,9 +7,6 @@
         MyBase.New(48, 48, location, Resize(My.Resources.HUDitemBox, 48, 48))
     End Sub
 
-    Public Overrides Sub AddToScene(scene As BaseScene)
-        scene.AddStatic(Me)
-    End Sub
 
     Public Overrides Sub Render(g As Graphics)
         MyBase.Render(g)
