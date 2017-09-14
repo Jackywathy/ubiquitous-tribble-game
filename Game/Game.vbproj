@@ -111,9 +111,10 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="main\MainGame.vb" />
+    <Compile Include="main\GameControl.vb" />
     <Compile Include="renderObj\blocks\BlockBrickStar.vb" />
     <Compile Include="renderObj\blocks\BlockBumpable.vb" />
+    <Compile Include="renderObj\Flag.vb" />
     <Compile Include="renderObj\entities\EntStar.vb" />
     <Compile Include="fonts\FontController.vb" />
     <Compile Include="main\MusicPlayer.vb" />
@@ -204,7 +205,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="images\blocks\blockGround.png" />
-    <Content Include="images\blocks\blockGround_2x.png" />
     <Content Include="images\blocks\blockInvis.png" />
     <Content Include="images\blocks\pipe\pipe_2x.png" />
     <Content Include="images\blocks\pipe\pipe_bottom.png" />

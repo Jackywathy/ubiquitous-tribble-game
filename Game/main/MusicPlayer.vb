@@ -21,18 +21,6 @@ Public NotInheritable Class MusicPlayer
         Me.New(New MemoryStream(CType(My.Resources.ResourceManager.GetObject(name), Byte())), volume)
     End Sub
 
-    ''' <summary>
-    ''' Stops the current Background music if necessary and plays the given sound on repeat
-    ''' </summary>
-    ''' <param name="music"></param>
-    Public Shared Sub PlayBackground(music As MusicPlayer)
-        If backgroundPlayer IsNot Nothing Then
-            backgroundPlayer.Dispose()
-        End If
-        backgroundPlayer = music
-        backgroundPlayer.EnableLoop(True)
-        backgroundPlayer.Play()
-    End Sub
 
     ''' <summary>
     ''' Makes sound loop itself after it finishes
@@ -42,8 +30,6 @@ Public NotInheritable Class MusicPlayer
         AddHandler player.PlaybackStopped, AddressOf Repeat_audio
     End Sub
 
-    
-
     Public Sub New(stream As Stream, Optional volume As Single = 1.0F)
         reader = New Mp3FileReader(stream)
 
@@ -51,26 +37,23 @@ Public NotInheritable Class MusicPlayer
         channel.PadWithZeroes = False
 
         player = New DirectSoundOut()
-
-
         player.Init(channel)
     End Sub
 
     Public Sub Play(Optional fromStart As Boolean = True)
-        If fromStart Then
-
-            reader.CurrentTime = TimeSpan.Zero
-        End If
-        ' go to beginning
-        '
-        player.Play()
+            If fromStart Then
+                reader.CurrentTime = TimeSpan.Zero
+            End If
+            ' go to beginning
+            '
+            player.Play()
     End Sub
 
     ''' <summary>
     ''' Stops playback - [stop] = stop cuz stop is a keyword in vb.Net for some reason
     ''' </summary>
     Public Sub [Stop]()
-        player.Stop()
+            player.Stop()
     End Sub
 
 
@@ -120,6 +103,13 @@ Public NotInheritable Class Sounds
     End Sub
 End Class
 
-Public Module BackgroundMusic
-    Public GroundTheme As New MusicPlayer("ground_theme")
-End Module
+''' <summary>
+''' Each will return a new instance of a musicplayer
+''' </summary>
+Public NotInheritable Class BackgroundMusic
+    Public Shared ReadOnly Property GroundTheme As MusicPlayer
+        Get
+            Return New MusicPlayer("ground_theme")
+        End Get
+    End Property
+End Class

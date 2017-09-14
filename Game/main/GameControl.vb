@@ -2,11 +2,62 @@
 
 ' Disable the damm DESIGNER!
 ''' <summary>
-''' MainGame, handles updating and rendering the screen
+''' GameControl, handles updating and rendering the screen
 ''' </summary>
 <ComponentModel.DesignerCategory("")>
-Public Class MainGame
+Public Class FormBootStrap
     Inherits Form
+
+    Public WithEvents game As New GameControl
+
+    Sub New
+        InitalizeComponent()
+    End Sub
+
+    Public Sub InitalizeComponent()
+        ' default DPI
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+
+        Me.ClientSize = New System.Drawing.Size(1264, 681)
+        Me.KeyPreview = True
+
+        Me.MaximumSize = New System.Drawing.Size(0, 0)
+        Me.MinimumSize = New System.Drawing.Size(1280, 30+720)
+        Me.Size = New Size(1280, 30+720)
+
+        Me.Text = "Mario123"
+
+        ' set the gamecontrol
+        game.Location = New Point(0,0)
+        UpdateGameSize()
+        Me.Controls.Add(game)
+    End Sub
+
+    ''' <summary>
+    ''' Updates the game size, taking into account the size of the X thing in the top
+    ''' </summary>
+    Private Sub UpdateGameSize()
+        If me.FormBorderStyle = FormBorderStyle.None
+            game.Height = height
+        Else
+            game.Height = height-30
+        End If
+            
+        game.Width = width
+    End Sub
+
+    Private Sub FormBootStrap_StyleChanged(sender As Object, e As EventArgs) Handles Me.SizeChanged
+        UpdateGameSize()
+    End Sub
+End Class
+
+''' <summary>
+''' This control has the entire game in it!
+''' </summary>
+Public Class GameControl
+    Inherits Control
     Friend WithEvents GameLoop As New Timer
 
     ''' <summary>
@@ -35,20 +86,6 @@ Public Class MainGame
     ''' </summary>
     Private allMapScenes As Dictionary(Of String, MapScene)
 
-    ''' <summary>
-    ''' Run when game is loaded 
-    ''' Should put player in start scene
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    Private Sub MainGame_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        allMapScenes = LoadScenes()
-        CurrentScene = allMapScenes("map1_1")
-
-        MusicPlayer.PlayBackground(BackgroundMusic.GroundTheme)
-        ' only start loop after init has finished
-        GameLoop.Enabled = True
-    End Sub
 
     ''' <summary>
     ''' Gameloop - runs 60ish times a second, causing inputs/game to tick
@@ -58,11 +95,19 @@ Public Class MainGame
     Private Sub GameLoop_Tick(sender As Object, e As EventArgs) Handles GameLoop.Tick
         CurrentScene.HandleInput()
         CurrentScene.UpdateTick()
-        Me.RenderMain()
+        Me.Refresh()
     End Sub
 
+    Private Sub InitalizeComponent()
+        GameLoop.Interval = 15
+    End Sub
+
+    Private GameMusic As MusicPlayer
+
+
+
     ''' <summary>
-    ''' Constructor for <see cref="MainGame"/>
+    ''' Constructor for <see cref="GameControl"/>
     ''' </summary>
     Sub New()
         InitalizeComponent()
@@ -72,22 +117,17 @@ Public Class MainGame
         SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
         SetStyle(ControlStyles.AllPaintingInWmPaint, True)
         Randomize()
+
+        allMapScenes = LoadScenes()
+        CurrentScene = allMapScenes("map1_1")
+
+        ' only start loop after init has finished
+        GameLoop.Enabled = True
     End Sub
 
 
-    Public Sub InitalizeComponent()
-        Me.GameLoop.Interval = 10
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.ClientSize = New System.Drawing.Size(1264, 681)
-        Me.KeyPreview = True
-        Me.MaximumSize = New System.Drawing.Size(1280, 720)
-        Me.MinimumSize = New System.Drawing.Size(1280, 720)
-        Me.Name = "MainGame"
-        Me.Text = "Mario123"
-        Me.ResumeLayout(False)
-    End Sub
+
+    
 
     ''' <summary>
     ''' Draw to the screen by calling OnPaint()
@@ -187,6 +227,11 @@ Public Class MainGame
         Next
         Return scenes
     End Function
+
+    Private Sub GameControl_SizeChanged(sender As Object, e As EventArgs) Handles Me.SizeChanged
+        ScreenGridWidth = Width
+        ScreenGridHeight = Height
+    End Sub
 End Class
 
 Public Class KeyHandler
@@ -234,6 +279,6 @@ Public Module MainProgram
     Public Sub Main()
         Application.EnableVisualStyles()
         Application.SetCompatibleTextRenderingDefault(False)
-        Application.Run(New MainGame)
+        Application.Run(New FormBootStrap)
     End Sub
 End Module

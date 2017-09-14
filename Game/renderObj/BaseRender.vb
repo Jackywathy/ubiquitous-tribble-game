@@ -28,6 +28,8 @@ Public MustInherit Class GameItem
             Return IsNothing(left) And IsNothing(right)
         End If
     End Operator
+
+    
 End Class
 
 ''' <summary>
@@ -35,8 +37,6 @@ End Class
 ''' </summary>
 Public MustInherit Class GameImage
     Inherits GameItem
-
-    
 
     ''' <summary>
     ''' width of image
@@ -48,11 +48,47 @@ Public MustInherit Class GameImage
     ''' </summary>
     ''' <returns></returns>
     Public Property Height As Integer
+
+    Private _location As Point
     ''' <summary>
     ''' Location of object from the very bottom left (0,0)
     ''' </summary>
     ''' <returns></returns>
     Public Property Location As Point
+        Get
+            Return _location
+        End Get
+        Set(value As Point)
+            _location = value
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Gets and sets the X coordinate
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property X As Integer
+        get
+            Return Location.X
+        End Get
+        Set(value As Integer)
+            _location.X = value
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Gets and sets the location
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property Y As Integer
+        get
+            Return Location.Y
+        End Get
+        Set(value As Integer)
+            _location.Y = value
+        End Set
+    End Property
+
     ''' <summary>
     ''' Image to be drawn onto the screen in the next refresh   
     ''' </summary>
@@ -80,7 +116,6 @@ Public MustInherit Class GameImage
     Friend Function TopToButtom(topY As Integer) As Integer
         Return topY + height
     End Function
-
 End Class
 
 
@@ -120,10 +155,10 @@ Public MustInherit Class MovingImage
     Public Overrides Sub Render(g As Graphics)
         if RenderImage IsNot Nothing
             Dim drawnRect As New Rectangle(Location.X - MyScene.ScreenLocation.X,
-                                      Dimensions.ScreenGridHeight - Height - Location.Y + MyScene.ScreenLocation.Y - ToolBarOffSet,
+                                      BottomToTop(Location.Y) - MyScene.ScreenLocation.Y,
                                            width, height)
-            ' top right x, top right y, width, heigh
 
+            ' top right x, top right y, width, heigh
             g.DrawImage(RenderImage, drawnRect)
             If ShowBoundingBox Then
                 g.DrawRectangle(DrawingPrimitives.BlackPen, drawnRect)
@@ -170,9 +205,9 @@ Public MustInherit Class HitboxItem
         MyBase.Render(g)
 
         If ShowHitBox Then
-            ' 
+            ' magic collision rectangle! dw about it :D
             Dim rect As New Rectangle(Location.X - MyScene.ScreenLocation.X,
-                          Dimensions.ScreenGridHeight - CollisionHeight - Location.Y + MyScene.ScreenLocation.Y - ToolBarOffSet,
+                          Dimensions.ScreenGridHeight - CollisionHeight - Location.Y + MyScene.ScreenLocation.Y,
                           width, CollisionHeight)
             g.DrawRectangle(DrawingPrimitives.RedPen, rect)
         End If

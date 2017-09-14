@@ -3,7 +3,7 @@ Imports Newtonsoft.Json
 
 ''' <summary>
 ''' Base scene:
-''' given to MainGame to render 
+''' given to GameControl to render 
 ''' </summary>
 Public MustInherit Class BaseScene
     ''' <summary>
@@ -31,6 +31,11 @@ Public MustInherit Class BaseScene
     ''' Has all of keys which are held down etc.
     ''' </summary>
     Friend KeyControl As KeyHandler
+
+    ''' <summary>
+    ''' holds the background music
+    ''' </summary>
+    Public Overridable Property BackgroundMusic As MusicPlayer
 
     Sub New(keyControl As KeyHandler)
         Me.KeyControl = keyControl
@@ -67,8 +72,8 @@ Public MustInherit Class BaseScene
             AllStaticItems.Add(item)
         Next
     End Sub
-    Public Overridable Sub DrawDebugStrings(form As MainGame)
 
+    Public Overridable Sub DrawDebugStrings(form As GameControl)
 
     End Sub
 End Class
@@ -82,7 +87,7 @@ End Class
 Public Class MapScene
     Inherits BaseScene
     
-    Public Overrides Sub DrawDebugStrings(form as MainGame)
+    Public Overrides Sub DrawDebugStrings(form as GameControl)
         form.AddStringBuffer(String.Format("Mario Location: {0}, {1}", player1.Location.X, player1.Location.Y))
         form.AddStringBuffer(String.Format("Mouse - x: {0}, y: {1}", Cursor.Position.X, Cursor.Position.Y))
         form.AddStringBuffer(String.Format("Is over box: {0}", If(Me.HudPowerUp.GetRect().Contains(Cursor.Position), "yes", "no")))
@@ -266,19 +271,6 @@ Public Class MapScene
             throw New Exception()
         End If
     End Sub
-
-    
-    Public Overrides Function GetPlayers() As IList(Of EntPlayer)
-        If player1 IsNot Nothing And Player2 IsNot Nothing Then
-            Return New EntPlayer() {player1, Player2}
-        ElseIf player1 IsNot Nothing Then
-            Return New EntPlayer() {player1}
-        ElseIf player2 IsNot Nothing Then
-            Return New EntPlayer() {Player2}
-        Else
-            return Nothing
-        End If
-    End Function
 
     ''' <summary>
     ''' Sets the Background of the mapScene, using a hex color
@@ -488,7 +480,9 @@ Public NotInheritable Class JsonMapReader
         DebugMapHook(outScene)
 #End If
         
- 
+        'TODO REPLACE with actual backgroundMusic reader
+        outScene.BackgroundMusic = BackgroundMusic.GroundTheme
+        outScene.BackgroundMusic.Play()
         Return outScene
 
     End Function

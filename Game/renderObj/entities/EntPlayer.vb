@@ -116,6 +116,9 @@ Public Class EntPlayer
             return _state
         End Get
         Set(value As PlayerStates)
+            If value = _state
+                Return
+            End If
             Select Case value
                 Case PlayerStates.Dead
                     Me.KillPlayer()
@@ -127,7 +130,8 @@ Public Class EntPlayer
                     Me.SpriteSet = Sprites.playerBig
                     Me.Height = MarioHeightB
                     Me.CollisionHeight = MarioHeightB
-                Case PlayerStates.Fire : Me.SpriteSet = Sprites.playerBigFire
+                Case PlayerStates.Fire :
+                    Me.SpriteSet = Sprites.playerBigFire
                     Me.Height = MarioHeightB
                     Me.CollisionHeight = MarioHeightB
             End Select
@@ -211,17 +215,21 @@ Public Class EntPlayer
     End Sub
 
     ''' <summary>
+    ''' DO NOT USE - Instead set player.state to Dead
     ''' Play outro mapScene and remove player / decrease lives
     ''' Do not use for player damage - use PlayerGotHit instead
-    ''' DO NOT USE - Instead set player.state to Dead
     ''' </summary>
     Private Sub KillPlayer()
+        If isDead
+            Return
+        End If
+
         Me.isDead = True
         Me.veloc.x = 0
         Me.veloc.y = 0
         Me.defaultY = Me.Location.Y
         Lives -= 1
-        MusicPlayer.BackgroundPlayer.Stop()
+        MyScene.BackgroundMusic.Stop()
         Sounds.PlayerDead.Play()
         
 
@@ -344,8 +352,8 @@ Public Class EntPlayer
 
     Public Overrides Sub UpdateLocation()
         MyBase.UpdateLocation()
-        If Me.Location.Y < 0
-            KillPlayer()
+        If Me.Location.Y < 0 And Not IsDead
+            me.State = PlayerStates.Dead
         End If
     End Sub
     

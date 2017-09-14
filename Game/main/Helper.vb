@@ -2,14 +2,14 @@
 ''' Module that stores global variables
 ''' </summary>
 Public Module Dimensions
-    Public Const ScreenGridWidth As Integer = 1280
-    Public Const ScreenGridHeight As Integer = 720
+    Public ScreenGridWidth As Integer = 1280
+    Public ScreenGridHeight As Integer = 720
     Public TotalGridWidth As Integer = 4000
     Public TotalGridHeight As Integer = 1000
-    Public MarioWidth = 32
-    Public MarioHeightS = 32
-    Public MarioHeightB = 64
-    Public GroundHeight = 64
+    Public MarioWidth As Integer = 32
+    Public MarioHeightS As Integer = 32
+    Public MarioHeightB As Integer = 64
+    Public GroundHeight As Integer = 64
 End Module
 
 Module Debug
@@ -56,7 +56,7 @@ Module Debug
                                            
         scene.AddEntity(New EntCoin(32, 32, New Point(320, 96), scene))
         scene.AddHitbox(New BlockMultipleCoins(New Point(32*5, 32*5), scene))
-
+        scene.AddHitbox(New Flag(New Point(32*10,64), scene))
     End Sub
     
 #Else
