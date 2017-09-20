@@ -26,7 +26,8 @@ End Class
 Public Class FlagTop
     Inherits HitboxItem
     Public Sub New(location As Point, mapScene As MapScene)
-        MyBase.New(Flag.FlagWidth *  3, Flag.FlagWidth *  3, location, Resize(My.Resources.flagpole_head, Flag.FlagWidth *  3, Flag.FlagWidth *  3), mapScene)
+        MyBase.New(Flag.FlagWidth * 3, Flag.FlagWidth * 3, location, Resize(My.Resources.flagpole_head, Flag.FlagWidth * 3, Flag.FlagWidth * 3), mapScene)
+        Me.CollisionWidth = Flag.FlagWidth
     End Sub
 
 End Class

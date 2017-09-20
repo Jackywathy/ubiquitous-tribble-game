@@ -186,6 +186,8 @@ Public Enum SpriteState
 
     CrouchRight = 8
     CrouchLeft = 9
+
+    Climb = 10
 End Enum
 
 Public MustInherit Class Sprites
@@ -196,12 +198,12 @@ Public MustInherit Class Sprites
                                                   {SpriteState.GroundLeft, New List(Of Image) From {My.Resources.mario_small_1r, My.Resources.mario_small_2r, My.Resources.mario_small_3r, My.Resources.mario_small_4r}},
                                                   {SpriteState.ConstantLeft, New List(Of Image) From {My.Resources.mario_small_1r}},
                                                   {SpriteState.AirLeft, New List(Of Image) From {My.Resources.mario_small_jumpr}},
-                                                  {SpriteState.Destroy, New List(Of Image) From {My.Resources.mario_small_dead}}
+                                                  {SpriteState.Destroy, New List(Of Image) From {My.Resources.mario_small_dead}},
+                                                  {SpriteState.Climb, New List(Of Image) From {My.Resources.mario_small_climb}}
                                                   },
         32,
-        32, Nothing, True 
+        32, Nothing, True
     )
-    ' TODO fix MARIO big dead (small rn)
     Public Shared playerBig As New SpriteSet("playerbig", New Dictionary(Of SpriteState, List(Of Image)) From {
                                                 {SpriteState.GroundRight, New List(Of Image) From {My.Resources.mario_big_1, My.Resources.mario_big_2, My.Resources.mario_big_3, My.Resources.mario_big_4}},
                                                 {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.mario_big_1}},
@@ -211,10 +213,11 @@ Public MustInherit Class Sprites
                                                 {SpriteState.ConstantLeft, New List(Of Image) From {My.Resources.mario_big_1r}},
                                                 {SpriteState.AirLeft, New List(Of Image) From {My.Resources.mario_big_jumpr}},
                                                 {SpriteState.CrouchLeft, New List(Of Image) From {My.Resources.mario_big_crouchr}},
-                                                {SpriteState.Destroy, New List(Of Image) From {My.Resources.mario_small_dead}}
+                                                {SpriteState.Destroy, New List(Of Image) From {My.Resources.mario_small_dead}},
+                                                {SpriteState.Climb, New List(Of Image) From {My.Resources.mario_big_climb}}
                                                 },
         32,
-        64, Nothing, True 
+        64, Nothing, True
     )
     ' TODO fix MARIO fire dead (small rn)
     Public Shared playerBigFire As New SpriteSet("playerfire", New Dictionary(Of SpriteState, List(Of Image)) From {
@@ -226,10 +229,11 @@ Public MustInherit Class Sprites
                                                     {SpriteState.ConstantLeft, New List(Of Image) From {My.Resources.mario_bigf_1r}},
                                                     {SpriteState.AirLeft, New List(Of Image) From {My.Resources.mario_bigf_jumpr}},
                                                     {SpriteState.CrouchLeft, New List(Of Image) From {My.Resources.mario_bigf_crouchr}},
-                                                    {SpriteState.Destroy, New List(Of Image) From {My.Resources.mario_small_dead}}
+                                                    {SpriteState.Destroy, New List(Of Image) From {My.Resources.mario_small_dead}},
+                                                    {SpriteState.Climb, New List(Of Image) From {My.Resources.mario_bigf_climb}}
                                                     },
         32,
-        64, Nothing, True 
+        64, Nothing, True
     )
 
     Public Shared playerFireball As New SpriteSet("fireball", New Dictionary(Of SpriteState, List(Of Image)) From {

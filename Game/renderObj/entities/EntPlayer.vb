@@ -95,7 +95,7 @@ Public Class EntPlayer
     Public Shared Property ScoreCallback As StaticText = Nothing
     Public Shared Property CoinCallback As StaticText = Nothing
 
-
+    Public OnFlag As Boolean = False
     Public AllowJumpInput As Boolean = True
     Public AllowShoot As Boolean = True
     Public IsCrouching As Boolean = False
@@ -270,48 +270,66 @@ Public Class EntPlayer
 
     Public Overrides Sub Animate()
         If Not Me.isDead Then
-            ' Make sure this is exhaustive
-            Dim spriteStateToUse = -2
+            If Not Me.OnFlag Then
+                ' Make sure this is exhaustive
+                Dim spriteStateToUse = -2
 
-            ' If crouching
-            If isCrouching Then
-                spriteStateToUse = SpriteState.CrouchRight
+                ' If crouching
+                If IsCrouching Then
+                    spriteStateToUse = SpriteState.CrouchRight
 
-                ' If grounded or falling off a platform
-            ElseIf isGrounded Or (Not isGrounded And Not didJumpAndNotFall) Then
+                    ' If grounded or falling off a platform
+                ElseIf isGrounded Or (Not isGrounded And Not didJumpAndNotFall) Then
 
-                ' If moving
-                If veloc.x <> 0 Then
+                    ' If moving
+                    If veloc.x <> 0 Then
 
-                    spriteStateToUse = SpriteState.GroundRight
+                        spriteStateToUse = SpriteState.GroundRight
 
 
-                ElseIf veloc.x = 0 Then 'If still
-                    spriteStateToUse = SpriteState.ConstantRight
-                End If
-
-                'If jumping
-            ElseIf didJumpAndNotFall Then
-                spriteStateToUse = SpriteState.AirRight
-            End If
-
-            If Not isFacingForward Then
-                spriteStateToUse += 1
-            End If
-
-            Select Case spriteStateToUse
-            ' Multi-frame
-                Case SpriteState.GroundRight, SpriteState.GroundLeft
-                    If MyScene.GlobalFrameCount Mod animationInterval = 0 Then
-                        Me.RenderImage = SpriteSet.SendToBack(spriteStateToUse)
+                    ElseIf veloc.x = 0 Then 'If still
+                        spriteStateToUse = SpriteState.ConstantRight
                     End If
 
-                    ' Single frame
-                Case Else
-                    Me.RenderImage = SpriteSet(spriteStateToUse)(0)
-            End Select
+                    'If jumping
+                ElseIf didJumpAndNotFall Then
+                    spriteStateToUse = SpriteState.AirRight
+                End If
+
+                If Not isFacingForward Then
+                    spriteStateToUse += 1
+                End If
+
+                Select Case spriteStateToUse
+            ' Multi-frame
+                    Case SpriteState.GroundRight, SpriteState.GroundLeft
+                        If MyScene.GlobalFrameCount Mod AnimationInterval = 0 Then
+                            Me.RenderImage = SpriteSet.SendToBack(spriteStateToUse)
+                        End If
+
+                        ' Single frame
+                    Case Else
+                        Me.RenderImage = SpriteSet(spriteStateToUse)(0)
+                End Select
+
+                ' On flag
+            Else
+
+                If Me.Location.Y > (StandardHeight * 2) Then
+                    Me.RenderImage = SpriteSet(SpriteState.Climb)(0)
+                    Me.Location = New Point(Me.Location.X, Me.Location.Y - 3)
+                Else
+                    If MyScene.GlobalFrameCount Mod AnimationInterval = 0 Then
+                        Me.RenderImage = SpriteSet.SendToBack(SpriteState.GroundRight)
+                    End If
+                    Me.Location = New Point(Me.Location.X + 3, Me.Location.Y)
+
+                    ' He will keep walking forward from this point on
+
+                End If
+            End If
         Else
-            Me.RenderImage  = SpriteSet(SpriteState.Destroy)(0)
+            Me.RenderImage = SpriteSet(SpriteState.Destroy)(0)
             Me.deathTimer += 1
             If deathTimer > 60 Then
                 Dim x = (Me.deathTimer - 60) / (animationInterval * 5)
@@ -351,14 +369,16 @@ Public Class EntPlayer
     End Sub
 
     Public Overrides Sub UpdateLocation()
-        MyBase.UpdateLocation()
-        If Me.Location.Y < 0 And Not IsDead
-            me.State = PlayerStates.Dead
+        If Not Me.OnFlag Then
+            MyBase.UpdateLocation()
+        End If
+        If Me.Location.Y < 0 And Not isDead Then
+            Me.State = PlayerStates.Dead
         End If
     End Sub
-    
 
-    
+
+
 End Class
 
 

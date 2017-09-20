@@ -103,13 +103,30 @@ Public Class MapScene
     ''' </summary>
     Public ScreenLocation As New Point(0, 0)
 
+    Private isClicked = False
     ''' <summary>
     ''' 
     ''' </summary>
     Private Sub handleMouse()
-        
-        HudPowerUp.GetRect().Contains(Control.MousePosition)
+        'If Control.MouseButtons = Control.MouseButtons.Left Then
+        '    isClicked = True
+        'Else
+        '    isClicked = False
+        'End If
+
+        'Dim insideFromTop = mousePos.Y <= HudPowerUp.Y + HudPowerUp.Height
+        'Dim insideFromBottom = mousePos.Y >= HudPowerUp.Y
+        'Dim insideFromLeft = mousePos.X >= HudPowerUp.X
+        'Dim insideFromRight = mousePos.X <= HudPowerUp.X + HudPowerUp.Width
+
+        'Console.WriteLine(mousePos.X)
+
+        'If HudPowerUp.GetRect().Contains(mousePos) Then
+        '    Dim t = 1
+        'End If
     End Sub
+
+
 
     ''' <summary>
     ''' Constructor for <see cref="MapScene"/>

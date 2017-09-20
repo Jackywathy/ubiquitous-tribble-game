@@ -38,13 +38,14 @@
         If IsOutOfMap() <> Direction.None Then
             Me.Destroy()
         End If
+        If Not IsSpawning Then
 
-        Me.AccelerateX(moveSpeed.x)
+            Me.AccelerateX(moveSpeed.x)
 
-        If Me.isGrounded Then
-            Me.AccelerateY(moveSpeed.y, False)
+            If Me.isGrounded Then
+                Me.AccelerateY(moveSpeed.y, False)
+            End If
         End If
-
         MyBase.UpdateVeloc()
     End Sub
 

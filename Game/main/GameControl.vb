@@ -203,6 +203,9 @@ Public Class GameControl
         numFrames += 1
     End Sub
 
+    Public Structure mouseInfo
+
+    End Structure
 
     Private Sub MainGame_KeyUp(sender As Object, e As KeyEventArgs) Handles MyBase.KeyUp
         keyControl.KeyUp(e.KeyCode)
@@ -232,6 +235,8 @@ Public Class GameControl
         ScreenGridWidth = Width
         ScreenGridHeight = Height
     End Sub
+
+
 End Class
 
 Public Class KeyHandler

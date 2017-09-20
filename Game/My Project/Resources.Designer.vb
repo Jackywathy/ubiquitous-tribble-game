@@ -743,6 +743,16 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
+        Friend ReadOnly Property mario_big_climb() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("mario_big_climb", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
         Friend ReadOnly Property mario_big_crouch() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("mario_big_crouch", resourceCulture)
@@ -863,6 +873,16 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
+        Friend ReadOnly Property mario_bigf_climb() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("mario_bigf_climb", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
         Friend ReadOnly Property mario_bigf_crouch() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("mario_bigf_crouch", resourceCulture)
@@ -976,6 +996,16 @@ Namespace My.Resources
         Friend ReadOnly Property mario_small_4r() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("mario_small_4r", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property mario_small_climb() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("mario_small_climb", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property

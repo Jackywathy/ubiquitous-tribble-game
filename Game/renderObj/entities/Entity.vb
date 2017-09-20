@@ -7,7 +7,7 @@ Public MustInherit Class Entity
 
     Public Property SpriteSet As SpriteSet
 
-    Public isDead As Boolean = False
+    Public Property isDead As Boolean = False
     Public killsOnContact As Boolean = False
 
     Sub New(width As Integer, height As Integer, location As Point, spriteSet As SpriteSet, mapScene As MapScene)
@@ -40,15 +40,15 @@ Public MustInherit Class Entity
 
         Dim selfNextPoint = New Point(Me.Location.X + Me.veloc.x, Me.Location.Y + Me.veloc.y)
 
-        Dim selfCentre = New Point((Me.Location.X + (0.5 * Me.Width)), (Me.Location.Y + (0.5 * Me.CollisionHeight)))
+        Dim selfCentre = New Point((Me.Location.X + (0.5 * Me.CollisionWidth)), (Me.Location.Y + (0.5 * Me.CollisionHeight)))
 
-        Dim blockRightmost = sender.Location.X + sender.Width
+        Dim blockRightmost = sender.Location.X + sender.CollisionWidth
         Dim blockLeftmost = sender.Location.X
         Dim blockUppermost = sender.Location.Y + sender.CollisionHeight
         Dim blockLowermost = sender.Location.Y
 
         ' Potential locations
-        Dim nextSelfRightmost = selfNextPoint.X + Me.Width
+        Dim nextSelfRightmost = selfNextPoint.X + Me.CollisionWidth
         Dim nextSelfLeftmost = selfNextPoint.X
         Dim nextSelfUppermost = selfNextPoint.Y + Me.CollisionHeight
         Dim nextSelfLowermost = selfNextPoint.Y
@@ -62,10 +62,10 @@ Public MustInherit Class Entity
         ' Current sub-collisions
         Dim isInsideFromAbove = Me.Location.Y < blockUppermost
         Dim isInsideFromBelow = Me.Location.Y + Me.CollisionHeight > blockLowermost
-        Dim isInsideFromLeft = Me.Location.X + Me.Width > blockLeftmost
+        Dim isInsideFromLeft = Me.Location.X + Me.CollisionWidth > blockLeftmost
         Dim isInsideFromRight = Me.Location.X < blockRightmost
         ' Used for vertical collisions to add buffer space
-        Dim isInsideFromLeft_v = Me.Location.X + Me.Width - (5) > blockLeftmost
+        Dim isInsideFromLeft_v = Me.Location.X + Me.CollisionWidth - (5) > blockLeftmost
         Dim isInsideFromRight_v = Me.Location.X + (5) < blockRightmost
 
         ' Potential sub-collisions
@@ -77,8 +77,10 @@ Public MustInherit Class Entity
         Dim willInsideFromRight_v = nextSelfLeftmost + (10) <= blockRightmost
 
         Dim senderIsEntity = sender.GetType.IsSubclassOf(GetType(Entity)) ' is not entity or subclass
+        Dim playerFlagCollision = Me.GetType = GetType(EntPlayer) And (sender.GetType = GetType(Flag) Or sender.GetType = GetType(FlagTop))
 
         Dim newPositionToMoveTo As Point
+
 
         ' NORTH
         If Me.veloc.y < 0 And isAbove And willInsideFromAbove And isInsideFromLeft_v And isInsideFromRight_v Then
@@ -117,20 +119,34 @@ Public MustInherit Class Entity
             ' WEST
         ElseIf isLeftOf And willInsideFromLeft And isInsideFromAbove And isInsideFromBelow Then
 
-            If Not senderIsEntity Then
-                newPositionToMoveTo = New Point(blockLeftmost - Me.Width, Me.Location.Y)
+            If playerFlagCollision Then
+                Dim player As EntPlayer = Me
+                player.OnFlag = True
+                If player.Location.Y > (2 * StandardHeight) Then
+                    If sender.GetType = GetType(FlagTop) Then
+                        player.Location = New Point(sender.Location.X - player.Width + Flag.FlagWidth, player.Location.Y)
+                    Else
+                        player.Location = New Point(sender.Location.X - player.Width, player.Location.Y)
+                    End If
+                End If
+            ElseIf Not (senderIsEntity) Then
+                    newPositionToMoveTo = New Point(blockLeftmost - Me.Width, Me.Location.Y)
                 Me.willCollideFromLeft = True
             End If
+
+
 
             sender.CollisionLeft(Me)
 
             ' EAST
         ElseIf isRightOf And willInsideFromRight And isInsideFromAbove And isInsideFromBelow Then
 
-            If Not senderIsEntity Then
+            If Not (senderIsEntity) Then
                 newPositionToMoveTo = New Point(blockRightmost, Me.Location.Y)
                 Me.willCollideFromRight = True
             End If
+
+
 
             sender.CollisionRight(Me)
 
@@ -301,10 +317,10 @@ Public MustInherit Class Entity
     
     Public Overrides Sub UpdateVeloc()
 
-        If Not Me.isDead Then
 
-            ' Reset collision variables
-            Me.willCollideFromAbove = False
+
+        ' Reset collision variables
+        Me.willCollideFromAbove = False
             Me.willCollideFromBelow = False
             Me.willCollideFromLeft = False
             Me.willCollideFromRight = False
@@ -344,11 +360,12 @@ Public MustInherit Class Entity
                 Me.veloc.x = 0
             End If
 
-        End If
     End Sub
 
-    Public OVerrides Sub UpdateLocation
-        Me.Location = New Point(Me.Location.X + Me.veloc.x, Me.Location.Y + Me.veloc.y)
+    Public Overrides Sub UpdateLocation()
+        If Not Me.isDead Then
+            Me.Location = New Point(Me.Location.X + Me.veloc.x, Me.Location.Y + Me.veloc.y)
+        End If
     End Sub
 
     ''' <summary>

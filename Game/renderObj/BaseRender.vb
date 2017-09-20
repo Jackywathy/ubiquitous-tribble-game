@@ -153,17 +153,17 @@ Public MustInherit Class MovingImage
     ''' </summary>
     ''' <param name="g"></param>
     Public Overrides Sub Render(g As Graphics)
-        if RenderImage IsNot Nothing
+        if RenderImage IsNot Nothing Then
             Dim drawnRect As New Rectangle(Location.X - MyScene.ScreenLocation.X,
                                       BottomToTop(Location.Y) - MyScene.ScreenLocation.Y,
-                                           width, height)
+                                           Width, Height)
 
             ' top right x, top right y, width, heigh
             g.DrawImage(RenderImage, drawnRect)
             If ShowBoundingBox Then
                 g.DrawRectangle(DrawingPrimitives.BlackPen, drawnRect)
             End If
-        End if
+        End If
     End Sub
 
 End Class
@@ -178,6 +178,7 @@ Public MustInherit Class HitboxItem
     Friend Const StandardHeight = 32
 
     Public Property CollisionHeight As Integer
+    Public Property CollisionWidth As Integer
 
     Friend FramesSinceHit As Integer = 0
 
@@ -191,9 +192,9 @@ Public MustInherit Class HitboxItem
     ''' <param name="height">Height, in grid units</param>
     ''' <param name="location">Location, a point of grid units</param>
     Public Sub New(width As Integer, height As Integer, location As Point, image As Image, mapScene As MapScene)
-        Mybase.New(width, height, location, image, mapScene)
+        MyBase.New(width, height, location, image, mapScene)
         Me.CollisionHeight = height
-
+        Me.CollisionWidth = width
     End Sub
 
 
@@ -208,7 +209,7 @@ Public MustInherit Class HitboxItem
             ' magic collision rectangle! dw about it :D
             Dim rect As New Rectangle(Location.X - MyScene.ScreenLocation.X,
                           Dimensions.ScreenGridHeight - CollisionHeight - Location.Y + MyScene.ScreenLocation.Y,
-                          width, CollisionHeight)
+                          Width, CollisionHeight)
             g.DrawRectangle(DrawingPrimitives.RedPen, rect)
         End If
     End Sub
