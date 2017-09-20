@@ -30,15 +30,15 @@ Public MustInherit Class BaseScene
     ''' <summary>
     ''' Has all of keys which are held down etc.
     ''' </summary>
-    Friend KeyControl As KeyHandler
+    Friend Parent As Control
 
     ''' <summary>
     ''' holds the background music
     ''' </summary>
     Public Overridable Property BackgroundMusic As MusicPlayer
 
-    Sub New(keyControl As KeyHandler)
-        Me.KeyControl = keyControl
+    Sub New(parent As Control)
+        Me.parent = parent
     End Sub
 
     Public Overridable Function GetPlayers() As IList(Of EntPlayer)
@@ -90,7 +90,7 @@ Public Class MapScene
     Public Overrides Sub DrawDebugStrings(form as GameControl)
         form.AddStringBuffer(String.Format("Mario Location: {0}, {1}", player1.Location.X, player1.Location.Y))
         form.AddStringBuffer(String.Format("Mouse - x: {0}, y: {1}", Cursor.Position.X, Cursor.Position.Y))
-        form.AddStringBuffer(String.Format("Is over box: {0}", If(Me.HudPowerUp.GetRect().Contains(Cursor.Position), "yes", "no")))
+        form.AddStringBuffer(String.Format("Is over box: {0}", If(MouseOverBox, "yes", "no")))
     End Sub
 
     ''' <summary>
@@ -103,37 +103,26 @@ Public Class MapScene
     ''' </summary>
     Public ScreenLocation As New Point(0, 0)
 
-    Private isClicked = False
+
+    Private Function MouseOverBox As Boolean
+        Return Me.HudPowerUp.GetRect().Contains(Parent.PointToClient(Cursor.Position))
+    End Function
+
     ''' <summary>
     ''' 
     ''' </summary>
     Private Sub handleMouse()
-        'If Control.MouseButtons = Control.MouseButtons.Left Then
-        '    isClicked = True
-        'Else
-        '    isClicked = False
-        'End If
-
-        'Dim insideFromTop = mousePos.Y <= HudPowerUp.Y + HudPowerUp.Height
-        'Dim insideFromBottom = mousePos.Y >= HudPowerUp.Y
-        'Dim insideFromLeft = mousePos.X >= HudPowerUp.X
-        'Dim insideFromRight = mousePos.X <= HudPowerUp.X + HudPowerUp.Width
-
-        'Console.WriteLine(mousePos.X)
-
-        'If HudPowerUp.GetRect().Contains(mousePos) Then
-        '    Dim t = 1
-        'End If
+        If MouseOverBox()
+            ' do something here
+        End If
     End Sub
-
-
 
     ''' <summary>
     ''' Constructor for <see cref="MapScene"/>
     ''' </summary>
-    ''' <param name="keyControl"></param>
-    Public Sub New(keyControl As KeyHandler)
-        MyBase.New(keyControl)
+    ''' <param name="parent"></param>
+    Public Sub New(parent As Control)
+        MyBase.New(parent)
     End Sub
 
     ''' <summary>
@@ -304,7 +293,6 @@ Public Class MapScene
         Dim xToMove = 0
         Dim yToMove = 0
         
-
         ' LEFT
         If KeyHandler.MoveLeft Then
             If Not Player1.IsCrouching Then
@@ -447,7 +435,7 @@ Public NotInheritable Class JsonMapReader
     ''' </summary>
     ''' <param name="jsonName"></param>
     ''' <returns></returns>
-    Public Shared Function ReadMapFromResource(jsonName As String, keyControl As KeyHandler) As MapScene
+    Public Shared Function ReadMapFromResource(jsonName As String, parent As Control) As MapScene
         Dim byteArray = CType(My.Resources.ResourceManager.GetObject(jsonName), Byte())
         If byteArray(0) = 239 And byteArray(1) = 187 And byteArray(2) = 191 Then
             byteArray = byteArray.Skip(3).Take(byteArray.Length - 2).ToArray()
@@ -457,7 +445,7 @@ Public NotInheritable Class JsonMapReader
 
         Dim mapObject = JsonConvert.DeserializeObject(Of JsonMapObject)(str)
 
-        Dim outScene As New MapScene(keyControl)
+        Dim outScene As New MapScene(parent)
 
         ' add the Background
         outScene.SetBackground(mapObject.background(0), mapObject.background(1), mapObject.background(2))

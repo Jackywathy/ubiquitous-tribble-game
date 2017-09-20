@@ -43,7 +43,7 @@
         Me.Text = str
         Me.Font = font
         Me.drawnRect = drawnRect
-        Me.drawnRect.Y = Dimensions.ScreenGridHeight - drawnRect.Height - drawnRect.Y - toolbaroffset
+        Me.drawnRect.Y = Dimensions.ScreenGridHeight - drawnRect.Height - drawnRect.Y
     End Sub
 End Class
 

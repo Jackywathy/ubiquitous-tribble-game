@@ -7,7 +7,7 @@
         ' scroll select 1/2 player
     End Sub
 
-    Sub New(handler As KeyHandler)
+    Sub New(handler As Control)
         Mybase.New(handler)
     End Sub
 
