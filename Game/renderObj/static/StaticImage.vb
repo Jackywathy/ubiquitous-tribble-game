@@ -21,7 +21,7 @@ Public MustInherit Class StaticImage
     Public Overrides Sub Render(g As Graphics)
         if RenderImage IsNot Nothing
             Dim drawnRect As New Rectangle(Location.X,
-                                      Dimensions.ScreenGridHeight - Height - Location.Y - ToolBarOffSet,
+                                      Dimensions.ScreenGridHeight - Height - Location.Y,
                                            width, height)
             ' top right x, top right y, width, heigh
             g.DrawImage(RenderImage, drawnRect)
@@ -36,6 +36,6 @@ Public MustInherit Class StaticImage
     ''' </summary>
     ''' <returns></returns>
     Public Overridable Function GetRect As Rectangle
-        REturn New Rectangle(location.X, TopToButtom(Location.y), width, height)
+        REturn New Rectangle(location.X, BottomToTop(Location.y), width, height)
     End Function
 End Class

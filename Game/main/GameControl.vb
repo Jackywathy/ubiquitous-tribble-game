@@ -223,7 +223,7 @@ Public Class GameControl
     Private Function LoadScenes() As Dictionary(Of String, MapScene)
         Dim scenes As New Dictionary(Of String, MapScene)
         For Each str As String In JsonMaps
-            scenes.Add(str, JsonMapReader.ReadMapFromResource(str, keyControl))
+            scenes.Add(str, JsonMapReader.ReadMapFromResource(str, Me))
         Next
         Return scenes
     End Function

@@ -150,7 +150,7 @@ Public NotInheritable Class Helper
 
     Private Const ToolbarOffset = 29
     Public Shared Function TopToBottom(y As Integer, height As integer) As Integer
-        Return Dimensions.ScreenGridHeight - y - ToolbarOffset - height
+        Return Dimensions.ScreenGridHeight - y - height
     End Function
 
     ''' <summary>
