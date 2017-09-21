@@ -127,14 +127,7 @@ Public Class GameControl
 
 
 
-    
-
-    ''' <summary>
-    ''' Draw to the screen by calling OnPaint()
-    ''' </summary>
-    Private Sub RenderMain()
-        Me.Refresh()
-    End Sub
+   
 
     ''' <summary>
     ''' Paints to the screen using a graphics object
@@ -145,7 +138,7 @@ Public Class GameControl
         Dim g = e.Graphics
         g.InterpolationMode = InterpolationMode.NearestNeighbor
 
-        CurrentScene.DrawSceneObjects(g)
+        CurrentScene.RenderObjects(g)
         updateFps()
 
 #If DEBUG Then
@@ -168,7 +161,7 @@ Public Class GameControl
     ''' <param name="str"></param>
     Public Sub AddStringBuffer(str As String)
         strBuffer.Add(str)
-    End Sub
+    End Sub 
 
 
     ''' <summary>

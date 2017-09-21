@@ -8,6 +8,11 @@ Public Enum TransitionDirection
     Random
 End Enum
 
+Public Enum TransitionType
+    Normal
+    Circle
+End Enum
+
 ''' <summary>
 ''' Base scene:
 ''' given to GameControl to render 
@@ -28,8 +33,24 @@ Public MustInherit Class BaseScene
     ''' </summary>
     Public Sub RenderScene(g As graphics)
         If Not isTransitioning Then
-            
+            RenderObjects(g)
+        Else 
+            DrawTransition(g)
         End If
+    End Sub
+
+    Private Sub DrawTransition(g As Graphics)
+        Dim progress as Double = transistionTicksElapsed / transistionLength * ScreenGridWidth
+        Dim drawnRect As Rectangle
+        Select Case transistionDirection
+            Case TransitionDirection.Right
+                ' top left of rectangle = length of form - progress
+                drawnRect.X = ScreenGridWidth - progress
+                drawnRect.Y = 0
+                drawnRect.Width = progress
+                drawnRect.Height = ScreenGridHeight
+        End Select
+
     End Sub
 
     ''' <summary>
@@ -38,28 +59,37 @@ Public MustInherit Class BaseScene
     Friend IsTransitioning As Boolean 
 
     ''' <summary>
-    ''' Number of ticks remaining in animation
+    ''' Number of ticks run
     ''' </summary>
-    Private transitionTimeRemaining As Integer
+    Private transistionTicksElapsed As Integer
+    Private transistionLength As Integer
+    Private transistionBrush As Brush
 
-    private transitionType as TransitionDirection
+    private transistionDirection as TransitionDirection
+
+    Private transitionType As TransitionType
 
     ''' <summary>
     ''' Start a normal transition animation
     ''' </summary>
-    ''' <param name="type"></param>
+    ''' <param name="direction"></param>
     ''' <param name="transitionTime"></param>
-    Public Sub StartNormalTransition(type As TransitionDirection, Optional transitionTime As Integer = 120)
-        transitionTimeRemaining = transitionTime
-
-
+    ''' <param name="fillColor">brush used - default black</param>
+    Public Sub StartNormalTransition(direction As TransitionDirection, Optional transitionTime As Integer = 120, Optional fillColor As Brush = Nothing)
+        If fillColor Is Nothing
+            fillcolor =  New SolidBrush(Color.Black)
+        End If
+        Me.transistionLength = transitionTime
+        Me.transistionDirection = direction
+        Me.transistionTicksElapsed = 0
+        me.transistionBrush = fillcolor
     End Sub
 
     ''' <summary>
     ''' Draws the completed scene onto the graphics object
     ''' </summary>
     ''' <param name="g"></param>
-    Public MustOverride Sub DrawSceneObjects(g As Graphics)
+    Public MustOverride Sub RenderObjects(g As Graphics)
 
     ''' <summary>
     ''' Handles input
@@ -128,7 +158,8 @@ Public Class MapScene
     
     Public Overrides Sub DrawDebugStrings(form as GameControl)
         form.AddStringBuffer(String.Format("Mario Location: {0}, {1}", player1.Location.X, player1.Location.Y))
-        form.AddStringBuffer(String.Format("Mouse - x: {0}, y: {1}", form.PointToClient(Cursor.Position)))
+        dim relativePoint = form.PointToClient(Cursor.Position)
+        form.AddStringBuffer(String.Format("Mouse - x: {0}, y: {1}", relativePoint.X, relativePoint.Y))
         form.AddStringBuffer(String.Format("Is over box: {0}", If(MouseOverBox, "yes", "no")))
     End Sub
 
@@ -156,6 +187,7 @@ Public Class MapScene
     Private Sub handleMouse()
         If MouseOverBox()
             ' do something here
+            StartNormalTransition(TransitionDirection.Right)
         End If
     End Sub
 
@@ -434,7 +466,7 @@ Public Class MapScene
     ''' Renders scene onto g
     ''' </summary>
     ''' <param name="g"></param>
-    Public Overrides Sub DrawSceneObjects(g As Graphics)
+    Public Overrides Sub RenderObjects(g As Graphics)
         Background.Render(g)
 
         ' all text & stuff
