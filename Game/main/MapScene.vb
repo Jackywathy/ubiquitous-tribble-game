@@ -32,11 +32,11 @@ Public MustInherit Class BaseScene
     ''' Renders scene ont a graphics object
     ''' </summary>
     Public Sub RenderScene(g As graphics)
-        If Not isTransitioning Then
-            RenderObjects(g)
-        Else 
+        RenderObjects(g)
+        If isTransitioning Then
             DrawTransition(g)
-        End If
+        End if
+
     End Sub
 
     Private Sub DrawTransition(g As Graphics)
@@ -49,8 +49,22 @@ Public MustInherit Class BaseScene
                 drawnRect.Y = 0
                 drawnRect.Width = progress
                 drawnRect.Height = ScreenGridHeight
-        End Select
+            Case TransitionDirection.Top
+                drawnRect.X = 0
+                drawnRect.Y = 0
+                drawnRect.Width = ScreenGridWidth
+                drawnRect.Height = progress
+            Case Else
+                throw new Exception("Transistion direction out of range")
 
+        End Select
+        g.FillRectangle(transistionBrush, drawnRect)
+        transistionTicksElapsed += 1
+        If transistionTicksElapsed > transistionLength
+            IsTransitioning = False
+            transistionTicksElapsed = 0
+            transistionLength = 0
+        End If
     End Sub
 
     ''' <summary>
@@ -75,7 +89,7 @@ Public MustInherit Class BaseScene
     ''' <param name="direction"></param>
     ''' <param name="transitionTime"></param>
     ''' <param name="fillColor">brush used - default black</param>
-    Public Sub StartNormalTransition(direction As TransitionDirection, Optional transitionTime As Integer = 120, Optional fillColor As Brush = Nothing)
+    Public Sub StartNormalTransition(direction As TransitionDirection, Optional transitionTime As Integer = 30, Optional fillColor As Brush = Nothing)
         If fillColor Is Nothing
             fillcolor =  New SolidBrush(Color.Black)
         End If
@@ -83,7 +97,9 @@ Public MustInherit Class BaseScene
         Me.transistionDirection = direction
         Me.transistionTicksElapsed = 0
         me.transistionBrush = fillcolor
+        IsTransitioning = True
     End Sub
+
 
     ''' <summary>
     ''' Draws the completed scene onto the graphics object
@@ -149,6 +165,11 @@ End Class
 
 
 
+Public Enum SwitchLevelType
+    Normal
+    Secret1
+    Secret2
+End Enum
 
 ''' <summary>
 ''' Scene that represents a map, (probably loaded from json using <see cref="JsonMapReader.ReadMapFromResource"/>
@@ -166,6 +187,15 @@ Public Class MapScene
     ' TODO implement 
     Private CurrentlyHeldPowerup as EntPowerup
 
+    ''' <summary>
+    ''' Switches the level to something else
+    ''' call after mario has run past the end of the screen
+    ''' </summary>
+    ''' <param name="type"></param>
+    Public Sub SwitchLevel(Optional type As SwitchLevelType = SwitchLevelType.Normal)
+        'Throw New NotImplementedException()
+        Print("HI!")
+    End Sub
     ''' <summary>
     ''' Background of scene
     ''' </summary>
@@ -185,9 +215,9 @@ Public Class MapScene
     ''' 
     ''' </summary>
     Private Sub handleMouse()
-        If MouseOverBox()
+        If MouseOverBox() and not IsTransitioning
             ' do something here
-            StartNormalTransition(TransitionDirection.Right)
+            StartNormalTransition(TransitionDirection.Top)
         End If
     End Sub
 
