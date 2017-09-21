@@ -112,6 +112,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="main\GameControl.vb" />
+    <Compile Include="main\MainForm.vb" />
     <Compile Include="renderObj\blocks\BlockBrickStar.vb" />
     <Compile Include="renderObj\blocks\BlockBumpable.vb" />
     <Compile Include="renderObj\Flag.vb" />

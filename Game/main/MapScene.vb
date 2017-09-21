@@ -1,5 +1,17 @@
-﻿Imports System.Text
-Imports Newtonsoft.Json
+﻿Imports Newtonsoft.Json
+
+Public Enum TransitionDirection
+    Top 
+    Bottom
+    Right
+    Left
+    Random
+End Enum
+
+Public Enum TransitionType
+    Normal
+    Circle
+End Enum
 
 ''' <summary>
 ''' Base scene:
@@ -12,15 +24,88 @@ Public MustInherit Class BaseScene
     Public GlobalFrameCount As Integer
 
     ''' <summary>
-    ''' Run once per tick in game
+    ''' Run once per tick in game, updates all obejcts in scene, if necessary
     ''' </summary>
     Public MustOverride Sub UpdateTick()
+
+    ''' <summary>
+    ''' Renders scene ont a graphics object
+    ''' </summary>
+    Public Sub RenderScene(g As graphics)
+        RenderObjects(g)
+        If isTransitioning Then
+            DrawTransition(g)
+        End if
+
+    End Sub
+
+    Private Sub DrawTransition(g As Graphics)
+        Dim progress as Double = transistionTicksElapsed / transistionLength * ScreenGridWidth
+        Dim drawnRect As Rectangle
+        Select Case transistionDirection
+            Case TransitionDirection.Right
+                ' top left of rectangle = length of form - progress
+                drawnRect.X = ScreenGridWidth - progress
+                drawnRect.Y = 0
+                drawnRect.Width = progress
+                drawnRect.Height = ScreenGridHeight
+            Case TransitionDirection.Top
+                drawnRect.X = 0
+                drawnRect.Y = 0
+                drawnRect.Width = ScreenGridWidth
+                drawnRect.Height = progress
+            Case Else
+                throw new Exception("Transistion direction out of range")
+
+        End Select
+        g.FillRectangle(transistionBrush, drawnRect)
+        transistionTicksElapsed += 1
+        If transistionTicksElapsed > transistionLength
+            IsTransitioning = False
+            transistionTicksElapsed = 0
+            transistionLength = 0
+        End If
+    End Sub
+
+    ''' <summary>
+    ''' a transition from one scene to another
+    ''' </summary>
+    Friend IsTransitioning As Boolean 
+
+    ''' <summary>
+    ''' Number of ticks run
+    ''' </summary>
+    Private transistionTicksElapsed As Integer
+    Private transistionLength As Integer
+    Private transistionBrush As Brush
+
+    private transistionDirection as TransitionDirection
+
+    Private transitionType As TransitionType
+
+    ''' <summary>
+    ''' Start a normal transition animation
+    ''' </summary>
+    ''' <param name="direction"></param>
+    ''' <param name="transitionTime"></param>
+    ''' <param name="fillColor">brush used - default black</param>
+    Public Sub StartNormalTransition(direction As TransitionDirection, Optional transitionTime As Integer = 30, Optional fillColor As Brush = Nothing)
+        If fillColor Is Nothing
+            fillcolor =  New SolidBrush(Color.Black)
+        End If
+        Me.transistionLength = transitionTime
+        Me.transistionDirection = direction
+        Me.transistionTicksElapsed = 0
+        me.transistionBrush = fillcolor
+        IsTransitioning = True
+    End Sub
+
 
     ''' <summary>
     ''' Draws the completed scene onto the graphics object
     ''' </summary>
     ''' <param name="g"></param>
-    Public MustOverride Sub RenderScene(g As Graphics)
+    Public MustOverride Sub RenderObjects(g As Graphics)
 
     ''' <summary>
     ''' Handles input
@@ -80,6 +165,11 @@ End Class
 
 
 
+Public Enum SwitchLevelType
+    Normal
+    Secret1
+    Secret2
+End Enum
 
 ''' <summary>
 ''' Scene that represents a map, (probably loaded from json using <see cref="JsonMapReader.ReadMapFromResource"/>
@@ -89,10 +179,23 @@ Public Class MapScene
     
     Public Overrides Sub DrawDebugStrings(form as GameControl)
         form.AddStringBuffer(String.Format("Mario Location: {0}, {1}", player1.Location.X, player1.Location.Y))
-        form.AddStringBuffer(String.Format("Mouse - x: {0}, y: {1}", Cursor.Position.X, Cursor.Position.Y))
+        dim relativePoint = form.PointToClient(Cursor.Position)
+        form.AddStringBuffer(String.Format("Mouse - x: {0}, y: {1}", relativePoint.X, relativePoint.Y))
         form.AddStringBuffer(String.Format("Is over box: {0}", If(MouseOverBox, "yes", "no")))
     End Sub
 
+    ' TODO implement 
+    Private CurrentlyHeldPowerup as EntPowerup
+
+    ''' <summary>
+    ''' Switches the level to something else
+    ''' call after mario has run past the end of the screen
+    ''' </summary>
+    ''' <param name="type"></param>
+    Public Sub SwitchLevel(Optional type As SwitchLevelType = SwitchLevelType.Normal)
+        'Throw New NotImplementedException()
+        Print("HI!")
+    End Sub
     ''' <summary>
     ''' Background of scene
     ''' </summary>
@@ -112,8 +215,9 @@ Public Class MapScene
     ''' 
     ''' </summary>
     Private Sub handleMouse()
-        If MouseOverBox()
+        If MouseOverBox() and not IsTransitioning
             ' do something here
+            StartNormalTransition(TransitionDirection.Top)
         End If
     End Sub
 
@@ -387,11 +491,12 @@ Public Class MapScene
         End If
     End Sub
 
+
     ''' <summary>
     ''' Renders scene onto g
     ''' </summary>
     ''' <param name="g"></param>
-    Public Overrides Sub RenderScene(g As Graphics)
+    Public Overrides Sub RenderObjects(g As Graphics)
         Background.Render(g)
 
         ' all text & stuff
