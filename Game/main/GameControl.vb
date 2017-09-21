@@ -145,7 +145,7 @@ Public Class GameControl
         Dim g = e.Graphics
         g.InterpolationMode = InterpolationMode.NearestNeighbor
 
-        CurrentScene.RenderScene(g)
+        CurrentScene.DrawSceneObjects(g)
         updateFps()
 
 #If DEBUG Then

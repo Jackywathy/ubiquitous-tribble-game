@@ -15,7 +15,7 @@
         Throw New NotImplementedException()
     End Sub
 
-    Public Overrides Sub RenderScene(g As Graphics)
+    Public Overrides Sub DrawSceneObjects(g As Graphics)
         Throw New NotImplementedException()
     End Sub
 End Class

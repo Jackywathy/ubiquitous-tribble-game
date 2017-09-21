@@ -1,5 +1,12 @@
-﻿Imports System.Text
-Imports Newtonsoft.Json
+﻿Imports Newtonsoft.Json
+
+Public Enum TransitionDirection
+    Top 
+    Bottom
+    Right
+    Left
+    Random
+End Enum
 
 ''' <summary>
 ''' Base scene:
@@ -12,15 +19,47 @@ Public MustInherit Class BaseScene
     Public GlobalFrameCount As Integer
 
     ''' <summary>
-    ''' Run once per tick in game
+    ''' Run once per tick in game, updates all obejcts in scene, if necessary
     ''' </summary>
     Public MustOverride Sub UpdateTick()
+
+    ''' <summary>
+    ''' Renders scene ont a graphics object
+    ''' </summary>
+    Public Sub RenderScene(g As graphics)
+        If Not isTransitioning Then
+            
+        End If
+    End Sub
+
+    ''' <summary>
+    ''' a transition from one scene to another
+    ''' </summary>
+    Friend IsTransitioning As Boolean 
+
+    ''' <summary>
+    ''' Number of ticks remaining in animation
+    ''' </summary>
+    Private transitionTimeRemaining As Integer
+
+    private transitionType as TransitionDirection
+
+    ''' <summary>
+    ''' Start a normal transition animation
+    ''' </summary>
+    ''' <param name="type"></param>
+    ''' <param name="transitionTime"></param>
+    Public Sub StartNormalTransition(type As TransitionDirection, Optional transitionTime As Integer = 120)
+        transitionTimeRemaining = transitionTime
+
+
+    End Sub
 
     ''' <summary>
     ''' Draws the completed scene onto the graphics object
     ''' </summary>
     ''' <param name="g"></param>
-    Public MustOverride Sub RenderScene(g As Graphics)
+    Public MustOverride Sub DrawSceneObjects(g As Graphics)
 
     ''' <summary>
     ''' Handles input
@@ -89,9 +128,12 @@ Public Class MapScene
     
     Public Overrides Sub DrawDebugStrings(form as GameControl)
         form.AddStringBuffer(String.Format("Mario Location: {0}, {1}", player1.Location.X, player1.Location.Y))
-        form.AddStringBuffer(String.Format("Mouse - x: {0}, y: {1}", Cursor.Position.X, Cursor.Position.Y))
+        form.AddStringBuffer(String.Format("Mouse - x: {0}, y: {1}", form.PointToClient(Cursor.Position)))
         form.AddStringBuffer(String.Format("Is over box: {0}", If(MouseOverBox, "yes", "no")))
     End Sub
+
+    ' TODO implement 
+    Private CurrentlyHeldPowerup as EntPowerup
 
     ''' <summary>
     ''' Background of scene
@@ -387,11 +429,12 @@ Public Class MapScene
         End If
     End Sub
 
+
     ''' <summary>
     ''' Renders scene onto g
     ''' </summary>
     ''' <param name="g"></param>
-    Public Overrides Sub RenderScene(g As Graphics)
+    Public Overrides Sub DrawSceneObjects(g As Graphics)
         Background.Render(g)
 
         ' all text & stuff
