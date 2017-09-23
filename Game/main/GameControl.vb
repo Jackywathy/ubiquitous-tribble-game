@@ -51,7 +51,8 @@ Public Class GameControl
         Randomize()
 
         allMapScenes = LoadScenes()
-        CurrentScene = allMapScenes("map1_1")
+        CurrentScene = allMapScenes("map2_1")
+        '"map1_1", 
 
         ' only start loop after init has finished
         GameLoop.Enabled = True
@@ -66,7 +67,7 @@ Public Class GameControl
     ''' <summary>
     ''' All the names of the JsonMaps as resource name
     ''' </summary>
-    Private ReadOnly JsonMaps As New List(Of String) From {"map1_1"}
+    Private ReadOnly JsonMaps As New List(Of String) From {"map1_1", "map2_1"}
 
     ''' <summary>
     ''' Debug buffer - this is written to top right of mapScene each tick, only if IsDebug is set to False in Helper.vb

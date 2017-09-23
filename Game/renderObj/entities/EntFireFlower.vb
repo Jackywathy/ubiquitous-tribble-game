@@ -12,8 +12,8 @@
 
    
 
-    Sub New(width As Integer, height As Integer, location As Point, mapScene As MapScene)
-        MyBase.New(width, height, location, Sprites.f_flower, mapScene)
+    Sub New(location As Point, mapScene As MapScene)
+        MyBase.New(StandardWidth, StandardHeight, location, Sprites.f_flower, mapScene)
     End Sub
 
     Public Overrides Sub Animate()

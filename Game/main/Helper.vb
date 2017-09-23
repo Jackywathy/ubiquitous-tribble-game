@@ -43,22 +43,17 @@ Module Debug
     Public Sub DebugMapHook(scene As MapScene)
         scene.AddStatic(New StaticCoin(New Point(700, Helper.TopToBottom(0, 32))))
         scene.AddStatic(New StaticCross(New Point(732, Helper.TopToBottom(0, 32))))
+
         Dim coinCallback As New StaticText(New Rectangle(764, Helper.TopToBottom(0, 32), 100, 32), "0", CustomFontFamily.NES.GetFontFamily(), 24,
                                            DrawingPrimitives.WhiteBrush, scene)
         scene.AddStatic(coinCallback)
         EntPlayer.CoinCallback = coinCallback
-
-        scene.AddHitbox(New BlockBrickStar(New Point(32*7, 32*5), scene))
 
         Dim y as new StaticHudPowerup(New Point(ScreenGridWidth/2-24, Helper.TopToBottom(0, 48)))
         scene.AddStatic(y)
         scene.hudPowerup = y
         y.ChangeItem(New StaticFireFlower(New Point()))
 
-                                           
-        'scene.AddEntity(New EntCoin(32, 32, New Point(320, 96), scene))
-        'scene.AddHitbox(New BlockBrickCoin(New Point(32*5, 32*5), scene))
-        'scene.AddHitbox(New Flag(New Point(32*10,64), scene))
     End Sub
     
 #Else

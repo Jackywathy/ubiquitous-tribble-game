@@ -1,4 +1,4 @@
-﻿Public Class BlockBrickStar
+﻿Public Class BlockBrickPowerUp
     Inherits BlockBumpable
     
     Private isUsed As Boolean = False
@@ -19,9 +19,16 @@
     Public Overrides Sub CollisionBottom(sender As Entity)
         MyBase.CollisionBottom(sender)
 
-        If Not isUsed And Helper.IsPlayer(sender) Then            
-            Dim star = New EntStar(New Point(Me.Location.X, Me.Location.Y + Me.Height), MyScene)
-            star.Spawn()
+        If Not isUsed And Helper.IsPlayer(sender) Then         
+            Dim powerup as EntPowerup
+            dim player As EntPlayer = sender
+            If player.State = PlayerStates.Small
+                 powerup = New EntMushroom(New Point(Me.Location.X, Me.Location.Y + Me.Height), MyScene)
+            Else
+                powerup = New EntFireFlower(New Point(Me.Location.X, Me.Location.Y + Me.Height), MyScene)
+            End if
+            powerup.Spawn()
+
             isUsed = True
             StartBump()
         End If

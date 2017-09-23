@@ -1,4 +1,4 @@
-﻿Public Class BlockMetal
+﻿Public Class BlockCloud
     Inherits Block
 
     Sub New(location As Point, mapScene As MapScene)

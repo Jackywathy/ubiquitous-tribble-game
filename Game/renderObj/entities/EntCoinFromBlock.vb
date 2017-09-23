@@ -4,8 +4,8 @@
     Public willDisappear As Boolean = False
     Public defaultY As Integer
 
-    Sub New(width As Integer, height As Integer, location As Point, mapScene As MapScene)
-        MyBase.New(width, height, location, Sprites.coinFromBlock, mapScene)
+    Sub New(location As Point, mapScene As MapScene)
+        MyBase.New(StandardWidth, StandardHeight, location, Sprites.coinFromBlock, mapScene)
         Me.RenderImage = SpriteSet.getFirst(SpriteState.ConstantRight)
         Me.defaultY = Me.Location.Y
     End Sub

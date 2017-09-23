@@ -618,15 +618,20 @@ Public NotInheritable Class JsonMapReader
         BlockBreakableBrick
         BlockBrickCoin
         BlockBrickPowerUp
+        BlockBrickStar
 
-        BlockInvis1up
+        BlockInvis1Up
         BlockInvisNone
+        BlockInvisCoin
 
         BlockQuestion
+        BlockMushroom
 
         BlockMetal
 
         BlockPipe
+
+        BlockCloud
         
         
 
@@ -639,8 +644,14 @@ Public NotInheritable Class JsonMapReader
 
 
     Public Shared Function RenderItemFactory(name As String, params As Object(), theme As RenderTheme, scene As MapScene) As HitboxItem
-        Dim out As HitboxItem
-        Select Case Helper.StrToEnum(Of RenderTypes)(name)
+        Dim out As HitboxItem'
+        Dim item As RenderTypes
+        Try
+             item = Helper.StrToEnum(Of RenderTypes)(name)
+        Catch exception As Exception
+            Throw New Exception(String.Format("Cannot find item: {0} in the RenderTypes Enum", name), exception)
+        End Try
+        Select Case item
             Case RenderTypes.BlockBreakableBrick
                 AssertLength(name, 2, params)
                 out = New BlockBreakableBrick(params, theme, scene)
@@ -665,9 +676,22 @@ Public NotInheritable Class JsonMapReader
                 AssertLength("blockBrickCoin", 2, params)
                 out = New BlockBrickCoin(params, scene)
 
+            Case RenderTypes.BlockBrickStar
+                AssertLength("blockBrickStar", 2, params)
+                out = New BlockBrickStar(params, scene)
+            
+            Case RenderTypes.BlockBrickPowerUp
+                AssertLength("blockBrickPowerUp", 2, params)
+                out = New BlockBrickPowerup(params, scene)
+
+            Case RenderTypes.BlockCloud
+                AssertLength("blockCloud", 2, params)
+                out = New BlockCloud(params, scene)
+
             Case RenderTypes.EntGoomba
                 AssertLength("entGoomba", 2, params)
                 out = New EntGoomba(params, scene)
+
             Case RenderTypes.EntKoopa
                 AssertLength("entKoopa", 2, params)
                 out = New EntKoopa(params, scene)
@@ -683,6 +707,10 @@ Public NotInheritable Class JsonMapReader
             Case RenderTypes.BlockInvisNone
                 AssertLength("blockInvisNone", 2, params)
                 out = New BlockInvisNone(params, scene)
+            
+            Case RenderTypes.BlockInvisCoin
+                AssertLength("BlockInvisCoin", 2, params)
+                out = New BlockInvisCoin(params, scene)
 
             Case Else
 

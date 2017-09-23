@@ -113,9 +113,12 @@
   <ItemGroup>
     <Compile Include="main\GameControl.vb" />
     <Compile Include="main\MainForm.vb" />
+    <Compile Include="renderObj\blocks\BlockBrickPowerUp.vb" />
     <Compile Include="renderObj\blocks\BlockBrickStar.vb" />
     <Compile Include="renderObj\blocks\BlockBumpable.vb" />
+    <Compile Include="renderObj\blocks\BlockCloud.vb" />
     <Compile Include="renderObj\blocks\BlockInvis1Up.vb" />
+    <Compile Include="renderObj\blocks\BlockInvisCoin.vb" />
     <Compile Include="renderObj\entities\Ent1Up.vb" />
     <Compile Include="renderObj\Flag.vb" />
     <Compile Include="renderObj\entities\EntStar.vb" />
@@ -188,6 +191,7 @@
   <ItemGroup>
     <None Include="fonts\NES+.ttf" />
     <None Include="fonts\SuperMario256.ttf" />
+    <None Include="main\maps\map2_1.json" />
     <None Include="main\maps\map1_1under.json" />
     <None Include="main\maps\map_startmap.json" />
     <None Include="main\maps\map1_1.json" />

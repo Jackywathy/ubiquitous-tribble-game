@@ -496,4 +496,7 @@
   <data name="map_startmap" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\main\maps\map_startmap.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="map2_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\main\maps\map2_1.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

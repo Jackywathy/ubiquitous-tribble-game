@@ -35,18 +35,18 @@
                             Dim mushroom As New EntMushroom(New Point(Me.Location.X, Me.Location.Y + Me.Height), MyScene)
                             mushroom.Spawn()
                         Else
-                            Dim flower As New EntFireFlower(32, 32, New Point(Me.Location.X, Me.Location.Y + Me.Height), MyScene)
+                            Dim flower As New EntFireFlower(New Point(Me.Location.X, Me.Location.Y + Me.Height), MyScene)
                             flower.Spawn()
                         End If
                     Case QuestionBlockReward.Fire
-                        Dim flower As New EntFireFlower(32, 32, New Point(Me.Location.X, Me.Location.Y + Me.Height), MyScene)
+                        Dim flower As New EntFireFlower(New Point(Me.Location.X, Me.Location.Y + Me.Height), MyScene)
                         flower.Spawn()
                     Case QuestionBlockReward.Mushroom
                         Dim mushroom As New EntMushroom(New Point(Me.Location.X, Me.Location.Y + Me.Height), MyScene)
                         mushroom.Spawn()
                     Case QuestionBlockReward.Coin
                         player.PickupCoin()
-                        Dim coin = New EntCoinFromBlock(32, 32, New Point(Me.Location.X, Me.Location.Y + Me.Height), MyScene)
+                        Dim coin = New EntCoinFromBlock(New Point(Me.Location.X, Me.Location.Y + Me.Height), MyScene)
                         coin.spawn()
                 End Select
                 StartBump()

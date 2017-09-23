@@ -67,7 +67,7 @@
         If Not Me.isMoving And Not isUsed And Helper.IsPlayer(sender) Then
             Dim player As EntPlayer = sender
             player.PickupCoin()
-            Dim coin = New EntCoinFromBlock(32, 32, New Point(Me.Location.X, Me.Location.Y + Me.Height), MyScene)
+            Dim coin = New EntCoinFromBlock(New Point(Me.Location.X, Me.Location.Y + Me.Height), MyScene)
             coin.Spawn()
 
             If Not Me.HasBeenHit Then
