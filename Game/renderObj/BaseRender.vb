@@ -109,7 +109,12 @@ Public MustInherit Class GameImage
         Me.location = location
     End Sub
 
-    Friend Function BottomToTop(botY As Integer) As Integer
+    ''' <summary>
+    ''' Converts a from-bottom justified point into 
+    ''' </summary>
+    ''' <param name="botY"></param>
+    ''' <returns></returns>
+    Friend Function GetTopBasedY(botY As Integer) As Integer
         Return Dimensions.ScreenGridHeight - botY - height
     End Function
 
@@ -155,7 +160,7 @@ Public MustInherit Class MovingImage
     Public Overrides Sub Render(g As Graphics)
         if RenderImage IsNot Nothing Then
             Dim drawnRect As New Rectangle(Location.X - MyScene.ScreenLocation.X,
-                                      BottomToTop(Location.Y) - MyScene.ScreenLocation.Y,
+                                      GetTopBasedY(Location.Y) - MyScene.ScreenLocation.Y,
                                            Width, Height)
 
             ' top right x, top right y, width, heigh

@@ -176,16 +176,25 @@ End Enum
 ''' </summary>
 Public Class MapScene
     Inherits BaseScene
+
+    ''' <summary>
+    ''' Gets the location of curser relative to the size of the Form and scaled to be from Bottom Left
+    ''' </summary>
+    ''' <returns></returns>
+    Public Function GetMouseRelativeLocation() As Point
+        Dim point = parent.PointToClient(Cursor.Position)
+        ' convert the point from Top Left to bottom left
+        point.Y = ScreenGridHeight - point.y
+        return point
+    End Function
     
     Public Overrides Sub DrawDebugStrings(form as GameControl)
         form.AddStringBuffer(String.Format("Mario Location: {0}, {1}", player1.Location.X, player1.Location.Y))
-        dim relativePoint = form.PointToClient(Cursor.Position)
+        dim relativePoint = GetMouseRelativeLocation()
         form.AddStringBuffer(String.Format("Mouse - x: {0}, y: {1}", relativePoint.X, relativePoint.Y))
         form.AddStringBuffer(String.Format("Is over box: {0}", If(MouseOverBox, "yes", "no")))
     End Sub
 
-    ' TODO implement 
-    Private CurrentlyHeldPowerup as EntPowerup
 
     ''' <summary>
     ''' Switches the level to something else
@@ -193,7 +202,7 @@ Public Class MapScene
     ''' </summary>
     ''' <param name="type"></param>
     Public Sub SwitchLevel(Optional type As SwitchLevelType = SwitchLevelType.Normal)
-        'Throw New NotImplementedException()
+        Throw New NotImplementedException()
         Print("HI!")
     End Sub
     ''' <summary>
@@ -208,37 +217,38 @@ Public Class MapScene
 
 
     Private Function MouseOverBox As Boolean
-        Return Me.HudPowerUp.GetRect().Contains(Parent.PointToClient(Cursor.Position))
+        Dim point = GetMouseRelativeLocation()
+        Return Me.HudPowerUp.GetRect().Contains(point)
     End Function
 
     Private isDragging = False
-    Private previousMouseLoc = New Point(0, 0)
+
     ''' <summary>
     ''' 
     ''' </summary>
-    Private Sub handleMouse()
-
+    Private Sub HandleMouse()
+        Dim cursorLocation = GetMouseRelativeLocation()
         ' Move image while dragging
         If isDragging Then
-            Me.HudPowerUp.ChangeLocation(Cursor.Position.X - previousMouseLoc.x, -(Cursor.Position.Y - previousMouseLoc.y))
+            Me.HudPowerUp.SetPowerupMiddleLocation(cursorLocation)
         End If
 
         ' handle left mouse button release
-        If Control.MouseButtons <> MouseButtons.Left Then
+        If Control.MouseButtons <> MouseButtons.Left And isDragging Then
             isDragging = False
-            If MouseOverBox() Then
+            If HudPowerUp.PowerupTouchesBox Then
                 Me.HudPowerUp.ResetLocation()
             Else
-                ' spawn image
+                HudPowerUp.SpawnPowerup(Me)
             End If
         End If
 
         ' check if clicked
-        If MouseOverBox() And Control.MouseButtons = MouseButtons.Left And Not IsTransitioning Then
+        If MouseOverBox() And Control.MouseButtons = MouseButtons.Left And HudPowerUp.HasPowerup Then
             isDragging = True
         End If
 
-        previousMouseLoc = Cursor.Position
+        'previousMouseLoc = Cursor.Position
 
     End Sub
 
@@ -377,6 +387,7 @@ Public Class MapScene
 
     Public HudPowerUp As StaticHudPowerup
 
+    
    
      ''' <summary>
     ''' Player1
