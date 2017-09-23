@@ -76,7 +76,8 @@ Public MustInherit Class Entity
         Dim willInsideFromLeft_v = nextSelfRightmost - (10) >= blockLeftmost
         Dim willInsideFromRight_v = nextSelfLeftmost + (10) <= blockRightmost
 
-        Dim senderIsEntity = sender.GetType.IsSubclassOf(GetType(Entity)) ' is not entity or subclass
+        Dim senderImplementsPhysicalCollision = (Not sender.GetType.IsSubclassOf(GetType(Entity))) And (Not sender.GetType.IsSubclassOf(GetType(BlockInvisNone)))
+        Dim senderIsEntity = sender.GetType.IsSubclassOf(GetType(Entity)) ' is not entity or subclass thereof
         Dim playerFlagCollision = Me.GetType = GetType(EntPlayer) And (sender.GetType = GetType(Flag) Or sender.GetType = GetType(FlagTop))
 
         Dim newPositionToMoveTo As Point
@@ -84,7 +85,7 @@ Public MustInherit Class Entity
 
         ' NORTH
         If Me.veloc.y < 0 And isAbove And willInsideFromAbove And isInsideFromLeft_v And isInsideFromRight_v Then
-            If Not senderIsEntity Then
+            If senderImplementsPhysicalCollision Then
                 Me.willCollideFromAbove = True
                 newPositionToMoveTo = New Point(Me.Location.X, blockUppermost)
             End If
@@ -94,7 +95,7 @@ Public MustInherit Class Entity
             ' SOUTH 
         ElseIf Me.veloc.y >= 0 And isBelow And willInsideFromBelow And willInsideFromLeft_v And willInsideFromRight_v Then
 
-            If Not senderIsEntity Then
+            If senderImplementsPhysicalCollision Then
                 Me.willCollideFromBelow = True
             End If
 
@@ -129,8 +130,8 @@ Public MustInherit Class Entity
                         player.Location = New Point(sender.Location.X - player.Width, player.Location.Y)
                     End If
                 End If
-            ElseIf Not (senderIsEntity) Then
-                    newPositionToMoveTo = New Point(blockLeftmost - Me.Width, Me.Location.Y)
+            ElseIf senderImplementsPhysicalCollision Then
+                newPositionToMoveTo = New Point(blockLeftmost - Me.Width, Me.Location.Y)
                 Me.willCollideFromLeft = True
             End If
 
@@ -141,7 +142,7 @@ Public MustInherit Class Entity
             ' EAST
         ElseIf isRightOf And willInsideFromRight And isInsideFromAbove And isInsideFromBelow Then
 
-            If Not (senderIsEntity) Then
+            If senderImplementsPhysicalCollision Then
                 newPositionToMoveTo = New Point(blockRightmost, Me.Location.Y)
                 Me.willCollideFromRight = True
             End If
@@ -157,7 +158,7 @@ Public MustInherit Class Entity
 
         ' NOTE: managing ground objects is NOT predictive, so it does NOT use predictive values
 
-        If Not senderIsEntity Then
+        If senderImplementsPhysicalCollision Then
 
             If Me.Location.Y + Me.CollisionHeight > blockUppermost And Me.Location.Y <= blockUppermost And isInsideFromLeft And isInsideFromRight And Not currentGroundObjects.Contains(sender) Then
 

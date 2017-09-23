@@ -121,6 +121,7 @@
     <Compile Include="renderObj\blocks\BlockInvis1Up.vb" />
     <Compile Include="renderObj\blocks\BlockInvisCoin.vb" />
     <Compile Include="renderObj\entities\Ent1Up.vb" />
+    <Compile Include="renderObj\entities\EntLifeShroom.vb" />
     <Compile Include="renderObj\Flag.vb" />
     <Compile Include="renderObj\entities\EntStar.vb" />
     <Compile Include="fonts\FontController.vb" />
@@ -281,6 +282,14 @@
     <Content Include="images\player\small\mario_small_climb.png" />
     <Content Include="images\player\small\mario_small_dead.png" />
     <Content Include="images\player\small\mario_small_jumpr.png" />
+    <Content Include="images\powerups\lifeshroom\lifeshroom.png" />
+    <Content Include="images\powerups\lifeshroom\lifeshroom_s1.png" />
+    <Content Include="images\powerups\lifeshroom\lifeshroom_s2.png" />
+    <Content Include="images\powerups\lifeshroom\lifeshroom_s3.png" />
+    <Content Include="images\powerups\lifeshroom\lifeshroom_s4.png" />
+    <Content Include="images\powerups\lifeshroom\lifeshroom_s5.png" />
+    <Content Include="images\powerups\lifeshroom\lifeshroom_s6.png" />
+    <Content Include="images\powerups\lifeshroom\lifeshroom_s7.png" />
     <Content Include="images\powerups\star\star_1.png" />
     <Content Include="images\powerups\star\star_2.png" />
     <Content Include="images\powerups\star\star_3.png" />

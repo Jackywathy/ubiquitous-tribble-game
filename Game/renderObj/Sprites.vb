@@ -259,7 +259,15 @@ Public MustInherit Class Sprites
                                                {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.mushroom}}
                                                },
         32,
-        32, Nothing, True 
+        32, Nothing, True
+    )
+
+    Public Shared lifeshroom As New SpriteSet("lifeshroom", New Dictionary(Of SpriteState, List(Of Image)) From {
+                                               {SpriteState.Spawn, New List(Of Image) From {My.Resources.lifeshroom_s1, My.Resources.lifeshroom_s2, My.Resources.lifeshroom_s3, My.Resources.lifeshroom_s4, My.Resources.lifeshroom_s5, My.Resources.lifeshroom_s6, My.Resources.lifeshroom_s7}},
+                                               {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.lifeshroom}}
+                                               },
+        32,
+        32, Nothing, True
     )
 
     Public Shared star As New SpriteSet("star", New Dictionary(Of SpriteState, List(Of Image)) From {
