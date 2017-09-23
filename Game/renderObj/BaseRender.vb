@@ -37,7 +37,14 @@ End Class
 ''' </summary>
 Public MustInherit Class GameImage
     Inherits GameItem
-
+    ''' <summary>
+    ''' Width of one unit (1 block)
+    ''' </summary>
+    Public Const StandardWidth = 32
+    ''' <summary>
+    ''' Height of one unit (1 block)
+    ''' </summary>
+    Public Const StandardHeight = 32
     ''' <summary>
     ''' width of image
     ''' </summary>
@@ -92,7 +99,6 @@ Public MustInherit Class GameImage
     ''' <summary>
     ''' Image to be drawn onto the screen in the next refresh   
     ''' </summary>
-    ''' <returns></returns>
     Friend Property RenderImage As Image
 
     ''' <summary>
@@ -178,9 +184,6 @@ End Class
 ''' </summary>
 Public MustInherit Class HitboxItem
     Inherits MovingImage
-
-    Friend Const StandardWidth = 32
-    Friend Const StandardHeight = 32
 
     Public Property CollisionHeight As Integer
     Public Property CollisionWidth As Integer

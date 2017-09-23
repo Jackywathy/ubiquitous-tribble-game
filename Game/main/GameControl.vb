@@ -167,6 +167,10 @@ Public Class GameControl
         Return scenes
     End Function
 
+    Public Sub LoadAndRunScene()
+
+    End Sub 
+
     Private Sub GameControl_SizeChanged(sender As Object, e As EventArgs) Handles Me.SizeChanged
         ScreenGridWidth = Width
         ScreenGridHeight = Height

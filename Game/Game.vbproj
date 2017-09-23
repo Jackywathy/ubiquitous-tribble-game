@@ -133,6 +133,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="main\Helper.vb" />
+    <Compile Include="renderObj\static\StaticMushroom.vb" />
     <Compile Include="scenes\BaseScene.vb" />
     <Compile Include="scenes\MapScene.vb" />
     <Compile Include="main\StartScene.vb" />

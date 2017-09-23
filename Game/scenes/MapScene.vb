@@ -14,8 +14,6 @@ Public Enum TransitionType
 End Enum
 
 
-
-
 Public Enum SwitchLevelType
     Normal
     Secret1
@@ -153,7 +151,6 @@ Public Class MapScene
             AllHitboxItems.Add(item)
         Next
     End Sub
-
 
     ''' <summary>
     ''' Adds entity to the mapScene
