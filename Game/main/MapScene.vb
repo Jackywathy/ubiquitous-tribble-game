@@ -224,7 +224,7 @@ Public Class MapScene
         End If
 
         ' handle left mouse button release
-        If Control.MouseButtons <> MouseButtons.Left Then
+        If isDragging And Control.MouseButtons <> MouseButtons.Left Then
             isDragging = False
             If MouseOverBox() Then
                 Me.HudPowerUp.ResetLocation()
