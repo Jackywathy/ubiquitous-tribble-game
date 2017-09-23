@@ -19,7 +19,7 @@
     ''' </summary>
     ''' <param name="params"></param>
     Public Sub New(params As Object(), theme As RenderTheme, mapScene As MapScene)
-        Me.New(New Point(params(0)*32, params(1)*32), theme, mapScene)
+        Me.New(New Point(params(0) * 32, params(1) * 32), theme, mapScene)
     End Sub
 
     Public Overrides Sub CollisionBottom(sender As Entity)

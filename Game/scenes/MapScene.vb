@@ -518,8 +518,6 @@ Public NotInheritable Class JsonMapReader
         BlockPipe
 
         BlockCloud
-        
-        
 
         EntGoomba
         EntKoopa

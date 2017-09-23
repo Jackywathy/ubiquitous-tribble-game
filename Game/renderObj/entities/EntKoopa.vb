@@ -3,15 +3,12 @@
 
     Public deathTimer As Integer = 0
     Public inShell As Integer  = False
-    Public defaultY  As Integer = 0
-    Public willDie As Integer = False
+    Public defaultY As Integer = 0
 
     ' Amount of time the player cannot be killed by shell immediately after kicking it
     Public gracePeriodTimerForPlayer As Integer = 0
 
     Public gettingKicked = False
-
-    
 
     Public Overrides Property moveSpeed As Distance = New Distance(1, 0)
     Public Overrides Property maxVeloc As Distance = New Distance(1.8, -15)
@@ -51,6 +48,7 @@
     Public Overrides Sub Animate()
         If willDie Then
             Me.deathTimer += 1
+            Me.Height = 32
             Me.RenderImage = SpriteSet(SpriteState.Destroy)(2)
             Dim x = Me.deathTimer / (animationInterval * 5)
 

@@ -5,13 +5,13 @@
 
     ' Takes a raw frame counter and returns a new point
     Friend Function BounceFunction(x As Integer) As Point
-        x /= animationInterval
-        Dim heightFunc = 6 * (2 * (x) - (x * x))
+        x /= AnimationInterval
+        Dim heightFunc = 2 * ((4 * (x)) - (x * x))
 
         ' f(x) = 0 when x = 2
-        If framesSinceHit / animationInterval >= 2 Then
+        If FramesSinceHit / AnimationInterval >= 4 Then
             ResetBump()
-            Return New Point(Me.Location.X, defaultLocationY)
+            Return New Point(Me.Location.X, DefaultLocationY)
         Else
             Return New Point(Me.Location.X, defaultLocationY + heightFunc)
         End If
@@ -38,4 +38,16 @@
             Me.Location = bounceFunction(framesSinceHit)
         End If
     End Sub
+
+    Public Overrides Sub CollisionTop(sender As Entity)
+        MyBase.CollisionTop(sender)
+        If sender.GetType.IsSubclassOf(GetType(EntEnemy)) Then
+            Dim e As EntEnemy = sender
+            e.willDie = True
+        ElseIf sender.GetType.IsSubclassOf(GetType(EntPowerup)) Then
+            Dim p As EntPowerup = sender
+            p.AccelerateY(p.moveSpeed.y, True)
+        End If
+    End Sub
+
 End Class

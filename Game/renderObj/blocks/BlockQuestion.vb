@@ -50,7 +50,7 @@
                         coin.spawn()
                 End Select
                 StartBump()
-                IsUsed = True
+                isUsed = True
             End If
         End If
     End Sub

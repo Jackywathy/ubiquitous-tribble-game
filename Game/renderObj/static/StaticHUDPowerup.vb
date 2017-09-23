@@ -25,15 +25,15 @@
         Dim powerup As EntPowerup
         Select Case StoredPowerup
             Case PowerupType.Fireflower
-                powerup = New EntFireFlower(New Point(powerupImage.x,powerupImage.y), scene)
+                powerup = New EntFireFlower(New Point(powerupImage.x, powerupImage.y), scene)
             Case PowerupType.Mushroom
-                powerup = New EntMushroom(New Point(powerupImage.x,powerupImage.y), scene)
+                powerup = New EntMushroom(New Point(powerupImage.x, powerupImage.y), scene)
             Case Else
                 Throw New Exception()
         End Select
-        powerup.Spawn() 
+        powerup.isGrounded = False
+        powerup.Spawn(True)
         SetPowerupItem(PowerupType.Empty)
-
     End Sub
 
     Public Sub ChangeLocation(dx As Integer, dy As Integer)
@@ -94,7 +94,7 @@
             Case PowerupType.Fireflower
                 powerupImage = New StaticFireFlower(GetPowerLocationPoint)
             Case PowerupType.Mushroom
-                Throw New NotImplementedException
+                powerupImage = New StaticMushroom(GetPowerLocationPoint)
             Case PowerupType.Empty
                 powerupImage = Nothing
             Case Else

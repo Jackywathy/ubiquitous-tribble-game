@@ -3,6 +3,7 @@
     ' Positive for right
     ' Negative for left
     Public directionMoving As Integer = 1
+    Public willDie As Integer = False
 
     Public Sub New(width As Integer, height As Integer, location As Point, spriteSet As SpriteSet, mapScene As MapScene)
         MyBase.New(width, height, location, spriteSet, mapScene)

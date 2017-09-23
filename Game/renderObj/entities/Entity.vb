@@ -77,11 +77,22 @@ Public MustInherit Class Entity
         Dim willInsideFromRight_v = nextSelfLeftmost + (10) <= blockRightmost
 
         Dim senderImplementsPhysicalCollision = (Not sender.GetType.IsSubclassOf(GetType(Entity))) And (Not sender.GetType.IsSubclassOf(GetType(BlockInvisNone)))
+
+        If sender.GetType.IsSubclassOf(GetType(BlockInvisNone)) Then
+            Dim b As BlockInvisNone = sender
+            If b.Revealed Then
+                senderImplementsPhysicalCollision = True
+            End If
+        End If
+
         Dim senderIsEntity = sender.GetType.IsSubclassOf(GetType(Entity)) ' is not entity or subclass thereof
         Dim playerFlagCollision = Me.GetType = GetType(EntPlayer) And (sender.GetType = GetType(Flag) Or sender.GetType = GetType(FlagTop))
 
         Dim newPositionToMoveTo As Point
 
+        If Me.GetType = GetType(EntFireFlower) Then
+            Me.ID += 0
+        End If
 
         ' NORTH
         If Me.veloc.y < 0 And isAbove And willInsideFromAbove And isInsideFromLeft_v And isInsideFromRight_v Then
@@ -171,10 +182,6 @@ Public MustInherit Class Entity
                 currentGroundObjects.RemoveAt(currentGroundObjects.IndexOf(sender))
                 If currentGroundObjects.Count = 0 Then
                     Me.isGrounded = False
-                    If Me.GetType = GetType(EntKoopa) Then
-                        Me.ID += 0
-                    End If
-
                     If Me.veloc.y <= 0 Then
                         didJumpAndNotFall = False
                     End If
@@ -318,8 +325,6 @@ Public MustInherit Class Entity
     
     Public Overrides Sub UpdateVeloc()
 
-
-
         ' Reset collision variables
         Me.willCollideFromAbove = False
             Me.willCollideFromBelow = False
@@ -330,36 +335,48 @@ Public MustInherit Class Entity
 
             Me.ApplyConstantForces()
 
-            ' Check direction
-            If veloc.x < 0 And isFacingForward Then
-                isFacingForward = False
-            ElseIf veloc.x > 0 And Not isFacingForward Then
-                isFacingForward = True
+        ' Check direction
+        If veloc.x < 0 And isFacingForward Then
+            isFacingForward = False
+        ElseIf veloc.x > 0 And Not isFacingForward Then
+            isFacingForward = True
             End If
 
-            ' check collision of all Entities with all existing RenderObj, including other Entities
-            For Each other As HitboxItem In MyScene.AllHitboxItems
+        ' check collision of all Entities with all existing RenderObj, including other Entities
+        For Each other As HitboxItem In MyScene.AllHitboxItems
+            ' Don't check collisions using the same obj
+            If Me <> other Then
+                Me.CheckPotentialCollision(other)
 
-                ' Don't check collisions using the same obj
-                If Me <> other Then
-                    Me.CheckPotentialCollision(other)
-
+                ' handle block bumping beneath Me
+                If Me.currentGroundObjects.Contains(other) And other.GetType.IsSubclassOf(GetType(BlockBumpable)) Then
+                    Dim b As BlockBumpable = other
+                    If b.IsMoving Then
+                        If Me.GetType.IsSubclassOf(GetType(EntEnemy)) Then
+                            Dim e As EntEnemy = Me
+                            e.willDie = True
+                        Else
+                            Me.AccelerateY(Me.moveSpeed.y, True)
+                        End If
+                    End If
                 End If
-            Next
 
-            ' If entity is going to collide, clear veloc so that it never moves INSIDE the object
-            If Me.willCollideFromAbove And Me.veloc.y < 0 Then
+            End If
+        Next
+
+        ' If entity is going to collide, clear veloc so that it never moves INSIDE the object
+        If Me.willCollideFromAbove And Me.veloc.y < 0 Then
                 Me.veloc.y = 0
             End If
-            If Me.willCollideFromBelow And Me.veloc.y > 0 Then
-                Me.veloc.y = 0
-            End If
-            If Me.willCollideFromLeft And Me.veloc.x > 0 Then
-                Me.veloc.x = 0
-            End If
-            If Me.willCollideFromRight And Me.veloc.x < 0 Then
-                Me.veloc.x = 0
-            End If
+        If Me.willCollideFromBelow And Me.veloc.y > 0 Then
+            Me.veloc.y = 0
+        End If
+        If Me.willCollideFromLeft And Me.veloc.x > 0 Then
+            Me.veloc.x = 0
+        End If
+        If Me.willCollideFromRight And Me.veloc.x < 0 Then
+            Me.veloc.x = 0
+        End If
 
     End Sub
 

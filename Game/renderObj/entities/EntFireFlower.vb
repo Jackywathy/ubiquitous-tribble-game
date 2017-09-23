@@ -2,7 +2,7 @@
     Inherits EntPowerup
 
     Public Overrides Property moveSpeed As Distance = New Distance(0, 0)
-    Public Overrides Property maxVeloc As Distance = New Distance(0, 0)
+    Public Overrides Property maxVeloc As Distance = New Distance(0, Forces.terminalVeloc)
     Public Overrides ReadOnly Property PickupScore As Integer = PlayerPoints.Firefire
 
     Private spawnCounter = 0
@@ -35,4 +35,5 @@
         MyBase.Activate(sender)
         sender.State = PlayerStates.Fire
     End Sub
+
 End Class

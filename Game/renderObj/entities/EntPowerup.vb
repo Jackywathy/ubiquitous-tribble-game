@@ -18,7 +18,9 @@
     Public Overridable Sub Activate(sender As EntPlayer)
         sender.Score += PickupScore
         If PickupSound IsNot Nothing Then
+
             Me.PickupSound.Play()
+
         End If
         MyScene.PrepareRemove(Me)
 
@@ -48,8 +50,12 @@
     ''' <summary>
     ''' Adds a new instance into the mapScene
 	''' </summary>
-    Public Sub Spawn()
+    Public Sub Spawn(Optional skipAnimation As Boolean = False)
+        If skipAnimation Then
+            Me.IsSpawning = False
+        End If
         MyScene.PrepareAdd(Me)
+
     End Sub
 
     Sub New(width As Integer, height As Integer, location As Point, spriteSet As SpriteSet, mapScene As MapScene)
