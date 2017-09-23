@@ -120,7 +120,7 @@
     <Compile Include="renderObj\blocks\BlockCloud.vb" />
     <Compile Include="renderObj\blocks\BlockInvis1Up.vb" />
     <Compile Include="renderObj\blocks\BlockInvisCoin.vb" />
-    <Compile Include="renderObj\entities\Ent1Up.vb" />
+    <Compile Include="renderObj\entities\EntOneUp.vb" />
     <Compile Include="renderObj\entities\EntLifeShroom.vb" />
     <Compile Include="renderObj\Flag.vb" />
     <Compile Include="renderObj\entities\EntStar.vb" />
@@ -133,7 +133,8 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="main\Helper.vb" />
-    <Compile Include="main\MapScene.vb" />
+    <Compile Include="scenes\BaseScene.vb" />
+    <Compile Include="scenes\MapScene.vb" />
     <Compile Include="main\StartScene.vb" />
     <Compile Include="My Project\Resources.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -172,6 +173,7 @@
     <Compile Include="renderObj\entities\EntPowerup.vb" />
     <Compile Include="renderObj\BaseRender.vb" />
     <Compile Include="renderObj\Sprites.vb" />
+    <Compile Include="renderObj\static\StaticCloud.vb" />
     <Compile Include="renderObj\static\StaticCoin.vb" />
     <Compile Include="renderObj\static\StaticCross.vb" />
     <Compile Include="renderObj\static\StaticDecoration.vb" />

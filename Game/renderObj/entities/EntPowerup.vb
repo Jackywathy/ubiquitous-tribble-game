@@ -9,10 +9,10 @@
     Public MustOverride Property PickupSound As MusicPlayer
 
     Private spawnCounter As Integer = 0
-   
+    Private isUsed As Boolean = False
     ''' <summary>
     ''' Run when player hits the powerup
-    ''' By default, plays a sound and removes itself
+    ''' By default, plays a sound, adds score and removes itself
     ''' </summary>
     ''' <param name="sender"></param>
     Public Overridable Sub Activate(sender As EntPlayer)
@@ -21,6 +21,7 @@
             Me.PickupSound.Play()
         End If
         MyScene.PrepareRemove(Me)
+
     End Sub
 
     Public Overrides Sub Animate()
@@ -57,23 +58,27 @@
 
 #Region "collisions"
     Public Overrides Sub CollisionBottom(sender As Entity)
-        If Helper.IsPlayer(sender) Then
+        If Helper.IsPlayer(sender) And Not isUsed Then
             Me.Activate(sender)
+            isUsed = True
         End If
     End Sub
     Public Overrides Sub CollisionTop(sender As Entity)
-        If Helper.IsPlayer(sender) Then
+        If Helper.IsPlayer(sender) And Not isUsed  Then
             Me.Activate(sender)
+            isUsed = True
         End If
     End Sub
     Public Overrides Sub CollisionLeft(sender As Entity)
-        If Helper.IsPlayer(sender) Then
+        If Helper.IsPlayer(sender) And Not isUsed Then
             Me.Activate(sender)
+            isUsed = True
         End If
     End Sub
     Public Overrides Sub CollisionRight(sender As Entity)
-        If Helper.IsPlayer(sender) Then
+        If Helper.IsPlayer(sender) And Not isUsed  Then
             Me.Activate(sender)
+            isUsed = True
         End If
     End Sub
 #End Region

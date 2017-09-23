@@ -150,8 +150,6 @@ Public NotInheritable Class Helper
         End If
     End Function
 
-    Private Const ToolbarOffset = 29
-
     ''' <summary>
     ''' Dont let it be instantalisd
     ''' </summary>

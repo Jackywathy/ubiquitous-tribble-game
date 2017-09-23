@@ -83,9 +83,10 @@
             End If
             willDie = True
             squashed = True
-            
+        ' fireballs
         ElseIf sender.killsOnContact Then
-            DirectCast(sender, EntPlayer).Score += PlayerPoints.Goomba
+            dim fireball = DirectCast(sender, EntFireball)
+            fireball.owner.Score += PlayerPoints.Goomba
             willDie = True
             squashed = False
             Me.defaultY = Me.Location.Y
