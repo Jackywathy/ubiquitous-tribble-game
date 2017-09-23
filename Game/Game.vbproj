@@ -174,6 +174,7 @@
     <Compile Include="renderObj\Sprites.vb" />
     <Compile Include="renderObj\static\StaticCoin.vb" />
     <Compile Include="renderObj\static\StaticCross.vb" />
+    <Compile Include="renderObj\static\StaticDecoration.vb" />
     <Compile Include="renderObj\static\StaticFireFlower.vb" />
     <Compile Include="renderObj\static\StaticHUDPowerup.vb" />
     <Compile Include="renderObj\static\StaticImage.vb" />
@@ -219,6 +220,7 @@
     <Content Include="images\blocks\blockInvis.png" />
     <Content Include="images\blocks\pipe\pipe_2x.png" />
     <Content Include="images\blocks\pipe\pipe_bottom.png" />
+    <Content Include="images\decoration\castle.png" />
     <Content Include="images\decoration\cloud_big.png" />
     <Content Include="images\decoration\cloud_small.png" />
     <Content Include="images\decoration\hill_big.png" />
