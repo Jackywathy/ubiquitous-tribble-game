@@ -211,14 +211,35 @@ Public Class MapScene
         Return Me.HudPowerUp.GetRect().Contains(Parent.PointToClient(Cursor.Position))
     End Function
 
+    Private isDragging = False
+    Private previousMouseLoc = New Point(0, 0)
     ''' <summary>
     ''' 
     ''' </summary>
     Private Sub handleMouse()
-        If MouseOverBox() and not IsTransitioning
-            ' do something here
-            StartNormalTransition(TransitionDirection.Top)
+
+        ' Move image while dragging
+        If isDragging Then
+            Me.HudPowerUp.ChangeLocation(Cursor.Position.X - previousMouseLoc.x, -(Cursor.Position.Y - previousMouseLoc.y))
         End If
+
+        ' handle left mouse button release
+        If Control.MouseButtons <> MouseButtons.Left Then
+            isDragging = False
+            If MouseOverBox() Then
+                Me.HudPowerUp.ResetLocation()
+            Else
+                ' spawn image
+            End If
+        End If
+
+        ' check if clicked
+        If MouseOverBox() And Control.MouseButtons = MouseButtons.Left And Not IsTransitioning Then
+            isDragging = True
+        End If
+
+        previousMouseLoc = Cursor.Position
+
     End Sub
 
     ''' <summary>

@@ -499,4 +499,28 @@
   <data name="map2_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\main\maps\map2_1.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="lifeshroom" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\powerups\lifeshroom\lifeshroom.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="lifeshroom_s1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\powerups\lifeshroom\lifeshroom_s1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="lifeshroom_s2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\powerups\lifeshroom\lifeshroom_s2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="lifeshroom_s3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\powerups\lifeshroom\lifeshroom_s3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="lifeshroom_s4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\powerups\lifeshroom\lifeshroom_s4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="lifeshroom_s5" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\powerups\lifeshroom\lifeshroom_s5.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="lifeshroom_s6" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\powerups\lifeshroom\lifeshroom_s6.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="lifeshroom_s7" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\powerups\lifeshroom\lifeshroom_s7.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

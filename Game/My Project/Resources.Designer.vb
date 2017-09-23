@@ -651,6 +651,86 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property lifeshroom() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("lifeshroom", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property lifeshroom_s1() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("lifeshroom_s1", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property lifeshroom_s2() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("lifeshroom_s2", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property lifeshroom_s3() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("lifeshroom_s3", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property lifeshroom_s4() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("lifeshroom_s4", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property lifeshroom_s5() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("lifeshroom_s5", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property lifeshroom_s6() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("lifeshroom_s6", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property lifeshroom_s7() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("lifeshroom_s7", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized resource of type System.Byte[].
         '''</summary>
         Friend ReadOnly Property map_startmap() As Byte()
