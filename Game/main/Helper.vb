@@ -33,6 +33,8 @@ Module Debug
     Public ShowBoundingBox As Boolean = True
     Public ShowHitBox As Boolean = True
 
+   
+
 #if DEBUG
     ''' <summary>
     ''' Use this to add additional objects on in DEBUG configuration
@@ -54,9 +56,9 @@ Module Debug
         y.ChangeItem(New StaticFireFlower(New Point()))
 
                                            
-        scene.AddEntity(New EntCoin(32, 32, New Point(320, 96), scene))
-        scene.AddHitbox(New BlockMultipleCoins(New Point(32*5, 32*5), scene))
-        scene.AddHitbox(New Flag(New Point(32*10,64), scene))
+        'scene.AddEntity(New EntCoin(32, 32, New Point(320, 96), scene))
+        'scene.AddHitbox(New BlockBrickCoin(New Point(32*5, 32*5), scene))
+        'scene.AddHitbox(New Flag(New Point(32*10,64), scene))
     End Sub
     
 #Else
@@ -129,6 +131,11 @@ Public Module ImageManipulation
 End Module
 
 Public NotInheritable Class Helper
+    Friend Shared Function TopToBottom(topY As Integer, height As Integer) As Integer
+        Return Dimensions.ScreenGridHeight - topy - height
+    End Function
+
+
     Public Shared Function StrToEnum(Of T)(valueToParse As String) As T
         Return [Enum].Parse(GetType(T), valueToParse, True)
     End Function
@@ -149,9 +156,6 @@ Public NotInheritable Class Helper
     End Function
 
     Private Const ToolbarOffset = 29
-    Public Shared Function TopToBottom(y As Integer, height As integer) As Integer
-        Return Dimensions.ScreenGridHeight - y - height
-    End Function
 
     ''' <summary>
     ''' Dont let it be instantalisd

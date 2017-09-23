@@ -1,4 +1,4 @@
-﻿Public Class BlockMultipleCoins
+﻿Public Class BlockBrickCoin
     Inherits BlockBumpable
 
     ''' <summary> 
@@ -29,6 +29,16 @@
 
     Public Sub New(location As Point, mapScene As MapScene)
         MyBase.New(StandardWidth, StandardHeight, location, Sprites.brickBlock, mapScene)
+    End Sub
+
+    ''' <summary>
+    ''' 0 : x
+    ''' 1 : y
+    ''' </summary>
+    ''' <param name="params"></param>
+    ''' <param name="mapScene"></param>
+    Public Sub New(params As Object(), mapScene As MapScene)
+        Me.New(New Point(params(0)*StandardWidth, params(1)*StandardHeight), mapScene)
     End Sub
     
     Public Overrides Sub UpdateVeloc()

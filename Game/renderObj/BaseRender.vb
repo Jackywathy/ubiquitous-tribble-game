@@ -113,7 +113,7 @@ Public MustInherit Class GameImage
         Return Dimensions.ScreenGridHeight - botY - height
     End Function
 
-    Friend Function TopToButtom(topY As Integer) As Integer
+    Friend Function TopToBottom(topY As Integer) As Integer
         Return topY + height
     End Function
 End Class

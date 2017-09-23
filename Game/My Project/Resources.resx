@@ -286,9 +286,6 @@
   <data name="koopa_green_shellr" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\enemy\koopa\koopa_green_shellr.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="map1_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\main\map1_1.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="mario_bigf_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\player\fire\mario_bigf_1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -489,5 +486,14 @@
   </data>
   <data name="mario_small_climb" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\player\small\mario_small_climb.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="map1_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\main\maps\map1_1.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="map1_1under" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\main\maps\map1_1under.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="map_startmap" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\main\maps\map_startmap.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

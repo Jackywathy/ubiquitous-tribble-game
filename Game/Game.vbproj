@@ -115,6 +115,8 @@
     <Compile Include="main\MainForm.vb" />
     <Compile Include="renderObj\blocks\BlockBrickStar.vb" />
     <Compile Include="renderObj\blocks\BlockBumpable.vb" />
+    <Compile Include="renderObj\blocks\BlockInvis1Up.vb" />
+    <Compile Include="renderObj\entities\Ent1Up.vb" />
     <Compile Include="renderObj\Flag.vb" />
     <Compile Include="renderObj\entities\EntStar.vb" />
     <Compile Include="fonts\FontController.vb" />
@@ -146,8 +148,8 @@
     </Compile>
     <Compile Include="renderObj\blocks\Block.vb" />
     <Compile Include="renderObj\blocks\BlockBreakableBrick.vb" />
-    <Compile Include="renderObj\blocks\BlockInvis.vb" />
-    <Compile Include="renderObj\blocks\BlockMultipleCoins.vb" />
+    <Compile Include="renderObj\blocks\BlockInvisNone.vb" />
+    <Compile Include="renderObj\blocks\BlockBrickCoin.vb" />
     <Compile Include="renderObj\blocks\BlockPipe.vb" />
     <Compile Include="renderObj\blocks\BlockQuestion.vb" />
     <Compile Include="renderObj\blocks\BlockMetal.vb" />
@@ -186,8 +188,9 @@
   <ItemGroup>
     <None Include="fonts\NES+.ttf" />
     <None Include="fonts\SuperMario256.ttf" />
-    <None Include="main\map_startmap.json" />
-    <None Include="main\map1_1.json" />
+    <None Include="main\maps\map1_1under.json" />
+    <None Include="main\maps\map_startmap.json" />
+    <None Include="main\maps\map1_1.json" />
     <None Include="My Project\app.manifest">
       <SubType>Designer</SubType>
     </None>

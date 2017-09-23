@@ -1,11 +1,21 @@
-﻿
-Public Class Flag
+﻿Public Class Flag
     Inherits HitboxItem
    
     Friend Const FlagWidth = 8
     Friend Const FlagHeight = StandardHeight * 9
     
     Private top As FlagTop
+
+    ''' <summary>
+    ''' Params:
+    ''' 0 : x
+    ''' 1 : y
+    ''' </summary>
+    ''' <param name="params"></param>
+    ''' <param name="scene"></param>
+    Public Sub New(params As Object, scene As MapScene)
+        Me.New(New Point(params(0)*32, params(1)*32), scene)
+    End Sub
 
     Public Sub New(location As Point, mapScene As MapScene, Optional center As Boolean=True)
         MyBase.New(FlagWidth, FlagHeight, location, Resize(My.Resources.flagpole_stem, FlagWidth, FlagHeight), mapScene)

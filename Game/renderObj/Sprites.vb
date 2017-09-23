@@ -188,6 +188,7 @@ Public Enum SpriteState
     CrouchLeft = 9
 
     Climb = 10
+    Revealed = 11
 End Enum
 
 Public MustInherit Class Sprites
@@ -324,11 +325,23 @@ Public MustInherit Class Sprites
         32, Nothing, True 
     )
     Public Shared blockInvis As New SpriteSet("invisBlock", New Dictionary(Of SpriteState,List(Of Image)) From {
-                                                 {SpriteState.Constant, New List(Of Image) From {My.Resources.blockInvis}}
+                                                 {SpriteState.Constant, New List(Of Image) From {My.Resources.blockInvis}},
+                                                 {SpriteState.Revealed, New List(Of Image) From {My.Resources.blockBrick}}
                                                  },
         32,
         32, Nothing, True 
     )
+
+    ''' <summary>
+    ''' Exposes a used question block after item is hit
+    ''' </summary>
+    Public Shared blockInvisQuestion As New SpriteSet("invis1Up", New Dictionary(Of SpriteState,List(Of Image)) From {
+                                                 {SpriteState.Constant, New List(Of Image) From {My.Resources.blockInvis}},
+                                                 {SpriteState.Revealed, New List(Of Image) From {My.Resources.blockQuestionUsed}}
+                                                 },
+                                              32,
+                                              32, Nothing, True 
+                                              )
 
 
     Private Sub New()

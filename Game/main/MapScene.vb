@@ -597,23 +597,7 @@ Public NotInheritable Class JsonMapReader
 
     End Function
 
-    ''' <summary>
-    ''' To add a new block:
-    ''' add it to RenderTypes
-    ''' put a case in RenderItemFactory
-    ''' </summary>
-    Public Enum RenderTypes
-        BlockBreakableBrick
-        GroundPlatform
-        BlockQuestion
-        BlockMetal
-        BlockPipe
-        BlockInvis
-
-        EntGoomba
-        EntKoopa
-    End Enum
-
+   
     Public Class InvalidJsonException
         Inherits Exception
         Sub New(message As String)
@@ -622,39 +606,83 @@ Public NotInheritable Class JsonMapReader
 
     End Class
 
+    ''' <summary>
+    ''' To add a new block:
+    ''' add it to RenderTypes
+    ''' put a case in RenderItemFactory
+    ''' </summary>
+    Public Enum RenderTypes
+        
+        GroundPlatform
+
+        BlockBreakableBrick
+        BlockBrickCoin
+        BlockBrickPowerUp
+
+        BlockInvis1up
+        BlockInvisNone
+
+        BlockQuestion
+
+        BlockMetal
+
+        BlockPipe
+        
+        
+
+        EntGoomba
+        EntKoopa
+        EntCoin 
+
+        Flag
+    End Enum
+
+
     Public Shared Function RenderItemFactory(name As String, params As Object(), theme As RenderTheme, scene As MapScene) As HitboxItem
         Dim out As HitboxItem
-        Select Case Helper.StrToEnum(Of JsonMapReader.RenderTypes)(name)
-            Case JsonMapReader.RenderTypes.BlockBreakableBrick
-                AssertLength(name, 2, params.Length, params)
+        Select Case Helper.StrToEnum(Of RenderTypes)(name)
+            Case RenderTypes.BlockBreakableBrick
+                AssertLength(name, 2, params)
                 out = New BlockBreakableBrick(params, theme, scene)
 
-            Case JsonMapReader.RenderTypes.GroundPlatform
-                AssertLength(name, 4, params.Length, params)
+            Case RenderTypes.GroundPlatform
+                AssertLength(name, 4, params)
                 out = New GroundPlatform(params, theme, scene)
 
-            Case JsonMapReader.RenderTypes.BlockQuestion
-                AssertLength(name, 3, params.Length, params)
+            Case RenderTypes.BlockQuestion
+                AssertLength(name, 3, params)
                 out = New BlockQuestion(params, theme, scene)
 
-            Case JsonMapReader.RenderTypes.BlockMetal
-                AssertLength("blockMetal", 2, params.Length, params)
+            Case RenderTypes.BlockMetal
+                AssertLength("blockMetal", 2, params)
                 out = New BlockMetal(params, scene)
 
-            Case JsonMapReader.RenderTypes.BlockInvis
-                AssertLength("blockInvis", 2, params.Length, params)
-                out = New BlockInvis(params, scene)
-
-            Case JsonMapReader.RenderTypes.BlockPipe
-                AssertLength("blockPipe", 5, params.Length, params)
+            Case RenderTypes.BlockPipe
+                AssertLength("blockPipe", 5, params)
                 out = New BlockPipe(params, scene)
+            
+            Case RenderTypes.BlockBrickCoin
+                AssertLength("blockBrickCoin", 2, params)
+                out = New BlockBrickCoin(params, scene)
 
-            Case JsonMapReader.RenderTypes.EntGoomba
-                AssertLength("entGoomba", 2, params.Length, params)
+            Case RenderTypes.EntGoomba
+                AssertLength("entGoomba", 2, params)
                 out = New EntGoomba(params, scene)
-            Case JsonMapReader.RenderTypes.EntKoopa
-                AssertLength("entKoopa", 2, params.Length, params)
+            Case RenderTypes.EntKoopa
+                AssertLength("entKoopa", 2, params)
                 out = New EntKoopa(params, scene)
+            
+            Case RenderTypes.Flag
+                AssertLength("flag", 2, params)
+                out = New Flag(params, scene)
+            
+            Case RenderTypes.BlockInvis1up
+                AssertLength("blockInvis1Up", 2, params)
+                out = New BlockInvis1Up(params, scene)
+            
+            Case RenderTypes.BlockInvisNone
+                AssertLength("blockInvisNone", 2, params)
+                out = New BlockInvisNone(params, scene)
 
             Case Else
 
@@ -665,22 +693,22 @@ Public NotInheritable Class JsonMapReader
 
     End Function
 
-    Private Shared Sub AssertLength(type As String, expected As Integer, given As Integer, array As Object())
+    Private Shared Sub AssertLength(type As String, expected As Integer, array As Object())
         If expected = -1
             Return
         End If
 
-        If expected <> given Then
+        If expected <> array.length Then
             Throw New JsonMapReader.InvalidJsonException(String.Format("Error in JSON, powerup={0}, given {1} elements when {2} expected - [ {3} ] ",
-                                                                       type, given, expected, String.Join(", ", array)))
+                                                                       type, array.length, expected, String.Join(", ", array)))
         End If
     End Sub
 
-    Private Shared Sub AssertLength(type As String, expected As Integer(), given As Integer, array As Object())
+    Private Shared Sub AssertLength(type As String, expected As Integer(), array As Object())
 
-        If Not expected.Contains(given) Then
+        If Not expected.Contains(array.length) Then
             Throw New JsonMapReader.InvalidJsonException(String.Format("Error in JSON, powerup={0}, given {1} elements when {2} expected - [ {3} ] ",
-                                                                       type, given, expected, String.Join(", ", array)))
+                                                                       type, array.length, expected, String.Join(", ", array)))
         End If
     End Sub
 

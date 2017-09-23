@@ -32,7 +32,7 @@
                     Case QuestionBlockReward.DefaultFire
                         ' check the current status of mario, then spawn the right powerup
                         If player.state = PlayerStates.Small Then
-                            Dim mushroom As New EntMushroom(32, 32, New Point(Me.Location.X, Me.Location.Y + Me.Height), MyScene)
+                            Dim mushroom As New EntMushroom(New Point(Me.Location.X, Me.Location.Y + Me.Height), MyScene)
                             mushroom.Spawn()
                         Else
                             Dim flower As New EntFireFlower(32, 32, New Point(Me.Location.X, Me.Location.Y + Me.Height), MyScene)
@@ -42,7 +42,7 @@
                         Dim flower As New EntFireFlower(32, 32, New Point(Me.Location.X, Me.Location.Y + Me.Height), MyScene)
                         flower.Spawn()
                     Case QuestionBlockReward.Mushroom
-                        Dim mushroom As New EntMushroom(32, 32, New Point(Me.Location.X, Me.Location.Y + Me.Height), MyScene)
+                        Dim mushroom As New EntMushroom(New Point(Me.Location.X, Me.Location.Y + Me.Height), MyScene)
                         mushroom.Spawn()
                     Case QuestionBlockReward.Coin
                         player.PickupCoin()

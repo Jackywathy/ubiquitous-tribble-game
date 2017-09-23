@@ -9,33 +9,6 @@ Public Class GameControl
     Friend WithEvents GameLoop As New Timer
 
     ''' <summary>
-    ''' Holds the currently loaded scene
-    ''' </summary>
-    ''' <returns></returns>
-    Public Property CurrentScene As BaseScene
-
-    ''' <summary>
-    ''' All the names of the JsonMaps as resource name
-    ''' </summary>
-    Private ReadOnly JsonMaps As New List(Of String) From {"map1_1"}
-
-    ''' <summary>
-    ''' Debug buffer - this is written to top right of mapScene each tick, only if IsDebug is set to False in Helper.vb
-    ''' </summary>
-    Private ReadOnly strBuffer As New List(Of String)
-
-    ''' <summary>
-    ''' Handles/stores all the keys being pressed
-    ''' </summary>
-    Private ReadOnly keyControl As New KeyHandler()
-
-    ''' <summary>
-    ''' Contains all Scenes
-    ''' </summary>
-    Private allMapScenes As Dictionary(Of String, MapScene)
-
-
-    ''' <summary>
     ''' Gameloop - runs 60ish times a second, causing inputs/game to tick
     ''' </summary>
     ''' <param name="sender"></param>
@@ -45,35 +18,6 @@ Public Class GameControl
         CurrentScene.UpdateTick()
         Me.Refresh()
     End Sub
-
-    Private Sub InitalizeComponent()
-        GameLoop.Interval = 15
-    End Sub
-
-    Private GameMusic As MusicPlayer
-
-
-
-    ''' <summary>
-    ''' Constructor for <see cref="GameControl"/>
-    ''' </summary>
-    Sub New()
-        InitalizeComponent()
-        ' enable double buffering and custom paint
-        SetStyle(ControlStyles.DoubleBuffer, True)
-        SetStyle(ControlStyles.UserPaint, True)
-        SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
-        SetStyle(ControlStyles.AllPaintingInWmPaint, True)
-        Randomize()
-
-        allMapScenes = LoadScenes()
-        CurrentScene = allMapScenes("map1_1")
-
-        ' only start loop after init has finished
-        GameLoop.Enabled = True
-    End Sub
-
-
 
     ''' <summary>
     ''' Paints to the screen using a graphics object
@@ -95,8 +39,62 @@ Public Class GameControl
         DrawStringBuffer(g)
 #End If
 
-
     End Sub
+
+
+    ''' <summary>
+    ''' Constructor for <see cref="GameControl"/>
+    ''' </summary>
+    Sub New()
+        InitalizeComponent()
+        ' enable double buffering and custom paint
+        Randomize()
+
+        allMapScenes = LoadScenes()
+        CurrentScene = allMapScenes("map1_1")
+
+        ' only start loop after init has finished
+        GameLoop.Enabled = True
+    End Sub
+
+    ''' <summary>
+    ''' Holds the currently loaded scene
+    ''' </summary>
+    ''' <returns></returns>
+    Private Property CurrentScene As BaseScene
+
+    ''' <summary>
+    ''' All the names of the JsonMaps as resource name
+    ''' </summary>
+    Private ReadOnly JsonMaps As New List(Of String) From {"map1_1"}
+
+    ''' <summary>
+    ''' Debug buffer - this is written to top right of mapScene each tick, only if IsDebug is set to False in Helper.vb
+    ''' </summary>
+    Private ReadOnly strBuffer As New List(Of String)
+
+    ''' <summary>
+    ''' Handles/stores all the keys being pressed
+    ''' </summary>
+    Private ReadOnly keyControl As New KeyHandler()
+
+    ''' <summary>
+    ''' Contains all Scenes
+    ''' </summary>
+    Private Readonly property allMapScenes As Dictionary(Of String, MapScene)
+
+    ''' <summary>
+    ''' Initalize components inside
+    ''' </summary>
+    Private Sub InitalizeComponent()
+        GameLoop.Interval = 15
+        SetStyle(ControlStyles.DoubleBuffer, True)
+        SetStyle(ControlStyles.UserPaint, True)
+        SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
+        SetStyle(ControlStyles.AllPaintingInWmPaint, True)
+    End Sub
+
+
 
     Public Sub DrawDebugStrings()
         AddStringBuffer(String.Format("fps: {0}", FPS))
@@ -143,9 +141,6 @@ Public Class GameControl
         numFrames += 1
     End Sub
 
-    Public Structure mouseInfo
-
-    End Structure
 
     Private Sub MainGame_KeyUp(sender As Object, e As KeyEventArgs) Handles MyBase.KeyUp
         keyControl.KeyUp(e.KeyCode)
