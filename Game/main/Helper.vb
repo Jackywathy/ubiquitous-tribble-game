@@ -52,7 +52,7 @@ Module Debug
         Dim y as new StaticHudPowerup(New Point(ScreenGridWidth/2-24, Helper.TopToBottom(0, 48)))
         scene.AddStatic(y)
         scene.hudPowerup = y
-        y.ChangeItem(New StaticFireFlower(New Point()))
+        y.SetPowerupItem(PowerupType.Fireflower)
 
     End Sub
     
@@ -149,8 +149,6 @@ Public NotInheritable Class Helper
             return False
         End If
     End Function
-
-    Private Const ToolbarOffset = 29
 
     ''' <summary>
     ''' Dont let it be instantalisd

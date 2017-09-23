@@ -13,157 +13,6 @@ Public Enum TransitionType
     Circle
 End Enum
 
-''' <summary>
-''' Base scene:
-''' given to GameControl to render 
-''' </summary>
-Public MustInherit Class BaseScene
-    ''' <summary>
-    ''' FrameCount for each scene
-    ''' </summary>
-    Public GlobalFrameCount As Integer
-
-    ''' <summary>
-    ''' Run once per tick in game, updates all obejcts in scene, if necessary
-    ''' </summary>
-    Public MustOverride Sub UpdateTick()
-
-    ''' <summary>
-    ''' Renders scene ont a graphics object
-    ''' </summary>
-    Public Sub RenderScene(g As graphics)
-        RenderObjects(g)
-        If isTransitioning Then
-            DrawTransition(g)
-        End if
-
-    End Sub
-
-    Private Sub DrawTransition(g As Graphics)
-        Dim progress as Double = transistionTicksElapsed / transistionLength * ScreenGridWidth
-        Dim drawnRect As Rectangle
-        Select Case transistionDirection
-            Case TransitionDirection.Right
-                ' top left of rectangle = length of form - progress
-                drawnRect.X = ScreenGridWidth - progress
-                drawnRect.Y = 0
-                drawnRect.Width = progress
-                drawnRect.Height = ScreenGridHeight
-            Case TransitionDirection.Top
-                drawnRect.X = 0
-                drawnRect.Y = 0
-                drawnRect.Width = ScreenGridWidth
-                drawnRect.Height = progress
-            Case Else
-                throw new Exception("Transistion direction out of range")
-
-        End Select
-        g.FillRectangle(transistionBrush, drawnRect)
-        transistionTicksElapsed += 1
-        If transistionTicksElapsed > transistionLength
-            IsTransitioning = False
-            transistionTicksElapsed = 0
-            transistionLength = 0
-        End If
-    End Sub
-
-    ''' <summary>
-    ''' a transition from one scene to another
-    ''' </summary>
-    Friend IsTransitioning As Boolean 
-
-    ''' <summary>
-    ''' Number of ticks run
-    ''' </summary>
-    Private transistionTicksElapsed As Integer
-    Private transistionLength As Integer
-    Private transistionBrush As Brush
-
-    private transistionDirection as TransitionDirection
-
-    Private transitionType As TransitionType
-
-    ''' <summary>
-    ''' Start a normal transition animation
-    ''' </summary>
-    ''' <param name="direction"></param>
-    ''' <param name="transitionTime"></param>
-    ''' <param name="fillColor">brush used - default black</param>
-    Public Sub StartNormalTransition(direction As TransitionDirection, Optional transitionTime As Integer = 30, Optional fillColor As Brush = Nothing)
-        If fillColor Is Nothing
-            fillcolor =  New SolidBrush(Color.Black)
-        End If
-        Me.transistionLength = transitionTime
-        Me.transistionDirection = direction
-        Me.transistionTicksElapsed = 0
-        me.transistionBrush = fillcolor
-        IsTransitioning = True
-    End Sub
-
-
-    ''' <summary>
-    ''' Draws the completed scene onto the graphics object
-    ''' </summary>
-    ''' <param name="g"></param>
-    Public MustOverride Sub RenderObjects(g As Graphics)
-
-    ''' <summary>
-    ''' Handles input
-    ''' </summary>
-    Public MustOVerride Sub HandleInput()
-
-    ''' <summary>
-    ''' Has all of keys which are held down etc.
-    ''' </summary>
-    Friend Parent As Control
-
-    ''' <summary>
-    ''' holds the background music
-    ''' </summary>
-    Public Overridable Property BackgroundMusic As MusicPlayer
-
-    Sub New(parent As Control)
-        Me.parent = parent
-    End Sub
-
-    Public Overridable Function GetPlayers() As IList(Of EntPlayer)
-        Return Nothing
-    End Function
-
-
-    ''' <summary>
-    ''' If the scene is frozen
-    ''' </summary>
-    ''' <returns></returns>
-    Public Property IsFrozen As Boolean = False
-
-    ' There are 4 types of GameObjects
-    ' Static - stuff that doesnt move ever, e.g. HUD elements, points
-    ' Moving - stuff that moves, but doesnt have collisions
-    ' Hitbox - stuff that has a hitbox
-    ' Entity - stuff that ALWAYS moves
-
-     ''' <summary>
-    ''' List of staticitems. Items will be rendered in order inserted
-    ''' </summary>
-    Public Readonly Property AllStaticItems As New List(Of GameItem)
-
-    ''' <summary>
-    ''' Adds a static object
-    ''' </summary>
-    ''' <param name="args"></param>
-    Public Overridable Sub AddStatic(ByVal ParamArray args() As GameItem)
-         For Each item As GameItem In args
-            AllStaticItems.Add(item)
-        Next
-    End Sub
-
-    Public Overridable Sub DrawDebugStrings(form As GameControl)
-
-    End Sub
-End Class
-
-
 
 Public Enum SwitchLevelType
     Normal
@@ -176,16 +25,25 @@ End Enum
 ''' </summary>
 Public Class MapScene
     Inherits BaseScene
+
+    ''' <summary>
+    ''' Gets the location of curser relative to the size of the Form and scaled to be from Bottom Left
+    ''' </summary>
+    ''' <returns></returns>
+    Public Function GetMouseRelativeLocation() As Point
+        Dim point = parent.PointToClient(Cursor.Position)
+        ' convert the point from Top Left to bottom left
+        point.Y = ScreenGridHeight - point.y
+        return point
+    End Function
     
     Public Overrides Sub DrawDebugStrings(form as GameControl)
         form.AddStringBuffer(String.Format("Mario Location: {0}, {1}", player1.Location.X, player1.Location.Y))
-        dim relativePoint = form.PointToClient(Cursor.Position)
+        dim relativePoint = GetMouseRelativeLocation()
         form.AddStringBuffer(String.Format("Mouse - x: {0}, y: {1}", relativePoint.X, relativePoint.Y))
         form.AddStringBuffer(String.Format("Is over box: {0}", If(MouseOverBox, "yes", "no")))
     End Sub
 
-    ' TODO implement 
-    Private CurrentlyHeldPowerup as EntPowerup
 
     ''' <summary>
     ''' Switches the level to something else
@@ -193,7 +51,7 @@ Public Class MapScene
     ''' </summary>
     ''' <param name="type"></param>
     Public Sub SwitchLevel(Optional type As SwitchLevelType = SwitchLevelType.Normal)
-        'Throw New NotImplementedException()
+        Throw New NotImplementedException()
         Print("HI!")
     End Sub
     ''' <summary>
@@ -208,37 +66,38 @@ Public Class MapScene
 
 
     Private Function MouseOverBox As Boolean
-        Return Me.HudPowerUp.GetRect().Contains(Parent.PointToClient(Cursor.Position))
+        Dim point = GetMouseRelativeLocation()
+        Return Me.HudPowerUp.GetRect().Contains(point)
     End Function
 
     Private isDragging = False
-    Private previousMouseLoc = New Point(0, 0)
+
     ''' <summary>
     ''' 
     ''' </summary>
-    Private Sub handleMouse()
-
+    Private Sub HandleMouse()
+        Dim cursorLocation = GetMouseRelativeLocation()
         ' Move image while dragging
         If isDragging Then
-            Me.HudPowerUp.ChangeLocation(Cursor.Position.X - previousMouseLoc.x, -(Cursor.Position.Y - previousMouseLoc.y))
+            Me.HudPowerUp.SetPowerupMiddleLocation(cursorLocation)
         End If
 
         ' handle left mouse button release
-        If isDragging And Control.MouseButtons <> MouseButtons.Left Then
+        If Control.MouseButtons <> MouseButtons.Left And isDragging Then
             isDragging = False
-            If MouseOverBox() Then
+            If HudPowerUp.PowerupTouchesBox Then
                 Me.HudPowerUp.ResetLocation()
             Else
-                ' spawn image
+                HudPowerUp.SpawnPowerup(Me)
             End If
         End If
 
         ' check if clicked
-        If MouseOverBox() And Control.MouseButtons = MouseButtons.Left And Not IsTransitioning Then
+        If MouseOverBox() And Control.MouseButtons = MouseButtons.Left And HudPowerUp.HasPowerup Then
             isDragging = True
         End If
 
-        previousMouseLoc = Cursor.Position
+        'previousMouseLoc = Cursor.Position
 
     End Sub
 
@@ -292,7 +151,6 @@ Public Class MapScene
             AllHitboxItems.Add(item)
         Next
     End Sub
-
 
     ''' <summary>
     ''' Adds entity to the mapScene
@@ -377,6 +235,7 @@ Public Class MapScene
 
     Public HudPowerUp As StaticHudPowerup
 
+    
    
      ''' <summary>
     ''' Player1
@@ -480,6 +339,8 @@ Public Class MapScene
         handleMouse()
     End Sub
 
+    Private deathAnimation As Boolean
+
     ''' <summary>
     ''' Updates the position of all Entities and items
     ''' </summary>
@@ -489,6 +350,10 @@ Public Class MapScene
             player1.UpdateVeloc()
             player1.UpdateLocation()
             Player1.Animate()
+            if player1.X < 0 And Not deathAnimation
+                deathAnimation = True
+                StartNormalTransition(TransitionDirection.Top)
+            End If
         Else
             For Each item As HitboxItem In AllHitboxItems
                 item.UpdateVeloc()

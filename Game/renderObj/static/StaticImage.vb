@@ -35,7 +35,11 @@ Public MustInherit Class StaticImage
     ''' Gets a rectangle
     ''' </summary>
     ''' <returns></returns>
-    Public Overridable Function GetRect As Rectangle
-        REturn New Rectangle(location.X, BottomToTop(Location.y), width, height)
+    Public Overridable Function GetTopLeftRect As Rectangle
+        REturn New Rectangle(location.X, GetTopBasedY(Location.y), width, height)
+    End Function
+
+    Public Function GetRect As Rectangle
+        Return New Rectangle(location.X, Location.y, Width, height)
     End Function
 End Class

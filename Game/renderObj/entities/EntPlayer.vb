@@ -390,4 +390,5 @@ Public Class PlayerPoints
     Public Const Firefire = 4000
 
     Public Const Star = 5000
+    Public Const OneUp = 1000
 End Class

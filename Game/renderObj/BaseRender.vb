@@ -37,7 +37,14 @@ End Class
 ''' </summary>
 Public MustInherit Class GameImage
     Inherits GameItem
-
+    ''' <summary>
+    ''' Width of one unit (1 block)
+    ''' </summary>
+    Public Const StandardWidth = 32
+    ''' <summary>
+    ''' Height of one unit (1 block)
+    ''' </summary>
+    Public Const StandardHeight = 32
     ''' <summary>
     ''' width of image
     ''' </summary>
@@ -92,7 +99,6 @@ Public MustInherit Class GameImage
     ''' <summary>
     ''' Image to be drawn onto the screen in the next refresh   
     ''' </summary>
-    ''' <returns></returns>
     Friend Property RenderImage As Image
 
     ''' <summary>
@@ -109,7 +115,12 @@ Public MustInherit Class GameImage
         Me.location = location
     End Sub
 
-    Friend Function BottomToTop(botY As Integer) As Integer
+    ''' <summary>
+    ''' Converts a from-bottom justified point into 
+    ''' </summary>
+    ''' <param name="botY"></param>
+    ''' <returns></returns>
+    Friend Function GetTopBasedY(botY As Integer) As Integer
         Return Dimensions.ScreenGridHeight - botY - height
     End Function
 
@@ -155,7 +166,7 @@ Public MustInherit Class MovingImage
     Public Overrides Sub Render(g As Graphics)
         if RenderImage IsNot Nothing Then
             Dim drawnRect As New Rectangle(Location.X - MyScene.ScreenLocation.X,
-                                      BottomToTop(Location.Y) - MyScene.ScreenLocation.Y,
+                                      GetTopBasedY(Location.Y) - MyScene.ScreenLocation.Y,
                                            Width, Height)
 
             ' top right x, top right y, width, heigh
@@ -173,9 +184,6 @@ End Class
 ''' </summary>
 Public MustInherit Class HitboxItem
     Inherits MovingImage
-
-    Friend Const StandardWidth = 32
-    Friend Const StandardHeight = 32
 
     Public Property CollisionHeight As Integer
     Public Property CollisionWidth As Integer

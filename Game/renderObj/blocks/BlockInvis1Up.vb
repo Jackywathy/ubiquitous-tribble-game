@@ -16,7 +16,7 @@
     Protected Overrides Sub Activate()
         MyBase.Activate()
         If Not used
-            Dim powerup As New Ent1Up(New Point(Me.X, Me.Y+StandardHeight), MyScene)
+            Dim powerup As New EntOneUp(New Point(Me.X, Me.Y+StandardHeight), MyScene)
             powerup.Spawn() 
             used = True
         End if
