@@ -113,6 +113,7 @@
   <ItemGroup>
     <Compile Include="main\GameControl.vb" />
     <Compile Include="main\MainForm.vb" />
+    <Compile Include="renderObj\BelowGroundPlatform.vb" />
     <Compile Include="renderObj\blocks\BlockBrickPowerUp.vb" />
     <Compile Include="renderObj\blocks\BlockBrickStar.vb" />
     <Compile Include="renderObj\blocks\BlockBumpable.vb" />
@@ -212,7 +213,8 @@
     <None Include="renderObj\blocks\ClassDiagram1.cd" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="images\blocks\blockGround.png" />
+    <Content Include="images\blocks\above\blockGround.png" />
+    <Content Include="images\blocks\below\blockBelowGround.png" />
     <Content Include="images\blocks\blockInvis.png" />
     <Content Include="images\blocks\pipe\pipe_2x.png" />
     <Content Include="images\blocks\pipe\pipe_bottom.png" />
@@ -223,7 +225,6 @@
     <Content Include="images\enemy\goomba\goomba_1.png" />
     <Content Include="images\enemy\goomba\goomba_2.png" />
     <Content Include="images\enemy\goomba\goomba_d.png" />
-    <Content Include="images\blocks\blockGround.png" />
     <Content Include="images\enemy\goomba\goomba_d2.png" />
     <Content Include="images\enemy\koopa\flying\koopa_greenf_1.png" />
     <Content Include="images\enemy\koopa\flying\koopa_greenf_2.png" />
@@ -299,7 +300,7 @@
     <Content Include="sounds\sfx\warp.mp3" />
     <None Include="FodyWeavers.xml" />
     <Content Include="images\backgrounds\background.jpg" />
-    <Content Include="images\blocks\blockBrick.png" />
+    <Content Include="images\blocks\above\blockBrick.png" />
     <Content Include="images\blocks\blockQuestion1.png" />
     <Content Include="images\blocks\blockQuestion2.png" />
     <Content Include="images\blocks\blockQuestion3.png" />
@@ -325,7 +326,7 @@
     <Content Include="images\player\small\mario_small_3.png" />
     <Content Include="images\player\small\mario_small_4.png" />
     <Content Include="images\player\small\mario_small_jump.png" />
-    <Content Include="images\blocks\blockMetal.png" />
+    <Content Include="images\blocks\above\blockMetal.png" />
     <Content Include="images\powerups\mushroom\mushroom.png" />
     <Content Include="images\powerups\mushroom\mushroom_s1.png" />
     <Content Include="images\powerups\mushroom\mushroom_s2.png" />
