@@ -19,11 +19,14 @@ Public Enum SwitchLevelType
     Secret2
 End Enum
 
+
+
 ''' <summary>
 ''' Scene that represents a map, (probably loaded from json using <see cref="JsonMapReader.ReadMapFromResource"/>
 ''' </summary>
 Public Class MapScene
     Inherits BaseScene
+    
 
     ''' <summary>
     ''' Gets the location of curser relative to the size of the Form and scaled to be from Bottom Left
@@ -66,7 +69,7 @@ Public Class MapScene
 
     Private Function MouseOverBox As Boolean
         Dim point = GetMouseRelativeLocation()
-        Return Me.HudPowerUp.GetRect().Contains(point)
+        Return Me.HudPowerUp.PowerupHolder.GetRect().Contains(point)
     End Function
 
     Private isDragging = False
@@ -78,21 +81,21 @@ Public Class MapScene
         Dim cursorLocation = GetMouseRelativeLocation()
         ' Move image while dragging
         If isDragging Then
-            Me.HudPowerUp.SetPowerupMiddleLocation(cursorLocation)
+            Me.HudPowerUp.PowerupHolder.SetPowerupMiddleLocation(cursorLocation)
         End If
 
         ' handle left mouse button release
         If Control.MouseButtons <> MouseButtons.Left And isDragging Then
             isDragging = False
-            If HudPowerUp.PowerupTouchesBox Then
-                Me.HudPowerUp.ResetLocation()
+            If HudPowerUp.PowerupHolder.PowerupTouchesBox Then
+                Me.HudPowerUp.PowerupHolder.ResetLocation()
             Else
-                HudPowerUp.SpawnPowerup(Me)
+                HudPowerUp.PowerupHolder.SpawnPowerup(Me)
             End If
         End If
 
         ' check if clicked
-        If MouseOverBox() And Control.MouseButtons = MouseButtons.Left And HudPowerUp.HasPowerup Then
+        If MouseOverBox() And Control.MouseButtons = MouseButtons.Left And HudPowerUp.PowerupHolder.HasPowerup Then
             isDragging = True
         End If
 
@@ -104,8 +107,9 @@ Public Class MapScene
     ''' Constructor for <see cref="MapScene"/>
     ''' </summary>
     ''' <param name="parent"></param>
-    Public Sub New(parent As Control)
+    Public Sub New(parent As GameControl, Optional includeHud As Boolean=True)
         MyBase.New(parent)
+        HudPowerUp = parent.sharedHud
     End Sub
 
     ''' <summary>
@@ -232,7 +236,7 @@ Public Class MapScene
     ''' </summary>
     Public ReadOnly toAddObjects As New HashSet(Of HitboxItem)
 
-    Public HudPowerUp As StaticHudPowerup
+    Public HudPowerUp As StaticHud = Parent.SharedHud
 
     
    
@@ -377,6 +381,7 @@ Public Class MapScene
     ''' <param name="g"></param>
     Public Overrides Sub RenderObjects(g As Graphics)
         Background.Render(g)
+        HudPowerUp.Render(g)
 
         ' all text & stuff
         For Each item As GameItem In AllStaticItems

@@ -7,6 +7,9 @@
 Public Class GameControl
     Inherits Control
     Friend WithEvents GameLoop As New Timer
+    Private Const HudHeightPercent = 0.1
+
+    Public SharedHud As New StaticHud(ScreenGridWidth, ScreenGridHeight * HudHeightPercent)
 
     ''' <summary>
     ''' Gameloop - runs 60ish times a second, causing inputs/game to tick

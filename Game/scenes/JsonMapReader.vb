@@ -43,13 +43,6 @@ Public NotInheritable Class JsonMapReader
         outScene.SetPlayer(MapScene.PlayerId.Player1, player1)
         outScene.AddEntity(player1)
 
-        outScene.AddStatic(New StaticText(New Rectangle(0, Helper.TopToBottom(0, ScreenGridHeight / 16), ScreenGridWidth / 4, ScreenGridHeight / 16), "MARIO", NES.GetFontFamily(), 18,
-                                          New SolidBrush(Color.White), outScene))
-
-        Dim scoreText = New StaticText(New Rectangle(0, Helper.TopToBottom(ScreenGridHeight / 16, ScreenGridHeight / 16), ScreenGridWidth / 4, ScreenGridHeight / 16), "000000", NES.GetFontFamily(), 18,
-                                       New SolidBrush(Color.White), outScene, paddingChar:="0", paddingWidth:=6)
-        outScene.AddStatic(scoreText)
-        EntPlayer.ScoreCallback = scoreText
 
 
 #If DEBUG

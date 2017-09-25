@@ -101,14 +101,14 @@ Public MustInherit Class BaseScene
     ''' <summary>
     ''' Has all of keys which are held down etc.
     ''' </summary>
-    Friend Parent As Control
+    Friend Parent As GameControl
 
     ''' <summary>
     ''' holds the background music
     ''' </summary>
     Public Overridable Property BackgroundMusic As MusicPlayer
 
-    Sub New(parent As Control)
+    Sub New(parent As GameControl)
         Me.parent = parent
     End Sub
 
@@ -147,4 +147,6 @@ Public MustInherit Class BaseScene
     Public Overridable Sub DrawDebugStrings(form As GameControl)
 
     End Sub
+
+    
 End Class

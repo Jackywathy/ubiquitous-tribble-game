@@ -5,8 +5,8 @@
 
     Public ReadOnly Property PowerupEntity
 
-    Public Sub New(location As Point)
-        MyBase.New(48, 48, location, Resize(My.Resources.HUDitemBox, 48, 48))
+    Public Sub New(width As integer, height As integer, location As Point)
+        MyBase.New(width, height, location, Resize(My.Resources.HUDitemBox, width, height))
     End Sub
 
     Public Function HasPowerup As Boolean

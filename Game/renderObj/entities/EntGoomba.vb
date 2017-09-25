@@ -3,7 +3,7 @@
 
     Public deathTimer As Integer
     Public squashed As Boolean = True
-    Public willDie = False ' Set to true when enemy is killed (but not necessarily removed from the screen yet)
+    Public willDie As Integer = False ' Set to true when enemy is killed (but not necessarily removed from the screen yet)
 
 
 

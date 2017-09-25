@@ -31,7 +31,6 @@
         MyBase.CollisionBottom(sender)
 
         If Not isUsed And Helper.IsPlayer(sender) Then
-            Dim powerup As EntPowerup
             Dim player As EntPlayer = sender
             playerWhoHit = player
             isUsed = True

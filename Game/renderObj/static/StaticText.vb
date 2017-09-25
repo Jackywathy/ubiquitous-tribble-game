@@ -22,20 +22,25 @@
     Private drawnRect As Rectangle
 
     Public Overrides Sub Render(g As Graphics)
-        g.DrawString(Text, font, brush, drawnRect)
+        g.DrawString(Text, font, brush, drawnRect, sf)
         If ShowBoundingBox
             g.DrawRectangle(DrawingPrimitives.BlackPen, drawnRect)
         End If
     End Sub
 
-    Sub New (drawnRect As Rectangle, str As String, fontFam As FontFamily, emSize As Integer, brush As Brush,scene As MapScene, Optional horAlignment As StringAlignment = StringAlignment.Near, Optional vertAlignment As StringAlignment=StringAlignment.Near, Optional paddingChar As Char = "0", Optional paddingWidth As Integer = 0)
-        Me.New(drawnRect, str, New Font(fontFam, emSize), brush, scene, New StringFormat(), paddingWidth, paddingChar)       
-        sf.Alignment = horAlignment
-        sf.LineAlignment = vertAlignment
+    Private Shared Function GetFormat(hor As StringAlignment, vert As StringAlignment)
+        dim sf = New StringFormat()
+        sf.Alignment = hor
+        sf.LineAlignment = vert
+        Return sf
+    End Function
+
+    Sub New (drawnRect As Rectangle, str As String, fontFam As FontFamily, emSize As Integer, brush As Brush, Optional horAlignment As StringAlignment = StringAlignment.Near, Optional vertAlignment As StringAlignment=StringAlignment.Near, Optional paddingChar As Char = "0", Optional paddingWidth As Integer = 0)
+        Me.New(drawnRect, str, New Font(fontFam, emSize), brush, GetFormat(horAlignment, vertAlignment), paddingWidth, paddingChar)       
     End Sub
 
-    Sub New (drawnRect As Rectangle, str As String, font As Font, brush As Brush, scene As MapScene, format As StringFormat, paddingWidth As integer, paddingChar As Char)
-        MYBase.New()
+    Sub New (drawnRect As Rectangle, str As String, font As Font, brush As Brush, format As StringFormat, paddingWidth As integer, paddingChar As Char)
+        MyBase.New()
         Me.sf = format
         Me.paddingWidth = paddingWidth
         Me.paddingChar = paddingChar

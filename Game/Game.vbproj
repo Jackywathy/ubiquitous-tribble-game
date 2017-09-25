@@ -125,6 +125,7 @@
     <Compile Include="renderObj\Flag.vb" />
     <Compile Include="renderObj\entities\EntStar.vb" />
     <Compile Include="fonts\FontController.vb" />
+    <Compile Include="renderObj\static\StaticHud.vb" />
     <Compile Include="scenes\JsonMapReader.vb" />
     <Compile Include="sounds\MusicPlayer.vb" />
     <Compile Include="debug\TestImage.designer.vb">
@@ -175,7 +176,6 @@
     <Compile Include="renderObj\entities\EntPowerup.vb" />
     <Compile Include="renderObj\BaseRender.vb" />
     <Compile Include="renderObj\Sprites.vb" />
-    <Compile Include="renderObj\static\StaticCloud.vb" />
     <Compile Include="renderObj\static\StaticCoin.vb" />
     <Compile Include="renderObj\static\StaticCross.vb" />
     <Compile Include="renderObj\static\StaticDecoration.vb" />
