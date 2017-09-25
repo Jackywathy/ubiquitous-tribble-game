@@ -198,10 +198,10 @@
   <ItemGroup>
     <None Include="fonts\NES+.ttf" />
     <None Include="fonts\SuperMario256.ttf" />
-    <None Include="maps\map2_1.json" />
-    <None Include="maps\map1_1under.json" />
-    <None Include="maps\map_startmap.json" />
-    <None Include="maps\map1_1.json" />
+    <Resource Include="maps\map2_1above.json" />
+    <Resource Include="maps\map1_1under.json" />
+    <Resource Include="maps\map_startmap.json" />
+    <Resource Include="maps\map1_1above.json" />
     <None Include="My Project\app.manifest">
       <SubType>Designer</SubType>
     </None>

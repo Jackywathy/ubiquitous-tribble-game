@@ -8,10 +8,19 @@ Public NotInheritable Class JsonMapReader
     ''' <returns></returns>
     Public Shared Function ReadMapFromResource(jsonName As String, parent As Control) As MapScene
         Dim byteArray = CType(My.Resources.ResourceManager.GetObject(jsonName), Byte())
+
+        if byteArray Is Nothing
+            Throw New Exception(String.Format("Cannot find json, {0}", jsonName))
+        End If
+
         If byteArray(0) = 239 And byteArray(1) = 187 And byteArray(2) = 191 Then
             byteArray = byteArray.Skip(3).Take(byteArray.Length - 2).ToArray()
         End If
         Dim str = Text.Encoding.UTF8.GetString(byteArray)
+
+        if str is Nothing or str.Length = 0
+            Throw New Exception(String.Format("File is empty: , {0}", jsonName))
+        End If
 
 
         Dim mapObject = JsonConvert.DeserializeObject(Of JsonMapObject)(str)

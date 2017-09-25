@@ -753,9 +753,9 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Byte[].
         '''</summary>
-        Friend ReadOnly Property map1_1() As Byte()
+        Friend ReadOnly Property map1_1above() As Byte()
             Get
-                Dim obj As Object = ResourceManager.GetObject("map1_1", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("map1_1above", resourceCulture)
                 Return CType(obj,Byte())
             End Get
         End Property
@@ -773,9 +773,9 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Byte[].
         '''</summary>
-        Friend ReadOnly Property map2_1() As Byte()
+        Friend ReadOnly Property map2_1above() As Byte()
             Get
-                Dim obj As Object = ResourceManager.GetObject("map2_1", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("map2_1above", resourceCulture)
                 Return CType(obj,Byte())
             End Get
         End Property

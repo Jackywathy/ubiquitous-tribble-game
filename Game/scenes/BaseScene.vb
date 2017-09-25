@@ -150,3 +150,24 @@ Public MustInherit Class BaseScene
 
     
 End Class
+
+
+Public Enum TransitionDirection
+    Top 
+    Bottom
+    Right
+    Left
+    Random
+End Enum
+
+Public Enum TransitionType
+    Normal
+    Circle
+End Enum
+
+
+Public Enum SwitchLevelType
+    Normal
+    Secret1
+    Secret2
+End Enum

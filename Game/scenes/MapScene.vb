@@ -1,33 +1,8 @@
-﻿
-Public Enum TransitionDirection
-    Top 
-    Bottom
-    Right
-    Left
-    Random
-End Enum
-
-Public Enum TransitionType
-    Normal
-    Circle
-End Enum
-
-
-Public Enum SwitchLevelType
-    Normal
-    Secret1
-    Secret2
-End Enum
-
-
-
-''' <summary>
+﻿''' <summary>
 ''' Scene that represents a map, (probably loaded from json using <see cref="JsonMapReader.ReadMapFromResource"/>
 ''' </summary>
 Public Class MapScene
     Inherits BaseScene
-    
-
     ''' <summary>
     ''' Gets the location of curser relative to the size of the Form and scaled to be from Bottom Left
     ''' </summary>
@@ -411,7 +386,7 @@ Public Enum RenderTheme
 End Enum
 
 Public Enum Maps
-    StartScene
+    Map_StartScene
     Map1_1Above
     Map1_1Below
 End Enum

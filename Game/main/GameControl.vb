@@ -54,8 +54,8 @@ Public Class GameControl
         Randomize()
 
         allMapScenes = LoadScenes()
-        CurrentScene = allMapScenes("map2_1")
-        '"map1_1", 
+        RunScene(MapEnum.map1_1under)
+        
 
         ' only start loop after init has finished
         GameLoop.Enabled = True
@@ -66,11 +66,6 @@ Public Class GameControl
     ''' </summary>
     ''' <returns></returns>
     Private Property CurrentScene As BaseScene
-
-    ''' <summary>
-    ''' All the names of the JsonMaps as resource name
-    ''' </summary>
-    Private ReadOnly JsonMaps As New List(Of String) From {"map1_1", "map2_1"}
 
     ''' <summary>
     ''' Debug buffer - this is written to top right of mapScene each tick, only if IsDebug is set to False in Helper.vb
@@ -85,7 +80,7 @@ Public Class GameControl
     ''' <summary>
     ''' Contains all Scenes
     ''' </summary>
-    Private Readonly property allMapScenes As Dictionary(Of String, MapScene)
+    Private Readonly property allMapScenes As Dictionary(Of MapEnum, MapScene)
 
     ''' <summary>
     ''' Initalize components inside
@@ -97,8 +92,6 @@ Public Class GameControl
         SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
         SetStyle(ControlStyles.AllPaintingInWmPaint, True)
     End Sub
-
-
 
     Public Sub DrawDebugStrings()
         AddStringBuffer(String.Format("fps: {0}", FPS))
@@ -162,16 +155,18 @@ Public Class GameControl
     ''' Returns a dictionary of all maps loaded 
     ''' </summary>
     ''' <returns></returns>
-    Private Function LoadScenes() As Dictionary(Of String, MapScene)
-        Dim scenes As New Dictionary(Of String, MapScene)
-        For Each str As String In JsonMaps
-            scenes.Add(str, JsonMapReader.ReadMapFromResource(str, Me))
+    Private Function LoadScenes() As Dictionary(Of MapEnum, MapScene)
+        Dim scenes As New Dictionary(Of MapEnum, MapScene)
+
+        For Each str As String In [Enum].GetNames(GetType(MapEnum))
+            str = str.ToLower()
+            scenes.Add(Helper.StrToEnum(Of MapEnum)(str), JsonMapReader.ReadMapFromResource(str, Me))
         Next
         Return scenes
     End Function
 
-    Public Sub RunScene()
-
+    Public Sub RunScene(map As MapEnum)
+        CurrentScene = allMapScenes(map)
     End Sub 
 
     Private Sub GameControl_SizeChanged(sender As Object, e As EventArgs) Handles Me.SizeChanged
@@ -230,3 +225,9 @@ Public Module MainProgram
         Application.Run(New FormBootStrap)
     End Sub
 End Module
+
+Public Enum MapEnum
+    map1_1above
+    map1_1under
+    map2_1above
+End Enum
