@@ -125,18 +125,19 @@
     <Compile Include="renderObj\Flag.vb" />
     <Compile Include="renderObj\entities\EntStar.vb" />
     <Compile Include="fonts\FontController.vb" />
-    <Compile Include="main\MusicPlayer.vb" />
-    <Compile Include="main\TestImage.designer.vb">
+    <Compile Include="scenes\JsonMapReader.vb" />
+    <Compile Include="sounds\MusicPlayer.vb" />
+    <Compile Include="debug\TestImage.designer.vb">
       <DependentUpon>TestImage.vb</DependentUpon>
     </Compile>
-    <Compile Include="main\TestImage.vb">
+    <Compile Include="debug\TestImage.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="main\Helper.vb" />
+    <Compile Include="debug\Helper.vb" />
     <Compile Include="renderObj\static\StaticMushroom.vb" />
     <Compile Include="scenes\BaseScene.vb" />
     <Compile Include="scenes\MapScene.vb" />
-    <Compile Include="main\StartScene.vb" />
+    <Compile Include="scenes\StartScene.vb" />
     <Compile Include="My Project\Resources.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -184,7 +185,7 @@
     <Compile Include="renderObj\static\StaticText.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="main\TestImage.resx">
+    <EmbeddedResource Include="debug\TestImage.resx">
       <DependentUpon>TestImage.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
@@ -197,10 +198,10 @@
   <ItemGroup>
     <None Include="fonts\NES+.ttf" />
     <None Include="fonts\SuperMario256.ttf" />
-    <None Include="main\maps\map2_1.json" />
-    <None Include="main\maps\map1_1under.json" />
-    <None Include="main\maps\map_startmap.json" />
-    <None Include="main\maps\map1_1.json" />
+    <None Include="maps\map2_1.json" />
+    <None Include="maps\map1_1under.json" />
+    <None Include="maps\map_startmap.json" />
+    <None Include="maps\map1_1.json" />
     <None Include="My Project\app.manifest">
       <SubType>Designer</SubType>
     </None>
@@ -306,7 +307,6 @@
     <Content Include="images\powerups\star\star_s5.png" />
     <Content Include="images\powerups\star\star_s6.png" />
     <Content Include="images\powerups\star\star_s7.png" />
-    <None Include="main\parameters.txt" />
     <Content Include="sounds\sfx\1_up.mp3" />
     <Content Include="sounds\sfx\brick_smash.mp3" />
     <Content Include="sounds\sfx\mushroom_pickup.mp3" />

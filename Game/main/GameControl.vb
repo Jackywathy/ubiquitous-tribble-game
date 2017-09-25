@@ -167,7 +167,7 @@ Public Class GameControl
         Return scenes
     End Function
 
-    Public Sub LoadAndRunScene()
+    Public Sub RunScene()
 
     End Sub 
 

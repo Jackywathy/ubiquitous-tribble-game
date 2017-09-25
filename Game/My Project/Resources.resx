@@ -470,13 +470,13 @@
     <value>..\images\player\small\mario_small_climb.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="map1_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\main\maps\map1_1.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\maps\map1_1.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="map1_1under" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\main\maps\map1_1under.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\maps\map1_1under.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="map_startmap" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\main\maps\map_startmap.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\maps\map_startmap.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="blockBelowGround" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\blocks\below\blockbelowground.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -491,7 +491,7 @@
     <value>..\images\blocks\above\blockmetal.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="map2_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\main\maps\map2_1.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\maps\map2_1.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="blockInvis" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\blocks\blockinvis.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

@@ -3,19 +3,16 @@
 ''' </summary>
 Public MustInherit Class GameItem
     Public MustOverride Sub Render(g As Graphics)    
-    Friend Const ToolBarOffSet As Integer = 29
 
     Private Shared _idCount As Integer
 
-    Private Shared Function GetNewID() As Integer
+    Private Shared Function GetNewId() As Integer
         Dim temp = _idCount
         _idCount += 1
-
         Return temp
     End Function
 
-    Public Property ID As Integer = GetNewID()
-
+    Public Property Id As Integer = GetNewID()
 
     Public Shared Operator =(left As GameItem, right As GameItem)
         Return left.ID = right.ID
@@ -231,9 +228,23 @@ Public MustInherit Class HitboxItem
     End Sub
 
     ''' <summary>
+    ''' Updates veloc
+    ''' </summary>
+    Public Overridable Sub FrozenUpdateVeloc()
+
+    End Sub
+
+    ''' <summary>
     ''' Updates Location by adding veloc to location, if nessecary
     ''' </summary>
     Public Overridable Sub UpdateLocation()
+
+    End Sub
+
+    ''' <summary>
+    ''' Updates veloc
+    ''' </summary>
+    Public Overridable Sub FrozenUpdateLocation()
 
     End Sub
 
