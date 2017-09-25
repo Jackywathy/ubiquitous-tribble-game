@@ -1,8 +1,8 @@
 ﻿Public Class EntFireFlower
     Inherits EntPowerup
 
-    Public Overrides Property moveSpeed As Distance = New Distance(0, 0)
-    Public Overrides Property maxVeloc As Distance = New Distance(0, Forces.terminalVeloc)
+    Public Overrides Property moveSpeed As Velocity = New Velocity(0, 0)
+    Public Overrides Property maxVeloc As Velocity = New Velocity(0, Forces.terminalVeloc)
     Public Overrides ReadOnly Property PickupScore As Integer = PlayerPoints.Firefire
 
     Private spawnCounter = 0
@@ -14,6 +14,7 @@
 
     Sub New(location As Point, mapScene As MapScene)
         MyBase.New(StandardWidth, StandardHeight, location, Sprites.f_flower, mapScene)
+        Me.RenderImage = Me.SpriteSet(SpriteState.Spawn)(0)
     End Sub
 
     Public Overrides Sub Animate()

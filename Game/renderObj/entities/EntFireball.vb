@@ -1,8 +1,8 @@
 ﻿Public Class EntFireball
     Inherits Entity
 
-    Public Overrides Property moveSpeed As Distance = New Distance(3, 4)
-    Public Overrides Property maxVeloc As Distance = New Distance(8, Forces.terminalVeloc)
+    Public Overrides Property moveSpeed As Velocity = New Velocity(2, 4)
+    Public Overrides Property maxVeloc As Velocity = New Velocity(8, Forces.terminalVeloc)
 
     Public owner As EntPlayer
     Public willDestroy = False
@@ -10,7 +10,7 @@
 
     Sub New(width As Integer, height As Integer, location As Point, direction As Integer, shooter As EntPlayer, mapScene As MapScene)
         MyBase.New(width, height, location, Sprites.playerFireball, mapScene)
-        Me.moveSpeed = New Distance(Me.moveSpeed.x * direction, Me.moveSpeed.y)
+        Me.moveSpeed = New Velocity(Me.moveSpeed.x * direction, Me.moveSpeed.y)
         Me.owner = shooter
         Me.isGrounded = False
         Me.killsOnContact = True
@@ -30,7 +30,8 @@
     End Sub
 
     Public Overrides Sub UpdateVeloc()
-        If IsOutOfMap() <> Direction.None
+
+        If IsOutOfMap() <> Direction.None Then
             Me.Destroy()
         End If
 
@@ -44,23 +45,20 @@
             MyBase.UpdateVeloc()
         Else
             If Me.destroyTimer >= 3 Then
-                MyBase.Destroy()
+                Me.Destroy()
             End If
         End If
     End Sub
 
-    Public Overrides Sub Destroy()
-
-        If Not willDestroy Then
-            owner.NumFireballs -= 1
-            Me.Width = 32
-            Me.Height = 32
-        End If
+    Public Sub PrepareForDestroy()
+        Me.Width = 32
+        Me.Height = 32
         willDestroy = True
-
-
     End Sub
 
-
+    Public Overrides Sub Destroy()
+        MyBase.Destroy()
+        owner.NumFireballs -= 1
+    End Sub
 
 End Class

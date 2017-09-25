@@ -1,8 +1,8 @@
 ﻿Public Class EntLifeShroom
     Inherits EntPowerup
 
-    Public Overrides Property moveSpeed As Distance = New Distance(3, 0)
-    Public Overrides Property maxVeloc As Distance = New Distance(2, Forces.terminalVeloc)
+    Public Overrides Property moveSpeed As Velocity = New Velocity(3, 0)
+    Public Overrides Property maxVeloc As Velocity = New Velocity(2, Forces.terminalVeloc)
 
     Public Overrides ReadOnly Property PickupScore As Integer = PlayerPoints.Mushroom
 

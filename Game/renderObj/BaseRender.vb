@@ -187,6 +187,7 @@ Public MustInherit Class HitboxItem
 
     Public Property CollisionHeight As Integer
     Public Property CollisionWidth As Integer
+    Public Property CollisionActive As Boolean = True
 
     Friend FramesSinceHit As Integer = 0
 

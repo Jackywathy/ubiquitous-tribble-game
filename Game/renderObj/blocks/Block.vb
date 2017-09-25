@@ -35,8 +35,9 @@
     End Sub
 
     Public Overrides Sub CollisionLeft(sender As Entity)
-        If sender.GetType = GetType(EntFireball) Then
-            sender.Destroy()
+        If sender.GetType = GetType(EntFireball) And Not Me.GetType.IsSubclassOf(GetType(BlockInvisNone)) Then
+            Dim f As EntFireball = sender
+            f.PrepareForDestroy()
         Else
             MyBase.CollisionLeft(sender)
         End If
@@ -44,8 +45,9 @@
 
     Public Overrides Sub CollisionRight(sender As Entity)
 
-        If sender.GetType = GetType(EntFireball) Then
-            sender.Destroy()
+        If sender.GetType = GetType(EntFireball) And Not Me.GetType.IsSubclassOf(GetType(BlockInvisNone)) Then
+            Dim f As EntFireball = sender
+            f.PrepareForDestroy()
         Else
             MyBase.CollisionRight(sender)
         End If

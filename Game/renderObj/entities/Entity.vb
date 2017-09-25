@@ -3,7 +3,7 @@
 ''' </summary>
 Public MustInherit Class Entity
     Inherits HitboxItem
-    Public veloc As New Distance(0, 0)
+    Public veloc As New Velocity(0, 0)
 
     Public Property SpriteSet As SpriteSet
 
@@ -15,14 +15,13 @@ Public MustInherit Class Entity
         Me.SpriteSet = spriteSet
     End Sub
 
-   
-    Public Overridable Property moveSpeed As Distance
-    Public Overridable Property maxVeloc As Distance
+    Public Overridable Property moveSpeed As Velocity
+    Public Overridable Property maxVeloc As Velocity
 
     Public willCollideFromAbove As Boolean = False
     Public willCollideFromBelow As Boolean = False
     Public willCollideFromLeft As Boolean = False
-    Public willCollideFromRight As Boolean  = False
+    Public willCollideFromRight As Boolean = False
 
     Public isGrounded As Boolean = True
     Public isJumping As Boolean = False
@@ -322,30 +321,30 @@ Public MustInherit Class Entity
         Return Direction.None
     End Function
 
-    
+
     Public Overrides Sub UpdateVeloc()
 
         ' Reset collision variables
         Me.willCollideFromAbove = False
-            Me.willCollideFromBelow = False
-            Me.willCollideFromLeft = False
-            Me.willCollideFromRight = False
+        Me.willCollideFromBelow = False
+        Me.willCollideFromLeft = False
+        Me.willCollideFromRight = False
 
-            ' stop the player from walking off
+        ' stop the player from walking off
 
-            Me.ApplyConstantForces()
+        Me.ApplyConstantForces()
 
         ' Check direction
         If veloc.x < 0 And isFacingForward Then
             isFacingForward = False
         ElseIf veloc.x > 0 And Not isFacingForward Then
             isFacingForward = True
-            End If
+        End If
 
         ' check collision of all Entities with all existing RenderObj, including other Entities
         For Each other As HitboxItem In MyScene.AllHitboxItems
             ' Don't check collisions using the same obj
-            If Me <> other Then
+            If Me <> other And other.CollisionActive Then
                 Me.CheckPotentialCollision(other)
 
                 ' handle block bumping beneath Me
@@ -366,8 +365,8 @@ Public MustInherit Class Entity
 
         ' If entity is going to collide, clear veloc so that it never moves INSIDE the object
         If Me.willCollideFromAbove And Me.veloc.y < 0 Then
-                Me.veloc.y = 0
-            End If
+            Me.veloc.y = 0
+        End If
         If Me.willCollideFromBelow And Me.veloc.y > 0 Then
             Me.veloc.y = 0
         End If
@@ -407,7 +406,7 @@ Public Module Forces
     Public Const aerialDirectionReversePenalty = 3.0
 End Module
 
-Public Structure Distance
+Public Structure Velocity
     Dim x As Double
     Dim y As Double
     Sub New(x As Double, y As Double)

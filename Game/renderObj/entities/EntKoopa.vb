@@ -2,16 +2,15 @@
     Inherits EntEnemy
 
     Public deathTimer As Integer = 0
-    Public inShell As Integer  = False
-    Public defaultY As Integer = 0
+    Public inShell As Integer = False
 
     ' Amount of time the player cannot be killed by shell immediately after kicking it
     Public gracePeriodTimerForPlayer As Integer = 0
 
     Public gettingKicked = False
 
-    Public Overrides Property moveSpeed As Distance = New Distance(1, 0)
-    Public Overrides Property maxVeloc As Distance = New Distance(1.8, -15)
+    Public Overrides Property moveSpeed As Velocity = New Velocity(1, 0)
+    Public Overrides Property maxVeloc As Velocity = New Velocity(1.8, -15)
 
     Public Sub New(location As Point, mapScene As MapScene)
         MyBase.New(32, 64, location, Sprites.koopaGreen, mapScene)
@@ -23,24 +22,24 @@
     ''' 1 : y
     ''' </summary>
     Public Sub New(params As Object(), mapScene As MapScene)
-        Me.New(New Point(params(0)*32, params(1)*32), mapScene)
+        Me.New(New Point(params(0) * 32, params(1) * 32), mapScene)
 
     End Sub
-    
+
 
     Public Sub GoIntoShell()
         inShell = True
         Me.veloc.x = 0
-        Me.moveSpeed = New Distance(0, 0)
+        Me.moveSpeed = New Velocity(0, 0)
         Me.RenderImage = Me.SpriteSet(SpriteState.Destroy)(1)
-        
+
         Me.Height = 32
 
     End Sub
 
     Public Sub Kick(direction As Integer)
-        Me.moveSpeed = New Distance(8, 0)
-        Me.maxVeloc = New Distance(8, 0)
+        Me.moveSpeed = New Velocity(8, 0)
+        Me.maxVeloc = New Velocity(8, 0)
         Me.directionMoving = direction
         Me.gettingKicked = True
     End Sub
@@ -50,20 +49,11 @@
             Me.deathTimer += 1
             Me.Height = 32
             Me.RenderImage = SpriteSet(SpriteState.Destroy)(2)
-            Dim x = Me.deathTimer / (animationInterval * 5)
-
-            ' Use displacement/time function
-            ' f(x) = 50(2x - x^2)
-
-            Dim heightFunc = 50 * (2 * (x) - (x * x))
-            Me.Location = New Point(Me.Location.X, defaultY + heightFunc)
-            If Me.Location.Y < 0 Then
-                Me.isDead = True
-            End If
+            Me.Location = Me.BounceFunction(deathTimer)
 
         ElseIf Not Me.inShell Then
-            If veloc.x <> 0 And MyScene.GlobalFrameCount Mod (2 * animationInterval) = 0 Then
-                Dim index = MyScene.GlobalFrameCount / (2 * animationInterval)
+            If veloc.x <> 0 And MyScene.GlobalFrameCount Mod (2 * AnimationInterval) = 0 Then
+                Dim index = MyScene.GlobalFrameCount / (2 * AnimationInterval)
                 If isFacingForward Then
                     Me.RenderImage = SpriteSet(SpriteState.ConstantRight)(index Mod 2)
                 Else
@@ -102,7 +92,28 @@
         MyBase.UpdateVeloc()
 
         AiBasicGround()
-        
+    End Sub
+
+    Public Sub OnSenderCollision_Sides(sender As Entity, direction As Integer)
+        If sender.GetType() = GetType(EntPlayer) Then
+            If Me.inShell Then
+                If veloc.x <> 0 Then
+                    HurtPlayer(sender)
+                Else
+                    Me.Kick(direction)
+                End If
+            ElseIf Not Me.willDie Then
+                HurtPlayer(sender)
+            End If
+        ElseIf sender.killsOnContact Then
+            willDie = True
+            CollisionActive = False
+            Me.defaultY = Me.Location.Y
+            If sender.GetType = GetType(EntFireball) Then
+                Dim f As EntFireball = sender
+                f.PrepareForDestroy()
+            End If
+        End If
     End Sub
 
     ''' <summary>
@@ -116,10 +127,9 @@
                     Me.Kick(1)
                 ElseIf Not gettingKicked Then
                     Me.veloc.x = 0
-                    Me.moveSpeed = New Distance(0, 0)
+                    Me.moveSpeed = New Velocity(0, 0)
                     Dim player As EntPlayer = sender
                     player.IsBouncingOffEntity = True
-                   
                 End If
             Else
                 Me.GoIntoShell()
@@ -130,60 +140,28 @@
             End If
         ElseIf sender.killsOnContact Then
             willDie = True
+            CollisionActive = False
             Me.defaultY = Me.Location.Y
+            If sender.GetType = GetType(EntFireball) Then
+                Dim f As EntFireball = sender
+                f.PrepareForDestroy()
+            End If
         End If
     End Sub
 
     Public Overrides Sub CollisionBottom(sender As Entity)
         MyBase.CollisionBottom(sender)
-        If sender.GetType() = GetType(EntPlayer) Then
-            If Me.inShell Then
-                If veloc.x <> 0 Then
-                    HurtPlayer(sender)
-                End If
-            ElseIf Not Me.willDie Then
-                HurtPlayer(sender)
-            End If
-        ElseIf sender.killsOnContact Then
-            willDie = True
-            Me.defaultY = Me.Location.Y
-        End If
+        OnSenderCollision_Sides(sender, 1)
     End Sub
 
     Public Overrides Sub CollisionLeft(sender As Entity)
         MyBase.CollisionLeft(sender)
-        If sender.GetType() = GetType(EntPlayer) Then
-            If Me.inShell Then
-                If veloc.x <> 0 Then
-                    HurtPlayer(sender)
-                Else
-                    Me.Kick(1)
-                End If
-            ElseIf Not Me.willDie Then
-                HurtPlayer(sender)
-            End If
-        ElseIf sender.killsOnContact Then
-            willDie = True
-            Me.defaultY = Me.Location.Y
-        End If
+        OnSenderCollision_Sides(sender, 1)
     End Sub
 
     Public Overrides Sub CollisionRight(sender As Entity)
         MyBase.CollisionRight(sender)
-        If sender.GetType() = GetType(EntPlayer) Then
-            If Me.inShell Then
-                If veloc.x <> 0 Then
-                    HurtPlayer(sender)
-                Else
-                    Me.Kick(-1)
-                End If
-            ElseIf Not Me.willDie Then
-                HurtPlayer(sender)
-            End If
-        ElseIf sender.killsOnContact Then
-            willDie = True
-            Me.defaultY = Me.Location.Y
-        End If
+        OnSenderCollision_Sides(sender, -1)
     End Sub
 
     Private Sub HurtPlayer(player As EntPlayer)

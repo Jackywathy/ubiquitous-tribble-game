@@ -142,8 +142,8 @@ Public Class EntPlayer
     Public NumFireballs As Integer = 0
     Private invulnerableTime As Integer = 0
 
-    Public Overrides Property moveSpeed As Distance = New Distance(0.6, 12)
-    Public Overrides Property maxVeloc As Distance = New Distance(6, -15)
+    Public Overrides Property moveSpeed As Velocity = New Velocity(0.6, 12)
+    Public Overrides Property maxVeloc As Velocity = New Velocity(5, -15)
     ''' <summary>
     ''' Creates a new player
     ''' </summary>
@@ -170,13 +170,13 @@ Public Class EntPlayer
     ''' </summary>
     Public Sub OnCrouch(tryCrouch As Boolean)
         ' isCrouching only false if state is false and if player is allowed to uncrouch
-        If (Not tryCrouch) And allowedToUncrouch Then
-            isCrouching = False
+        If (Not tryCrouch) And AllowedToUncrouch Then
+            IsCrouching = False
         Else
-            isCrouching = True
+            IsCrouching = True
         End If
 
-        If isCrouching Then ' IS crouching
+        If IsCrouching Then ' IS crouching
             Me.CollisionHeight = MarioHeightS
         Else ' is NOT crouching
             Me.CollisionHeight = MarioHeightB
@@ -208,7 +208,7 @@ Public Class EntPlayer
         End If
     End Sub
 
-    Public Sub PickupCoin
+    Public Sub PickupCoin()
         Sounds.CoinPickup.Play()
         Coins += 1
         Score += PlayerPoints.Coin
@@ -220,7 +220,7 @@ Public Class EntPlayer
     ''' Do not use for player damage - use PlayerGotHit instead
     ''' </summary>
     Private Sub KillPlayer()
-        If isDead
+        If isDead Then
             Return
         End If
 
@@ -231,7 +231,7 @@ Public Class EntPlayer
         Lives -= 1
         MyScene.BackgroundMusic.Stop()
         Sounds.PlayerDead.Play()
-        
+
 
     End Sub
 
@@ -240,23 +240,34 @@ Public Class EntPlayer
     ''' Do not call if state != PlayerStates.fire
 	''' </summary>
     Public Sub TryShootFireball()
-        If numFireballs < 2 Then
+        If NumFireballs < 2 Then
             Dim direction = 1
             Dim pointSpawn = Me.Location
+
+            Dim spawnY = Me.Location.Y + 0.5 * Me.Height - 16
+            '
+            '  MARIO
+            '   ___
+            '  |   |
+            '  |___|
+            '  |  o| <--- spawn fireball here
+            '  |___|
+            '
+            '
             If Me.isFacingForward Then
-                pointSpawn = New Point(Me.Location.X + Me.Width, Me.Location.Y + 0.5 * Me.Height)
+                pointSpawn = New Point(Me.Location.X + Me.Width - 16, spawnY)
             Else
-                pointSpawn = New Point(Me.Location.X, Me.Location.Y + 0.5 * Me.Height)
+                pointSpawn = New Point(Me.Location.X, spawnY)
                 direction *= -1
             End If
 
             MyScene.PrepareAdd(New EntFireball(16, 16, pointSpawn, direction, Me, MyScene))
-            Me.numFireballs += 1
+            Me.NumFireballs += 1
         End If
     End Sub
 
     Public Sub BounceOffEntity(holdingJump As Boolean)
-        Me.veloc = New Distance(Me.veloc.x, 0)
+        Me.veloc = New Velocity(Me.veloc.x, 0)
         If holdingJump Then
             Me.AccelerateY(Me.moveSpeed.y * 1.1, True)
         Else
