@@ -673,14 +673,12 @@
       ]
     ]
   },
-  "background": [
-    "#5c94fc",
-    7168,
-    480
-  ],
+  "background": "#5c94fc",
   "default_entry": [
     0,
     64
   ],
+  "width": 7168,
+  "height": 480,
   "theme": "overworld"
 }

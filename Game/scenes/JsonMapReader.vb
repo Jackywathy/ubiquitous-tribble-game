@@ -22,13 +22,17 @@ Public NotInheritable Class JsonMapReader
             Throw New Exception(String.Format("File is empty: , {0}", jsonName))
         End If
 
-
-        Dim mapObject = JsonConvert.DeserializeObject(Of JsonMapObject)(str)
+        Dim mapObject As JsonMapObject
+        Try
+             mapObject = JsonConvert.DeserializeObject(Of JsonMapObject)(str)
+        Catch e As JsonException
+            Throw New Exception(String.Format("Json invalid, name={0}", jsonname), e)
+        End Try
 
         Dim outScene As New MapScene(parent)
 
         ' add the Background
-        outScene.SetBackground(mapObject.Background(0), mapObject.Background(1), mapObject.Background(2))
+        outScene.SetBackground(mapObject.Background, mapObject.Width, mapObject.Height)
 
         ' add all blocks
         For Each pair As KeyValuePair(Of String, IList(Of Object())) In mapObject.Blocks
@@ -220,6 +224,8 @@ Public Class JsonMapObject
     Public Property MapName As String
     Public Property Blocks As Dictionary(Of String, IList(Of Object()))
     Public Property Entities As Dictionary(Of String, IList(Of Object()))
-    Public Property Background As List(Of Object)
+    Public Property Background As String
     Public Property Theme As RenderTheme
+    Public Property Width as integer
+    Public Property Height As integer
 End Class
