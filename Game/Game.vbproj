@@ -128,13 +128,13 @@
     <Compile Include="renderObj\static\StaticHud.vb" />
     <Compile Include="scenes\JsonMapReader.vb" />
     <Compile Include="sounds\MusicPlayer.vb" />
-    <Compile Include="debug\TestImage.designer.vb">
+    <Compile Include="helper\TestImage.designer.vb">
       <DependentUpon>TestImage.vb</DependentUpon>
     </Compile>
-    <Compile Include="debug\TestImage.vb">
+    <Compile Include="helper\TestImage.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="debug\Helper.vb" />
+    <Compile Include="helper\Helper.vb" />
     <Compile Include="renderObj\static\StaticMushroom.vb" />
     <Compile Include="scenes\BaseScene.vb" />
     <Compile Include="scenes\MapScene.vb" />
@@ -185,7 +185,7 @@
     <Compile Include="renderObj\static\StaticText.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="debug\TestImage.resx">
+    <EmbeddedResource Include="helper\TestImage.resx">
       <DependentUpon>TestImage.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
