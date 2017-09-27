@@ -6,6 +6,7 @@
 <ComponentModel.DesignerCategory("")>
 Public Class GameControl
     Inherits Control
+
     Friend WithEvents GameLoop As New Timer
     Private Const HudHeightPercent = 0.1
 

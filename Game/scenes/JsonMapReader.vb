@@ -228,4 +228,5 @@ Public Class JsonMapObject
     Public Property Theme As RenderTheme
     Public Property Width as integer
     Public Property Height As integer
+    Public Property MapTime As Integer
 End Class

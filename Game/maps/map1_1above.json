@@ -1,4 +1,5 @@
-﻿{
+﻿
+{
   "MapName": "1-1above",
   "blocks": {
     "groundPlatform": [
@@ -680,5 +681,6 @@
   ],
   "width": 7168,
   "height": 480,
-  "theme": "overworld"
+  "theme": "overworld",
+  "MapTime" :  300 
 }

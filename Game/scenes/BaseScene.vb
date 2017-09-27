@@ -7,7 +7,7 @@ Public MustInherit Class BaseScene
     ''' <summary>
     ''' FrameCount for each scene
     ''' </summary>
-    Public GlobalFrameCount As Integer
+    Public Shared GlobalFrameCount As Integer
 
     ''' <summary>
     ''' Run once per tick in game, updates all obejcts in scene, if necessary
@@ -22,6 +22,9 @@ Public MustInherit Class BaseScene
         If isTransitioning Then
             DrawTransition(g)
         End if
+    End Sub
+
+    Public Overridable Sub SetTime(seconds As Integer)
 
     End Sub
 

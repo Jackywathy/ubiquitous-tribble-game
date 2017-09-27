@@ -2,8 +2,7 @@
     Inherits StaticImage
 
     Private powerupImage As StaticImage
-
-    Public ReadOnly Property PowerupEntity
+    
 
     Public Sub New(width As integer, height As integer, location As Point)
         MyBase.New(width, height, location, Resize(My.Resources.HUDitemBox, width, height))

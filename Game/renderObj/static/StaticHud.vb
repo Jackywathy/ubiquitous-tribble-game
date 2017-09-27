@@ -4,6 +4,12 @@
     Private height as Integer
     Private width as Integer
 
+
+    Public Sub SetTime(seconds As Integer)
+       TimeNumText.Text = seconds.ToString
+    End Sub
+
+
     ' Takes up 25% of screen width
     ' this is the start point (in percent)
     Private Const marioScorePercent = 0.25

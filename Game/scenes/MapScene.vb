@@ -374,7 +374,7 @@ Public Class MapScene
         For Each item In AllEntities
             item.Render(g)
         Next
-        Me.GlobalFrameCount += 1
+        GlobalFrameCount += 1
     End Sub
 End Class
 
