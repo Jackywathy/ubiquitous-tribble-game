@@ -31,6 +31,9 @@ Public NotInheritable Class JsonMapReader
 
         Dim outScene As New MapScene(parent)
 
+        ' Set maptime
+        outScene.SetMapTime(mapObject.MapTime)
+
         ' add the Background
         outScene.SetBackground(mapObject.Background, mapObject.Width, mapObject.Height)
 
@@ -141,7 +144,7 @@ Public NotInheritable Class JsonMapReader
                 out = New BlockMetal(params, scene)
 
             Case RenderTypes.BlockPipe
-                AssertLength("blockPipe", 5, params)
+                AssertLength("blockPipe", 6, params)
                 out = New BlockPipe(params, scene)
 
             Case RenderTypes.BlockBrickCoin
