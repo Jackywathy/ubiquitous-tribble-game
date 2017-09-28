@@ -11,7 +11,7 @@
         Mybase.New(handler)
     End Sub
 
-    Public Overrides Sub UpdateTick()
+    Public Overrides Sub UpdateTick(ticksElapsed As integer)
         Throw New NotImplementedException()
     End Sub
 

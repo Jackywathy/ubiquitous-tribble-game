@@ -1,5 +1,4 @@
-﻿
-{
+﻿{
   "MapName": "1-1above",
   "blocks": {
     "groundPlatform": [
@@ -506,6 +505,7 @@
         2,
         2,
         2,
+        "none",
         "none"
       ],
       [
@@ -513,6 +513,7 @@
         2,
         2,
         3,
+        "none",
         "none"
       ],
       [
@@ -520,13 +521,15 @@
         2,
         2,
         4,
-        "none"
+        "map",
+        "map1_1under"
       ],
       [
         57,
         2,
         2,
         4,
+        "none",
         "none"
       ],
       [
@@ -534,6 +537,7 @@
         2,
         2,
         2,
+        "none",
         "none"
       ],
       [
@@ -541,6 +545,7 @@
         2,
         2,
         2,
+        "none",
         "none"
       ]
     ],
@@ -681,6 +686,6 @@
   ],
   "width": 7168,
   "height": 480,
-  "theme": "overworld",
-  "MapTime" :  300 
+  "MapTime": 300,
+  "theme": "overworld"
 }

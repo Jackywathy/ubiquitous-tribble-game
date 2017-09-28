@@ -173,6 +173,7 @@
         2,
         2,
         11,
+        "none",
         "none"
       ]
     ]
@@ -185,6 +186,6 @@
   ],
   "width": 2432,
   "height": 416,
-  "theme": "underground",
-  "MapTime" :  300 
+  "MapTime": 300,
+  "theme": "underground"
 }

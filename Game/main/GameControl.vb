@@ -10,6 +10,11 @@ Public Class GameControl
     Friend WithEvents GameLoop As New Timer
     Private Const HudHeightPercent = 0.1
 
+    ''' <summary>
+    ''' Ticks that the map has been active for
+    ''' </summary>
+    Public MapTimeCounter As Integer = 0
+
     Public SharedHud As New StaticHud(ScreenGridWidth, ScreenGridHeight * HudHeightPercent)
 
     ''' <summary>
@@ -19,7 +24,9 @@ Public Class GameControl
     ''' <param name="e"></param>
     Private Sub GameLoop_Tick(sender As Object, e As EventArgs) Handles GameLoop.Tick
         CurrentScene.HandleInput()
-        CurrentScene.UpdateTick()
+        CurrentScene.UpdateTick(MapTimeCounter)
+        MapTimeCounter += 1
+
         Me.Refresh()
     End Sub
 
@@ -55,7 +62,7 @@ Public Class GameControl
         Randomize()
 
         allMapScenes = LoadScenes()
-        RunScene(MapEnum.map1_1under)
+        RunScene(PlayerStartScreen, True)
         
 
         ' only start loop after init has finished
@@ -166,8 +173,16 @@ Public Class GameControl
         Return scenes
     End Function
 
-    Public Sub RunScene(map As MapEnum)
+    ''' <summary>
+    ''' Runs a scene from mapEnum
+    ''' </summary>
+    ''' <param name="map"></param>
+    ''' <param name="isNewStage">Whether or not it resets the timer</param>
+    Public Sub RunScene(map As MapEnum, isNewStage As Boolean)
         CurrentScene = allMapScenes(map)
+        if isNewStage
+            MapTimeCounter = 0
+        End If
     End Sub 
 
     Private Sub GameControl_SizeChanged(sender As Object, e As EventArgs) Handles Me.SizeChanged

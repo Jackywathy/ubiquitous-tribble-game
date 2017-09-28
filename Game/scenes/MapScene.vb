@@ -37,6 +37,11 @@ Public Class MapScene
     Friend Background As BackgroundRender
 
     ''' <summary>
+    ''' Total time that can be spent in scene, in seconds
+    ''' </summary>
+    Private MapTime As Integer
+
+    ''' <summary>
     ''' Location that the scene is rendered at - default = 0, 0
     ''' </summary>
     Public ScreenLocation As New Point(0, 0)
@@ -44,7 +49,7 @@ Public Class MapScene
 
     Private Function MouseOverBox As Boolean
         Dim point = GetMouseRelativeLocation()
-        Return Me.HudPowerUp.PowerupHolder.GetRect().Contains(point)
+        Return Me.HudElements.PowerupHolder.GetRect().Contains(point)
     End Function
 
     Private isDragging = False
@@ -56,21 +61,21 @@ Public Class MapScene
         Dim cursorLocation = GetMouseRelativeLocation()
         ' Move image while dragging
         If isDragging Then
-            Me.HudPowerUp.PowerupHolder.SetPowerupMiddleLocation(cursorLocation)
+            Me.HudElements.PowerupHolder.SetPowerupMiddleLocation(cursorLocation)
         End If
 
         ' handle left mouse button release
         If Control.MouseButtons <> MouseButtons.Left And isDragging Then
             isDragging = False
-            If HudPowerUp.PowerupHolder.PowerupTouchesBox Then
-                Me.HudPowerUp.PowerupHolder.ResetLocation()
+            If HudElements.PowerupHolder.PowerupTouchesBox Then
+                Me.HudElements.PowerupHolder.ResetLocation()
             Else
-                HudPowerUp.PowerupHolder.SpawnPowerup(Me)
+                HudElements.PowerupHolder.SpawnPowerup(Me)
             End If
         End If
 
         ' check if clicked
-        If MouseOverBox() And Control.MouseButtons = MouseButtons.Left And HudPowerUp.PowerupHolder.HasPowerup Then
+        If MouseOverBox() And Control.MouseButtons = MouseButtons.Left And HudElements.PowerupHolder.HasPowerup Then
             isDragging = True
         End If
 
@@ -84,7 +89,7 @@ Public Class MapScene
     ''' <param name="parent"></param>
     Public Sub New(parent As GameControl, Optional includeHud As Boolean=True)
         MyBase.New(parent)
-        HudPowerUp = parent.sharedHud
+        HudElements = parent.sharedHud
     End Sub
 
     ''' <summary>
@@ -211,7 +216,7 @@ Public Class MapScene
     ''' </summary>
     Public ReadOnly toAddObjects As New HashSet(Of HitboxItem)
 
-    Public HudPowerUp As StaticHud = Parent.SharedHud
+    Public HudElements As StaticHud = Parent.SharedHud
 
     
    
@@ -244,8 +249,12 @@ Public Class MapScene
     ''' Sets the Background of the mapScene, using a hex color
     ''' </summary>
     ''' <param name="hexColor"></param>
-    Sub SetBackground(hexColor As String, width As Integer, height As Integer)
+    Public Sub SetBackground(hexColor As String, width As Integer, height As Integer)
         Background = New BackgroundRender(width, height, hexColor, Me)
+    End Sub
+
+    Public Sub SetMapTime(time as integer)
+        MapTime = time
     End Sub
 
     ''' <summary>
@@ -320,7 +329,7 @@ Public Class MapScene
     ''' <summary>
     ''' Updates the position of all Entities and items
     ''' </summary>
-    Public Overrides Sub UpdateTick()
+    Public Overrides Sub UpdateTick(ticksElapsed As Integer)
         ' Animate and update position of each entity
         If player1.IsDead Then
             player1.UpdateVeloc()
@@ -334,8 +343,13 @@ Public Class MapScene
             Next
         End If
 
+        for each item In Player1.currentGroundObjects
+            item.CollisionTop(player1)
+        Next
+
         AddAllAdded()
         RemoveAllDeleted()
+
 
         ' TODO - chuck into function - scrolls screen if player is close to edge
         If Player1.Location.X - Me.ScreenLocation.X > (ScreenGridWidth / 3 * 2) Then
@@ -347,8 +361,16 @@ Public Class MapScene
             'Me.Background.ScrollHorizontal(Player1.Location.X - RenderObject.ScreenLocation.X)
             Me.Background.ScrollHorizontal(-(600 - (Player1.Location.X - Me.ScreenLocation.X)) / 50)
         End If
+        HandleTime(ticksElapsed)
     End Sub
 
+    Private Sub HandleTime(ticksElapsed As Integer)
+        Dim timeRemaining = ticksElapsed / TicksPerSecond
+        if timeRemaining < 0
+            Player1.State = PlayerStates.Dead
+        End If
+        HudElements.SetTime(MapTime - CInt(Math.Floor(timeRemaining)))
+    End Sub
 
     ''' <summary>
     ''' Renders scene onto g
@@ -356,7 +378,7 @@ Public Class MapScene
     ''' <param name="g"></param>
     Public Overrides Sub RenderObjects(g As Graphics)
         Background.Render(g)
-        HudPowerUp.Render(g)
+        HudElements.Render(g)
 
         ' all text & stuff
         For Each item As GameItem In AllStaticItems

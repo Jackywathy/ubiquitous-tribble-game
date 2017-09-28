@@ -12,7 +12,7 @@ Public MustInherit Class BaseScene
     ''' <summary>
     ''' Run once per tick in game, updates all obejcts in scene, if necessary
     ''' </summary>
-    Public MustOverride Sub UpdateTick()
+    Public MustOverride Sub UpdateTick(ticksElapsed As Integer)
 
     ''' <summary>
     ''' Renders scene ont a graphics object
@@ -173,4 +173,5 @@ Public Enum SwitchLevelType
     Normal
     Secret1
     Secret2
+    Pipe
 End Enum

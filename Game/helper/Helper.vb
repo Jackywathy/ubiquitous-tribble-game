@@ -10,6 +10,8 @@ Public Module Dimensions
     Public MarioHeightS As Integer = 32
     Public MarioHeightB As Integer = 64
     Public GroundHeight As Integer = 64
+    Public Const TicksPerSecond As Double = 1000/15
+    Public Const PlayerStartScreen = MapEnum.map1_1above
 End Module
 
 Module Debug
