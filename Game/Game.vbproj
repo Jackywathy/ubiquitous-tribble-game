@@ -256,6 +256,11 @@
     <Content Include="images\other\flag\flagpole_stem.png" />
     <Content Include="images\other\pipe\pipebottom.png" />
     <Content Include="images\other\pipe\pipetop.png" />
+    <Content Include="images\other\platform\platform.png" />
+    <Content Include="images\other\tree\tree_left.png" />
+    <Content Include="images\other\tree\tree_middle.png" />
+    <Content Include="images\other\tree\tree_right.png" />
+    <Content Include="images\other\tree\tree_trunk.png" />
     <Content Include="images\player\big\mario_big_climb.png" />
     <Content Include="images\player\fire\fireball.png" />
     <Content Include="images\player\big\mario_big_1r.png" />

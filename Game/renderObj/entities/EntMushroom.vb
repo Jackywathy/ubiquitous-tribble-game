@@ -14,6 +14,13 @@
         Me.RenderImage = Me.SpriteSet(SpriteState.Spawn)(0)
     End Sub
 
+    Public Overrides Sub Animate()
+        If Not IsSpawning Then
+            Me.RenderImage = Me.SpriteSet(SpriteState.Constant)(0)
+        Else
+            MyBase.Animate()
+        End If
+    End Sub
 
     Public Overrides Sub UpdateVeloc()
         If Not IsSpawning Then

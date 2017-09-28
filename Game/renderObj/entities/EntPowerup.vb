@@ -38,6 +38,7 @@
         '   Divisn. 0 0 0 0 0 1 1
         '   Mod 7   0 0 0 0 0 1 1
         '
+
         If (Math.Floor(spawnCounter / AnimationInterval) Mod 7) = Me.SpriteSet(SpriteState.Spawn).Count - 1 Then
             isSpawning = False
             Me.RenderImage = Me.SpriteSet(SpriteState.ConstantRight)(0)

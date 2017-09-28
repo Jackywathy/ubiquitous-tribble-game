@@ -26,7 +26,7 @@
             Case PowerupType.Fireflower
                 powerup = New EntFireFlower(New Point(powerupImage.x, powerupImage.y), scene)
             Case PowerupType.Mushroom
-                powerup = New EntMushroom(New Point(powerupImage.x, powerupImage.y), scene)
+                powerup = New EntMushroom(New Point(powerupImage.X, powerupImage.Y), scene)
             Case Else
                 Throw New Exception()
         End Select
