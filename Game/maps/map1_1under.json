@@ -176,7 +176,17 @@
         "none",
         "none"
       ]
-    ]
+    ],
+    "blockPipeRotate": [
+      [
+        13,
+        2,
+        2,
+        2,
+        "map",
+        "map1_1above"
+      ]
+    ] 
   },
   "entities": {},
   "background": "#000000",
