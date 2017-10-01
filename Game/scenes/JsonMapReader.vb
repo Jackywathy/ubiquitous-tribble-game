@@ -148,6 +148,9 @@ Public NotInheritable Class JsonMapReader
                 AssertLength("blockPipe", 6, params)
                 out = New BlockPipe(params, scene)
 
+            Case RenderTypes.BlockPipeRotate
+                AssertLength("blockpiperotate", )
+
             Case RenderTypes.BlockBrickCoin
                 AssertLength("blockBrickCoin", 2, params)
                 out = New BlockBrickCoin(params, scene)
@@ -187,8 +190,7 @@ Public NotInheritable Class JsonMapReader
             Case RenderTypes.BlockInvisCoin
                 AssertLength("BlockInvisCoin", 2, params)
                 out = New BlockInvisCoin(params, scene)
-            Case RenderTypes.BlockPipeRotate
-                AssertLength
+           
             Case Else
 
                 Throw New Exception(String.Format("No object with name {0}", name))

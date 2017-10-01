@@ -311,12 +311,8 @@ Public MustInherit Class HitboxItem
     Public Overridable Sub Animate()
     End Sub
 
-    Public Overridable Sub AddSelfToScene()
-        If Helper.IsEntity(Me) Then
-            MyScene.AddEntity(Me)
-        Else
-            MyScene.AddHitbox(Me)
-        End If
+    Public MustOverride Sub AddSelfToScene()
+        
     End Sub
 
 End Class
