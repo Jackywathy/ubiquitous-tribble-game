@@ -504,48 +504,37 @@
         28,
         2,
         2,
-        2,
-        "none",
-        "none"
+        "map",
+        "map1_1under"
       ],
       [
         38,
         2,
-        2,
         3,
-        "none",
         "none"
       ],
       [
         46,
         2,
-        2,
         4,
-        "map",
-        "map1_1under"
+        "none"
       ],
       [
         57,
         2,
-        2,
         4,
-        "none",
         "none"
       ],
       [
         163,
         2,
         2,
-        2,
-        "none",
-        "none"
+       "none"
       ],
       [
         179,
         2,
         2,
-        2,
-        "none",
         "none"
       ]
     ],

@@ -52,4 +52,5 @@
             MyBase.CollisionRight(sender)
         End If
     End Sub
+
 End Class

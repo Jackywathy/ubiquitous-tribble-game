@@ -2,7 +2,9 @@
 ''' Ultimate base class for all items rended into the game
 ''' </summary>
 Public MustInherit Class GameItem
-    Public MustOverride Sub Render(g As Graphics)    
+   
+
+    Public MustOverride Sub Render(g As Graphics)
 
     Private Shared _idCount As Integer
 
@@ -25,8 +27,8 @@ Public MustInherit Class GameItem
             Return IsNothing(left) And IsNothing(right)
         End If
     End Operator
+   
 
-    
 End Class
 
 ''' <summary>
@@ -105,7 +107,7 @@ Public MustInherit Class GameImage
     ''' <param name="height"></param>
     ''' <param name="location"></param>
     ''' <param name="image"></param>
-     Public Sub New(width As Integer, height As Integer, location As point, image As Image)
+    Public Sub New(width As Integer, height As Integer, location As point, image As Image)
         Me.Width = width
         Me.Height = height
         Me.RenderImage = image
@@ -135,6 +137,9 @@ End Class
 ''' </summary>
 Public MustInherit Class MovingImage
     Inherits GameImage
+    Implements ISceneAddable
+
+    Public MustOverride Sub AddSelfToScene() Implements ISceneAddable.AddSelfToScene
 
     ''' <summary>
     ''' A reference to the scene to use it's screenlocation
@@ -155,7 +160,7 @@ Public MustInherit Class MovingImage
         MyBase.New(width, height, location, image)
         MyScene = scene
     End Sub
-   
+
     ''' <summary>
     ''' Draws the image into the graphics object given
     ''' </summary>
@@ -181,6 +186,7 @@ End Class
 ''' </summary>
 Public MustInherit Class HitboxItem
     Inherits MovingImage
+
 
     Public Property CollisionHeight As Integer
     Public Property CollisionWidth As Integer
@@ -311,8 +317,9 @@ Public MustInherit Class HitboxItem
     Public Overridable Sub Animate()
     End Sub
 
-    Public MustOverride Sub AddSelfToScene()
-        
+    Public Overrides Sub AddSelfToScene()
+        MyScene.AddHitbox(Me)
+        ' oWo whats this?
     End Sub
 
 End Class

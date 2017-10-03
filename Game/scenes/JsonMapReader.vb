@@ -54,7 +54,7 @@ Public NotInheritable Class JsonMapReader
 
 
         ' add all Entities
-        Dim player1 = New EntPlayer(32, 32, New Point(0, GroundHeight), outScene)
+        Dim player1 = New EntPlayer(32, 32, New Point(mapObject.Default_Entry(0), mapObject.Default_Entry(1)), outScene)
 
         outScene.SetPlayer(MapScene.PlayerId.Player1, player1)
         outScene.AddEntity(player1)
@@ -119,8 +119,8 @@ Public NotInheritable Class JsonMapReader
     End Enum
 
 
-    Public Shared Function RenderItemFactory(name As String, params As Object(), theme As RenderTheme, scene As MapScene) As HitboxItem
-        Dim out As HitboxItem '
+    Public Shared Function RenderItemFactory(name As String, params As Object(), theme As RenderTheme, scene As MapScene) As ISceneAddable
+        Dim out As ISceneAddable '
         Dim item As RenderTypes
         Try
             item = Helper.StrToEnum(Of RenderTypes)(name)
@@ -145,11 +145,12 @@ Public NotInheritable Class JsonMapReader
                 out = New BlockMetal(params, scene)
 
             Case RenderTypes.BlockPipe
-                AssertLength("blockPipe", 6, params)
+                AssertLength("blockPipe", New Integer() {4, 5, 7}, params)
                 out = New BlockPipe(params, scene)
 
             Case RenderTypes.BlockPipeRotate
-                AssertLength("blockpiperotate", )
+                AssertLength("blockpiperotate", New Integer() {4, 5, 7}, params)
+                out = New BlockPipeRotate(params, scene)
 
             Case RenderTypes.BlockBrickCoin
                 AssertLength("blockBrickCoin", 2, params)
@@ -215,11 +216,11 @@ Public NotInheritable Class JsonMapReader
 
         If Not expected.Contains(array.Length) Then
             Throw New JsonMapReader.InvalidJsonException(String.Format("Error in JSON, powerup={0}, given {1} elements when {2} expected - [ {3} ] ",
-                                                                       type, array.Length, expected, String.Join(", ", array)))
+                                                                       type, array.Length, String.Join(", ", array)))
         End If
     End Sub
 
-    ''' <summary>
+    ''' <summary>                                                       
     ''' Dont let this class be instantialised
     ''' </summary>
     Private Sub New
@@ -236,4 +237,5 @@ Public Class JsonMapObject
     Public Property Width as integer
     Public Property Height As integer
     Public Property MapTime As Integer
+    Public Property Default_Entry As Integer()
 End Class

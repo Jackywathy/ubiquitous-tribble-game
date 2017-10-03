@@ -168,6 +168,12 @@ Public Class GameControl
 
         For Each str As String In [Enum].GetNames(GetType(MapEnum))
             str = str.ToLower()
+            dim val = Helper.StrToEnum(Of MapEnum)(str)
+
+            if val = MapEnum.None Or val = MapEnum.StartScene
+                Continue For
+            End If
+            
             scenes.Add(Helper.StrToEnum(Of MapEnum)(str), JsonMapReader.ReadMapFromResource(str, Me))
         Next
         Return scenes
@@ -243,6 +249,8 @@ Public Module MainProgram
 End Module
 
 Public Enum MapEnum
+    None
+    StartScene
     map1_1above
     map1_1under
     map2_1above

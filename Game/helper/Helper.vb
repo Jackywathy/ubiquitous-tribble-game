@@ -127,7 +127,11 @@ Public NotInheritable Class Helper
 
 
     Public Shared Function StrToEnum(Of T)(valueToParse As String) As T
-        Return [Enum].Parse(GetType(T), valueToParse, True)
+        Try
+            Return [Enum].Parse(GetType(T), valueToParse, True)
+        Catch e As ArgumentException
+            Throw New Exception(String.Format("Cannot convert string ""{0}"" to Enum {1}", valueToParse, GetType(T)))
+        End Try
     End Function
 
     Public Shared Function IsPlayer(item As HitboxItem) As boolean

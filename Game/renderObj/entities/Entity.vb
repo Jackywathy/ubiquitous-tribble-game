@@ -3,6 +3,8 @@
 ''' </summary>
 Public MustInherit Class Entity
     Inherits HitboxItem
+    Implements ISceneAddable
+
     Public veloc As New Velocity(0, 0)
 
     Public Property SpriteSet As SpriteSet
@@ -390,6 +392,10 @@ Public MustInherit Class Entity
     ''' </summary>
     Public Overridable Sub Destroy()
         MyScene.PrepareRemove(Me)
+    End Sub
+
+    Public Overloads Sub AddSelfToScene() Implements ISceneAddable.AddSelfToScene
+        MyScene.AddEntity(Me)
     End Sub
 
 End Class

@@ -27,7 +27,7 @@ Public Class MapScene
     ''' call after mario has run past the end of the screen
     ''' </summary>
     ''' <param name="type"></param>
-    Public Sub SwitchLevel(Optional type As SwitchLevelType = SwitchLevelType.Normal)
+    Public Sub SwitchLevel(Optional startLocation As Point?=Nothing, Optional type As SwitchLevelType = SwitchLevelType.Normal)
         Throw New NotImplementedException()
         Print("HI!")
     End Sub
@@ -251,6 +251,10 @@ Public Class MapScene
     ''' <param name="hexColor"></param>
     Public Sub SetBackground(hexColor As String, width As Integer, height As Integer)
         Background = New BackgroundRender(width, height, hexColor, Me)
+    End Sub
+
+    Public Sub SetBackground(backgroundRender As BackgroundRender)
+        Background = backgroundRender
     End Sub
 
     Public Sub SetMapTime(time as integer)

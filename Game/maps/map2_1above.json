@@ -375,66 +375,50 @@
       [
         46,
         2,
-        2,
         4,
-        "none",
-        "none"
+        "plant"
       ],
       [
         74,
         2,
-        2,
         4,
-        "none",
-        "none"
+        "plant"
       ],
       [
         103,
         2,
-        2,
         4,
-        "none",
-        "none"
+        "plant"
       ],
       [
         115,
         2,
         2,
-        2,
-        "none",
-        "none"
+        "plant"
       ],
       [
         122,
         2,
-        2,
         4,
-        "none",
-        "none"
+        "plant"
       ],
       [
         126,
         2,
-        2,
         3,
-        "none",
         "none"
       ],
       [
         130,
         2,
-        2,
         5,
-        "none",
-        "none"
+        "plant"
       ],
       [
         176,
         2,
-        2,
         3,
-        "none",
-        "none"
+        "plant"
       ]
     ],
     "blockBreakableBrick": [

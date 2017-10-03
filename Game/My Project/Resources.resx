@@ -406,9 +406,6 @@
   <data name="NES" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\fonts\nes+.ttf;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="pipe_2x" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\images\blocks\pipe\pipe_2x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="pipe_bottom" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\blocks\pipe\pipe_bottom.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -541,7 +538,13 @@
   <data name="tree_trunk" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\other\tree\tree_trunk.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="pipe_rotate" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\images\blocks\pipe\pipe_rotate.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="pipe_left" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\blocks\pipe\pipe_left.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="pipe_right" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\blocks\pipe\pipe_right.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="pipe_top" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\blocks\pipe\pipe_top.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

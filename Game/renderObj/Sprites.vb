@@ -351,12 +351,19 @@ Public MustInherit Class Sprites
                                               32, Nothing, True 
                                               )
 
-    Public Shared PipeRotate As New SpriteSet("pipeRotate", New Dictionary(Of SpriteState,List(Of Image)) From {
-                                                         {SpriteState.Constant, New List(Of Image) From {My.Resources.pipe_rotate}}
+    Public Shared LeftPipeSprite As New SpriteSet("LeftPipeSprite", New Dictionary(Of SpriteState,List(Of Image)) From {
+                                                         {SpriteState.Constant, New List(Of Image) From {My.Resources.pipe_left}}
                                                          },
-                                                      64,
+                                                      32,
                                                       64, Nothing, True 
                                                       )
+    
+    Public Shared TopPipeSprite As New SpriteSet("TopPipeSprite", New Dictionary(Of SpriteState,List(Of Image)) From {
+                                                 {SpriteState.Constant, New List(Of Image) From {My.Resources.pipe_top}}
+                                                 },
+                                              64,
+                                              32, Nothing, True 
+                                              )
 
     Private Sub New()
         ' make this class un-intializable
