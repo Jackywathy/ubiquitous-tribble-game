@@ -90,7 +90,7 @@ Public Class BlockPipe
             If Action = PipeContents.Map
                 If Helper.IsPlayer(sender) And KeyHandler.MoveDown
                     Dim player as EntPlayer = sender
-                    player.VerticalPipeTransistion()
+                    player.VerticalPipeTransistion(Me.map, Me.MapLocation)
                 End If
             End If
         End Sub
