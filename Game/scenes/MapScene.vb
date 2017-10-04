@@ -8,15 +8,15 @@ Public Class MapScene
     ''' </summary>
     ''' <returns></returns>
     Public Function GetMouseRelativeLocation() As Point
-        Dim point = parent.PointToClient(Cursor.Position)
+        Dim point = Parent.PointToClient(Cursor.Position)
         ' convert the point from Top Left to bottom left
-        point.Y = ScreenGridHeight - point.y
-        return point
+        point.Y = ScreenGridHeight - point.Y
+        Return point
     End Function
-    
-    Public Overrides Sub DrawDebugStrings(form as GameControl)
-        form.AddStringBuffer(String.Format("Mario Location: {0}, {1}", player1.Location.X, player1.Location.Y))
-        dim relativePoint = GetMouseRelativeLocation()
+
+    Public Overrides Sub DrawDebugStrings(form As GameControl)
+        form.AddStringBuffer(String.Format("Mario Location: {0}, {1}", Player1.Location.X, Player1.Location.Y))
+        Dim relativePoint = GetMouseRelativeLocation()
         form.AddStringBuffer(String.Format("Mouse - x: {0}, y: {1}", relativePoint.X, relativePoint.Y))
         form.AddStringBuffer(String.Format("Is over box: {0}", If(MouseOverBox, "yes", "no")))
     End Sub
@@ -27,7 +27,7 @@ Public Class MapScene
     ''' call after mario has run past the end of the screen
     ''' </summary>
     ''' <param name="type"></param>
-    Public Sub SwitchLevel(Optional startLocation As Point?=Nothing, Optional type As SwitchLevelType = SwitchLevelType.Normal)
+    Public Sub SwitchLevel(Optional startLocation As Point? = Nothing, Optional type As SwitchLevelType = SwitchLevelType.Normal)
         Throw New NotImplementedException()
         Print("HI!")
     End Sub
@@ -87,9 +87,9 @@ Public Class MapScene
     ''' Constructor for <see cref="MapScene"/>
     ''' </summary>
     ''' <param name="parent"></param>
-    Public Sub New(parent As GameControl, Optional includeHud As Boolean=True)
+    Public Sub New(parent As GameControl, Optional includeHud As Boolean = True)
         MyBase.New(parent)
-        HudElements = parent.sharedHud
+        HudElements = parent.SharedHud
     End Sub
 
     ''' <summary>
@@ -97,17 +97,17 @@ Public Class MapScene
     ''' Should be called once per physics tick
     ''' </summary>
     ''' <returns>Objects in mapScene</returns>
-    Public Function GetHitboxObjectsInScene() As List(Of HitBoxItem)
-        InSceneItems.Clear()
+    Public Function GetHitboxObjectsInScene() As List(Of HitboxItem)
+        inSceneItems.Clear()
         For Each item As HitboxItem In AllHitboxItems
             If item.InScene() Then
-                InSceneItems.Add(item)
+                inSceneItems.Add(item)
             End If
         Next
-        Return InSceneItems
+        Return inSceneItems
     End Function
 
-    
+
 
     ' There are 4 types of GameObjects
     ' Static - stuff that doesnt move ever, e.g. HUD elements, points
@@ -115,15 +115,19 @@ Public Class MapScene
     ' Hitbox - stuff that has a hitbox
     ' Entity - stuff that ALWAYS moves
 
-     ''' <summary>
+    ''' <summary>
     ''' Contains all normal blocks
     ''' </summary>
-    Public Readonly Property AllHitboxItems As New List(Of HitboxItem)
+    Public ReadOnly Property AllHitboxItems As New List(Of HitboxItem)
+
+    Friend Sub QueueSceneChange(standardPipeTime As Integer, map As MapEnum, insertion As Point?)
+        Throw New NotImplementedException()
+    End Sub
 
     ''' <summary>
     ''' Contains all Entities
     ''' </summary> 
-    Public Readonly Property AllEntities As New List(Of Entity)
+    Public ReadOnly Property AllEntities As New List(Of Entity)
 
     ''' <summary>
     ''' Adds a hitboxitem (not entity to the mapScene)
@@ -197,13 +201,13 @@ Public Class MapScene
     End Sub
 
 
-   
+
 
     ''' <summary>
     ''' Contains all objects in scene that need to be rendered
     ''' </summary>
     Public ReadOnly Property inSceneItems As New List(Of HitboxItem)
-    
+
     ''' <summary>
     ''' Contains objects that will be removed once <see cref="RemoveAllDeleted"/> is run
     ''' Used in for each loops to avoid mutating object immediately
@@ -218,9 +222,9 @@ Public Class MapScene
 
     Public HudElements As StaticHud = Parent.SharedHud
 
-    
-   
-     ''' <summary>
+
+
+    ''' <summary>
     ''' Player1
     ''' </summary>
     Private Player1 As EntPlayer
@@ -235,13 +239,13 @@ Public Class MapScene
         Player2
     End Enum
 
-    Public Overridable Sub SetPlayer(id as PlayerId, player As EntPlayer)
-        if id = PlayerId.Player1
-            player1 = player
+    Public Overridable Sub SetPlayer(id As PlayerId, player As EntPlayer)
+        If id = PlayerId.Player1
+            Player1 = player
         ElseIf id = PlayerId.Player2
-            player2 = player
+            Player2 = player
         Else
-            throw New Exception()
+            Throw New Exception()
         End If
     End Sub
 
@@ -257,7 +261,7 @@ Public Class MapScene
         Background = backgroundRender
     End Sub
 
-    Public Sub SetMapTime(time as integer)
+    Public Sub SetMapTime(time As Integer)
         MapTime = time
     End Sub
 
@@ -267,7 +271,7 @@ Public Class MapScene
     Public Overrides Sub HandleInput()
         Dim xToMove = 0
         Dim yToMove = 0
-        
+
         ' LEFT
         If KeyHandler.MoveLeft Then
             If Not Player1.IsCrouching Then
@@ -327,7 +331,7 @@ Public Class MapScene
             Player1.IsBouncingOffEntity = False
         End If
         ' handle mouse evenst
-        handleMouse()
+        HandleMouse()
     End Sub
 
     ''' <summary>
@@ -335,9 +339,9 @@ Public Class MapScene
     ''' </summary>
     Public Overrides Sub UpdateTick(ticksElapsed As Integer)
         ' Animate and update position of each entity
-        If player1.IsDead Then
-            player1.UpdateVeloc()
-            player1.UpdateLocation()
+        If Player1.isDead Then
+            Player1.UpdateVeloc()
+            Player1.UpdateLocation()
             Player1.Animate()
         Else
             For Each item As HitboxItem In AllHitboxItems
@@ -347,8 +351,8 @@ Public Class MapScene
             Next
         End If
 
-        for each item In Player1.currentGroundObjects
-            item.CollisionTop(player1)
+        For Each item In Player1.currentGroundObjects
+            item.CollisionTop(Player1)
         Next
 
         AddAllAdded()
@@ -370,7 +374,7 @@ Public Class MapScene
 
     Private Sub HandleTime(ticksElapsed As Integer)
         Dim timeRemaining = ticksElapsed / TicksPerSecond
-        if timeRemaining < 0
+        If timeRemaining < 0
             Player1.State = PlayerStates.Dead
         End If
         HudElements.SetTime(MapTime - CInt(Math.Floor(timeRemaining)))

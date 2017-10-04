@@ -89,7 +89,8 @@ Public Class BlockPipe
         Public Overrides Sub CollisionTop(sender As Entity)
             If Action = PipeContents.Map
                 If Helper.IsPlayer(sender) And KeyHandler.MoveDown
-                    MyScene.Parent.RunScene(Map, False)
+                    Dim player as EntPlayer = sender
+                    player.VerticalPipeTransistion()
                 End If
             End If
         End Sub

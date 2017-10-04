@@ -102,7 +102,7 @@ Public Class EntPlayer
     Public AllowedToUncrouch As Boolean = True
     Public IsBouncingOffEntity As Boolean = False
 
-    Public InvinicibilityTimer = 0
+    Public InvinicibilityTimer As Integer = 0
 
     Private _state As PlayerStates = PlayerStates.Small
 
@@ -138,6 +138,14 @@ Public Class EntPlayer
             _state = value
         End Set
     End Property
+
+    Public Const StandardPipeTime = 120
+    
+    Public Sub VerticalPipeTransistion(map As MapEnum, insertion as Point?)
+        InvinicibilityTimer = StandardPipeTime
+        MyScene.QueueSceneChange(StandardPipeTime, map, insertion)
+
+    End Sub
 
     Public NumFireballs As Integer = 0
     Private invulnerableTime As Integer = 0
