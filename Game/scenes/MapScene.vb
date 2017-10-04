@@ -1,4 +1,5 @@
-﻿''' <summary>
+﻿Imports WinGame
+''' <summary>
 ''' Scene that represents a map, (probably loaded from json using <see cref="JsonMapReader.ReadMapFromResource"/>
 ''' </summary>
 Public Class MapScene
@@ -22,15 +23,6 @@ Public Class MapScene
     End Sub
 
 
-    ''' <summary>
-    ''' Switches the level to something else
-    ''' call after mario has run past the end of the screen
-    ''' </summary>
-    ''' <param name="type"></param>
-    Public Sub SwitchLevel(Optional startLocation As Point? = Nothing, Optional type As SwitchLevelType = SwitchLevelType.Normal)
-        Throw New NotImplementedException()
-        Print("HI!")
-    End Sub
     ''' <summary>
     ''' Background of scene
     ''' </summary>
@@ -120,10 +112,6 @@ Public Class MapScene
     ''' </summary>
     Public ReadOnly Property AllHitboxItems As New List(Of HitboxItem)
 
-    Friend Sub QueueSceneChange(standardPipeTime As Integer, map As MapEnum, insertion As Point?)
-        Throw New NotImplementedException()
-    End Sub
-
     ''' <summary>
     ''' Contains all Entities
     ''' </summary> 
@@ -200,6 +188,17 @@ Public Class MapScene
         toAddObjects.Clear()
     End Sub
 
+    Friend Function GetPlayer(player As PlayerId) As EntPlayer
+        Select Case player
+            Case PlayerId.Player1
+                Return player1
+            Case PlayerId.Player2
+                Return player2
+            Case else
+                Throw New Exception("has to be player1 or 2")
+        End Select
+        
+    End Function
 
 
 
@@ -269,67 +268,7 @@ Public Class MapScene
     ''' Handles/ticks input from the user
     ''' </summary>
     Public Overrides Sub HandleInput()
-        Dim xToMove = 0
-        Dim yToMove = 0
 
-        ' LEFT
-        If KeyHandler.MoveLeft Then
-            If Not Player1.IsCrouching Then
-                xToMove = -Player1.moveSpeed.x
-            End If
-
-            ' Yes this is really badly hard-coded
-            If Player1.IsCrouching And Not Player1.AllowedToUncrouch And KeyHandler.MoveUp And Player1.AllowJumpInput Then
-                xToMove = -Player1.moveSpeed.x
-            End If
-        End If
-
-        ' RIGHT
-        If KeyHandler.MoveRight Then
-            If Not Player1.IsCrouching Then
-                xToMove = Player1.moveSpeed.x
-
-            End If
-            If Player1.IsCrouching And Not Player1.AllowedToUncrouch And KeyHandler.MoveUp And Player1.AllowJumpInput Then
-                xToMove = Player1.moveSpeed.x
-            End If
-        End If
-
-        ' UP
-        If KeyHandler.MoveUp And Player1.AllowJumpInput Then
-            yToMove = Player1.moveSpeed.y
-            Player1.AllowJumpInput = False
-            Sounds.Jump.Play(fromStart:=True)
-        ElseIf KeyHandler.MoveUp = False Then
-            Player1.AllowJumpInput = True
-        End If
-
-        ' DOWN
-        If KeyHandler.MoveDown Then
-            If Player1.State > PlayerStates.Small And Player1.isGrounded = True Then 'crouch
-                Player1.OnCrouch(True)
-            End If
-        ElseIf Player1.State > PlayerStates.Small And Player1.IsCrouching = True Then
-            ' TODO - check for collision on above blocks before uncrouching
-            Player1.OnCrouch(False)
-        End If
-
-        If Player1.State = PlayerStates.Fire And KeyHandler.MoveDown And Player1.AllowShoot Then
-            Player1.TryShootFireball()
-            Player1.AllowShoot = False
-        ElseIf Not KeyHandler.MoveDown Then
-            Player1.AllowShoot = True
-        End If
-
-        If Not Player1.isDead Then
-            Player1.AccelerateX(xToMove)
-            Player1.AccelerateY(yToMove, False)
-        End If
-
-        If Player1.IsBouncingOffEntity Then
-            Player1.BounceOffEntity(KeyHandler.MoveUp)
-            Player1.IsBouncingOffEntity = False
-        End If
         ' handle mouse evenst
         HandleMouse()
     End Sub
@@ -339,10 +278,12 @@ Public Class MapScene
     ''' </summary>
     Public Overrides Sub UpdateTick(ticksElapsed As Integer)
         ' Animate and update position of each entity
-        If Player1.isDead Then
-            Player1.UpdateVeloc()
-            Player1.UpdateLocation()
-            Player1.Animate()
+        If IsFrozen Then
+            For each item As Entity in allUnfreezableItems
+                item.UpdateVeloc()
+                item.UpdateLocation()
+                item.Animate()
+            Next
         Else
             For Each item As HitboxItem In AllHitboxItems
                 item.UpdateVeloc()
@@ -370,6 +311,29 @@ Public Class MapScene
             Me.Background.ScrollHorizontal(-(600 - (Player1.Location.X - Me.ScreenLocation.X)) / 50)
         End If
         HandleTime(ticksElapsed)
+    End Sub
+
+    Friend Sub RegisterDeath(entPlayer As EntPlayer)
+        ' TODO check player 2 as well
+        If AllPlayersDead
+            BackgroundMusic.Stop()
+            Sounds.PlayerDead.Play()
+            SetExclusiveControl(entPlayer, StandardDeathTime)
+            
+        End If
+    End Sub
+
+    Private Function AllPlayersDead() As Boolean
+        ' TODO fix
+        Return True
+    End Function
+
+    Private exclusiveTime as Integer
+    Private exclusiveItem as entity
+
+    Private Sub SetExclusiveControl(ent As Entity, time As integer)
+        exclusiveTime = time
+        exclusiveItem = ent
     End Sub
 
     Private Sub HandleTime(ticksElapsed As Integer)
@@ -405,6 +369,11 @@ Public Class MapScene
             item.Render(g)
         Next
         GlobalFrameCount += 1
+    End Sub
+    Private ReadOnly allUnfreezableItems as New List(Of Entity)
+
+    Friend Sub AddUnfreezableItem(sender As Entity)
+        allUnfreezableItems.Add(sender)
     End Sub
 End Class
 

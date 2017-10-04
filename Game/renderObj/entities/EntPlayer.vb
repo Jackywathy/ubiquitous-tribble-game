@@ -9,6 +9,7 @@ End Enum
 
 Public Class EntPlayer
     Inherits Entity
+    Implements ISceneAddable
 
     
     ''' <summary>
@@ -139,13 +140,88 @@ Public Class EntPlayer
         End Set
     End Property
 
-    Public Const StandardPipeTime = 120
+   Public IsInPipe As Boolean = False
     
     Public Sub VerticalPipeTransistion(map As MapEnum, insertion as Point?)
         InvinicibilityTimer = StandardPipeTime
-        MyScene.QueueSceneChange(StandardPipeTime, map, insertion)
-
+        MyScene.Parent.QueueMapChange(map, insertion)
+        IsInPipe = True
+        BeginVerticalPipe
     End Sub
+
+    Protected Class ImageSlice
+        Public ReadOnly Property Height As Integer
+            Get
+                Return If(image IsNot Nothing, image.Height, 0)
+            End Get
+        End Property
+
+        Public ReadOnly Image As Image
+
+        Public ReadOnly Property Width As Integer
+            Get
+                Return If(image IsNot Nothing, image.width, 0)
+            End Get
+        End Property
+
+        Public ReadOnly Visible As Boolean
+
+        Sub New (image As Image, optional visible As Boolean = True)
+            Me.image = image
+
+            Me.Visible = visible
+        End Sub
+    End Class
+
+    Protected Class VerticalAnimator
+        Implements IDisposable
+        Private image as Image
+        Sub New(image As Image)
+            me.image = image
+        End Sub
+
+        Public Function GetSlice(percent As Double) As ImageSlice
+            ' percent is between 0 <= perecent <= 1
+            if percent > 1 or percent < 0
+                Throw new Exception(String.Format("Percent, {0} out of bounds", percent))
+            End If
+            Dim height = percent * image.height
+            dim bottomLeft = new Point(0, CInt(height))
+            Dim pixelHeight as Integer = (1-percent) * image.Height
+            if pixelHeight > 0
+                Return New ImageSlice(Crop(me.image, bottomLeft, image.Width, pixelHeight))
+            Else 
+                Return New ImageSlice(Nothing, False)
+            End If
+            
+        End Function
+
+#Region "IDisposable Support"
+        Private disposedValue As Boolean ' To detect redundant calls
+
+        ' IDisposable
+        Protected Overridable Sub Dispose(disposing As Boolean)
+            If Not disposedValue Then
+                If disposing Then
+                    Me.image.dispose()
+                End If
+
+            End If
+            disposedValue = True
+        End Sub
+
+        ' This code added by Visual Basic to correctly implement the disposable pattern.
+        Public Sub Dispose() Implements IDisposable.Dispose
+            ' Do not change this code.  Put cleanup code in Dispose(disposing As Boolean) above.
+            Dispose(True)
+            ' TODO: uncomment the following line if Finalize() is overridden above.
+            ' GC.SuppressFinalize(Me)
+        End Sub
+#End Region
+
+    End Class
+
+    
 
     Public NumFireballs As Integer = 0
     Private invulnerableTime As Integer = 0
@@ -237,9 +313,8 @@ Public Class EntPlayer
         Me.veloc.y = 0
         Me.defaultY = Me.Location.Y
         Lives -= 1
-        MyScene.BackgroundMusic.Stop()
-        Sounds.PlayerDead.Play()
-
+        MyScene.RegisterDeath(Me)
+        
 
     End Sub
 
@@ -287,8 +362,18 @@ Public Class EntPlayer
     Private defaultY As Integer
     Private deathTimer As Integer
 
+    Public Overrides Sub Render(g As Graphics)
+        MyBase.Render(g)
+    End Sub
+
     Public Overrides Sub Animate()
-        If Not Me.isDead Then
+        If IsInPipe
+            Dim slice = animator.GetSlice(pipeElapsedTime/pipeMaxTime)
+            RenderImage = slice.Image
+            me.Height = slice.height
+            Me.Width = slice.width
+            
+        Else If Not Me.isDead Then
             If Not Me.OnFlag Then
                 ' Make sure this is exhaustive
                 Dim spriteStateToUse = -2
@@ -365,7 +450,95 @@ Public Class EntPlayer
         End If
     End Sub
 
+    Public Sub UpdatePlayerInput
+        Dim xToMove = 0
+        Dim yToMove = 0
+
+        ' LEFT
+        If KeyHandler.MoveLeft Then
+            If Not Me.IsCrouching Then
+                xToMove = -Me.moveSpeed.x
+            End If
+
+            ' Yes this is really badly hard-coded
+            If Me.IsCrouching And Not Me.AllowedToUncrouch And KeyHandler.MoveUp And Me.AllowJumpInput Then
+                xToMove = -Me.moveSpeed.x
+            End If
+        End If
+
+        ' RIGHT
+        If KeyHandler.MoveRight Then
+            If Not Me.IsCrouching Then
+                xToMove = Me.moveSpeed.x
+
+            End If
+            If Me.IsCrouching And Not Me.AllowedToUncrouch And KeyHandler.MoveUp And Me.AllowJumpInput Then
+                xToMove = Me.moveSpeed.x
+            End If
+        End If
+
+        ' UP
+        If KeyHandler.MoveUp And Me.AllowJumpInput Then
+            yToMove = Me.moveSpeed.y
+            Me.AllowJumpInput = False
+            Sounds.Jump.Play(fromStart:=True)
+        ElseIf KeyHandler.MoveUp = False Then
+            Me.AllowJumpInput = True
+        End If
+
+        ' DOWN
+        If KeyHandler.MoveDown Then
+            If Me.State > PlayerStates.Small And Me.isGrounded = True Then 'crouch
+                Me.OnCrouch(True)
+            End If
+        ElseIf Me.State > PlayerStates.Small And Me.IsCrouching = True Then
+            ' TODO - check for collision on above blocks before uncrouching
+            Me.OnCrouch(False)
+        End If
+
+        If Me.State = PlayerStates.Fire And KeyHandler.MoveDown And Me.AllowShoot Then
+            Me.TryShootFireball()
+            Me.AllowShoot = False
+        ElseIf Not KeyHandler.MoveDown Then
+            Me.AllowShoot = True
+        End If
+
+        If Not Me.isDead Then
+            Me.AccelerateX(xToMove)
+            Me.AccelerateY(yToMove, False)
+        End If
+
+        If Me.IsBouncingOffEntity Then
+            Me.BounceOffEntity(KeyHandler.MoveUp)
+            Me.IsBouncingOffEntity = False
+        End If
+    End Sub
+
+    Private animator as VerticalAnimator
+    Private pipeElapsedTime as Integer = 0
+    Private pipeMaxTime as Integer = 0
+
+    Private Sub BeginVerticalPipe(Optional time As Integer = StandardPipeTime)
+        pipeElapsedTime = 0
+        pipeMaxTime = time
+        if animator isnot nothing
+            animator.Dispose()
+        End If
+        animator = New VerticalAnimator(RenderImage)
+    End Sub
+
+
     Public Overrides Sub UpdateVeloc()
+        If IsInPipe
+            if pipeElapsedTime >= pipeMaxTime
+                IsInPipe = False
+            End If
+            pipeElapsedTime += 1
+            Me.veloc.x = 0
+            me.veloc.y = 0
+            Return
+        End If
+        UpdatePlayerInput
         MyBase.UpdateVeloc()
 
         Dim outOfMap = IsOutOfMap()
@@ -396,7 +569,10 @@ Public Class EntPlayer
         End If
     End Sub
 
-
+    Public Overloads Sub AddSelfToScene Implements ISceneAddable.AddSelfToScene
+        MyScene.AddEntity(Me)
+        MyScene.AddUnfreezableItem(Me)
+    End Sub
 
 End Class
 

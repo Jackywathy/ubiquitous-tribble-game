@@ -1,4 +1,5 @@
 ﻿Imports System.Drawing.Drawing2D
+Imports WinGame
 
 ''' <summary>
 ''' This control has the entire game in it!
@@ -11,7 +12,7 @@ Public Class GameControl
     Private Const HudHeightPercent = 0.1
 
     ''' <summary>
-    ''' Ticks that the map has been active for
+    ''' Ticks that the map (including any underground levels etc )
     ''' </summary>
     Public MapTimeCounter As Integer = 0
 
@@ -25,6 +26,7 @@ Public Class GameControl
     Private Sub GameLoop_Tick(sender As Object, e As EventArgs) Handles GameLoop.Tick
         CurrentScene.HandleInput()
         CurrentScene.UpdateTick(MapTimeCounter)
+        ChangeQueue.UpdateTick()
         MapTimeCounter += 1
 
         Me.Refresh()
@@ -40,7 +42,7 @@ Public Class GameControl
         g.InterpolationMode = InterpolationMode.NearestNeighbor
 
         CurrentScene.RenderScene(g)
-        
+
 
 #If DEBUG Then
         updateFps()
@@ -63,7 +65,7 @@ Public Class GameControl
 
         allMapScenes = LoadScenes()
         RunScene(PlayerStartScreen, True)
-        
+
 
         ' only start loop after init has finished
         GameLoop.Enabled = True
@@ -88,7 +90,7 @@ Public Class GameControl
     ''' <summary>
     ''' Contains all Scenes
     ''' </summary>
-    Private Readonly property allMapScenes As Dictionary(Of MapEnum, MapScene)
+    Private ReadOnly Property allMapScenes As Dictionary(Of MapEnum, MapScene)
 
     ''' <summary>
     ''' Initalize components inside
@@ -111,7 +113,7 @@ Public Class GameControl
     ''' <param name="str"></param>
     Public Sub AddStringBuffer(str As String)
         strBuffer.Add(str)
-    End Sub 
+    End Sub
 
 
     ''' <summary>
@@ -146,6 +148,13 @@ Public Class GameControl
         numFrames += 1
     End Sub
 
+    Friend Function GetMap(map As MapEnum) As BaseScene
+        Try 
+            return Me.allMapScenes(map)
+        Catch ex As KeyNotFoundException
+            throw New Exception(String.Format("Map ""{0}"" was not found in loaded scenes", map.ToString), ex)
+        End Try
+    End Function
 
     Private Sub MainGame_KeyUp(sender As Object, e As KeyEventArgs) Handles MyBase.KeyUp
         keyControl.KeyUp(e.KeyCode)
@@ -168,12 +177,12 @@ Public Class GameControl
 
         For Each str As String In [Enum].GetNames(GetType(MapEnum))
             str = str.ToLower()
-            dim val = Helper.StrToEnum(Of MapEnum)(str)
+            Dim val = Helper.StrToEnum(Of MapEnum)(str)
 
-            if val = MapEnum.None Or val = MapEnum.StartScene
+            If val = MapEnum.None Or val = MapEnum.StartScene
                 Continue For
             End If
-            
+
             scenes.Add(Helper.StrToEnum(Of MapEnum)(str), JsonMapReader.ReadMapFromResource(str, Me))
         Next
         Return scenes
@@ -184,16 +193,89 @@ Public Class GameControl
     ''' </summary>
     ''' <param name="map"></param>
     ''' <param name="isNewStage">Whether or not it resets the timer</param>
-    Public Sub RunScene(map As MapEnum, isNewStage As Boolean)
+    Public Sub RunScene(map As MapEnum, isNewStage As Boolean, optional insertion As Point? = Nothing)
         CurrentScene = allMapScenes(map)
-        if isNewStage
-            MapTimeCounter = 0
+
+        If CurrentScene.GetType() = GetType(MapScene)
+            dim mapScene as MapScene = CurrentScene
+            Dim start as Point = If(insertion IsNot Nothing, insertion, mapScene.DefaultLocation)
+            mapScene.GetPlayer(MapScene.PlayerId.Player1).Location = start
+            If isNewStage
+                MapTimeCounter = 0
+            End If
         End If
-    End Sub 
+
+        
+    End Sub
 
     Private Sub GameControl_SizeChanged(sender As Object, e As EventArgs) Handles Me.SizeChanged
         ScreenGridWidth = Width
         ScreenGridHeight = Height
+    End Sub
+
+    
+    Public MustInherit Class QueueObject
+        Friend time As integer
+        Friend control as GameControl
+
+        Public Property IsFinished As Boolean
+
+        Public Sub New(time As Integer, control As GameControl)
+            Me.time = time
+            Me.control = control
+        End Sub
+
+        Public Sub UpdateTick()
+            if time = 0
+                TimerFinished()
+                IsFinished = True
+            End If
+            time -= 1
+        End Sub
+        Protected MustOverride Sub TimerFinished()
+    End Class
+
+    Public Class MapChangeObject
+        Inherits QueueObject
+        Private map as MapEnum
+        Private insertion as point?
+        Private isNewStage as boolean
+        Sub New(map As MapEnum, insertion As Point?, time As Integer, control As GameControl, Optional IsNewStage As Boolean=False)
+            MyBase.New(time, control)
+            Me.map = map
+            Me.insertion = insertion
+            Me.isNewStage = IsNewStage
+        End Sub
+
+        Protected Overrides Sub TimerFinished()
+            control.RunScene(map, isNewStage, insertion)
+        End Sub
+    End Class
+    
+    Public Class ChangeQueueWrapper
+        Private queue As New HashSet(Of QueueObject)
+        Private removal as new HashSet(Of QueueObject)
+
+        Public Sub Add(item As QueueObject)
+            queue.Add(item)
+        End Sub
+        Public Sub UpdateTick
+            For each item In queue
+                item.UpdateTick()
+                if item.IsFinished
+                    removal.Add(item)
+                End If
+
+            Next
+            queue.Except(removal)
+            removal.Clear()
+        End Sub
+    End Class
+
+    Public Property ChangeQueue As New ChangeQueueWrapper
+
+    Friend Sub QueueMapChange(map As MapEnum, insertion As Point?, Optional time As Integer = StandardPipeTime)
+        ChangeQueue.Add(New MapChangeObject(map, insertion, time, Me))
     End Sub
 
 

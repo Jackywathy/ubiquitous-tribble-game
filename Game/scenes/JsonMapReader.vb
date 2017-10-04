@@ -52,12 +52,13 @@ Public NotInheritable Class JsonMapReader
             Next
         Next
 
-
+        Dim defaultEntry As New Point(mapObject.Default_Entry(0), mapObject.Default_Entry(1))
         ' add all Entities
-        Dim player1 = New EntPlayer(32, 32, New Point(mapObject.Default_Entry(0), mapObject.Default_Entry(1)), outScene)
+        Dim player1 = New EntPlayer(32, 32, defaultEntry, outScene)
 
+        outScene.DefaultLocation = defaultEntry
         outScene.SetPlayer(MapScene.PlayerId.Player1, player1)
-        outScene.AddEntity(player1)
+        player1.AddSelfToScene()
 
 
 

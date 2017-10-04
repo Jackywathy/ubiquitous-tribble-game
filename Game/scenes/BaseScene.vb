@@ -136,6 +136,7 @@ Public MustInherit Class BaseScene
     ''' List of staticitems. Items will be rendered in order inserted
     ''' </summary>
     Public Readonly Property AllStaticItems As New List(Of GameItem)
+    Public Property DefaultLocation As Point
 
     ''' <summary>
     ''' Adds a static object
