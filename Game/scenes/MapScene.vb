@@ -61,6 +61,9 @@ Public Class MapScene
     ''' 
     ''' </summary>
     Private Sub HandleMouse()
+        If IsTransitioning 
+            Return
+        End If
         Dim cursorLocation = GetMouseRelativeLocation()
         ' Move image while dragging
         If isDragging Then
