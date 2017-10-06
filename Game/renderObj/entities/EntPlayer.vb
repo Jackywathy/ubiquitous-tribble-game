@@ -224,7 +224,10 @@ Public Class EntPlayer
 
     End Class
 
-    
+    Friend Sub reset()
+        Me.isGrounded = False
+        Me.currentGroundObjects.Clear()
+    End Sub
 
     Public NumFireballs As Integer = 0
     Private invulnerableTime As Integer = 0

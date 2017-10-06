@@ -206,7 +206,10 @@ Public Class GameControl
         If CurrentScene.GetType() = GetType(MapScene)
             dim mapScene as MapScene = CurrentScene
             Dim start as Point = If(insertion IsNot Nothing, insertion, mapScene.DefaultLocation)
-            mapScene.GetPlayer(MapScene.PlayerId.Player1).Location = start
+            Dim player = mapScene.GetPlayer(MapScene.PlayerId.Player1)
+            player.Location = start
+            player.reset()
+            
             If isNewStage
                 MapTimeCounter = 0
             End If
