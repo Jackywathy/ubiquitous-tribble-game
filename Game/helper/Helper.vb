@@ -12,9 +12,10 @@ Public Module Dimensions
     Public GroundHeight As Integer = 64
     Public Const TicksPerSecond As Double = 1000/15
     Public Const PlayerStartScreen = MapEnum.map1_1above
-    Public Const StandardPipeTime = 40
-    Public Const StandardDeathTime = 100
-    Public Const StandardTransitionTime = 30
+    Public Const StandardPipeTime = 60
+    Public Const StandardDeathTime = 240
+    Public Const StandardTransitionTime = 60
+    Public Const StandardStartScreenTime = 360
 End Module
 
 Module Debug

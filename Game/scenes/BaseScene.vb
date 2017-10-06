@@ -1,4 +1,5 @@
 ﻿Imports System.Drawing.Drawing2D
+Imports WinGame
 
 ''' <summary>
 ''' Base scene:
@@ -91,20 +92,46 @@ Public MustInherit Class BaseScene
         End Sub
     End Class
 
+    Protected Class StartSceneDrawer
+        Inherits TransitionDrawer
+        Private scene As mapscene
+        Private worldMiddle as StaticText
+
+        Protected Overrides Sub DrawTransition(g As Graphics)
+            g.FillRectangle(DrawingPrimitives.BlackBrush, 0, 0, ScreenGridWidth, ScreenGridHeight)
+            scene.HudElements.DisableTime()
+            scene.HudElements.Render(g)
+            scene.HudElements.EnableTime()
+            worldMiddle.Render(g)
+        End Sub
+
+        Sub New(transitionObject As TransitionObject, scene As MapScene)
+            MyBase.New(transitionObject)
+            Me.scene = scene
+            Refresh
+        End Sub
+
+        Public Sub Refresh
+            worldMiddle = New StaticText(New Rectangle(ScreenGridWidth / 3, ScreenGridHeight / 3 * 2, ScreenGridWidth / 3, 50), "WORLD" + scene.HudElements.worldNumText.text,
+                                         NES.GetFontFamily(), scene.HudElements.fontSize, DrawingPrimitives.WhiteBrush)
+
+        End Sub
+    End Class
+
     Protected Class CircleTransitionDrawer
         Inherits TransitionDrawer
         Public backgroundBrush As Brush
-        Private location as Point
-   
+        Private location As Point
+
 
         Protected Overrides Sub DrawTransition(g As Graphics)
             Dim progress As Double = TransitionTicksElapsed / TransitionLength
-            
-            dim circleDiameter As Integer = CInt(Math.Min(ScreenGridHeight, ScreenGridWidth)) * (1-progress)
-            Dim circleRadius As Integer = CInt(circleDiameter/2)
 
-            Dim fillRegion as New Region(New Rectangle(0,0, ScreenGridWidth, ScreenGridHeight))
-            Dim circlePath as New GraphicsPath()
+            Dim circleDiameter As Integer = CInt(Math.Min(ScreenGridHeight, ScreenGridWidth)) * (1 - progress)
+            Dim circleRadius As Integer = CInt(circleDiameter / 2)
+
+            Dim fillRegion As New Region(New Rectangle(0, 0, ScreenGridWidth, ScreenGridHeight))
+            Dim circlePath As New GraphicsPath()
             circlePath.AddEllipse(location.X - circleRadius, location.Y - circleRadius, circleDiameter, circleDiameter)
             fillRegion.Exclude(circlePath)
             g.FillRegion(backgroundBrush, fillRegion)
@@ -139,10 +166,17 @@ Public MustInherit Class BaseScene
                 StartFillTransition(transition)
             Case TransitionType.Circle
                 StartCircleTransition(transition)
+            Case TransitionType.StartScene
+                StartStartSceneTransition(transition)
             Case Else
                 Throw New Exception("must be circle or fill")
         End Select
 
+    End Sub
+
+    Public Sub StartStartSceneTransition(transition As TransitionObject)
+        CurrentTransition = New StartSceneDrawer(transition, me)
+        IsTransitioning = True
     End Sub
 
     Private Sub StartCircleTransition(transition As TransitionObject)
@@ -214,7 +248,7 @@ Public MustInherit Class BaseScene
 
     End Sub
 
-
+  
 End Class
 
 Public Class TransitionObject
@@ -222,14 +256,14 @@ Public Class TransitionObject
     Public tdir As TransitionDirection
     Public time As Integer
     Public color As Brush
-    Public location As point
+    Public location As Point
 
-    Sub New(ttype As TransitionType, tdir As TransitionDirection, Optional time As Integer = StandardTransitionTime, Optional fillColor As Brush = Nothing, optional location As Point? = Nothing)
+    Sub New(ttype As TransitionType, tdir As TransitionDirection, Optional time As Integer = StandardTransitionTime, Optional fillColor As Brush = Nothing, Optional location As Point? = Nothing)
         Me.ttype = ttype
         Me.tdir = tdir
         Me.time = time
         Me.color = fillColor
-        Me.location = If(location, New Point(0,0))
+        Me.location = If(location, New Point(0, 0))
     End Sub
 
 End Class
@@ -245,6 +279,7 @@ End Enum
 Public Enum TransitionType
     Fill
     Circle
+    StartScene
 End Enum
 
 

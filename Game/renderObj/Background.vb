@@ -12,7 +12,7 @@ Public Class BackgroundRender
 
     Private myScene As MapScene
 
-    Private location As Point
+    Public location As Point
 
     Public Overrides Sub Render(g As Graphics)
         g.FillRectangle(BackgroundColor, New Rectangle(0,0,ScreenGridWidth, ScreenGridHeight))
@@ -30,7 +30,7 @@ Public Class BackgroundRender
         If MyScene.ScreenLocation.X + amount + Dimensions.ScreenGridWidth >= levelWidth Then
             ' it went to the right of the screen
             Return False
-        ElseIf Me.Location.X + amount < 0 Then
+        ElseIf Me.Location.X + amount < 0 and not (Me.location.x < 0 and amount > 0) Then
             ' went to left
             Return False
         End If

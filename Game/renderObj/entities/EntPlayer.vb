@@ -1,4 +1,6 @@
-﻿Public Enum PlayerStates
+﻿Imports WinGame
+
+Public Enum PlayerStates
     Dead = 0
     Small = 1
     Big = 2
@@ -11,7 +13,7 @@ Public Class EntPlayer
     Inherits Entity
     Implements ISceneAddable
 
-    
+
     ''' <summary>
     ''' Time invulnerable in ticks (60 ticks / second)
     ''' </summary>
@@ -27,9 +29,9 @@ Public Class EntPlayer
     ''' <summary>
     ''' how many points given per coin
     ''' </summary>
-    
 
-   
+
+
     Private Shared _lives As Integer = 5
     Private Shared _coins As Integer = 0
 
@@ -62,9 +64,9 @@ Public Class EntPlayer
     ''' Lives are shared between all players
     ''' </summary>
     ''' <returns></returns>
-    Public Shared Property Lives As Integer 
+    Public Shared Property Lives As Integer
         Get
-            return _lives
+            Return _lives
         End Get
         Set(value As Integer)
             _lives = value
@@ -86,8 +88,8 @@ Public Class EntPlayer
             TotalScore += (value - Score)
 
             _score = value
-            
-            If ScoreCallBack IsNot Nothing
+
+            If ScoreCallback IsNot Nothing
                 ScoreCallback.Text = TotalScore.ToString()
             End If
         End Set
@@ -114,7 +116,7 @@ Public Class EntPlayer
     ''' <returns></returns>
     Public Property State As PlayerStates
         Get
-            return _state
+            Return _state
         End Get
         Set(value As PlayerStates)
             If value = _state
@@ -139,23 +141,62 @@ Public Class EntPlayer
             _state = value
         End Set
     End Property
+    private _isinpipe as boolean
+    Public Property IsInPipe As Boolean 
+        Get
+            Return _isinpipe
+        End Get
+        Set(value As Boolean)
+            _isinpipe = value
+        End Set
+    End Property
 
-   Public IsInPipe As Boolean = False
-    
-    Public Sub VerticalPipeTransistion(map As MapEnum, insertion as Point?)
+    Friend Sub EnterHorizontalPipeExitVertical(map As MapEnum, insertion As Point?, pipeOnOtherSide As Boolean)
         InvinicibilityTimer = StandardPipeTime
         Dim point = MyScene.GetScreenLocation(Me)
         point.Y = BottomToTop(point.Y)
+        Dim enterPipe as New GameControl.MarioPipeAnimationObject(Me, PipeType.Horizontal,True, MyScene.Parent)
 
-        MyScene.Parent.QueueSceneChange(map, insertion, Location:= point)
+        Dim exitPipe As New GameControl.MarioPipeAnimationObject(Me, PipeType.Vertical, False,  MyScene.Parent)
+
+        Dim mapChange = MyScene.Parent.QueueMapChangeWithCircleAnimation(map, insertion, centerToplayer := True,animationLocation:=point, before := enterPipe)
+        mapChange.next = exitPipe
+
+    End Sub
+
+    Public Sub EnterVerticalPipe(map As MapEnum, insertion As Point?)
+        InvinicibilityTimer = StandardPipeTime
+        Dim point = MyScene.GetScreenLocation(Me)
+        point.Y = BottomToTop(point.Y)
+        Dim enterPipe as New GameControl.MarioPipeAnimationObject(Me, PipeType.Vertical, True, MyScene.Parent)
+
+        Dim mapChange = MyScene.Parent.QueueMapChangeWithCircleAnimation(map, insertion, centerToplayer := False, animationLocation:=point, before := enterPipe)
+    End Sub
+
+    Friend Sub BeginHorizontalPipe(goingIn As Boolean, Optional time As Integer = StandardPipeTime)
+        SetPipeVars(time)
         IsInPipe = True
-        BeginVerticalPipe
+        animator = New HorizontalAnimator(RenderImage, goingIn, Me.location)
+    End Sub
+
+    Friend Sub BeginVerticalPipe(goingIn As boolean, Optional time As Integer = StandardPipeTime)
+        SetPipeVars(time)
+        animator = New VerticalAnimator(RenderImage, goingIn, Me.location)
+    End Sub
+
+    Private Sub SetPipeVars(time as integer)
+        pipeElapsedTime = 0
+        pipeMaxTime = time
+        If animator IsNot Nothing
+            animator.Dispose()
+        End If
+        IsInPipe = True
     End Sub
 
     Protected Class ImageSlice
         Public ReadOnly Property Height As Integer
             Get
-                Return If(image IsNot Nothing, image.Height, 0)
+                Return If(Image IsNot Nothing, Image.Height, 0)
             End Get
         End Property
 
@@ -163,41 +204,66 @@ Public Class EntPlayer
 
         Public ReadOnly Property Width As Integer
             Get
-                Return If(image IsNot Nothing, image.width, 0)
+                Return If(Image IsNot Nothing, Image.Width, 0)
             End Get
         End Property
 
+        Public Location as Point
+
         Public ReadOnly Visible As Boolean
 
-        Sub New (image As Image, optional visible As Boolean = True)
-            Me.image = image
-
+        Sub New(image As Image, location as point, Optional visible As Boolean = True)
+            Me.Image = image
+            Me.location = location
             Me.Visible = visible
         End Sub
+
     End Class
 
     Protected Class VerticalAnimator
-        Implements IDisposable
-        Private image as Image
-        Sub New(image As Image)
-            me.image = image
+        Inherits MarioAnimator
+
+        Public Sub New(image As Image, goingIn As Boolean, location As point)
+            MyBase.New(image, goingIn, location)
         End Sub
 
-        Public Function GetSlice(percent As Double) As ImageSlice
+        Public Overrides Function GetSlice(percent As Double) As ImageSlice
             ' percent is between 0 <= perecent <= 1
-            if percent > 1 or percent < 0
-                Throw new Exception(String.Format("Percent, {0} out of bounds", percent))
+            If percent > 1 Or percent < 0
+                Throw New Exception(String.Format("Percent, {0} out of bounds", percent))
             End If
-            Dim height = percent * image.height
-            dim bottomLeft = new Point(0, CInt(height))
-            Dim pixelHeight as Integer = (1-percent) * image.Height
-            if pixelHeight > 0
-                Return New ImageSlice(Crop(me.image, bottomLeft, image.Width, pixelHeight))
-            Else 
-                Return New ImageSlice(Nothing, False)
+            If Not goingIn
+                percent = 1- percent
             End If
-            
+
+            Dim height = percent * image.Height
+            Dim bottomLeft = New Point(0, CInt(height))
+            Dim pixelHeight As Integer = (1 - percent) * image.Height
+            If pixelHeight > 0
+                Return New ImageSlice(Crop(Me.image, bottomLeft, image.Width, pixelHeight), location)
+            Else
+                Return New ImageSlice(Nothing, location, False)
+            End If
+
         End Function
+    End Class
+
+    Protected MustInherit Class MarioAnimator
+        Implements IDisposable
+        Friend image As Image
+        Friend goingIn As Boolean
+        Friend startLocation As point
+        Friend location as point
+        Private slices as New List(Of Image)
+
+        Sub New(image As Image, goingIn As Boolean, startLocation As point)
+            Me.image = image
+            Me.goingIn = goingIn
+            Me.startLocation = startLocation
+            Me.location = startLocation
+        End Sub
+
+        Public MustOverride Function GetSlice(percent As Double) As ImageSlice
 
 #Region "IDisposable Support"
         Private disposedValue As Boolean ' To detect redundant calls
@@ -205,9 +271,9 @@ Public Class EntPlayer
         ' IDisposable
         Protected Overridable Sub Dispose(disposing As Boolean)
             If Not disposedValue Then
-                If disposing Then
-                    Me.image.dispose()
-                End If
+                For each slice In slices
+                    slice.dispose()
+                Next
 
             End If
             disposedValue = True
@@ -221,12 +287,48 @@ Public Class EntPlayer
             ' GC.SuppressFinalize(Me)
         End Sub
 #End Region
-
     End Class
 
-    Friend Sub reset()
+    Protected Class HorizontalAnimator
+        Inherits MarioAnimator
+
+       
+        Public Sub New(renderImage As Image, goingIn As Boolean, startLocation As point)
+            MyBase.New(renderImage, goingIn, startLocation)
+        End Sub
+
+        Public Overrides Function GetSlice(percent As Double) As ImageSlice
+            If percent > 1 Or percent < 0
+                Throw New Exception(String.Format("Percent, {0} out of bounds", percent))
+            End If
+
+            If goingIn
+                percent = 1- percent
+            End If
+
+            Dim width = percent * image.width
+            Dim bottomLeft = New Point(0, 0)
+            
+            If width > 0
+                location.X = startLocation.X + StandardWidth * (1-percent)
+                Return New ImageSlice(Crop(Me.image, bottomLeft, width, image.Height), location)
+            Else
+                Return New ImageSlice(Nothing, location, False)
+            End If
+        End Function
+    End Class
+
+    Friend Sub Reset()
         Me.isGrounded = False
         Me.currentGroundObjects.Clear()
+        Me.Width = StandardWidth
+        Select Case state
+            Case PlayerStates.Big, PlayerStates.Fire, PlayerStates.Ice, 
+                 Height = StandardHeight * 2
+            Case Else
+                Height = StandardHeight
+
+        End Select
     End Sub
 
     Public NumFireballs As Integer = 0
@@ -320,7 +422,7 @@ Public Class EntPlayer
         Me.defaultY = Me.Location.Y
         Lives -= 1
         MyScene.RegisterDeath(Me)
-        
+
 
     End Sub
 
@@ -374,12 +476,13 @@ Public Class EntPlayer
 
     Public Overrides Sub Animate()
         If IsInPipe
-            Dim slice = animator.GetSlice(pipeElapsedTime/pipeMaxTime)
+            Dim slice = animator.GetSlice(pipeElapsedTime / pipeMaxTime)
             RenderImage = slice.Image
-            me.Height = slice.height
-            Me.Width = slice.width
-            
-        Else If Not Me.isDead Then
+            Me.Height = slice.Height
+            Me.Width = slice.Width
+            Me.Location = slice.location
+
+        ElseIf Not Me.isDead Then
             If Not Me.OnFlag Then
                 ' Make sure this is exhaustive
                 Dim spriteStateToUse = -2
@@ -442,7 +545,7 @@ Public Class EntPlayer
             Me.RenderImage = SpriteSet(SpriteState.Destroy)(0)
             Me.deathTimer += 1
             If deathTimer > 60 Then
-                Dim x = (Me.deathTimer - 60) / (animationInterval * 5)
+                Dim x = (Me.deathTimer - 60) / (AnimationInterval * 5)
 
                 ' Use displacement/time function
                 ' f(x) = 100(2x - x^2)
@@ -520,41 +623,40 @@ Public Class EntPlayer
         End If
     End Sub
 
-    Private animator as VerticalAnimator
-    Private pipeElapsedTime as Integer = 0
-    Private pipeMaxTime as Integer = 0
+    Private animator As MarioAnimator
+    Private pipeElapsedTime As Integer = 0
+    Private pipeMaxTime As Integer = 0
 
-    Private Sub BeginVerticalPipe(Optional time As Integer = StandardPipeTime)
-        pipeElapsedTime = 0
-        pipeMaxTime = time
-        if animator isnot nothing
-            animator.Dispose()
-        End If
-        animator = New VerticalAnimator(RenderImage)
-    End Sub
-
-
+   
     Public Overrides Sub UpdateVeloc()
-        If IsInPipe
-            if pipeElapsedTime >= pipeMaxTime
+        If IsInPipe or MyScene.IsTransitioning
+            If pipeElapsedTime >= pipeMaxTime
                 IsInPipe = False
+                
+            Else
+                pipeElapsedTime += 1
             End If
-            pipeElapsedTime += 1
+            
+
             Me.veloc.x = 0
-            me.veloc.y = 0
+            Me.veloc.y = 0
             Return
         End If
         UpdatePlayerInput
         MyBase.UpdateVeloc()
 
+        for each item in Me.currentGroundObjects
+            item.CollisionTop(me)
+        Next
+
         Dim outOfMap = IsOutOfMap()
-        if (outOfMap = Direction.Right And Me.veloc.X > 0) Or (outOfMap = Direction.Left And Me.veloc.X < 0)
-            veloc.X = 0
+        If (outOfMap = Direction.Right And Me.veloc.x > 0) Or (outOfMap = Direction.Left And Me.veloc.x < 0)
+            veloc.x = 0
         End If
-          
-            
-        If Me.isCrouching And Not isGrounded Then
-            Me.onCrouch(False)
+
+
+        If Me.IsCrouching And Not isGrounded Then
+            Me.OnCrouch(False)
         End If
 
         If invulnerableTime <> 0 Then
@@ -567,7 +669,7 @@ Public Class EntPlayer
     End Sub
 
     Public Overrides Sub UpdateLocation()
-        If Not Me.OnFlag Then
+        If Not Me.OnFlag  Then
             MyBase.UpdateLocation()
         End If
         If Me.Location.Y < 0 And Not isDead Then
@@ -580,6 +682,7 @@ Public Class EntPlayer
         MyScene.AddUnfreezableItem(Me)
     End Sub
 
+    
 End Class
 
 

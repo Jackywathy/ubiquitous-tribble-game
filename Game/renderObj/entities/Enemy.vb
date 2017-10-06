@@ -8,6 +8,7 @@
 
     Public Sub New(width As Integer, height As Integer, location As Point, spriteSet As SpriteSet, mapScene As MapScene)
         MyBase.New(width, height, location, spriteSet, mapScene)
+        directionMoving = If(Helper.Random(0, 2) < 1, -1, 1)
     End Sub
 
     ' Takes a raw frame counter and returns a new point

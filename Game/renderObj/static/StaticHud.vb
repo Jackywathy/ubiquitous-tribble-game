@@ -1,4 +1,4 @@
-﻿Public Class StaticHud
+﻿Public Class       StaticHud
     Inherits GameItem
 
     Private height as Integer
@@ -34,12 +34,12 @@
     Public ReadOnly PowerupHolder As StaticHudPowerup
 
     Private ReadOnly WorldText As StaticText
-    Private ReadOnly WorldNumText As StaticText
+    Public ReadOnly WorldNumText As StaticText
 
     Private ReadOnly TimeText As StaticText
     Private ReadOnly TimeNumText As StaticText
 
-    Private fontSize as integer = 18
+    Public fontSize as integer = 18
 
     Private Sub Reshuffle()
 
@@ -129,6 +129,14 @@
                                       )
     End Sub
 
+    Friend Sub EnableTime()
+        displayTime = True
+    End Sub
+    Private displayTime as boolean = True
+    Friend Sub DisableTime()
+        displayTime = False
+    End Sub
+
     Public Sub SetWorld(world As String)
         WorldNumText.Text = world
     End Sub
@@ -152,7 +160,10 @@
         WorldNumText.Render(g)
 
         TimeText.Render(g)
-        TimeNumText.Render(g)
+
+        If displayTime
+            TimeNumText.Render(g)
+        End if
     End Sub
 
     Public Sub SetDimension(size As Size)

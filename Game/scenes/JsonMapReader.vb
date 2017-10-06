@@ -29,7 +29,7 @@ Public NotInheritable Class JsonMapReader
             Throw New Exception(String.Format("Json invalid, name={0}", jsonname), e)
         End Try
 
-        Dim outScene As New MapScene(parent, mapObject.width, mapObject.Height)
+        Dim outScene As New MapScene(parent, mapObject.width, mapObject.Height, jsonName)
 
         ' Set maptime
         outScene.SetMapTime(mapObject.MapTime)
@@ -53,12 +53,13 @@ Public NotInheritable Class JsonMapReader
         Next
 
         Dim defaultEntry As New Point(mapObject.Default_Entry(0), mapObject.Default_Entry(1))
-        ' add all Entities
-        Dim player1 = New EntPlayer(32, 32, defaultEntry, outScene)
-
         outScene.DefaultLocation = defaultEntry
-        outScene.SetPlayer(MapScene.PlayerId.Player1, player1)
-        player1.AddSelfToScene()
+        ' add all Entities
+        'Dim player1 = New EntPlayer(32, 32, defaultEntry, outScene)
+
+        
+        'outScene.SetPlayer(MapScene.PlayerId.Player1, player1)
+        'player1.AddSelfToScene()
 
 
 
@@ -121,13 +122,15 @@ Public NotInheritable Class JsonMapReader
 
 
     Public Shared Function RenderItemFactory(name As String, params As Object(), theme As RenderTheme, scene As MapScene) As ISceneAddable
-        Dim out As ISceneAddable '
+        Dim out As ISceneAddable 
         Dim item As RenderTypes
+
         Try
             item = Helper.StrToEnum(Of RenderTypes)(name)
         Catch exception As Exception
             Throw New Exception(String.Format("Cannot find item: {0} in the RenderTypes Enum", name), exception)
         End Try
+
         Select Case item
             Case RenderTypes.BlockBreakableBrick
                 AssertLength(name, 2, params)

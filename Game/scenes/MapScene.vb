@@ -16,7 +16,9 @@ Public Class MapScene
     End Function
 
     Public Overrides Sub DrawDebugStrings(form As GameControl)
-        form.AddStringBuffer(String.Format("Mario Location: {0}, {1}", Player1.Location.X, Player1.Location.Y))
+        If Player1 isnot nothing
+            form.AddStringBuffer(String.Format("Mario Location: {0}, {1}", Player1.Location.X, Player1.Location.Y))
+        End if
         Dim relativePoint = GetMouseRelativeLocation()
         form.AddStringBuffer(String.Format("Mouse - x: {0}, y: {1}", relativePoint.X, relativePoint.Y))
         form.AddStringBuffer(String.Format("Is over box: {0}", If(MouseOverBox, "yes", "no")))
@@ -33,10 +35,19 @@ Public Class MapScene
     ''' </summary>
     Private MapTime As Integer
 
+    Private _screenLocation as New point
     ''' <summary>
     ''' Location that the scene is rendered at - default = 0, 0
     ''' </summary>
-    Public ScreenLocation As New Point(0, 0)
+    Public Property ScreenLocation As Point
+        Get
+            Return _screenLocation
+        End Get
+        Set(value as Point)
+            _screenLocation = value
+            Background.Location = value
+        End Set
+    End Property
 
 
     Private Function MouseOverBox As Boolean
@@ -79,10 +90,11 @@ Public Class MapScene
     ''' Constructor for <see cref="MapScene"/>
     ''' </summary>
     ''' <param name="parent"></param>
-    Public Sub New(parent As GameControl, mapWidth As integer, mapHeight As Integer, Optional includeHud As Boolean = True)
+    Public Sub New(parent As GameControl, mapWidth As integer, mapHeight As Integer, mapName as String, Optional includeHud As Boolean = True)
         MyBase.New(parent)
         Me.width = mapWidth
         Me.height = mapHeight
+        Me.mapName = mapName
         HudElements = parent.SharedHud
     End Sub
 
@@ -226,6 +238,10 @@ Public Class MapScene
     ''' </summary>
     Public ReadOnly toRemoveObjects As New HashSet(Of HitboxItem)
 
+    Friend Sub CenterToPlayer()
+        ScreenLocation = New Point(Player1.X - ScreenGridWidth/2, ScreenLocation.Y)
+    End Sub
+
     ''' <summary>
     ''' Contains objects that will be added once <see cref="AddAllAdded"/> is run
     ''' Used in for each loops to avoid mutating object immediately
@@ -251,7 +267,7 @@ Public Class MapScene
         Player2
     End Enum
 
-    Public Overridable Sub SetPlayer(id As PlayerId, player As EntPlayer)
+    Public Overridable Sub SetPlayer(id As PlayerId, player As EntPlayer, location As Point)
         If id = PlayerId.Player1
             Player1 = player
         ElseIf id = PlayerId.Player2
@@ -259,6 +275,12 @@ Public Class MapScene
         Else
             Throw New Exception()
         End If
+        player.MyScene = Me
+        player.Location = location
+        If Not AllEntities.Contains(player)
+            player.AddSelfToScene()
+        End If
+        player.reset()
     End Sub
 
     ''' <summary>
@@ -291,7 +313,14 @@ Public Class MapScene
     ''' </summary>
     Public Overrides Sub UpdateTick(ticksElapsed As Integer)
         ' Animate and update position of each entity
-        If IsFrozen Then
+        If exclusiveTime <> 0
+            exclusiveItem.UpdateVeloc()
+            exclusiveItem.UpdateLocation()
+            exclusiveItem.Animate()
+            exclusiveTime -= 1
+        Else if AllPlayersDead
+            FailLevel()
+        Else If IsFrozen Then
             For each item As Entity in allUnfreezableItems
                 item.UpdateVeloc()
                 item.UpdateLocation()
@@ -305,13 +334,10 @@ Public Class MapScene
             Next
         End If
 
-        For Each item In Player1.currentGroundObjects
-            item.CollisionTop(Player1)
-        Next
+        
 
         AddAllAdded()
         RemoveAllDeleted()
-
 
         ' TODO - chuck into function - scrolls screen if player is close to edge
         If Player1.Location.X - Me.ScreenLocation.X > (ScreenGridWidth / 3 * 2) Then
@@ -328,17 +354,27 @@ Public Class MapScene
 
     Friend Sub RegisterDeath(entPlayer As EntPlayer)
         ' TODO check player 2 as well
-        If AllPlayersDead
-            BackgroundMusic.Stop()
-            Sounds.PlayerDead.Play()
-            SetExclusiveControl(entPlayer, StandardDeathTime)
-            
-        End If
+        SetExclusiveControl(entPlayer, StandardDeathTime)
+    End Sub
+
+    Friend Sub FailLevel()
+        If Not IsTransitioning
+            Dim map = Helper.StrToEnum(Of MapEnum)(Me.mapName)
+            Parent.ReloadLevel(map)
+            Parent.QueueMapChangeWithStartScene(map, Nothing)
+        End if
     End Sub
 
     Private Function AllPlayersDead() As Boolean
-        ' TODO fix
-        Return True
+        If Player2 IsNot Nothing
+            Return Player1.isDead and Player2.isDead
+        Else
+            If player1 isnot nothing
+                Return player1.isDead
+            Else
+                return False
+            End If
+        End If
     End Function
 
     Private exclusiveTime as Integer
@@ -355,6 +391,12 @@ Public Class MapScene
             Player1.State = PlayerStates.Dead
         End If
         HudElements.SetTime(MapTime - CInt(Math.Floor(timeRemaining)))
+    End Sub
+
+    Public IsAtStartScreen As Boolean
+    Public Sub RunStartScreen
+        IsAtStartScreen = True
+
     End Sub
 
     ''' <summary>
@@ -384,8 +426,7 @@ Public Class MapScene
         GlobalFrameCount += 1
     End Sub
     Private ReadOnly allUnfreezableItems as New List(Of Entity)
-
-    
+    Friend mapName As String
 
     Friend Sub AddUnfreezableItem(sender As Entity)
         allUnfreezableItems.Add(sender)

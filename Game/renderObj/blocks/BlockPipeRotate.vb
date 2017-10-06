@@ -67,7 +67,7 @@
                 End If
                 ' get map
                 dim map = Helper.StrToEnum(Of MapEnum)(params(4))
-                Dim location = New Point(params(5), params(6))
+                Dim location = New Point(params(5)*GameImage.StandardWidth, params(6)*GameImage.StandardHeight)
                 pipeLeft.SetMap(map, location)
         End Select
     End Sub
@@ -85,15 +85,17 @@
 
 
         Public Sub New(location As Point, mapScene As MapScene)
-            MyBase.New(BlockPipe.Width, StandardHeight, location, Sprites.TopPipeSprite, mapScene)
+            MyBase.New(StandardWidth, StandardHeight*2, location, Sprites.LeftPipeSprite, mapScene)
             ' 64 * 32
         End Sub
 
         Public Overrides Sub CollisionLeft(sender As Entity)
-            If Action = PipeContents.Map Then
+            If Helper.IsPlayer(sender) And KeyHandler.MoveRight Then
+                Dim player As EntPlayer = sender
 
-                If Helper.IsPlayer(sender) And KeyHandler.MoveRight Then
-                    MyScene.Parent.RunScene(Map, False)
+                If Action = PipeContents.Map And Not player.IsInPipe And Not MyScene.IsTransitioning Then
+                    
+                    player.EnterHorizontalPipeExitVertical(Me.Map, Me.MapLocation, True)
                 End If
             End If
         End Sub

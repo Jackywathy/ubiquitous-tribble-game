@@ -1,6 +1,4 @@
-﻿Imports WinGame
-
-Public Class BlockPipe
+﻿Public Class BlockPipe
     Implements ISceneAddable
 
     Private pipeTop As BlockPipeTop
@@ -67,7 +65,7 @@ Public Class BlockPipe
                 End If
                 ' get map
                 Dim map = Helper.StrToEnum(Of MapEnum)(params(4))
-                Dim location = New Point(params(5), params(6))
+                Dim location = New Point(params(5)*GameImage.StandardWidth, params(6)*GameImage.StandardHeight)
                 pipeTop.SetMap(map, location)
         End Select
 
@@ -91,9 +89,8 @@ Public Class BlockPipe
             If Helper.IsPlayer(sender) And KeyHandler.MoveDown Then
                 Dim player As EntPlayer = sender
 
-                If Not player.IsInPipe and Action = PipeContents.Map Then
-                    
-                    player.VerticalPipeTransistion(Me.Map, Me.MapLocation)
+                If Not player.IsInPipe and Action = PipeContents.Map And Not MyScene.IsTransitioning  Then
+                    player.EnterVerticalPipe(Me.Map, Me.MapLocation)
                 End If
             End If
         End Sub

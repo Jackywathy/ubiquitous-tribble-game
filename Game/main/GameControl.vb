@@ -1,5 +1,4 @@
 ﻿Imports System.Drawing.Drawing2D
-Imports WinGame
 
 ''' <summary>
 ''' This control has the entire game in it!
@@ -65,6 +64,7 @@ Public Class GameControl
 
         allMapScenes = LoadScenes()
         RunScene(PlayerStartScreen, True)
+        QueueMapChangeWithStartScene(PlayerStartScreen, Nothing)
 
 
         ' only start loop after init has finished
@@ -105,6 +105,19 @@ Public Class GameControl
 
     Public Sub DrawDebugStrings()
         AddStringBuffer(String.Format("fps: {0}", FPS))
+        If Not ChangeQueue.IsEmpty
+            AddStringBuffer("Upcoming changes:")
+            For each item in ChangeQueue.queue
+                Select Case item.GetType()
+                    Case GetType(PlayTransitionObject)
+                        Dim transition As PlayTransitionObject = item
+                        AddStringBuffer(String.Format("TransitionType: {0}, time: {1}", transition.transition.ttype.ToString, transition.time))
+                    Case GetType(MapChangeObject)
+                        Dim change As MapChangeObject = item
+                        AddStringBuffer(String.Format("Changing map: {0}, time: {1}", change.map.ToString, change.time))
+                End Select
+            Next
+        End If
     End Sub
 
     ''' <summary>
@@ -193,9 +206,14 @@ Public Class GameControl
         Return scenes
     End Function
 
-    
+   Public Function ChangePlayerScene(scene As MapScene) As EntPlayer
+        player1.MyScene = scene
+        Return player1
+   End Function
 
-    ''' <summary>
+    Public player1 As New EntPlayer(32, 32, New Point(0, 0), Nothing)
+
+    ''' <summary>s
     ''' Runs a scene from mapEnum
     ''' </summary>
     ''' <param name="map"></param>
@@ -205,22 +223,17 @@ Public Class GameControl
 
         If CurrentScene.GetType() = GetType(MapScene)
             dim mapScene as MapScene = CurrentScene
-            Dim start as Point = If(insertion IsNot Nothing, insertion, mapScene.DefaultLocation)
-            Dim player = mapScene.GetPlayer(MapScene.PlayerId.Player1)
-            player.Location = start
-            player.reset()
-            
-            If isNewStage
-                MapTimeCounter = 0
-            End If
+            Dim start as Point = If(insertion, mapScene.DefaultLocation)
+            mapScene.SetPlayer(MapScene.PlayerId.Player1, player1, start)
+                       
             If mapScene.width < ScreenGridWidth
                 ' center scene
                 mapScene.Center()
-
             End If
         End If
-
-        
+        If isNewStage
+            MapTimeCounter = 0
+        End If
     End Sub
 
     Private Sub GameControl_SizeChanged(sender As Object, e As EventArgs) Handles Me.SizeChanged
@@ -233,22 +246,38 @@ Public Class GameControl
         Friend time As integer
         Friend control as GameControl
         Friend [next] As QueueObject
-
+        Friend HasRun as Boolean 
         Public Property IsFinished As Boolean
 
         Public Sub New(time As Integer, control As GameControl, Optional [next] as QueueObject = Nothing)
             Me.time = time
             Me.control = control
             Me.[next] = [next]
+            HasRun = False
         End Sub
 
+        Public Overridable Sub Setup()
+
+        End Sub
+
+        Public Overridable Sub Tick()
+
+        End Sub
+
+
         Public Sub UpdateTick()
+            If Not hasRun
+                HasRun = True
+                Setup()
+            End If
             if time = 0
                 TimerFinished()
                 IsFinished = True
                 if [next] IsNot nothing
                     control.AddTimedEvent([next])
                 End If
+            Else
+                Tick()
             End If
             time -= 1
         End Sub
@@ -260,9 +289,9 @@ Public Class GameControl
     End Sub
 
 
-    Public Class MapTransitionObject
+    Public Class PlayTransitionObject
         Inherits QueueObject
-        Private transition as TransitionObject
+        Friend transition as TransitionObject
 
         Sub New(transition As TransitionObject, time As Integer, control As GameControl, Optional [next] as QueueObject = Nothing)
             MyBase.New(time, control, [next])
@@ -272,6 +301,10 @@ Public Class GameControl
         Protected Overrides Sub TimerFinished()
            control.GetCurrentScene().StartTransition(transition)
         End Sub
+
+        Public Overrides Sub Setup()
+            MyBase.Setup()
+        End Sub
     End Class
 
     Private Function GetCurrentScene() As BaseScene
@@ -280,23 +313,30 @@ Public Class GameControl
 
     Public Class MapChangeObject
         Inherits QueueObject
-        Private map as MapEnum
+        Friend map as MapEnum
         Private insertion as point?
         Private isNewStage as boolean
-        Sub New(map As MapEnum, insertion As Point?, time As Integer, control As GameControl, Optional [next] as QueueObject = Nothing, Optional IsNewStage As Boolean=False)
+        Private centerToplayer as boolean
+        Sub New(map As MapEnum, insertion As Point?, time As Integer, control As GameControl, Optional [next] as QueueObject = Nothing, Optional IsNewStage As Boolean=False, optional CenterToPlayer As boolean = True)
             MyBase.New(time, control, [next])
             Me.map = map
             Me.insertion = insertion
             Me.isNewStage = IsNewStage
+            Me.centerToplayer = CenterToPlayer
         End Sub
 
         Protected Overrides Sub TimerFinished()
             control.RunScene(map, isNewStage, insertion)
+            If centerToplayer
+                Dim mapScene as MapScene = control.GetCurrentScene()
+                mapScene.CenterToPlayer()
+            End If
         End Sub
     End Class
     
     Public Class ChangeQueueWrapper
-        Private queue As New HashSet(Of QueueObject)
+        Friend queue As New HashSet(Of QueueObject)
+
 
         Public Sub Add(item As QueueObject)
             queue.Add(item)
@@ -307,40 +347,109 @@ Public Class GameControl
                 Throw new Exception("cannot remove item")
             End If
         End Sub
+
         Public Sub UpdateTick
-            For count=queue.Count -1 To 0 Step -1
-                Dim item = queue(count)
+            For c=queue.Count -1 To 0 Step -1
+                Dim item = queue(c)
                 item.UpdateTick()
                 if item.IsFinished
                     Remove(item)
                 End If
             Next
         End Sub
+
+        Public Readonly Property IsEmpty As Boolean
+            Get
+                Return queue.Count = 0
+            End Get
+        End Property
     End Class
 
     Public Property ChangeQueue As New ChangeQueueWrapper
 
+    Friend Sub ReloadLevel(map As MapEnum)
+        allMapScenes(map) = JsonMapReader.ReadMapFromResource(map.ToString.ToLower(), Me)
+    End Sub
+
     ''' <summary>
     ''' Includes putting a transition before map is loaded, loads map then adds another transitiotn
+    ''' Returns the last transition object to be run synchronously
     ''' </summary>
     ''' <param name="map"></param>
-    ''' <param name="insertion"></param>
+    ''' <param name="mapInsertion"></param>
     ''' <param name="time"></param>
-    Friend Sub QueueSceneChange(map As MapEnum, insertion As Point?, Optional time As Integer = StandardPipeTime, optional location as Point? = nothing)
-        Dim firstTrans As New TransitionObject(TransitionType.Circle, TransitionDirection.Top, location := location)
+    Friend Function QueueMapChangeWithCircleAnimation(map As MapEnum, mapInsertion As Point?, centerToplayer As Boolean, Optional time As Integer = StandardPipeTime, optional animationLocation as Point? = nothing, optional before As QueueObject = Nothing) As QueueObject
+        Dim firstTrans As New TransitionObject(TransitionType.Circle, TransitionDirection.Top, location := animationLocation)
 
-        Dim firstTransition As New MapTransitionObject(firstTrans, StandardPipeTime, Me)
-        Dim mapChange As New MapChangeObject(map, insertion, StandardTransitionTime, Me)
+        Dim firstTransition As New PlayTransitionObject(firstTrans, StandardPipeTime, Me)
+        Dim mapChange As New MapChangeObject(map, mapInsertion, StandardTransitionTime, Me, CenterToPlayer := centerToplayer)
         
 
         firstTransition.next = mapChange
+        If before IsNot nothing
+            before.next = firstTransition
+            AddTimedEvent(before)
+        Else
+            AddTimedEvent(firstTransition)
+        End If
+        
+        Return mapChange
+    End Function
 
-        AddTimedEvent(firstTransition)
-    End Sub
+    Friend Function QueueMapChangeWithStartScene(map As MapEnum, mapInsertion As Point?, Optional time As Integer = StandardStartScreenTime, optional before As QueueObject = Nothing) As QueueObject
+        Dim firstTrans As New TransitionObject(TransitionType.StartScene, TransitionDirection.Bottom)
+
+        ' play a startscene immediately (time = 0)
+        Dim firstTransition As New PlayTransitionObject(firstTrans, 0, Me)
+        Dim mapChange As New MapChangeObject(map, mapInsertion,  StandardTransitionTime, Me,CenterToPlayer := False)
+
+        firstTransition.next = mapChange
+        If before IsNot nothing
+            before.next = firstTransition
+            AddTimedEvent(before)
+        Else
+            AddTimedEvent(firstTransition)
+        End If
+        Return mapChange
+    End Function
 
 
+    Public Class MarioPipeAnimationObject
+        Inherits QueueObject
+        public player as EntPlayer
+        public direction as PipeType
+        public goingin as boolean
+        Sub New(player As EntPlayer, direction As PipeType, goingIn as Boolean, control As GameControl, Optional [next] as QueueObject = Nothing, Optional time As integer = standardPipeTime)
+            MyBase.New(time, control, [next])
+            Me.player = player
+            Me.direction = direction
+            me.goingin = goingIn
+            
+        End Sub
+
+        Public Overrides Sub Setup()
+            Select Case direction
+                Case PipeType.Vertical
+                    player.BeginVerticalPipe(goingIn, time)
+                Case PipeType.Horizontal
+                    player.BeginHorizontalPipe(goingIn, time)
+                case Else
+                    throw new Exception()
+                
+                  
+            End Select
+            
+        End Sub
+
+        Protected Overrides Sub TimerFinished()
+
+        End Sub
+    End Class
 End Class
-
+Public Enum PipeType
+    Vertical
+    Horizontal
+End Enum
 Public Class KeyHandler
     Public Shared MoveRight As Boolean
     Public Shared MoveLeft As Boolean

@@ -22,11 +22,12 @@
     ''' <param name="scene"></param>
     Public Sub SpawnPowerup(scene As MapScene)
         Dim powerup As EntPowerup
+        Dim spawnPoint = New Point(powerupImage.x+scene.ScreenLocation.X, powerupImage.y+scene.ScreenLocation.Y)
         Select Case StoredPowerup
             Case PowerupType.Fireflower
-                powerup = New EntFireFlower(New Point(powerupImage.x, powerupImage.y), scene)
+                powerup = New EntFireFlower(spawnPoint, scene)
             Case PowerupType.Mushroom
-                powerup = New EntMushroom(New Point(powerupImage.X, powerupImage.Y), scene)
+                powerup = New EntMushroom(spawnPoint, scene)
             Case Else
                 Throw New Exception()
         End Select
