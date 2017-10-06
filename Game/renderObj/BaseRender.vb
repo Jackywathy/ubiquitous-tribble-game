@@ -115,13 +115,18 @@ Public MustInherit Class GameImage
     End Sub
 
     ''' <summary>
-    ''' Converts a from-bottom justified point into 
+    ''' Converts a from-bottom justified point into a top justified y point
     ''' </summary>
     ''' <param name="botY"></param>
     ''' <returns></returns>
     Friend Function GetTopBasedY(botY As Integer) As Integer
         Return Dimensions.ScreenGridHeight - botY - height
     End Function
+
+    Friend Function BottomToTop(botY As Integer) As Integer
+        Return Dimensions.ScreenGridHeight - botY - height
+    End Function
+
 
     Friend Function TopToBottom(topY As Integer) As Integer
         Return topY + height

@@ -79,10 +79,16 @@ Public Class MapScene
     ''' Constructor for <see cref="MapScene"/>
     ''' </summary>
     ''' <param name="parent"></param>
-    Public Sub New(parent As GameControl, Optional includeHud As Boolean = True)
+    Public Sub New(parent As GameControl, mapWidth As integer, mapHeight As Integer, Optional includeHud As Boolean = True)
         MyBase.New(parent)
+        Me.width = mapWidth
+        Me.height = mapHeight
         HudElements = parent.SharedHud
     End Sub
+
+    Public Width As Integer
+    public height As integer
+
 
     ''' <summary>
     ''' Gets/Updates the blocks that are in the mapScene and need to be rendened.
@@ -126,6 +132,10 @@ Public Class MapScene
             AllHitboxItems.Add(item)
         Next
     End Sub
+
+    Friend Function GetScreenLocation(item As MovingImage) As Point
+        Return New Point(item.X - ScreenLocation.X, item.Y-ScreenLocation.Y)
+    End Function
 
     ''' <summary>
     ''' Adds entity to the mapScene
@@ -200,6 +210,9 @@ Public Class MapScene
         
     End Function
 
+    Friend Sub Center()
+        ScreenLocation = New Point(- ((ScreenGridWidth - me.width)/2), 0)
+    End Sub
 
 
     ''' <summary>
@@ -249,7 +262,7 @@ Public Class MapScene
     End Sub
 
     ''' <summary>
-    ''' Sets the Background of the mapScene, using a hex color
+    ''' Sets the Background of the mapScene, using a hex backgroundBrush
     ''' </summary>
     ''' <param name="hexColor"></param>
     Public Sub SetBackground(hexColor As String, width As Integer, height As Integer)
@@ -371,6 +384,8 @@ Public Class MapScene
         GlobalFrameCount += 1
     End Sub
     Private ReadOnly allUnfreezableItems as New List(Of Entity)
+
+    
 
     Friend Sub AddUnfreezableItem(sender As Entity)
         allUnfreezableItems.Add(sender)

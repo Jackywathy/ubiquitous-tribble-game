@@ -1,6 +1,6 @@
 ﻿''' <summary>
 ''' This class represents the Background image (just decoration)
-''' NO Bricks, players, items, enemies etc, are drawn on (just color)
+''' NO Bricks, players, items, enemies etc, are drawn on (just backgroundBrush)
 ''' </summary>
 Public Class BackgroundRender
     Inherits GameItem

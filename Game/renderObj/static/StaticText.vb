@@ -57,6 +57,8 @@ Public NotInheritable Class DrawingPrimitives
     Public Shared RedPen As New Pen(Color.Red) 
     Public Shared BluePen As New Pen(Color.Blue) 
     Public Shared WhiteBrush As New SolidBrush(color.White)
+    Public Shared BlackBrush As New SolidBrush(color.Black)
+
     Private Sub New
 
     End Sub

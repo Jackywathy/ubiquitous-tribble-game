@@ -134,6 +134,11 @@ Public Class GameControl
 
     Private numFrames As Integer = 0
     Private FPS As Integer = 0
+
+    Friend Sub SetScene(baseScene As BaseScene)
+        CurrentScene = baseScene
+    End Sub
+
     Private ReadOnly fpsFont As New Font("Arial", 20)
     Private ReadOnly fpsBrush As New SolidBrush(Color.Red)
     Private lastFrame As DateTime = Date.UtcNow()
@@ -188,6 +193,8 @@ Public Class GameControl
         Return scenes
     End Function
 
+    
+
     ''' <summary>
     ''' Runs a scene from mapEnum
     ''' </summary>
@@ -203,6 +210,11 @@ Public Class GameControl
             If isNewStage
                 MapTimeCounter = 0
             End If
+            If mapScene.width < ScreenGridWidth
+                ' center scene
+                mapScene.Center()
+
+            End If
         End If
 
         
@@ -217,31 +229,59 @@ Public Class GameControl
     Public MustInherit Class QueueObject
         Friend time As integer
         Friend control as GameControl
+        Friend [next] As QueueObject
 
         Public Property IsFinished As Boolean
 
-        Public Sub New(time As Integer, control As GameControl)
+        Public Sub New(time As Integer, control As GameControl, Optional [next] as QueueObject = Nothing)
             Me.time = time
             Me.control = control
+            Me.[next] = [next]
         End Sub
 
         Public Sub UpdateTick()
             if time = 0
                 TimerFinished()
                 IsFinished = True
+                if [next] IsNot nothing
+                    control.AddTimedEvent([next])
+                End If
             End If
             time -= 1
         End Sub
         Protected MustOverride Sub TimerFinished()
     End Class
 
+    Private Sub AddTimedEvent(item As QueueObject)
+        ChangeQueue.Add(item)
+    End Sub
+
+
+    Public Class MapTransitionObject
+        Inherits QueueObject
+        Private transition as TransitionObject
+
+        Sub New(transition As TransitionObject, time As Integer, control As GameControl, Optional [next] as QueueObject = Nothing)
+            MyBase.New(time, control, [next])
+            me.transition = transition
+        End Sub
+
+        Protected Overrides Sub TimerFinished()
+           control.GetCurrentScene().StartTransition(transition)
+        End Sub
+    End Class
+
+    Private Function GetCurrentScene() As BaseScene
+        return CurrentScene
+    End Function
+
     Public Class MapChangeObject
         Inherits QueueObject
         Private map as MapEnum
         Private insertion as point?
         Private isNewStage as boolean
-        Sub New(map As MapEnum, insertion As Point?, time As Integer, control As GameControl, Optional IsNewStage As Boolean=False)
-            MyBase.New(time, control)
+        Sub New(map As MapEnum, insertion As Point?, time As Integer, control As GameControl, Optional [next] as QueueObject = Nothing, Optional IsNewStage As Boolean=False)
+            MyBase.New(time, control, [next])
             Me.map = map
             Me.insertion = insertion
             Me.isNewStage = IsNewStage
@@ -254,28 +294,45 @@ Public Class GameControl
     
     Public Class ChangeQueueWrapper
         Private queue As New HashSet(Of QueueObject)
-        Private removal as new HashSet(Of QueueObject)
 
         Public Sub Add(item As QueueObject)
             queue.Add(item)
         End Sub
+
+        Public Sub Remove(item As QueueObject)
+            If Not queue.Remove(item)
+                Throw new Exception("cannot remove item")
+            End If
+        End Sub
         Public Sub UpdateTick
-            For each item In queue
+            For count=queue.Count -1 To 0 Step -1
+                Dim item = queue(count)
                 item.UpdateTick()
                 if item.IsFinished
-                    removal.Add(item)
+                    Remove(item)
                 End If
-
             Next
-            queue.Except(removal)
-            removal.Clear()
         End Sub
     End Class
 
     Public Property ChangeQueue As New ChangeQueueWrapper
 
-    Friend Sub QueueMapChange(map As MapEnum, insertion As Point?, Optional time As Integer = StandardPipeTime)
-        ChangeQueue.Add(New MapChangeObject(map, insertion, time, Me))
+    ''' <summary>
+    ''' Includes putting a transition before map is loaded, loads map then adds another transitiotn
+    ''' </summary>
+    ''' <param name="map"></param>
+    ''' <param name="insertion"></param>
+    ''' <param name="time"></param>
+    Friend Sub QueueSceneChange(map As MapEnum, insertion As Point?, Optional time As Integer = StandardPipeTime, optional location as Point? = nothing)
+        Dim firstTrans As New TransitionObject(TransitionType.Circle, TransitionDirection.Top, location := location)
+
+        Dim firstTransition As New MapTransitionObject(firstTrans, StandardPipeTime, Me)
+        Dim mapChange As New MapChangeObject(map, insertion, StandardTransitionTime, Me)
+        
+
+        firstTransition.next = mapChange
+
+        AddTimedEvent(firstTransition)
     End Sub
 
 

@@ -179,11 +179,11 @@
   "entities": {},
   "background": "#000000",
   "default_entry": [
-    0,
-    64
+    64,
+    384
   ],
-  "width": 2432,
-  "height": 416,
+  "width": 420,
+  "height": 544,
   "MapTime": 300,
   "theme": "underground"
 }

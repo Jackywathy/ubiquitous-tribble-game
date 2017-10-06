@@ -14,6 +14,7 @@ Public Module Dimensions
     Public Const PlayerStartScreen = MapEnum.map1_1above
     Public Const StandardPipeTime = 40
     Public Const StandardDeathTime = 100
+    Public Const StandardTransitionTime = 30
 End Module
 
 Module Debug

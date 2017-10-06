@@ -144,7 +144,10 @@ Public Class EntPlayer
     
     Public Sub VerticalPipeTransistion(map As MapEnum, insertion as Point?)
         InvinicibilityTimer = StandardPipeTime
-        MyScene.Parent.QueueMapChange(map, insertion)
+        Dim point = MyScene.GetScreenLocation(Me)
+        point.Y = BottomToTop(point.Y)
+
+        MyScene.Parent.QueueSceneChange(map, insertion, Location:= point)
         IsInPipe = True
         BeginVerticalPipe
     End Sub

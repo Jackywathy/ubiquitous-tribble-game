@@ -1,4 +1,5 @@
-﻿
+﻿Imports System.Drawing.Drawing2D
+
 ''' <summary>
 ''' Base scene:
 ''' given to GameControl to render 
@@ -17,78 +18,137 @@ Public MustInherit Class BaseScene
     ''' <summary>
     ''' Renders scene ont a graphics object
     ''' </summary>
-    Public Sub RenderScene(g As graphics)
+    Public Sub RenderScene(g As Graphics)
         RenderObjects(g)
-        If isTransitioning Then
-            DrawTransition(g)
-        End if
+        If IsTransitioning Then
+            If CurrentTransition.IsFinished
+                IsTransitioning = False
+                CurrentTransition = Nothing
+            Else
+                CurrentTransition.RenderObject(g)
+            End If
+        End If
     End Sub
 
     Public Overridable Sub SetTime(seconds As Integer)
 
     End Sub
 
-    Private Sub DrawTransition(g As Graphics)
-        Dim progress as Double = transistionTicksElapsed / transistionLength * ScreenGridWidth
-        Dim drawnRect As Rectangle
-        Select Case transistionDirection
-            Case TransitionDirection.Right
-                ' top left of rectangle = length of form - progress
-                drawnRect.X = ScreenGridWidth - progress
-                drawnRect.Y = 0
-                drawnRect.Width = progress
-                drawnRect.Height = ScreenGridHeight
-            Case TransitionDirection.Top
-                drawnRect.X = 0
-                drawnRect.Y = 0
-                drawnRect.Width = ScreenGridWidth
-                drawnRect.Height = progress
-            Case Else
-                throw new Exception("Transistion direction out of range")
+    Protected MustInherit Class TransitionDrawer
+        Protected MustOverride Sub DrawTransition(g As Graphics)
+        Public tranitionObject As TransitionObject
+        Public TransitionLength As Integer
+        Public TransitionTicksElapsed As Integer
+        Public IsFinished As Boolean = False
 
-        End Select
-        g.FillRectangle(transistionBrush, drawnRect)
-        transistionTicksElapsed += 1
-        If transistionTicksElapsed > transistionLength
-            IsTransitioning = False
-            transistionTicksElapsed = 0
-            transistionLength = 0
-        End If
-    End Sub
+
+        Sub New(transitionObject As TransitionObject)
+            Me.tranitionObject = tranitionObject
+            TransitionLength = transitionObject.time
+            TransitionTicksElapsed = 0
+        End Sub
+
+        Public Sub RenderObject(g As Graphics)
+            DrawTransition(g)
+            If TransitionTicksElapsed > TransitionLength
+                IsFinished = True
+            End If
+
+            TransitionTicksElapsed += 1
+        End Sub
+    End Class
+
+
+    Protected Class FillTransitionDrawer
+        Inherits TransitionDrawer
+        Public color As Brush
+
+        Protected Overrides Sub DrawTransition(g As Graphics)
+            Dim progress As Double = TransitionTicksElapsed / TransitionLength
+            Dim drawnRect As Rectangle
+            Select Case Me.tranitionObject.tdir
+                Case TransitionDirection.Right
+                    ' top left of rectangle = length of form - progress
+                    drawnRect.X = ScreenGridWidth - progress
+                    drawnRect.Y = 0
+                    drawnRect.Width = progress * ScreenGridWidth
+                    drawnRect.Height = ScreenGridHeight
+                Case TransitionDirection.Top
+                    drawnRect.X = 0
+                    drawnRect.Y = 0
+                    drawnRect.Width = ScreenGridWidth
+                    drawnRect.Height = progress * ScreenGridHeight
+                Case Else
+                    Throw New Exception("Transistion direction out of range")
+
+            End Select
+            g.FillRectangle(color, drawnRect)
+        End Sub
+
+        Sub New(transitionObject As TransitionObject)
+            MyBase.New(transitionObject)
+            Me.color = If(transitionObject.color, DrawingPrimitives.BlackBrush)
+        End Sub
+    End Class
+
+    Protected Class CircleTransitionDrawer
+        Inherits TransitionDrawer
+        Public backgroundBrush As Brush
+        Private location as Point
+   
+
+        Protected Overrides Sub DrawTransition(g As Graphics)
+            Dim progress As Double = TransitionTicksElapsed / TransitionLength
+            
+            dim circleDiameter As Integer = CInt(Math.Min(ScreenGridHeight, ScreenGridWidth)) * (1-progress)
+            Dim circleRadius As Integer = CInt(circleDiameter/2)
+
+            Dim fillRegion as New Region(New Rectangle(0,0, ScreenGridWidth, ScreenGridHeight))
+            Dim circlePath as New GraphicsPath()
+            circlePath.AddEllipse(location.X - circleRadius, location.Y - circleRadius, circleDiameter, circleDiameter)
+            fillRegion.Exclude(circlePath)
+            g.FillRegion(backgroundBrush, fillRegion)
+        End Sub
+
+
+        Sub New(transitionObject As TransitionObject)
+            MyBase.New(transitionObject)
+            Me.backgroundBrush = If(transitionObject.color, DrawingPrimitives.BlackBrush)
+            Me.location = transitionObject.location
+        End Sub
+    End Class
+
 
     ''' <summary>
     ''' a transition from one scene to another
     ''' </summary>
-    Friend IsTransitioning As Boolean 
-
-    ''' <summary>
-    ''' Number of ticks run
-    ''' </summary>
-    Private transistionTicksElapsed As Integer
-    Private transistionLength As Integer
-    Private transistionBrush As Brush
-
-    private transistionDirection as TransitionDirection
-
-    Private transitionType As TransitionType
+    Friend IsTransitioning As Boolean
+    Protected CurrentTransition As TransitionDrawer
 
     ''' <summary>
     ''' Start a normal transition animation
     ''' </summary>
-    ''' <param name="direction"></param>
-    ''' <param name="transitionTime"></param>
-    ''' <param name="fillColor">brush used - default black</param>
-    Public Sub StartNormalTransition(direction As TransitionDirection, Optional transitionTime As Integer = 30, Optional fillColor As Brush = Nothing)
-        If fillColor Is Nothing
-            fillcolor =  New SolidBrush(Color.Black)
-        End If
-        Me.transistionLength = transitionTime
-        Me.transistionDirection = direction
-        Me.transistionTicksElapsed = 0
-        me.transistionBrush = fillcolor
+    Private Sub StartFillTransition(transition As TransitionObject)
+        CurrentTransition = New FillTransitionDrawer(transition)
         IsTransitioning = True
     End Sub
 
+    Public Sub StartTransition(transition As TransitionObject)
+        Select Case transition.ttype
+            Case TransitionType.Fill
+                StartFillTransition(transition)
+            Case TransitionType.Circle
+                StartCircleTransition(transition)
+            Case Else
+                Throw New Exception("must be circle or fill")
+        End Select
+
+    End Sub
+
+    Private Sub StartCircleTransition(transition As TransitionObject)
+        CurrentTransition = New CircleTransitionDrawer(transition)
+        IsTransitioning = True
+    End Sub
 
     ''' <summary>
     ''' Draws the completed scene onto the graphics object
@@ -99,7 +159,7 @@ Public MustInherit Class BaseScene
     ''' <summary>
     ''' Handles input
     ''' </summary>
-    Public MustOVerride Sub HandleInput()
+    Public MustOverride Sub HandleInput()
 
     ''' <summary>
     ''' Has all of keys which are held down etc.
@@ -112,12 +172,14 @@ Public MustInherit Class BaseScene
     Public Overridable Property BackgroundMusic As MusicPlayer
 
     Sub New(parent As GameControl)
-        Me.parent = parent
+        Me.Parent = parent
     End Sub
 
     Public Overridable Function GetPlayers() As IList(Of EntPlayer)
         Return Nothing
     End Function
+
+
 
 
     ''' <summary>
@@ -135,7 +197,7 @@ Public MustInherit Class BaseScene
     ''' <summary>
     ''' List of staticitems. Items will be rendered in order inserted
     ''' </summary>
-    Public Readonly Property AllStaticItems As New List(Of GameItem)
+    Public ReadOnly Property AllStaticItems As New List(Of GameItem)
     Public Property DefaultLocation As Point
 
     ''' <summary>
@@ -152,12 +214,28 @@ Public MustInherit Class BaseScene
 
     End Sub
 
-    
+
 End Class
 
+Public Class TransitionObject
+    Public ttype As TransitionType
+    Public tdir As TransitionDirection
+    Public time As Integer
+    Public color As Brush
+    Public location As point
+
+    Sub New(ttype As TransitionType, tdir As TransitionDirection, Optional time As Integer = StandardTransitionTime, Optional fillColor As Brush = Nothing, optional location As Point? = Nothing)
+        Me.ttype = ttype
+        Me.tdir = tdir
+        Me.time = time
+        Me.color = fillColor
+        Me.location = If(location, New Point(0,0))
+    End Sub
+
+End Class
 
 Public Enum TransitionDirection
-    Top 
+    Top
     Bottom
     Right
     Left
@@ -165,7 +243,7 @@ Public Enum TransitionDirection
 End Enum
 
 Public Enum TransitionType
-    Normal
+    Fill
     Circle
 End Enum
 

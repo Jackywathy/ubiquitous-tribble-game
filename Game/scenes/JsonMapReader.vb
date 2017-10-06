@@ -29,7 +29,7 @@ Public NotInheritable Class JsonMapReader
             Throw New Exception(String.Format("Json invalid, name={0}", jsonname), e)
         End Try
 
-        Dim outScene As New MapScene(parent)
+        Dim outScene As New MapScene(parent, mapObject.width, mapObject.Height)
 
         ' Set maptime
         outScene.SetMapTime(mapObject.MapTime)
