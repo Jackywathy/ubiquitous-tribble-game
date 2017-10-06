@@ -112,8 +112,8 @@ Public MustInherit Class BaseScene
         End Sub
 
         Public Sub Refresh
-            worldMiddle = New StaticText(New Rectangle(ScreenGridWidth / 3, ScreenGridHeight / 3 * 2, ScreenGridWidth / 3, 50), "WORLD" + scene.HudElements.worldNumText.text,
-                                         NES.GetFontFamily(), scene.HudElements.fontSize, DrawingPrimitives.WhiteBrush)
+            worldMiddle = New StaticText(New Rectangle(ScreenGridWidth / 3, ScreenGridHeight / 3 * 2, ScreenGridWidth / 3, 100), "WORLD " + scene.HudElements.worldNumText.text,
+                                         NES.GetFontFamily(), scene.HudElements.fontSize, DrawingPrimitives.WhiteBrush, horAlignment := StringAlignment.Center, vertAlignment := StringAlignment.Center)
 
         End Sub
     End Class
