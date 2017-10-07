@@ -143,8 +143,10 @@ Public MustInherit Class Entity
                     End If
                 End If
             ElseIf senderImplementsPhysicalCollision Then
-                newPositionToMoveTo = New Point(blockLeftmost - Me.Width, Me.Location.Y)
-                Me.willCollideFromLeft = True
+                If Not (Me.GetType = GetType(EntPlayer) AndAlso sender.GetType = GetType(BlockMetal) AndAlso CType(Me, EntPlayer).OnFlag) Then
+                    newPositionToMoveTo = New Point(blockLeftmost - Me.Width, Me.Location.Y)
+                    Me.willCollideFromLeft = True
+                End If
             End If
 
 
