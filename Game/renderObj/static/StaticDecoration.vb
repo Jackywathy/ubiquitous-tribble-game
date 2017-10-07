@@ -1,5 +1,9 @@
 ﻿Public Class StaticDecoration
-    Inherits StaticImage
+    Inherits ScrollAlongImage
+
+    Public Sub New(width As Integer, height As Integer, location As Point, image As Image, scene As MapScene)
+        MyBase.New(width, height, location, image, scene)
+    End Sub
 
     ' images
     Shared ReadOnly Property CloudSmall As Image = My.Resources.cloud_small
@@ -11,8 +15,9 @@
     Shared ReadOnly Property Mushroom As Image = My.Resources.mushroom
     Shared ReadOnly Property FireFlower As Image = My.Resources.f_flower_1
 
-    Public Sub New(location As Point, image As Image)
-        MyBase.New(image.Width, image.Height, location, image)
-    End Sub
 
+    Public Overrides Sub AddSelfToScene()
+        MyScene.AddStatic()
+        ' oWo whats this?
+    End Sub
 End Class

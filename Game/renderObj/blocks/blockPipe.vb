@@ -10,7 +10,7 @@
 
 
 
-    Public Sub New(height As Integer, location As Point, mapScene As MapScene)
+    Public Sub New(height As Integer, location As Point,theme as RenderTheme,  mapScene As MapScene)
         If height < 64
             Throw New Exception("Height must be >= 64 for pipes")
         End If
@@ -38,9 +38,9 @@
     ''' </summary>
     ''' <param name="params"></param>
     ''' <param name="mapScene"></param>
-    Public Sub New(params As Object(), mapScene As MapScene)
+    Public Sub New(params As Object(),theme as RenderTheme, mapScene As MapScene)
 
-        Me.New(params(2) * 32, New Point(params(0) * 32, params(1) * 32), mapScene)
+        Me.New(params(2) * 32, New Point(params(0) * 32, params(1) * 32), theme, mapScene)
         Dim action As PipeContents = Helper.StrToEnum(Of PipeContents)(params(3))
         Select Case params.Length
             Case 4

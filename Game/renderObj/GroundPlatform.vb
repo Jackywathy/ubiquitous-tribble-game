@@ -3,6 +3,7 @@
 Public Class GroundPlatform
     Inherits HitboxItem
 
+    Private texture as TextureBrush
 
     ''' <summary>
     ''' TODO make theme work
@@ -13,20 +14,29 @@ Public Class GroundPlatform
     ''' <param name="theme"></param>
     ''' <param name="mapScene"></param>
     Public Sub New(width As Integer, height As Integer, location As Point, theme As RenderTheme, mapScene As MapScene)
-        MyBase.New(width, height, location, GetFloor(width, height, theme), mapScene)
+        MyBase.New(width, height, location, Nothing, mapScene)
+        SetFloor(theme)
+    End Sub
+
+    Public OVerrides Sub Render(g As Graphics)
+        g.FillRectangle(texture, GetRenderRect())
     End Sub
         
 
-    Private Shared Function GetFloor(width As Integer, height as Integer, theme As RenderTheme) As Image
-        Dim image = New Bitmap(width, height)
-        Using brush=New TextureBrush(My.Resources.blockGround, WrapMode.Tile)
-            brush.TranslateTransform(0, 32)
-            Using g=Graphics.FromImage(image)
-                g.FillRectangle(brush, 0,0, image.Width, image.Height)
-            End Using
-        End Using
-        Return image
-    End Function
+    Private Sub SetFloor(theme As RenderTheme)
+        dim tile as image
+        Select Case Theme
+            Case RenderTheme.Overworld
+                tile = My.Resources.blockGround
+            Case RenderTheme.Underground
+                tile = My.Resources.blockBelowGround
+            Case Else
+                Throw New Exception()
+        End Select
+
+        texture = New TextureBrush(tile, WrapMode.Tile)
+        texture.TranslateTransform(0, 16)
+    End Sub
 
     ''' <summary>
     ''' 0 : x
@@ -39,7 +49,4 @@ Public Class GroundPlatform
         Me.New(params(2)*32, params(3)*32, New Point(params(0)*32, params(1)*32), theme, mapScene)
     End Sub
 
-    Public Overrides Sub Render(g As Graphics)
-       MyBase.Render(g)
-    End Sub
 End Class

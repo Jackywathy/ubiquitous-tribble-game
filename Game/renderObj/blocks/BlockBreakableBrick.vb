@@ -9,9 +9,20 @@
     ''' <param name="theme"></param>
     ''' <param name="mapScene"></param>
     Public Sub New(location As Point, theme As RenderTheme, mapScene As MapScene)
-        MyBase.New(StandardWidth, StandardHeight, location, Sprites.brickBlock, mapScene)
+        MyBase.New(StandardWidth, StandardHeight, location, GetSpriteSet(theme), mapScene)
 
     End Sub
+
+    Private Shared Function GetSpriteSet(theme as RenderTheme) As SpriteSet
+        Select Case theme
+            Case RenderTheme.Overworld
+                Return Sprites.brickBlock
+            Case RenderTheme.Underground
+                Return Sprites.brickBlockUnder
+            Case Else
+                throw new Exception()
+        End Select
+    End Function
 
     ''' <summary>
     ''' 0 : x

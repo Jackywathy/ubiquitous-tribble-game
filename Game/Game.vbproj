@@ -113,6 +113,7 @@
   <ItemGroup>
     <Compile Include="main\GameControl.vb" />
     <Compile Include="main\MainForm.vb" />
+    <Compile Include="main\Transitions.vb" />
     <Compile Include="renderObj\BelowGroundPlatform.vb" />
     <Compile Include="renderObj\blocks\BlockBrickPowerUp.vb" />
     <Compile Include="renderObj\blocks\BlockBrickStar.vb" />
@@ -222,6 +223,8 @@
   <ItemGroup>
     <Content Include="images\blocks\above\blockGround.png" />
     <Content Include="images\blocks\below\blockBelowGround.png" />
+    <None Include="images\blocks\below\blockBrickUnder.png" />
+    <None Include="images\blocks\below\blockMetalUnder.png" />
     <Content Include="images\blocks\blockInvis.png" />
     <Content Include="images\blocks\pipe\pipe_bottom.png" />
     <Content Include="images\blocks\pipe\pipe_left.png" />

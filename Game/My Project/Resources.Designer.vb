@@ -93,6 +93,16 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
+        Friend ReadOnly Property blockBrickUnder() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("blockBrickUnder", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
         Friend ReadOnly Property blockGround() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("blockGround", resourceCulture)
@@ -116,6 +126,16 @@ Namespace My.Resources
         Friend ReadOnly Property blockMetal() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("blockMetal", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property blockMetalUnder() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("blockMetalUnder", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property

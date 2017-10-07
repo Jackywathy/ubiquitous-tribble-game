@@ -8,11 +8,11 @@
     ''' 0 : x
     ''' 1 : y
     ''' </summary>
-    Public Sub New(params As Object(), mapScene As MapScene)
+    Public Sub New(params As Object(), theme As RenderTheme, mapScene As MapScene)
         Me.New(New Point(params(0)*32, params(1)*32), Sprites.blockInvis, mapScene)
     End Sub
 
-    Public Sub New(location As Point, spriteSet As SpriteSet, mapScene As MapScene)
+    Public Sub New(location As Point, spriteset As SpriteSet, mapScene As MapScene)
         MyBase.New(StandardWidth, StandardHeight, location, spriteSet, mapScene)
     End Sub
 

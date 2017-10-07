@@ -146,55 +146,55 @@ Public NotInheritable Class JsonMapReader
 
             Case RenderTypes.BlockMetal
                 AssertLength("blockMetal", 2, params)
-                out = New BlockMetal(params, scene)
+                out = New BlockMetal(params, theme, scene)
 
             Case RenderTypes.BlockPipe
                 AssertLength("blockPipe", New Integer() {4, 5, 7}, params)
-                out = New BlockPipe(params, scene)
+                out = New BlockPipe(params, theme, scene)
 
             Case RenderTypes.BlockPipeRotate
                 AssertLength("blockpiperotate", New Integer() {4, 5, 7}, params)
-                out = New BlockPipeRotate(params, scene)
+                out = New BlockPipeRotate(params, theme, scene)
 
             Case RenderTypes.BlockBrickCoin
                 AssertLength("blockBrickCoin", 2, params)
-                out = New BlockBrickCoin(params, scene)
+                out = New BlockBrickCoin(params, theme, scene)
 
             Case RenderTypes.BlockBrickStar
                 AssertLength("blockBrickStar", 2, params)
-                out = New BlockBrickStar(params, scene)
+                out = New BlockBrickStar(params, theme, scene)
 
             Case RenderTypes.BlockBrickPowerUp
                 AssertLength("blockBrickPowerUp", 2, params)
-                out = New BlockBrickPowerUp(params, scene)
+                out = New BlockBrickPowerUp(params, theme, scene)
 
             Case RenderTypes.BlockCloud
                 AssertLength("blockCloud", 2, params)
-                out = New BlockCloud(params, scene)
+                out = New BlockCloud(params, theme, scene)
 
             Case RenderTypes.EntGoomba
                 AssertLength("entGoomba", 2, params)
-                out = New EntGoomba(params, scene)
+                out = New EntGoomba(params, theme, scene)
 
             Case RenderTypes.EntKoopa
                 AssertLength("entKoopa", 2, params)
-                out = New EntKoopa(params, scene)
+                out = New EntKoopa(params,theme,  scene)
 
             Case RenderTypes.Flag
                 AssertLength("flag", 2, params)
-                out = New Flag(params, scene)
+                out = New Flag(params,theme, scene)
 
             Case RenderTypes.BlockInvis1Up
                 AssertLength("blockInvis1Up", 2, params)
-                out = New BlockInvis1Up(params, scene)
+                out = New BlockInvis1Up(params, theme,scene)
 
             Case RenderTypes.BlockInvisNone
                 AssertLength("blockInvisNone", 2, params)
-                out = New BlockInvisNone(params, scene)
+                out = New BlockInvisNone(params, theme,scene)
 
             Case RenderTypes.BlockInvisCoin
                 AssertLength("BlockInvisCoin", 2, params)
-                out = New BlockInvisCoin(params, scene)
+                out = New BlockInvisCoin(params,theme, scene)
            
             Case Else
 

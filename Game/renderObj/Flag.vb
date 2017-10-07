@@ -13,11 +13,11 @@
     ''' </summary>
     ''' <param name="params"></param>
     ''' <param name="scene"></param>
-    Public Sub New(params As Object, scene As MapScene)
-        Me.New(New Point(params(0)*32, params(1)*32), scene)
+    Public Sub New(params As Object, theme as RenderTheme, scene As MapScene)
+        Me.New(New Point(params(0)*32, params(1)*32),theme, scene)
     End Sub
 
-    Public Sub New(location As Point, mapScene As MapScene, Optional center As Boolean=True)
+    Public Sub New(location As Point, theme As RenderTheme, mapScene As MapScene, Optional center As Boolean=True)
         MyBase.New(FlagWidth, FlagHeight, location, Resize(My.Resources.flagpole_stem, FlagWidth, FlagHeight), mapScene)
         if center
             Dim x As Integer = location.X / StandardWidth

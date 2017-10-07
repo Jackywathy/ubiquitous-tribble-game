@@ -140,11 +140,38 @@ End Class
 ''' <summary>
 ''' This is a non-changing image that moves with the player/game
 ''' </summary>
-Public MustInherit Class MovingImage
+Public MustInherit Class ScrollAlongImage
     Inherits GameImage
     Implements ISceneAddable
 
     Public MustOverride Sub AddSelfToScene() Implements ISceneAddable.AddSelfToScene
+    ''' <summary>
+    ''' Checks if the StaticItem is in the current screen
+    ''' </summary>
+    ''' <returns></returns>
+    Public Overridable Function InScene()
+        ' checks if levelWidth/levelHeight is in the screen properly
+        ' it is in sceen if the location of itself is in the mapScene to be rendered
+        If Me.Location.X + Me.Width < MyScene.ScreenLocation.X Then
+            ' if most right point of block < most left point of screen
+            ' left of the screen
+            Return False
+        ElseIf Me.Location.X > MyScene.ScreenLocation.X + Dimensions.ScreenGridWidth Then
+            ' if msot left of block > most right of screen
+            ' it is to the right of the mapScene
+            Return False
+
+        ElseIf Me.Location.Y > MyScene.ScreenLocation.Y + Dimensions.ScreenGridHeight Then
+            ' if lowest bit of block > highest bit of screen
+            ' it is above mapScene
+            Return False
+        ElseIf Me.Location.Y + Me.Height < MyScene.ScreenLocation.Y Then
+            ' if highest bit of block < lowest bit of screen
+            ' it is below mapScene
+            Return False
+        End If
+        Return True
+    End Function
 
     ''' <summary>
     ''' A reference to the scene to use it's screenlocation
@@ -154,7 +181,7 @@ Public MustInherit Class MovingImage
 
 
     ''' <summary>
-    ''' Constructor for <see cref="MovingImage"/>
+    ''' Constructor for <see cref="ScrollAlongImage"/>
     ''' </summary>
     ''' <param name="width"></param>
     ''' <param name="height"></param>
@@ -166,15 +193,19 @@ Public MustInherit Class MovingImage
         MyScene = scene
     End Sub
 
+    Public Overridable Function GetRenderRect As Rectangle
+        Return new Rectangle(Location.X - MyScene.ScreenLocation.X,
+                  GetTopBasedY(Location.Y) - MyScene.ScreenLocation.Y,
+                  Width, Height)
+    End Function
+
     ''' <summary>
     ''' Draws the image into the graphics object given
     ''' </summary>
     ''' <param name="g"></param>
     Public Overrides Sub Render(g As Graphics)
         if RenderImage IsNot Nothing Then
-            Dim drawnRect As New Rectangle(Location.X - MyScene.ScreenLocation.X,
-                                      GetTopBasedY(Location.Y) - MyScene.ScreenLocation.Y,
-                                           Width, Height)
+            Dim drawnRect = GetRenderRect()
 
             ' top right x, top right y, width, heigh
             g.DrawImage(RenderImage, drawnRect)
@@ -190,7 +221,7 @@ End Class
 ''' Items that have hitboxes
 ''' </summary>
 Public MustInherit Class HitboxItem
-    Inherits MovingImage
+    Inherits ScrollAlongImage
 
 
     Public Property CollisionHeight As Integer
@@ -231,6 +262,8 @@ Public MustInherit Class HitboxItem
         End If
     End Sub
 
+
+
     ''' <summary>
     ''' Updates veloc
     ''' </summary>
@@ -259,33 +292,7 @@ Public MustInherit Class HitboxItem
 
     End Sub
 
-    ''' <summary>
-    ''' Checks if the StaticItem is in the current screen
-    ''' </summary>
-    ''' <returns></returns>
-    Public Overridable Function InScene()
-        ' checks if levelWidth/levelHeight is in the screen properly
-        ' it is in sceen if the location of itself is in the mapScene to be rendered
-        If Me.Location.X + Me.Width < MyScene.ScreenLocation.X Then
-            ' if most right point of block < most left point of screen
-            ' left of the screen
-            Return False
-        ElseIf Me.Location.X > MyScene.ScreenLocation.X + Dimensions.ScreenGridWidth Then
-            ' if msot left of block > most right of screen
-            ' it is to the right of the mapScene
-            Return False
-
-        ElseIf Me.Location.Y > MyScene.ScreenLocation.Y + Dimensions.ScreenGridHeight Then
-            ' if lowest bit of block > highest bit of screen
-            ' it is above mapScene
-            Return False
-        ElseIf Me.Location.Y + Me.Height < MyScene.ScreenLocation.Y Then
-            ' if highest bit of block < lowest bit of screen
-            ' it is below mapScene
-            Return False
-        End If
-        Return True
-    End Function
+   
 
     ''' <summary>
     ''' Called when an entity collides into this RenderObject from the bottom

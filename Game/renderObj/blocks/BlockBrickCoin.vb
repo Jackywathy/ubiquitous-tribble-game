@@ -27,7 +27,7 @@
     Private ReadOnly amountOfTimeYouHaveToGetCoins As Integer = Helper.Random(3*60, 4*60)
     
 
-    Public Sub New(location As Point, mapScene As MapScene)
+    Public Sub New(location As Point, theme as RenderTheme, mapScene As MapScene)
         MyBase.New(StandardWidth, StandardHeight, location, Sprites.brickBlock, mapScene)
     End Sub
 
@@ -37,8 +37,8 @@
     ''' </summary>
     ''' <param name="params"></param>
     ''' <param name="mapScene"></param>
-    Public Sub New(params As Object(), mapScene As MapScene)
-        Me.New(New Point(params(0)*StandardWidth, params(1)*StandardHeight), mapScene)
+    Public Sub New(params As Object(), theme as RenderTheme,  mapScene As MapScene)
+        Me.New(New Point(params(0)*StandardWidth, params(1)*StandardHeight), theme, mapScene)
     End Sub
     
     Public Overrides Sub UpdateVeloc()
