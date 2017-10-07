@@ -109,8 +109,8 @@ Public Class GameControl
             AddStringBuffer("Upcoming changes:")
             For each item in ChangeQueue.queue
                 Select Case item.GetType()
-                    Case GetType(PlayTransitionObject)
-                        Dim transition As PlayTransitionObject = item
+                    Case GetType(TransitionQueueObject)
+                        Dim transition As TransitionQueueObject = item
                         AddStringBuffer(String.Format("TransitionType: {0}, time: {1}", transition.transition.ttype.ToString, transition.time))
                     Case GetType(MapChangeObject)
                         Dim change As MapChangeObject = item
@@ -275,6 +275,7 @@ Public Class GameControl
                 IsFinished = True
                 if [next] IsNot nothing
                     control.AddTimedEvent([next])
+                    [next].UpdateTick()
                 End If
             Else
                 Tick()
@@ -289,7 +290,7 @@ Public Class GameControl
     End Sub
 
 
-    Public Class PlayTransitionObject
+    Public Class TransitionQueueObject
         Inherits QueueObject
         Friend transition as TransitionObject
 
@@ -330,10 +331,14 @@ Public Class GameControl
             If centerToplayer
                 Dim mapScene as MapScene = control.GetCurrentScene()
                 mapScene.CenterToPlayer()
+               
             End If
+          
         End Sub
     End Class
     
+
+
     Public Class ChangeQueueWrapper
         Friend queue As New HashSet(Of QueueObject)
 
@@ -364,7 +369,6 @@ Public Class GameControl
             End Get
         End Property
     End Class
-
     Public Property ChangeQueue As New ChangeQueueWrapper
 
     Friend Sub ReloadLevel(map As MapEnum)
@@ -381,10 +385,9 @@ Public Class GameControl
     Friend Function QueueMapChangeWithCircleAnimation(map As MapEnum, mapInsertion As Point?, centerToplayer As Boolean, Optional time As Integer = StandardPipeTime, optional animationLocation as Point? = nothing, optional before As QueueObject = Nothing) As QueueObject
         Dim firstTrans As New TransitionObject(TransitionType.Circle, TransitionDirection.Top, location := animationLocation)
 
-        Dim firstTransition As New PlayTransitionObject(firstTrans, StandardPipeTime, Me)
+        Dim firstTransition As New TransitionQueueObject(firstTrans, 0, Me)
         Dim mapChange As New MapChangeObject(map, mapInsertion, StandardTransitionTime, Me, CenterToPlayer := centerToplayer)
         
-
         firstTransition.next = mapChange
         If before IsNot nothing
             before.next = firstTransition
@@ -400,7 +403,7 @@ Public Class GameControl
         Dim firstTrans As New TransitionObject(TransitionType.StartScene, TransitionDirection.Bottom)
 
         ' play a startscene immediately (time = 0)
-        Dim firstTransition As New PlayTransitionObject(firstTrans, 0, Me)
+        Dim firstTransition As New TransitionQueueObject(firstTrans, 0, Me)
         Dim mapChange As New MapChangeObject(map, mapInsertion,  StandardTransitionTime, Me,CenterToPlayer := False)
 
         firstTransition.next = mapChange
@@ -414,7 +417,7 @@ Public Class GameControl
     End Function
 
 
-    Public Class MarioPipeAnimationObject
+    Public Class MarioGoinDownPipeAnimationQueue
         Inherits QueueObject
         public player as EntPlayer
         public direction as PipeType

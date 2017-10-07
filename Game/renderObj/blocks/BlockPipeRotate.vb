@@ -93,9 +93,9 @@
             If Helper.IsPlayer(sender) And KeyHandler.MoveRight Then
                 Dim player As EntPlayer = sender
 
-                If Action = PipeContents.Map And Not player.IsInPipe And Not MyScene.IsTransitioning Then
+                If Action = PipeContents.Map And Not player.IsInPipe And player.isGrounded And Not MyScene.IsTransitioning Then
                     
-                    player.EnterHorizontalPipeExitVertical(Me.Map, Me.MapLocation, True)
+                    player.EnterHorizontalPipeExitVertical(Me.Map, Me.MapLocation, True, Me.Location)
                 End If
             End If
         End Sub

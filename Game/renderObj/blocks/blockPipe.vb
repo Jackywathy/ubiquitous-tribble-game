@@ -89,8 +89,8 @@
             If Helper.IsPlayer(sender) And KeyHandler.MoveDown Then
                 Dim player As EntPlayer = sender
 
-                If Not player.IsInPipe and Action = PipeContents.Map And Not MyScene.IsTransitioning  Then
-                    player.EnterVerticalPipe(Me.Map, Me.MapLocation)
+                If Not player.IsInPipe And player.isGrounded and Action = PipeContents.Map And Not MyScene.IsTransitioning  Then
+                    player.EnterVerticalPipeExitNone(Me.Map, Me.MapLocation, Me.Location)
                 End If
             End If
         End Sub

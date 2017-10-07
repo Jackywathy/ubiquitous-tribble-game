@@ -60,7 +60,7 @@ Public MustInherit Class GameImage
     ''' Location of object from the very bottom left (0,0)
     ''' </summary>
     ''' <returns></returns>
-    Public Property Location As Point
+    Public Overridable Property Location As Point
         Get
             Return _location
         End Get
