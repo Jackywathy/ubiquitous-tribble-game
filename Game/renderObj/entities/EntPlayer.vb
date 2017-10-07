@@ -469,6 +469,7 @@ Public Class EntPlayer
 
     Private defaultY As Integer
     Private deathTimer As Integer
+    Private flagCounter As Integer
 
     Public Overrides Sub Render(g As Graphics)
         MyBase.Render(g)
@@ -527,11 +528,16 @@ Public Class EntPlayer
 
                 ' On flag
             Else
-
-                If Me.Location.Y > (StandardHeight * 2) Then
+                If Me.flagCounter = 0 Then
+                    Me.flagCounter = Me.Location.X
+                End If
+                If Me.Location.Y > (StandardHeight * 3) Then
                     Me.RenderImage = SpriteSet(SpriteState.Climb)(0)
                     Me.Location = New Point(Me.Location.X, Me.Location.Y - 3)
                 Else
+                    If Me.Location.Y > (2 * StandardHeight) And Me.Location.X - Me.flagCounter >= StandardWidth Then
+                        Me.Location = New Point(Me.Location.X, Me.Location.Y - 3)
+                    End If
                     If MyScene.GlobalFrameCount Mod AnimationInterval = 0 Then
                         Me.RenderImage = SpriteSet.SendToBack(SpriteState.GroundRight)
                     End If

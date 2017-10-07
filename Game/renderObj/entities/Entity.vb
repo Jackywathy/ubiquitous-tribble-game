@@ -135,7 +135,7 @@ Public MustInherit Class Entity
             If playerFlagCollision Then
                 Dim player As EntPlayer = Me
                 player.OnFlag = True
-                If player.Location.Y > (2 * StandardHeight) Then
+                If player.Location.Y > (3 * StandardHeight) Then
                     If sender.GetType = GetType(FlagTop) Then
                         player.Location = New Point(sender.Location.X - player.Width + Flag.FlagWidth, player.Location.Y)
                     Else
@@ -143,10 +143,8 @@ Public MustInherit Class Entity
                     End If
                 End If
             ElseIf senderImplementsPhysicalCollision Then
-                If Not (Me.GetType = GetType(EntPlayer) AndAlso sender.GetType = GetType(BlockMetal) AndAlso CType(Me, EntPlayer).OnFlag) Then
-                    newPositionToMoveTo = New Point(blockLeftmost - Me.Width, Me.Location.Y)
-                    Me.willCollideFromLeft = True
-                End If
+                newPositionToMoveTo = New Point(blockLeftmost - Me.Width, Me.Location.Y)
+                Me.willCollideFromLeft = True
             End If
 
 
@@ -358,7 +356,7 @@ Public MustInherit Class Entity
                         If Me.GetType.IsSubclassOf(GetType(EntEnemy)) Then
                             Dim e As EntEnemy = Me
                             e.willDie = True
-                        Else
+                        ElseIf Not (Me.GetType.IsSubclassOf(GetType(EntPowerup)) AndAlso CType(Me, EntPowerup).IsSpawning) Then
                             Me.AccelerateY(Me.moveSpeed.y, True)
                         End If
                     End If
