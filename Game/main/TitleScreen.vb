@@ -4,22 +4,28 @@
         MsgBox(helpTxt, MsgBoxStyle.Information, "Help")
     End Sub
 
-    Private Sub StartButton_Click(sender As Object, e As EventArgs) Handles StartButton.Click
-        Game.EnableTimer()
-
-        'Game.game.QueueMapChangeWithStartScene(PlayerStartScreen, Nothing)
-        Game.game.QueueMapChangeWithStartScene(MapEnum.None, Nothing)
-        Game.ShowDialog()
-        
+    Private Sub TitleScreen_WillClose(sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
+        If MessageBox.Show("Are you sure you want to quit?", "Confirm exit", MessageBoxButtons.YesNo) <> DialogResult.Yes Then
+            e.Cancel = True
+        End If
     End Sub
 
-    Sub New
+    Private Sub StartButton_Click(sender As Object, e As EventArgs) Handles StartButton.Click
+        game.EnableTimer()
+
+        'Game.game.QueueMapChangeWithStartScene(PlayerStartScreen, Nothing)
+        game.game.QueueMapChangeWithStartScene(MapEnum.None, Nothing)
+        game.ShowDialog()
+
+    End Sub
+
+    Sub New()
         ' This call is required by the designer.
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
-        game = new GameForm(False)
-        
+        game = New GameForm(False)
+
     End Sub
     Private game As GameForm
 End Class
