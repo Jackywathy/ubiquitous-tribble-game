@@ -1,4 +1,5 @@
-﻿''' <summary>
+﻿Imports WinGame
+''' <summary>
 ''' Scene that represents a map, (probably loaded from json using <see cref="JsonMapReader.ReadMapFromResource"/>
 ''' </summary>
 Public Class MapScene
@@ -15,9 +16,9 @@ Public Class MapScene
     End Function
 
     Public Overrides Sub DrawDebugStrings(form As GameControl)
-        If Player1 isnot nothing
+        If Player1 IsNot Nothing
             form.AddStringBuffer(String.Format("Mario Location: {0}, {1}", Player1.Location.X, Player1.Location.Y))
-        End if
+        End If
         Dim relativePoint = GetMouseRelativeLocation()
         form.AddStringBuffer(String.Format("Mouse - x: {0}, y: {1}", relativePoint.X, relativePoint.Y))
         form.AddStringBuffer(String.Format("Is over box: {0}", If(MouseOverBox, "yes", "no")))
@@ -34,7 +35,7 @@ Public Class MapScene
     ''' </summary>
     Private MapTime As Integer
 
-    Private _screenLocation as New point
+    Private _screenLocation As New Point
     ''' <summary>
     ''' Location that the scene is rendered at - default = 0, 0
     ''' </summary>
@@ -42,9 +43,9 @@ Public Class MapScene
         Get
             Return _screenLocation
         End Get
-        Set(value as Point)
+        Set(value As Point)
             _screenLocation = value
-            Background.Location = value
+            Background.location = value
         End Set
     End Property
 
@@ -60,7 +61,7 @@ Public Class MapScene
     ''' 
     ''' </summary>
     Private Sub HandleMouse()
-        If IsTransitioning 
+        If IsTransitioning
             Return
         End If
         Dim cursorLocation = GetMouseRelativeLocation()
@@ -88,20 +89,30 @@ Public Class MapScene
 
     End Sub
 
+    Friend Shared Function GetEmptyScene(control As GameControl) As MapScene
+        Dim scene = New MapScene(control, ScreenGridWidth, ScreenGridHeight, "empty", False)
+        
+        scene.AddHitbox(New GroundPlatform(ScreenGridWidth, 64, New point(0, 0) , RenderTheme.Overworld, scene))
+        scene.DefaultLocation = New Point(ScreenGridWidth/2-16, 64)
+        Return scene
+    End Function
+
+    
+
     ''' <summary>
     ''' Constructor for <see cref="MapScene"/>
     ''' </summary>
     ''' <param name="parent"></param>
-    Public Sub New(parent As GameControl, mapWidth As integer, mapHeight As Integer, mapName as String, Optional includeHud As Boolean = True)
+    Public Sub New(parent As GameControl, mapWidth As Integer, mapHeight As Integer, mapName As String, Optional includeHud As Boolean = True)
         MyBase.New(parent)
-        Me.width = mapWidth
+        Me.Width = mapWidth
         Me.height = mapHeight
         Me.mapName = mapName
         HudElements = parent.SharedHud
     End Sub
 
     Public Width As Integer
-    public height As integer
+    Public height As Integer
 
     Private inSceneScrollingItems As New List(Of ScrollAlongImage)
     Private allScrollingItems As New List(Of ScrollAlongImage)
@@ -133,7 +144,7 @@ Public Class MapScene
         Return inSceneItems
     End Function
 
-   
+
     ' There are 4 types of GameObjects
     ' Static - stuff that doesnt move ever, e.g. HUD elements, points
     ' Moving - stuff that moves, but doesnt have collisions
@@ -168,7 +179,7 @@ Public Class MapScene
 
 
     Friend Function GetScreenLocation(item As ScrollAlongImage) As Point
-        Return New Point(item.X - ScreenLocation.X, item.Y-ScreenLocation.Y)
+        Return New Point(item.X - ScreenLocation.X, item.Y - ScreenLocation.Y)
     End Function
 
     ''' <summary>
@@ -235,17 +246,17 @@ Public Class MapScene
     Friend Function GetPlayer(player As PlayerId) As EntPlayer
         Select Case player
             Case PlayerId.Player1
-                Return player1
+                Return Player1
             Case PlayerId.Player2
-                Return player2
-            Case else
+                Return Player2
+            Case Else
                 Throw New Exception("has to be player1 or 2")
         End Select
-        
+
     End Function
 
     Friend Sub Center()
-        ScreenLocation = New Point(- ((ScreenGridWidth - me.width)/2), 0)
+        ScreenLocation = New Point(-((ScreenGridWidth - Me.Width) / 2), 0)
     End Sub
 
 
@@ -261,7 +272,7 @@ Public Class MapScene
     Public ReadOnly toRemoveObjects As New HashSet(Of HitboxItem)
 
     Friend Sub CenterToPlayer()
-        ScreenLocation = New Point(Player1.X - ScreenGridWidth/2, ScreenLocation.Y)
+        ScreenLocation = New Point(Player1.X - ScreenGridWidth / 2, ScreenLocation.Y)
     End Sub
 
     ''' <summary>
@@ -271,6 +282,8 @@ Public Class MapScene
     Public ReadOnly toAddObjects As New HashSet(Of HitboxItem)
 
     Public HudElements As StaticHud = Parent.SharedHud
+
+    
 
 
 
@@ -302,7 +315,7 @@ Public Class MapScene
         If Not AllEntities.Contains(player)
             player.AddSelfToScene()
         End If
-        player.reset()
+        player.Reset()
     End Sub
 
     ''' <summary>
@@ -321,26 +334,26 @@ Public Class MapScene
         MapTime = time
     End Sub
 
-    Private escPressed as Boolean = False
+    Private escPressed As Boolean = False
 
     ''' <summary>
     ''' Handles/ticks input from the user
     ''' </summary>
     Public Overrides Sub HandleInput()
-        
+
         ' if escape is pressed and this is the first press
-        If KeyHandler.Escape and not escPressed and not IsTransitioning 
+        If KeyHandler.Escape And Not escPressed And Not IsTransitioning
             escPressed = True
-            If not parent.OverlayActive
-                Parent.showOverlay
-            Else 
-                parent.hideoverlay
+            If Not Parent.OverlayActive
+                Parent.ShowOverlay
+            Else
+                Parent.HideOverlay
             End If
         End If
 
         ' reset escPressed if key is no longer held
-        if escPressed
-            if Not Keyhandler.Escape
+        If escPressed
+            If Not KeyHandler.Escape
                 escPressed = False
             End If
         End If
@@ -354,18 +367,18 @@ Public Class MapScene
     ''' </summary>
     Public Overrides Sub UpdateTick(ticksElapsed As Integer)
         ' Animate and update position of each entity
-        if parent.OverlayActive
+        If Parent.OverlayActive
             ' overlay is active, pause game
-            return
+            Return
         ElseIf exclusiveTime <> 0
             exclusiveItem.UpdateVeloc()
             exclusiveItem.UpdateLocation()
             exclusiveItem.Animate()
             exclusiveTime -= 1
-        Else if AllPlayersDead
+        ElseIf AllPlayersDead
             FailLevel()
-        Else If IsFrozen Then
-            For each item As Entity in allUnfreezableItems
+        ElseIf IsFrozen Then
+            For Each item As Entity In allUnfreezableItems
                 item.UpdateVeloc()
                 item.UpdateLocation()
                 item.Animate()
@@ -378,27 +391,32 @@ Public Class MapScene
             Next
         End If
 
-        
+
 
         AddAllAdded()
         RemoveAllDeleted()
+        if player1 IsNot nothing And Me.Background isnot nothing
+            ' TODO - chuck into function - scrolls screen if player is close to edge
+            If Player1.Location.X - Me.ScreenLocation.X > (ScreenGridWidth / 3 * 2) Then
+                ' on right 1/3
+                Me.Background.ScrollHorizontal((600 - (ScreenGridWidth - (Player1.Location.X - Me.ScreenLocation.X))) / 50)
 
-        ' TODO - chuck into function - scrolls screen if player is close to edge
-        If Player1.Location.X - Me.ScreenLocation.X > (ScreenGridWidth / 3 * 2) Then
-            ' on right 1/3
-            Me.Background.ScrollHorizontal((600 - (ScreenGridWidth - (Player1.Location.X - Me.ScreenLocation.X))) / 50)
-
-        ElseIf Player1.Location.X - Me.ScreenLocation.X < (ScreenGridWidth / 4) Then
-            ' on left 1/4
-            'Me.Background.ScrollHorizontal(Player1.Location.X - RenderObject.ScreenLocation.X)
-            Me.Background.ScrollHorizontal(-(600 - (Player1.Location.X - Me.ScreenLocation.X)) / 50)
-        End If
+            ElseIf Player1.Location.X - Me.ScreenLocation.X < (ScreenGridWidth / 4) Then
+                ' on left 1/4
+                'Me.Background.ScrollHorizontal(Player1.Location.X - RenderObject.ScreenLocation.X)
+                Me.Background.ScrollHorizontal(-(600 - (Player1.Location.X - Me.ScreenLocation.X)) / 50)
+            End If
+        End if
         HandleTime(ticksElapsed)
     End Sub
 
     Friend Sub RegisterDeath(entPlayer As EntPlayer)
         ' TODO check player 2 as well
         SetExclusiveControl(entPlayer, StandardDeathTime)
+        Sounds.PlayerDead.Play()
+        if MusicPlayer.BackgroundPlayer IsNot nothing
+            MusicPlayer.BackgroundPlayer.Stop()
+        End if
     End Sub
 
     Friend Sub FailLevel()
@@ -406,25 +424,25 @@ Public Class MapScene
             Dim map = Helper.StrToEnum(Of MapEnum)(Me.mapName)
             Parent.ReloadLevel(map)
             Parent.QueueMapChangeWithStartScene(map, Nothing)
-        End if
+        End If
     End Sub
 
     Private Function AllPlayersDead() As Boolean
         If Player2 IsNot Nothing
-            Return Player1.isDead and Player2.isDead
+            Return Player1.isDead And Player2.isDead
         Else
-            If player1 isnot nothing
-                Return player1.isDead
+            If Player1 IsNot Nothing
+                Return Player1.isDead
             Else
-                return False
+                Return False
             End If
         End If
     End Function
 
-    Private exclusiveTime as Integer
-    Private exclusiveItem as entity
+    Private exclusiveTime As Integer
+    Private exclusiveItem As Entity
 
-    Private Sub SetExclusiveControl(ent As Entity, time As integer)
+    Private Sub SetExclusiveControl(ent As Entity, time As Integer)
         exclusiveTime = time
         exclusiveItem = ent
     End Sub
@@ -450,15 +468,19 @@ Public Class MapScene
     ''' </summary>
     ''' <param name="g"></param>
     Public Overrides Sub RenderObjects(g As Graphics)
-        Background.Render(g)
-        HudElements.Render(g)
+        If Background isnot nothing
+            Background.Render(g)
+        End if
+        if HudElements isnot nothing
+            HudElements.Render(g)
+        End if
 
         ' all text & stuff
         For Each item As GameItem In AllStaticItems
             item.Render(g)
         Next
-        for each item as ScrollAlongImage In GetAllDecorationsInScene()
-            item.render(g)
+        For Each item As ScrollAlongImage In GetAllDecorationsInScene()
+            item.Render(g)
         Next
 
         Dim objects = GetHitboxObjectsInScene()
@@ -474,13 +496,13 @@ Public Class MapScene
         Next
         GlobalFrameCount += 1
 
-        If parent.OverlayActive
+        If Parent.OverlayActive
             ' add a shade of gray
-            g.FillRectangle(New SolidBrush(Color.FromArgb(192, 0,0,0)), 0, 0, ScreenGridWidth, ScreenGridHeight)
+            g.FillRectangle(New SolidBrush(Color.FromArgb(192, 0, 0, 0)), 0, 0, ScreenGridWidth, ScreenGridHeight)
         End If
     End Sub
 
-    Private ReadOnly allUnfreezableItems as New List(Of Entity)
+    Private ReadOnly allUnfreezableItems As New List(Of Entity)
     Friend mapName As String
 
     Friend Sub AddUnfreezableItem(sender As Entity)

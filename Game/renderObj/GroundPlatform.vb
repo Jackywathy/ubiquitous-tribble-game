@@ -17,8 +17,12 @@ Public Class GroundPlatform
         MyBase.New(width, height, location, Nothing, mapScene)
         SetFloor(theme)
     End Sub
+    Dim previousX as integer
+
 
     Public OVerrides Sub Render(g As Graphics)
+        texture.TranslateTransform(previousX -myscene.screenlocation.x, 0)
+        previousX = myscene.screenlocation.x
         g.FillRectangle(texture, GetRenderRect())
     End Sub
         
@@ -36,6 +40,7 @@ Public Class GroundPlatform
 
         texture = New TextureBrush(tile, WrapMode.Tile)
         texture.TranslateTransform(0, 16)
+        previousX = 0
     End Sub
 
     ''' <summary>

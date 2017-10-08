@@ -24,7 +24,7 @@
         If Not isUsed And Helper.IsPlayer(sender) Then
             isUsed = True
             willSpawnPowerup = True
-            StartBump()
+            StartBump(tRUE)
         End If
 
     End Sub

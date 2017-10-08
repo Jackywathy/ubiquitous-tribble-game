@@ -34,7 +34,7 @@
             Dim player As EntPlayer = sender
             playerWhoHit = player
             isUsed = True
-            StartBump()
+            StartBump(True)
             willSpawnPowerup = True
         End If
 

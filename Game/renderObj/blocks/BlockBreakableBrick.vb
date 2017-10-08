@@ -41,7 +41,7 @@
                 MyScene.PrepareRemove(Me)
                 Sounds.BrickSmash.Play()
             Else
-                StartBump()
+                StartBump(True)
             End If
         End If
     End Sub

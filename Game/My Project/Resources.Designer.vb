@@ -71,6 +71,16 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized resource of type System.Byte[].
+        '''</summary>
+        Friend ReadOnly Property appear() As Byte()
+            Get
+                Dim obj As Object = ResourceManager.GetObject("appear", resourceCulture)
+                Return CType(obj,Byte())
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
         Friend ReadOnly Property arrow_right() As System.Drawing.Bitmap
@@ -196,6 +206,16 @@ Namespace My.Resources
         Friend ReadOnly Property brick_smash() As Byte()
             Get
                 Dim obj As Object = ResourceManager.GetObject("brick_smash", resourceCulture)
+                Return CType(obj,Byte())
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Byte[].
+        '''</summary>
+        Friend ReadOnly Property bump() As Byte()
+            Get
+                Dim obj As Object = ResourceManager.GetObject("bump", resourceCulture)
                 Return CType(obj,Byte())
             End Get
         End Property

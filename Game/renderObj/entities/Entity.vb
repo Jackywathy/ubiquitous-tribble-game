@@ -321,7 +321,7 @@ Public MustInherit Class Entity
     Public Function IsOutOfMap() As Direction
         If Me.Location.X < 0 Then
             Return Direction.Left
-        ElseIf (Me.Location.X - MyScene.ScreenLocation.X) > ScreenGridWidth Then
+        ElseIf (Me.Location.X - MyScene.ScreenLocation.X + me.Width) > ScreenGridWidth Then
             Return Direction.Right
         ElseIf (Me.Location.Y < 0) Then
             Return Direction.Bottom

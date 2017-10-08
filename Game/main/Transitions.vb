@@ -47,12 +47,13 @@ Public Class MarioGoinDownPipeAnimationQueue
     public player as EntPlayer
     public direction as PipeType
     public goingin as boolean
-    Sub New(player As EntPlayer, direction As PipeType, goingIn as Boolean, control As GameControl, Optional [next] as QueueObject = Nothing, Optional time As integer = standardPipeTime)
+    public stopmusic as boolean
+    Sub New(player As EntPlayer, direction As PipeType, goingIn as Boolean, control As GameControl, Optional [next] as QueueObject = Nothing, Optional time As integer = standardPipeTime, optional stopmusic as boolean = True)
         MyBase.New(time, control, [next])
         Me.player = player
         Me.direction = direction
         me.goingin = goingIn
-            
+        Me.stopmusic = stopmusic
     End Sub
 
     Public Overrides Sub Setup()
@@ -64,9 +65,12 @@ Public Class MarioGoinDownPipeAnimationQueue
             case Else
                 throw new Exception()
                 
-                  
+           
         End Select
-            
+        if stopmusic
+            MusicPlayer.BackgroundPlayer.Stop()
+        End if
+        Sounds.Warp.Play()   
     End Sub
 
     Protected Overrides Sub TimerFinished()
