@@ -257,6 +257,9 @@ Public MustInherit Class Entity
             Me.veloc.y += magnitude
             isJumping = True
             didJumpAndNotFall = True
+            If Not forceAccelerate Then
+                Sounds.Jump.Play(fromStart:=True)
+            End If
 
         ElseIf magnitude < 0 Then
             Me.veloc.y += magnitude

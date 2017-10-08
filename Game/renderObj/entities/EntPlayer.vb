@@ -596,7 +596,7 @@ Public Class EntPlayer
         If KeyHandler.MoveUp And Me.AllowJumpInput Then
             yToMove = Me.moveSpeed.y
             Me.AllowJumpInput = False
-            Sounds.Jump.Play(fromStart:=True)
+
         ElseIf KeyHandler.MoveUp = False Then
             Me.AllowJumpInput = True
         End If
