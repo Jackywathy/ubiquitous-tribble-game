@@ -345,6 +345,7 @@ Public Class EntPlayer
         Me.isGrounded = False
         Me.currentGroundObjects.Clear()
         Me.Width = StandardWidth
+        Me.OnFlag = False
         Select Case state
             Case PlayerStates.Big, PlayerStates.Fire, PlayerStates.Ice
                  Me.Height = StandardHeight * 2
@@ -432,7 +433,7 @@ Public Class EntPlayer
     Friend Sub ResetPlayer()
         Me.State = PlayerStates.Small
         Me.isDead = false
-        
+        Me.OnFlag = False
     End Sub
 
     ''' <summary>

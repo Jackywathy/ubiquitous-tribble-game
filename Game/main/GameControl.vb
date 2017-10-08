@@ -103,6 +103,7 @@ Public Class GameControl
         HideOverlay()
         ChangeQueue.queue.Clear()
         
+        
     End Sub
 
     Friend Sub ReturnToMainMenu()
