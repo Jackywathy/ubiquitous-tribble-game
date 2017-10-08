@@ -14,7 +14,9 @@ Public Class GameControl
     ''' Ticks that the map (including any underground levels etc )
     ''' </summary>
     Public MapTimeCounter As Integer = 0
-
+    ' volume of sound effects
+    Public volume as Double
+    
     Public SharedHud As New StaticHud(ScreenGridWidth, ScreenGridHeight * HudHeightPercent)
 
     ''' <summary>

@@ -478,8 +478,6 @@ Public Class MapScene
         End If
     End Sub
 
-   
-
     Private ReadOnly allUnfreezableItems as New List(Of Entity)
     Friend mapName As String
 
