@@ -134,7 +134,12 @@ Public MustInherit Class Entity
 
             If playerFlagCollision Then
                 Dim player As EntPlayer = Me
-                player.OnFlag = True
+
+                If Not player.OnFlag Then
+                    player.OnFlag = True
+                    ' LevelFinished()
+                End If
+
                 If player.Location.Y > (3 * StandardHeight) Then
                     If sender.GetType = GetType(FlagTop) Then
                         player.Location = New Point(sender.Location.X - player.Width + Flag.FlagWidth, player.Location.Y)

@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{40DC8744-2CB8-4E68-8F32-4CC57BFEE5E5}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <StartupObject>Sub Main</StartupObject>
+    <StartupObject>WinGame.TitleScreen</StartupObject>
     <RootNamespace>WinGame</RootNamespace>
     <AssemblyName>MarioGame</AssemblyName>
     <FileAlignment>512</FileAlignment>
@@ -67,7 +67,7 @@
     <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>images\icons\icon.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\icon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
@@ -115,6 +115,12 @@
     <Compile Include="main\MainForm.vb" />
     <Compile Include="main\MenuControl.vb">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="main\TitleScreen.Designer.vb">
+      <DependentUpon>TitleScreen.vb</DependentUpon>
+    </Compile>
+    <Compile Include="main\TitleScreen.vb">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="main\Transitions.vb" />
     <Compile Include="My Project\Resources.Designer.vb">
@@ -197,6 +203,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="main\MenuControl.resx">
       <DependentUpon>MenuControl.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="main\TitleScreen.resx">
+      <DependentUpon>TitleScreen.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
@@ -328,6 +337,8 @@
     <Content Include="images\powerups\star\star_s5.png" />
     <Content Include="images\powerups\star\star_s6.png" />
     <Content Include="images\powerups\star\star_s7.png" />
+    <Content Include="images\other\smbTitle.png" />
+    <None Include="Resources\icon.ico" />
     <Content Include="sounds\background_music\cave_theme.mp3" />
     <Content Include="sounds\sfx\1_up.mp3" />
     <Content Include="sounds\sfx\brick_smash.mp3" />
