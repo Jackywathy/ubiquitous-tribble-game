@@ -437,10 +437,12 @@ Public Class MapScene
         HudElements.SetTime(MapTime - CInt(Math.Floor(timeRemaining)))
     End Sub
 
+
+
     Public IsAtStartScreen As Boolean
+
     Public Sub RunStartScreen
         IsAtStartScreen = True
-
     End Sub
 
     ''' <summary>

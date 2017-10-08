@@ -211,6 +211,16 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized resource of type System.Byte[].
+        '''</summary>
+        Friend ReadOnly Property cave_theme() As Byte()
+            Get
+                Dim obj As Object = ResourceManager.GetObject("cave_theme", resourceCulture)
+                Return CType(obj,Byte())
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
         Friend ReadOnly Property cloud_big() As System.Drawing.Bitmap

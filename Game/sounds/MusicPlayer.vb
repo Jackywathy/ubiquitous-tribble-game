@@ -8,6 +8,17 @@ Public NotInheritable Class MusicPlayer
     Implements IDisposable
     Public  Shared Property BackgroundPlayer As MusicPlayer
 
+    Public ReadOnly Property volume As Double
+        Get
+            Return basevolume * multipler
+        End Get
+        
+    End Property
+
+    Private Sub refreshVolume
+        channel.Volume = volume
+    End Sub
+
     Private ReadOnly reader As WaveStream
     Private ReadOnly channel As WaveChannel32
     Private ReadOnly player As IWavePlayer
@@ -32,6 +43,7 @@ Public NotInheritable Class MusicPlayer
 
     Public Sub New(stream As Stream, Optional volume As Single = 1.0F)
         reader = New Mp3FileReader(stream)
+        basevolume = volume
 
         channel = New WaveChannel32(reader, volume, 0)
         channel.PadWithZeroes = False
@@ -39,6 +51,8 @@ Public NotInheritable Class MusicPlayer
         player = New DirectSoundOut()
         player.Init(channel)
     End Sub
+
+    
 
     Public Sub Play(Optional fromStart As Boolean = True)
             If fromStart Then
@@ -57,12 +71,14 @@ Public NotInheritable Class MusicPlayer
     End Sub
 
 
-    Public Shared Sub PlayBackground(name As String)
-        If backgroundPlayer IsNot Nothing Then
-            backgroundPlayer.Dispose()
-        End If
-        backgroundPlayer = New MusicPlayer(name)
-        backgroundPlayer.Play()
+    Public Sub PlayBackground()
+        if BackgroundPlayer Isnot me
+            If backgroundPlayer IsNot Nothing Then
+                backgroundPlayer.Stop()
+            End If
+            backgroundPlayer = Me
+            backgroundPlayer.Play()
+        End if
     End Sub
 
 
@@ -89,17 +105,42 @@ Public NotInheritable Class MusicPlayer
     Private Sub Repeat_audio(sender As Object, e As EventArgs)
         Me.Play()
     End Sub
+
+    Public Property basevolume As double
+
+    Private multipler as double
+
+    Friend Sub SetMultiplier(multipler As Double)
+        me.multipler = multipler
+        refreshVolume
+    End Sub
 End Class
 
 Public NotInheritable Class Sounds
-    Public Shared Jump As New MusicPlayer("jump", 0.6)
-    Public Shared CoinPickup As New MusicPlayer("coin_pickup", 10)
-    Public Shared MushroomPickup As New MusicPlayer("mushroom_pickup")
-    Public Shared BrickSmash As New MusicPlayer("brick_smash", 10)
-    Public Shared PlayerDead As New MusicPlayer("player_dead")
-    Public Shared Warp As New MusicPlayer("warp")
-    Public Shared _1_Up As New MusicPlayer("_1_up")
+    Public Shared Property Jump As New MusicPlayer("jump", 0.6)
+    Public Shared Property CoinPickup As New MusicPlayer("coin_pickup", 10)
+    Public Shared Property MushroomPickup As New MusicPlayer("mushroom_pickup")
+    Public Shared Property BrickSmash As New MusicPlayer("brick_smash", 10)
+    Public Shared Property PlayerDead As New MusicPlayer("player_dead")
+    Public Shared Property Warp As New MusicPlayer("warp")
+    Public Shared Property _1_Up As New MusicPlayer("_1_up")
     Private Sub New
+    End Sub
+
+    Public Shared Sub SetVolume(multipler as double)
+        if multipler > 1 Or multipler  < 0
+            Throw new Exception()
+        End if
+
+        for each prop in GetType(Sounds).GetProperties()
+             dim music = DirectCast(prop.GetValue(Nothing, Nothing), MusicPlayer)
+            music.SetMultiplier(multipler)
+        Next
+
+        for each prop in GetType(BackgroundMusic).GetProperties()
+            dim music = DirectCast(prop.GetValue(Nothing, Nothing), MusicPlayer)
+            music.SetMultiplier(multipler)
+        Next
     End Sub
 End Class
 
@@ -107,9 +148,11 @@ End Class
 ''' Each will return a new instance of a musicplayer
 ''' </summary>
 Public NotInheritable Class BackgroundMusic
-    Public Shared ReadOnly Property GroundTheme As MusicPlayer
-        Get
-            Return New MusicPlayer("ground_theme")
-        End Get
-    End Property
+    Public Shared ReadOnly Property GroundTheme As New MusicPlayer("ground_theme")
+
+    Public Shared ReadOnly Property UnderGroundTheme As New MusicPlayer("cave_theme")
+
+    Public Shared Sub SetVolume(multipler as double)
+        Sounds.SetVolume(multipler)
+    End Sub
 End Class

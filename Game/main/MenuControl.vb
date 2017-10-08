@@ -43,7 +43,7 @@ Public Class MenuControl
         '
         'SpeakerIcon
         '
-        Me.SpeakerIcon.Image = My.Resources.speaker
+        Me.SpeakerIcon.Image = Global.WinGame.My.Resources.Resources.speaker
         Me.SpeakerIcon.Location = New System.Drawing.Point(0, 0)
         Me.SpeakerIcon.Name = "SpeakerIcon"
         Me.SpeakerIcon.Size = New System.Drawing.Size(100, 50)
@@ -99,7 +99,6 @@ Public Class MenuControl
         Me.PauseLabel.Size = New System.Drawing.Size(43, 13)
         Me.PauseLabel.TabIndex = 0
         Me.PauseLabel.Text = "PAUSE"
-        Me.ForeColor = Color.White
         '
         'WorldLabel
         '
@@ -109,7 +108,6 @@ Public Class MenuControl
         Me.WorldLabel.Size = New System.Drawing.Size(48, 13)
         Me.WorldLabel.TabIndex = 0
         Me.WorldLabel.Text = "WORLD"
-        Me.ForeColor = Color.White
         '
         'WorldNumLabel
         '
@@ -119,7 +117,6 @@ Public Class MenuControl
         Me.WorldNumLabel.Size = New System.Drawing.Size(39, 13)
         Me.WorldNumLabel.TabIndex = 0
         Me.WorldNumLabel.Text = "Label1"
-        Me.ForeColor = Color.White
         '
         'MenuControl
         '
@@ -133,14 +130,14 @@ Public Class MenuControl
         Me.Controls.Add(Me.PauseLabel)
         Me.Controls.Add(Me.WorldLabel)
         Me.Controls.Add(Me.WorldNumLabel)
-
+        Me.ForeColor = System.Drawing.Color.White
         CType(Me.SoundTrackbar,System.ComponentModel.ISupportInitialize).EndInit
         CType(Me.SpeakerIcon,System.ComponentModel.ISupportInitialize).EndInit
         CType(Me.ArrowIcon,System.ComponentModel.ISupportInitialize).EndInit
         Me.ResumeLayout(false)
         Me.PerformLayout
-        DoubleBuffered = True
-    End Sub
+
+End Sub
 
     Private game as gamecontrol
 
@@ -152,6 +149,7 @@ Public Class MenuControl
         For each label in buttons
             label.font = buttonFont
         Next
+        DoubleBuffered = True
 
         PauseLabel.Font = New Font(Nes.GetFontFamily(), 20, FontStyle.Bold)
         WorldLabel.Font = buttonFont
@@ -232,10 +230,13 @@ Public Class MenuControl
         SpeakerIcon.Location = new Point(0, buttons.Count*rowHeight+sectionOffset)
         SpeakerIcon.Width = bHeight /4*3
         SpeakerIcon.Height = SpeakerIcon.Width
+
         ' add slider
         SoundTrackbar.Location = new Point(SpeakerIcon.Width, buttons.Count*rowHeight+sectionOffset)
-        SoundTrackbar.Width = me.Width / 3
+        SoundTrackbar.Width = me.Width / 3*2
         SoundTrackbar.Height = SpeakerIcon.Width
+
+        SoundTrackbar.Value = CInt(game.GetVolumeMultipler() * 10)
     End Sub
 
 
@@ -254,8 +255,10 @@ Public Class MenuControl
     End Sub
 
     Private Sub ContinueButton_Click(sender As Object, e As EventArgs) Handles ContinueButton.Click
-        ' TODO implement
+        game.HideOverlay()
     End Sub
+   
+
 
     Private Sub MouseOverButton(sender as Object, e As EventArgs) Handles ContinueButton.MouseEnter, ControlButton.MouseEnter, ExitButton.MouseEnter
         ' Move icon over
@@ -266,13 +269,22 @@ Public Class MenuControl
     Private Const SideSpace = 0.3
     Private Const TopSpace = 0.2
 
+    Private valueWhenMuted as Integer = -1
     Private Sub SpeakerIcon_Click(sender As Object, e As EventArgs) Handles SpeakerIcon.Click
         If SoundTrackbar.Value = 0
             ' unmute
-            SoundTrackbar.Value = 5
+            if valueWhenMuted <> -1
+                SoundTrackbar.Value = valueWhenMuted
+                valueWhenMuted = -1
+            Else 
+                SoundTrackbar.Value = 5
+            End If
         Else
+            valueWhenMuted = SoundTrackbar.Value
             SoundTrackbar.Value = 0
+            
         End If
+        Me.Select()
     End Sub
 
     Private Sub SoundTrackbar_ValueChanged(sender As Object, e As EventArgs) Handles SoundTrackbar.ValueChanged
@@ -281,17 +293,23 @@ Public Class MenuControl
         Else
             UnMute
         End If
+        Sounds.SetVolume(SoundTrackbar.Value / 10)
+        Me.Select()
     End Sub
 
     Private Sub Mute
         SpeakerIcon.Image = My.Resources.Mute
-        
     End Sub
 
     Private Sub Unmute
         SpeakerIcon.Image = My.Resources.Speaker
     End Sub
 
+    Private Sub ExitButton_Click(sender As Object, e As EventArgs) Handles ExitButton.Click
+        game.ReturnToMainMenu()
+    End Sub
 
-    
+    Private Sub SoundTrackbar_Scroll(sender As Object, e As EventArgs) Handles SoundTrackbar.Scroll
+        Me.Select()
+    End Sub
 End Class

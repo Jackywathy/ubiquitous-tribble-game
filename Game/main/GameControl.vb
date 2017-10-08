@@ -15,7 +15,7 @@ Public Class GameControl
     ''' </summary>
     Public MapTimeCounter As Integer = 0
     ' volume of sound effects
-    Public volume as Double
+    Public volume as Double = 0.5
     
     Public SharedHud As New StaticHud(ScreenGridWidth, ScreenGridHeight * HudHeightPercent)
 
@@ -67,6 +67,7 @@ Public Class GameControl
     Public Sub HideOverlay
         OverlayActive = False
         overlay.Hide()
+        Me.Select()
     End Sub
 
 
@@ -253,6 +254,7 @@ Public Class GameControl
                 ' center scene
                 mapScene.Center()
             End If
+            mapScene.BackgroundMusic.PlayBackground()
         End If
         If isNewStage
             MapTimeCounter = 0
@@ -282,6 +284,10 @@ Public Class GameControl
     Friend Sub ReloadLevel(map As MapEnum)
         allMapScenes(map) = JsonMapReader.ReadMapFromResource(map.ToString.ToLower(), Me)
     End Sub
+
+    Friend Function GetVolumeMultipler() As Double
+        return volume
+    End Function
 
     ''' <summary>
     ''' Includes putting a transition before map is loaded, loads map then adds another transitiotn
@@ -324,7 +330,9 @@ Public Class GameControl
         Return mapChange
     End Function
 
-
+    Friend Sub ReturnToMainMenu()
+        Throw New NotImplementedException()
+    End Sub
 End Class
 
 Public Enum PipeType

@@ -66,8 +66,16 @@ Public NotInheritable Class JsonMapReader
 #End If
 
         'TODO REPLACE with actual backgroundMusic reader
-        outScene.BackgroundMusic = BackgroundMusic.GroundTheme
-        outScene.BackgroundMusic.Play()
+        Select Case mapObject.Theme
+            Case RenderTheme.Overworld
+                outScene.BackgroundMusic = BackgroundMusic.GroundTheme
+            Case RenderTheme.Underground
+                outScene.BackgroundMusic = BackgroundMusic.UndergroundTheme
+            Case Else
+                Throw New Exception()
+        End Select
+        
+       
         Return outScene
 
     End Function
