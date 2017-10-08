@@ -229,5 +229,6 @@
   "width": 420,
   "height": 544,
   "MapTime": 300,
-  "theme": "underground"
+  "theme": "underground",
+  "NextLevel" :  "None" 
 }

@@ -137,7 +137,7 @@ Public MustInherit Class Entity
 
                 If Not player.OnFlag Then
                     player.OnFlag = True
-                    ' LevelFinished()
+                    MyScene.LevelFinished()
                 End If
 
                 If player.Location.Y > (3 * StandardHeight) Then

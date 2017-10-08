@@ -677,5 +677,5 @@
   "height": 480,
   "MapTime": 300,
   "theme": "overworld",
-  "NextLevel" :  "map1_2above" 
+  "NextLevel" :  "map2_1above" 
 }

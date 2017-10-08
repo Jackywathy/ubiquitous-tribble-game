@@ -173,6 +173,10 @@ Public Class MapScene
         Next
     End Sub
 
+    Friend Sub LevelFinished()
+        Parent.QueueMapChangeWithCircleAnimation(NextLevel, Nothing, False,30)
+    End Sub
+
     Sub AddScrollingImage(ByVal ParamArray args() As ScrollAlongImage)
         For Each item As ScrollAlongImage In args
             allScrollingItems.Add(item)
@@ -512,6 +516,7 @@ Public Class MapScene
 
     Private ReadOnly allUnfreezableItems As New List(Of Entity)
     Friend mapName As String
+    Public NextLevel As MapEnum
 
     Friend Sub AddUnfreezableItem(sender As Entity)
         allUnfreezableItems.Add(sender)

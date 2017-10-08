@@ -808,5 +808,6 @@
   "width": 7168,
   "height": 960,
   "MapTime": 300,
-  "theme": "overworld"
+  "theme": "overworld",
+  "NextLevel" :  "None" 
 }
