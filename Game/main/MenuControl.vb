@@ -306,6 +306,7 @@ End Sub
     End Sub
 
     Private Sub ExitButton_Click(sender As Object, e As EventArgs) Handles ExitButton.Click
+        
         game.ReturnToMainMenu()
     End Sub
 

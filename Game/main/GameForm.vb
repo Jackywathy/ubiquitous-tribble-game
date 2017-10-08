@@ -74,11 +74,20 @@ Public Class GameForm
         if musicplayer.BackgroundPlayer IsNot nothing
             MusicPlayer.BackgroundPlayer.Stop()
         End if
-        if game.GetCurrentScene().GetType() = GetType(MapScene)
-            Dim scene as MapScene= game.GetCurrentScene()
-            scene.FailLevel()
-        End if
+        game.Reset
         
         DisableTimer()
     End Sub
+     
+    Public AskQuit as Boolean = True
+
+    Private Sub GameForm_willclose(sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
+        if askQuit
+            
+            If MessageBox.Show("Are you sure you want to exit this level?", "Confirm exit", MessageBoxButtons.YesNo) <> DialogResult.Yes Then
+                e.Cancel = True
+            End If
+        End if
+    End Sub
+
 End Class

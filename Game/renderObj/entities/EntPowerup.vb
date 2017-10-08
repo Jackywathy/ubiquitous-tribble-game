@@ -10,13 +10,16 @@
 
     Private spawnCounter As Integer = 0
     Private isUsed As Boolean = False
+    Public fromHud as boolean = False
     ''' <summary>
     ''' Run when player hits the powerup
     ''' By default, plays a sound, adds score and removes itself
     ''' </summary>
     ''' <param name="sender"></param>
     Public Overridable Sub Activate(sender As EntPlayer)
-        sender.Score += PickupScore
+        if Not fromHud
+            sender.Score += PickupScore
+        End if
         If PickupSound IsNot Nothing Then
 
             Me.PickupSound.Play()

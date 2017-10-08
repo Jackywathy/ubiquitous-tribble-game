@@ -676,5 +676,6 @@
   "width": 7168,
   "height": 480,
   "MapTime": 300,
-  "theme": "overworld"
+  "theme": "overworld",
+  "NextLevel" :  "map1_2above" 
 }

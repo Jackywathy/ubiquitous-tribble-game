@@ -35,7 +35,7 @@
 
 
     Public Overrides Sub AddSelfToScene()
-        MyScene.AddStatic()
+        MyScene.AddScrollingImage(Me)
         ' oWo whats this?
     End Sub
 

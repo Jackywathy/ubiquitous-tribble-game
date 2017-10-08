@@ -112,7 +112,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="main\GameControl.vb" />
-    <Compile Include="main\MainForm.vb" />
+    <Compile Include="main\GameForm.vb" />
     <Compile Include="main\MenuControl.vb">
       <SubType>Component</SubType>
     </Compile>

@@ -64,29 +64,31 @@ Public Class MapScene
         If IsTransitioning
             Return
         End If
-        Dim cursorLocation = GetMouseRelativeLocation()
-        ' Move image while dragging
-        If isDragging Then
-            Me.HudElements.PowerupHolder.SetPowerupMiddleLocation(cursorLocation)
-        End If
-
-        ' handle left mouse button release
-        If Control.MouseButtons <> MouseButtons.Left And isDragging Then
-            isDragging = False
-            If HudElements.PowerupHolder.PowerupTouchesBox Then
-                Me.HudElements.PowerupHolder.ResetLocation()
-            Else
-                HudElements.PowerupHolder.SpawnPowerup(Me)
+        
+        ' make sure there is a powerup
+        If Me.hudElements.PowerupHolder.powerupImage IsNot nothing
+            Dim cursorLocation = GetMouseRelativeLocation()
+            ' Move image while dragging
+            If isDragging Then
+            
+                Me.HudElements.PowerupHolder.SetPowerupMiddleLocation(cursorLocation)
             End If
-        End If
 
-        ' check if clicked
-        If MouseOverBox() And Control.MouseButtons = MouseButtons.Left And HudElements.PowerupHolder.HasPowerup Then
-            isDragging = True
-        End If
+            ' handle left mouse button release
+            If Control.MouseButtons <> MouseButtons.Left And isDragging Then
+                isDragging = False
+                If HudElements.PowerupHolder.PowerupTouchesBox Then
+                    Me.HudElements.PowerupHolder.ResetLocation()
+                Else
+                    HudElements.PowerupHolder.SpawnPowerup(Me)
+                End If
+            End If
 
-        'previousMouseLoc = Cursor.Position
-
+            ' check if clicked
+            If MouseOverBox() And Control.MouseButtons = MouseButtons.Left And HudElements.PowerupHolder.HasPowerup Then
+                isDragging = True
+            End If
+        End if
     End Sub
 
     Friend Shared Function GetEmptyScene(control As GameControl) As MapScene
@@ -315,7 +317,7 @@ Public Class MapScene
         If Not AllEntities.Contains(player)
             player.AddSelfToScene()
         End If
-        player.Reset()
+        player.RefreshPlayerVars()
     End Sub
 
     ''' <summary>
@@ -424,6 +426,8 @@ Public Class MapScene
             Dim map = Helper.StrToEnum(Of MapEnum)(Me.mapName)
             Parent.ReloadLevel(map)
             Parent.QueueMapChangeWithStartScene(map, Nothing)
+            player1.ResetPlayer()
+            player1.Location = new Point(0, 128)
         End If
     End Sub
 
@@ -471,6 +475,12 @@ Public Class MapScene
         If Background isnot nothing
             Background.Render(g)
         End if
+        ' decorations
+        For Each item As ScrollAlongImage In GetAllDecorationsInScene()
+            item.Render(g)
+        Next
+
+
         if HudElements isnot nothing
             HudElements.Render(g)
         End if
@@ -479,9 +489,7 @@ Public Class MapScene
         For Each item As GameItem In AllStaticItems
             item.Render(g)
         Next
-        For Each item As ScrollAlongImage In GetAllDecorationsInScene()
-            item.Render(g)
-        Next
+        
 
         Dim objects = GetHitboxObjectsInScene()
 

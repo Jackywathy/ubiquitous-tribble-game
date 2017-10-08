@@ -91,6 +91,26 @@ Public Class GameControl
         GameLoop.Enabled = enabled
     End Sub
 
+    Friend Sub Reset()
+        if GetCurrentScene().GetType() = GetType(MapScene)
+            Dim scene as MapScene= GetCurrentScene()
+            ReloadLevel(Helper.StrToEnum(Of MapEnum)(scene.mapName))
+            scene.IsTransitioning = False
+            scene.IsAtStartScreen = False
+            scene.IsFrozen = False
+        End if
+        player1.ResetPlayer()
+        HideOverlay()
+        ChangeQueue.queue.Clear()
+        
+    End Sub
+
+    Friend Sub ReturnToMainMenu()
+        Reset
+        DirectCast(Me.TopLevelControl, GameForm).AskQuit = False
+        DirectCast(Me.TopLevelControl, Form).Close()
+    End Sub
+
 
     ''' <summary>
     ''' Holds the currently loaded scene
@@ -340,9 +360,7 @@ Public Class GameControl
         Return mapChange
     End Function
 
-    Friend Sub ReturnToMainMenu()
-        Throw New NotImplementedException()
-    End Sub
+   
 End Class
 
 Public Enum PipeType

@@ -1,7 +1,7 @@
 ﻿Public Class StaticHudPowerup
     Inherits StaticImage
 
-    Private powerupImage As StaticImage
+    Public powerupImage As StaticImage
     
 
     Public Sub New(width As integer, height As integer, location As Point)
@@ -32,6 +32,7 @@
                 Throw New Exception()
         End Select
         powerup.isGrounded = False
+        powerup.fromHud = True
         powerup.Spawn(True)
         SetPowerupItem(PowerupType.Empty)
     End Sub
@@ -58,8 +59,9 @@
 
 
     Public Sub SetPowerupLocation(x As Integer, y As Integer)
-        Me.powerupImage.X = x
-        Me.powerupImage.Y = y
+        
+            Me.powerupImage.X = x
+            Me.powerupImage.Y = y
     End Sub
 
     Public Overrides Sub Render(g As Graphics)
@@ -80,10 +82,10 @@
 
 
     Private Function GetPowerLocationPoint() As Point
-        Return New Point(location.X + 8, location.Y + 8)
+        Return New Point(location.X + Width/4, location.Y + Height/4)
     End Function
 
-    Public Property StoredPowerup As PowerupType
+    Private Property StoredPowerup As PowerupType
 
     ''' <summary>
     ''' 

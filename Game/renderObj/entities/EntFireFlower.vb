@@ -34,7 +34,11 @@
 
     Public Overrides Sub Activate(sender As EntPlayer)
         MyBase.Activate(sender)
-        sender.State = PlayerStates.Fire
+        if sender.State <> PlayerStates.Fire
+            sender.State = PlayerStates.Fire
+        Else
+            MyScene.HudElements.SetPowerup(PowerupType.Fireflower)
+        End if
     End Sub
 
 End Class

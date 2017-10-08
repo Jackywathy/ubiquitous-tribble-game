@@ -341,7 +341,7 @@ Public Class EntPlayer
         End Function
     End Class
 
-    Friend Sub Reset()
+    Friend Sub RefreshPlayerVars()
         Me.isGrounded = False
         Me.currentGroundObjects.Clear()
         Me.Width = StandardWidth
@@ -429,6 +429,12 @@ Public Class EntPlayer
         Score += PlayerPoints.Coin
     End Sub
 
+    Friend Sub ResetPlayer()
+        Me.State = PlayerStates.Small
+        Me.isDead = false
+        
+    End Sub
+
     ''' <summary>
     ''' DO NOT USE - Instead set player.state to Dead
     ''' Play outro mapScene and remove player / decrease lives
@@ -445,6 +451,7 @@ Public Class EntPlayer
         Me.defaultY = Me.Location.Y
         Lives -= 1
         MyScene.RegisterDeath(Me)
+        deathTimer = 0
 
 
     End Sub

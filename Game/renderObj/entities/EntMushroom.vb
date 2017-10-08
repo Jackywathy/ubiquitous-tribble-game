@@ -37,7 +37,7 @@
         If sender.State = PlayerStates.Small Then
             sender.State = PlayerStates.Big
         Else
-            ' TODO add to toolbar at top
+            MyScene.HudElements.SetPowerup(PowerupType.Mushroom)
         End If
     End Sub
 
