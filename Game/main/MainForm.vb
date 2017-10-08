@@ -21,7 +21,10 @@ Public Class GameForm
         InitalizeComponent(enabled)
     End Sub
 
-    
+    Friend Sub StartGame(map As MapEnum)
+        EnableTimer()
+        Game.QueueMapChangeWithStartScene(map, Nothing)
+    End Sub
 
     Public Sub InitalizeComponent(Optional enabled As Boolean = True)
         ' default DPI
@@ -71,6 +74,11 @@ Public Class GameForm
         if musicplayer.BackgroundPlayer IsNot nothing
             MusicPlayer.BackgroundPlayer.Stop()
         End if
+        if game.GetCurrentScene().GetType() = GetType(MapScene)
+            Dim scene as MapScene= game.GetCurrentScene()
+            scene.FailLevel()
+        End if
+        
         DisableTimer()
     End Sub
 End Class

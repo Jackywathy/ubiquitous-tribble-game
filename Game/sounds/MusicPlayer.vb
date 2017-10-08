@@ -84,8 +84,10 @@ Public NotInheritable Class MusicPlayer
                 backgroundPlayer.Stop()
             End If
             backgroundPlayer = Me
-            backgroundPlayer.Play()
+            
+        
         End if
+        backgroundPlayer.Play()
     End Sub
 
    

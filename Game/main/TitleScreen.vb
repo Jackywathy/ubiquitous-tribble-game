@@ -11,12 +11,10 @@
     End Sub
 
     Private Sub StartButton_Click(sender As Object, e As EventArgs) Handles StartButton.Click
-        game.EnableTimer()
-
-        'Game.game.QueueMapChangeWithStartScene(PlayerStartScreen, Nothing)
-        game.game.QueueMapChangeWithStartScene(MapEnum.None, Nothing)
-        game.ShowDialog()
-
+        Game.StartGame(MapEnum.map1_1above)
+        
+        Game.ShowDialog()
+        
     End Sub
 
     Sub New()
