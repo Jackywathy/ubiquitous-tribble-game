@@ -9,7 +9,7 @@
     ''' 1 : y
     ''' </summary>
     ''' <param name="params"></param>
-    Public Sub New(params As Object(), mapScene As MapScene) 
+    Public Sub New(params As Object(), theme as RenderTheme, mapScene As MapScene) 
         MyBase.New(New Point(params(0)*32, params(1)*32), sprites.blockInvisQuestion, mapScene)
     End Sub
 

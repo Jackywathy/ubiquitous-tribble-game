@@ -11,7 +11,7 @@
 
 
 
-    Public Sub New(width As Integer, location As Point, mapScene As MapScene)
+    Public Sub New(width As Integer, location As Point, theme as RenderTheme,  mapScene As MapScene)
         If width < 64 Then
             Throw New Exception("Height must be >= 64 for pipes")
         End If
@@ -40,9 +40,9 @@
     ''' </summary>
     ''' <param name="params"></param>
     ''' <param name="mapScene"></param>
-    Public Sub New(params As Object(), mapScene As MapScene)
+    Public Sub New(params As Object(), theme as RenderTheme, mapScene As MapScene)
 
-        Me.New(params(2) * 32, New Point(params(0) * 32, params(1) * 32), mapScene)
+        Me.New(params(2) * 32, New Point(params(0) * 32, params(1) * 32), theme, mapScene)
         Dim action As PipeContents = Helper.StrToEnum(Of PipeContents)(params(3))
         Select Case params.Length
             Case 4
@@ -93,9 +93,9 @@
             If Helper.IsPlayer(sender) And KeyHandler.MoveRight Then
                 Dim player As EntPlayer = sender
 
-                If Action = PipeContents.Map And Not player.IsInPipe And Not MyScene.IsTransitioning Then
+                If Action = PipeContents.Map And Not player.IsInPipe And player.isGrounded And Not MyScene.IsTransitioning Then
                     
-                    player.EnterHorizontalPipeExitVertical(Me.Map, Me.MapLocation, True)
+                    player.EnterHorizontalPipeExitVertical(Me.Map, Me.MapLocation, True, Me.Location)
                 End If
             End If
         End Sub

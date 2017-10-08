@@ -36,6 +36,8 @@ Public Class EntPlayer
     Private Shared _coins As Integer = 0
 
     Private _score As Integer = 0
+    
+
 
     ''' <summary>
     ''' Total score accumated by all players. Shared!
@@ -141,7 +143,9 @@ Public Class EntPlayer
             _state = value
         End Set
     End Property
+
     private _isinpipe as boolean
+
     Public Property IsInPipe As Boolean 
         Get
             Return _isinpipe
@@ -150,25 +154,41 @@ Public Class EntPlayer
             _isinpipe = value
         End Set
     End Property
+    
 
-    Friend Sub EnterHorizontalPipeExitVertical(map As MapEnum, insertion As Point?, pipeOnOtherSide As Boolean)
+
+    Private Sub SetXToMiddle(x As integer)
+        ' sets me.x to x + 1/2 of standard width
+        me.X = x + StandardWidth/2
+    End Sub
+
+    Friend Sub EnterHorizontalPipeExitVertical(map As MapEnum, insertion As Point?, pipeOnOtherSide As Boolean, pipeLocation As Point)
+        me.Y = pipeLocation.Y
+        Me.veloc.x = 0
+        me.veloc.y = 0
+
         InvinicibilityTimer = StandardPipeTime
         Dim point = MyScene.GetScreenLocation(Me)
         point.Y = BottomToTop(point.Y)
-        Dim enterPipe as New GameControl.MarioPipeAnimationObject(Me, PipeType.Horizontal,True, MyScene.Parent)
+        Dim enterPipe as New MarioGoinDownPipeAnimationQueue(Me, PipeType.Horizontal,True, MyScene.Parent)
 
-        Dim exitPipe As New GameControl.MarioPipeAnimationObject(Me, PipeType.Vertical, False,  MyScene.Parent)
+        Dim exitPipe As New MarioGoinDownPipeAnimationQueue(Me, PipeType.Vertical, False,  MyScene.Parent)
 
         Dim mapChange = MyScene.Parent.QueueMapChangeWithCircleAnimation(map, insertion, centerToplayer := True,animationLocation:=point, before := enterPipe)
         mapChange.next = exitPipe
 
     End Sub
 
-    Public Sub EnterVerticalPipe(map As MapEnum, insertion As Point?)
+    Public Sub EnterVerticalPipeExitNone(map As MapEnum, insertion As Point?, pipeLocation As Point)
+        Me.X = pipeLocation.X + StandardWidth /2
+        Me.veloc.x = 0
+        me.veloc.y = 0
+
         InvinicibilityTimer = StandardPipeTime
+
         Dim point = MyScene.GetScreenLocation(Me)
         point.Y = BottomToTop(point.Y)
-        Dim enterPipe as New GameControl.MarioPipeAnimationObject(Me, PipeType.Vertical, True, MyScene.Parent)
+        Dim enterPipe as New MarioGoinDownPipeAnimationQueue(Me, PipeType.Vertical, True, MyScene.Parent)
 
         Dim mapChange = MyScene.Parent.QueueMapChangeWithCircleAnimation(map, insertion, centerToplayer := False, animationLocation:=point, before := enterPipe)
     End Sub
@@ -176,7 +196,9 @@ Public Class EntPlayer
     Friend Sub BeginHorizontalPipe(goingIn As Boolean, Optional time As Integer = StandardPipeTime)
         SetPipeVars(time)
         IsInPipe = True
-        animator = New HorizontalAnimator(RenderImage, goingIn, Me.location)
+        Dim rounded = Location
+        rounded.Y = CInt(Math.Floor(rounded.Y / 32))*32
+        animator = New HorizontalAnimator(RenderImage, goingIn, rounded)
     End Sub
 
     Friend Sub BeginVerticalPipe(goingIn As boolean, Optional time As Integer = StandardPipeTime)
@@ -323,10 +345,10 @@ Public Class EntPlayer
         Me.currentGroundObjects.Clear()
         Me.Width = StandardWidth
         Select Case state
-            Case PlayerStates.Big, PlayerStates.Fire, PlayerStates.Ice, 
-                 Height = StandardHeight * 2
+            Case PlayerStates.Big, PlayerStates.Fire, PlayerStates.Ice
+                 Me.Height = StandardHeight * 2
             Case Else
-                Height = StandardHeight
+                 Me.Height = StandardHeight
 
         End Select
     End Sub

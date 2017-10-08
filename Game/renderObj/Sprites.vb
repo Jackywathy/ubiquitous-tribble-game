@@ -1,11 +1,13 @@
-﻿Public Class SpriteSet
+﻿Imports WinGame
+
+Public Class SpriteSet
     Implements IDictionary(Of SpriteState, List(Of Image))
 
-    Public Readonly AllSprites As Dictionary(Of SpriteState, List(Of Image)) ' Dict (SpriteEnum.Walk, List(Of Image) )
+    Public ReadOnly AllSprites As Dictionary(Of SpriteState, List(Of Image)) ' Dict (SpriteEnum.Walk, List(Of Image) )
     Private ReadOnly counter As New Dictionary(Of SpriteState, Integer) ' Dict (SpriteEnum, Integer)
 
     Public ReadOnly Property Name As String
-    Sub New(name As String, spriteSet As Dictionary(Of SpriteState,List(Of Image)), width As Integer, height As Integer, Optional otherWidth As Dictionary(Of SpriteState,Size) = Nothing, Optional autoRotate As Boolean = True)
+    Sub New(name As String, spriteSet As Dictionary(Of SpriteState, List(Of Image)), width As Integer, height As Integer, Optional otherWidth As Dictionary(Of SpriteState, Size) = Nothing, Optional autoRotate As Boolean = True)
         If otherWidth Is Nothing
             otherWidth = New Dictionary(Of SpriteState, Size)
         End If
@@ -39,7 +41,7 @@
             Next
             ' add completed list to out dict
             outDict.Add(state, resizeList)
-            
+
             ' create animation state counter
             counter.Add(state, 0)
         Next
@@ -55,7 +57,7 @@
         'End if
         Me.AllSprites = outDict
     End Sub
-    
+
     ''' <summary>
     ''' Returns the current image in the selected sprite animation
     ''' </summary>
@@ -78,7 +80,7 @@
     End Function
 
 
-    #Region "IDictionary"
+#Region "IDictionary"
     Public ReadOnly Property Count As Integer Implements ICollection(Of KeyValuePair(Of SpriteState, List(Of Image))).Count
         Get
             Return AllSprites.Count
@@ -97,8 +99,8 @@
         End Get
 
         Set(value As List(Of Image))
-            AllSprites.Item(Key) = value
-        End set
+            AllSprites.Item(key) = value
+        End Set
     End Property
 
     Public ReadOnly Property Keys As ICollection(Of SpriteState) Implements IDictionary(Of SpriteState, List(Of Image)).Keys
@@ -115,7 +117,7 @@
 
     Public Sub Add(item As KeyValuePair(Of SpriteState, List(Of Image))) Implements ICollection(Of KeyValuePair(Of SpriteState, List(Of Image))).Add
         AllSprites.Add(item.Key, item.Value)
-        Counter.Add(item.Key, 0)
+        counter.Add(item.Key, 0)
     End Sub
 
     Public Sub Add(key As SpriteState, value As List(Of Image)) Implements IDictionary(Of SpriteState, List(Of Image)).Add
@@ -146,14 +148,14 @@
 
     Public Function Remove(item As KeyValuePair(Of SpriteState, List(Of Image))) As Boolean Implements ICollection(Of KeyValuePair(Of SpriteState, List(Of Image))).Remove
         counter.Remove(item.Key)
-        return AllSprites.Remove(item.key)
+        Return AllSprites.Remove(item.Key)
     End Function
 
     Public Function Remove(key As SpriteState) As Boolean Implements IDictionary(Of SpriteState, List(Of Image)).Remove
         counter.Remove(key)
-        return AllSprites.Remove(key)
+        Return AllSprites.Remove(key)
     End Function
-    
+
     Public Function TryGetValue(key As SpriteState, ByRef value As List(Of Image)) As Boolean Implements IDictionary(Of SpriteState, List(Of Image)).TryGetValue
         Return AllSprites.TryGetValue(key, value)
     End Function
@@ -161,8 +163,8 @@
     Private Function IEnumerable_GetEnumerator() As IEnumerator Implements IEnumerable.GetEnumerator
         Return AllSprites.GetEnumerator()
     End Function
-    
-    #End Region
+
+#End Region
 End Class
 
 
@@ -243,7 +245,7 @@ Public MustInherit Class Sprites
                                                      },
         16,
         16,
-        New Dictionary(Of SpriteState, Size) From {{SpriteState.Destroy, New Size(32, 32)}}, True 
+        New Dictionary(Of SpriteState, Size) From {{SpriteState.Destroy, New Size(32, 32)}}, True
     )
 
     Public Shared f_flower As New SpriteSet("fireflower", New Dictionary(Of SpriteState, List(Of Image)) From {
@@ -251,7 +253,7 @@ Public MustInherit Class Sprites
                                                {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.f_flower_1, My.Resources.f_flower_2, My.Resources.f_flower_3, My.Resources.f_flower_4}}
                                                },
         32,
-        32, Nothing, True 
+        32, Nothing, True
     )
 
     Public Shared mushroom As New SpriteSet("mushroom", New Dictionary(Of SpriteState, List(Of Image)) From {
@@ -275,7 +277,7 @@ Public MustInherit Class Sprites
                                            {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.star_1, My.Resources.star_2, My.Resources.star_3, My.Resources.star_4}}
                                            },
         32,
-        32, Nothing, True 
+        32, Nothing, True
     )
 
     Public Shared itemBlock As New SpriteSet("questionBlock", New Dictionary(Of SpriteState, List(Of Image)) From {
@@ -283,7 +285,7 @@ Public MustInherit Class Sprites
                                                 {SpriteState.Destroy, New List(Of Image) From {My.Resources.blockQuestionUsed}}
                                                 },
         32,
-        32, Nothing, True 
+        32, Nothing, True
     )
 
     Public Shared brickBlock As New SpriteSet("brickBlock", New Dictionary(Of SpriteState, List(Of Image)) From {
@@ -291,15 +293,31 @@ Public MustInherit Class Sprites
                                                  {SpriteState.Destroy, New List(Of Image) From {My.Resources.blockQuestionUsed}}
                                                  },
         32,
-        32, Nothing, True 
+        32, Nothing, True
     )
 
     Public Shared blockMetal As New SpriteSet("metalBlock", New Dictionary(Of SpriteState, List(Of Image)) From {
                                                  {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.blockMetal}}
                                                  },
         32,
-        32, Nothing, True 
+        32, Nothing, True
         )
+    
+
+    Public Shared brickBlockUnder As New SpriteSet("brickBlockUnder", New Dictionary(Of SpriteState, List(Of Image)) From {
+                                                 {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.blockBrickUnder}},
+                                                 {SpriteState.Destroy, New List(Of Image) From {My.Resources.blockQuestionUsed}}
+                                                 },
+                                              32,
+                                              32, Nothing, True
+                                              )
+
+    Public Shared blockMetalunder As New SpriteSet("metalBLockUnder", New Dictionary(Of SpriteState, List(Of Image)) From {
+                                                 {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.blockMetalUnder}}
+                                                 },
+                                              32,
+                                              32, Nothing, True
+                                              )
 
     Public Shared koopaGreen As New SpriteSet("greenKoopa", New Dictionary(Of SpriteState, List(Of Image)) From {
                                                  {SpriteState.ConstantLeft, New List(Of Image) From {My.Resources.koopa_green_1r, My.Resources.koopa_green_2r}},
@@ -308,7 +326,7 @@ Public MustInherit Class Sprites
                                                  },
         32,
         64,
-        New Dictionary(Of SpriteState, Size) From {{SpriteState.Destroy, New Size(32, 32)}}, True 
+        New Dictionary(Of SpriteState, Size) From {{SpriteState.Destroy, New Size(32, 32)}}, True
     )
 
     Public Shared goomba As New SpriteSet("goomba", New Dictionary(Of SpriteState, List(Of Image)) From {
@@ -316,53 +334,53 @@ Public MustInherit Class Sprites
                                              {SpriteState.Destroy, New List(Of Image) From {My.Resources.goomba_d, My.Resources.goomba_d2}}
                                              },
         32,
-        32, Nothing, True 
+        32, Nothing, True
     )
 
     Public Shared coin As New SpriteSet("coin", New Dictionary(Of SpriteState, List(Of Image)) From {
                                            {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.coin_idle_1, My.Resources.coin_idle_2, My.Resources.coin_idle_3}}
                                            },
         32,
-        32, Nothing, True 
+        32, Nothing, True
     )
 
     Public Shared coinFromBlock As New SpriteSet("coinFromBlock", New Dictionary(Of SpriteState, List(Of Image)) From {
                                                     {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.coin_hit_1, My.Resources.coin_hit_2, My.Resources.coin_hit_3, My.Resources.coin_hit_4}}
                                                     },
         32,
-        32, Nothing, True 
+        32, Nothing, True
     )
-    Public Shared blockInvis As New SpriteSet("invisBlock", New Dictionary(Of SpriteState,List(Of Image)) From {
+    Public Shared blockInvis As New SpriteSet("invisBlock", New Dictionary(Of SpriteState, List(Of Image)) From {
                                                  {SpriteState.Constant, New List(Of Image) From {My.Resources.blockInvis}},
                                                  {SpriteState.Revealed, New List(Of Image) From {My.Resources.blockBrick}}
                                                  },
         32,
-        32, Nothing, True 
+        32, Nothing, True
     )
 
     ''' <summary>
     ''' Exposes a used question block after item is hit
     ''' </summary>
-    Public Shared blockInvisQuestion As New SpriteSet("invis1Up", New Dictionary(Of SpriteState,List(Of Image)) From {
+    Public Shared blockInvisQuestion As New SpriteSet("invis1Up", New Dictionary(Of SpriteState, List(Of Image)) From {
                                                  {SpriteState.Constant, New List(Of Image) From {My.Resources.blockInvis}},
                                                  {SpriteState.Revealed, New List(Of Image) From {My.Resources.blockQuestionUsed}}
                                                  },
                                               32,
-                                              32, Nothing, True 
+                                              32, Nothing, True
                                               )
 
-    Public Shared LeftPipeSprite As New SpriteSet("LeftPipeSprite", New Dictionary(Of SpriteState,List(Of Image)) From {
+    Public Shared LeftPipeSprite As New SpriteSet("LeftPipeSprite", New Dictionary(Of SpriteState, List(Of Image)) From {
                                                          {SpriteState.Constant, New List(Of Image) From {My.Resources.pipe_left}}
                                                          },
                                                       32,
-                                                      64, Nothing, True 
+                                                      64, Nothing, True
                                                       )
-    
-    Public Shared TopPipeSprite As New SpriteSet("TopPipeSprite", New Dictionary(Of SpriteState,List(Of Image)) From {
+
+    Public Shared TopPipeSprite As New SpriteSet("TopPipeSprite", New Dictionary(Of SpriteState, List(Of Image)) From {
                                                  {SpriteState.Constant, New List(Of Image) From {My.Resources.pipe_top}}
                                                  },
                                               64,
-                                              32, Nothing, True 
+                                              32, Nothing, True
                                               )
 
     Private Sub New()

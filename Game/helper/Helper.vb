@@ -41,12 +41,13 @@ Module Debug
 
 #if DEBUG
     ''' <summary>
-    ''' Use this to add additional objects on in DEBUG configuration
+    ''' Use this to add additional objects on in DEBUG configuration to a JsonMapObject
     ''' </summary>
     ''' <param name="scene"></param>
-    Public Sub DebugMapHook(scene As MapScene)
+    Public Sub DebugJsonMap(scene As MapScene)
         
     End Sub
+
     Public ShowBoundingBox As Boolean = True
     Public ShowHitBox As Boolean = True
 #Else

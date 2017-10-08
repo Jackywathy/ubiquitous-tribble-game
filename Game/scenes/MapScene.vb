@@ -1,5 +1,4 @@
-﻿Imports WinGame
-''' <summary>
+﻿''' <summary>
 ''' Scene that represents a map, (probably loaded from json using <see cref="JsonMapReader.ReadMapFromResource"/>
 ''' </summary>
 Public Class MapScene
@@ -104,6 +103,20 @@ Public Class MapScene
     Public Width As Integer
     public height As integer
 
+    Private inSceneScrollingItems As New List(Of ScrollAlongImage)
+    Private allScrollingItems As New List(Of ScrollAlongImage)
+
+
+    Private Function GetAllDecorationsInScene() As List(Of ScrollAlongImage)
+        inSceneScrollingItems.Clear()
+        For Each item As ScrollAlongImage In allScrollingItems
+            If item.InScene() Then
+                inSceneScrollingItems.Add(item)
+            End If
+        Next
+        Return inSceneScrollingItems
+    End Function
+
 
     ''' <summary>
     ''' Gets/Updates the blocks that are in the mapScene and need to be rendened.
@@ -120,8 +133,7 @@ Public Class MapScene
         Return inSceneItems
     End Function
 
-
-
+   
     ' There are 4 types of GameObjects
     ' Static - stuff that doesnt move ever, e.g. HUD elements, points
     ' Moving - stuff that moves, but doesnt have collisions
@@ -148,7 +160,14 @@ Public Class MapScene
         Next
     End Sub
 
-    Friend Function GetScreenLocation(item As MovingImage) As Point
+    Sub AddScrollingImage(ByVal ParamArray args() As ScrollAlongImage)
+        For Each item As ScrollAlongImage In args
+            allScrollingItems.Add(item)
+        Next
+    End Sub
+
+
+    Friend Function GetScreenLocation(item As ScrollAlongImage) As Point
         Return New Point(item.X - ScreenLocation.X, item.Y-ScreenLocation.Y)
     End Function
 
@@ -302,10 +321,29 @@ Public Class MapScene
         MapTime = time
     End Sub
 
+    Private escPressed as Boolean = False
+
     ''' <summary>
     ''' Handles/ticks input from the user
     ''' </summary>
     Public Overrides Sub HandleInput()
+        
+        ' if escape is pressed and this is the first press
+        If KeyHandler.Escape and not escPressed and not IsTransitioning 
+            escPressed = True
+            If not parent.OverlayActive
+                Parent.showOverlay
+            Else 
+                parent.hideoverlay
+            End If
+        End If
+
+        ' reset escPressed if key is no longer held
+        if escPressed
+            if Not Keyhandler.Escape
+                escPressed = False
+            End If
+        End If
 
         ' handle mouse evenst
         HandleMouse()
@@ -316,7 +354,10 @@ Public Class MapScene
     ''' </summary>
     Public Overrides Sub UpdateTick(ticksElapsed As Integer)
         ' Animate and update position of each entity
-        If exclusiveTime <> 0
+        if parent.OverlayActive
+            ' overlay is active, pause game
+            return
+        ElseIf exclusiveTime <> 0
             exclusiveItem.UpdateVeloc()
             exclusiveItem.UpdateLocation()
             exclusiveItem.Animate()
@@ -414,6 +455,9 @@ Public Class MapScene
         For Each item As GameItem In AllStaticItems
             item.Render(g)
         Next
+        for each item as ScrollAlongImage In GetAllDecorationsInScene()
+            item.render(g)
+        Next
 
         Dim objects = GetHitboxObjectsInScene()
 
@@ -427,7 +471,15 @@ Public Class MapScene
             item.Render(g)
         Next
         GlobalFrameCount += 1
+
+        If parent.OverlayActive
+            ' add a shade of gray
+            g.FillRectangle(New SolidBrush(Color.FromArgb(192, 0,0,0)), 0, 0, ScreenGridWidth, ScreenGridHeight)
+        End If
     End Sub
+
+   
+
     Private ReadOnly allUnfreezableItems as New List(Of Entity)
     Friend mapName As String
 

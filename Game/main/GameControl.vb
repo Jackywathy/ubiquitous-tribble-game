@@ -25,8 +25,10 @@ Public Class GameControl
     Private Sub GameLoop_Tick(sender As Object, e As EventArgs) Handles GameLoop.Tick
         CurrentScene.HandleInput()
         CurrentScene.UpdateTick(MapTimeCounter)
-        ChangeQueue.UpdateTick()
-        MapTimeCounter += 1
+        if not OverlayActive
+            ChangeQueue.UpdateTick()
+            MapTimeCounter += 1
+        End if
 
         Me.Refresh()
     End Sub
@@ -50,7 +52,19 @@ Public Class GameControl
 
         DrawStringBuffer(g)
 #End If
+        
+    End Sub
 
+    Friend OverlayActive As Boolean = False
+
+    Public Sub ShowOverlay
+        OverlayActive = True
+        overlay.Show()
+    End Sub
+
+    Public Sub HideOverlay
+        OverlayActive = False
+        overlay.Hide()
     End Sub
 
 
@@ -92,6 +106,7 @@ Public Class GameControl
     ''' </summary>
     Private ReadOnly Property allMapScenes As Dictionary(Of MapEnum, MapScene)
 
+    Private overlay as MenuControl
     ''' <summary>
     ''' Initalize components inside
     ''' </summary>
@@ -101,6 +116,11 @@ Public Class GameControl
         SetStyle(ControlStyles.UserPaint, True)
         SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
         SetStyle(ControlStyles.AllPaintingInWmPaint, True)
+
+
+        overlay = new MenuControl(Me)
+        HideOverlay()
+        Me.Controls.Add(overlay)
     End Sub
 
     Public Sub DrawDebugStrings()
@@ -109,8 +129,8 @@ Public Class GameControl
             AddStringBuffer("Upcoming changes:")
             For each item in ChangeQueue.queue
                 Select Case item.GetType()
-                    Case GetType(PlayTransitionObject)
-                        Dim transition As PlayTransitionObject = item
+                    Case GetType(TransitionQueueObject)
+                        Dim transition As TransitionQueueObject = item
                         AddStringBuffer(String.Format("TransitionType: {0}, time: {1}", transition.transition.ttype.ToString, transition.time))
                     Case GetType(MapChangeObject)
                         Dim change As MapChangeObject = item
@@ -180,6 +200,7 @@ Public Class GameControl
 
     Private Sub MainGame_Resize(sender As Object, e As EventArgs) Handles MyBase.Resize
         keyControl.Reset()
+        overlay.ScaleToParent(Me.size)
     End Sub
 
     Private Sub MainGame_KeyDown(sender As Object, e As KeyEventArgs) Handles MyBase.KeyDown
@@ -239,132 +260,21 @@ Public Class GameControl
     Private Sub GameControl_SizeChanged(sender As Object, e As EventArgs) Handles Me.SizeChanged
         ScreenGridWidth = Width
         ScreenGridHeight = Height
+        overlay.ScaleToParent(me.Size)
     End Sub
 
     
-    Public MustInherit Class QueueObject
-        Friend time As integer
-        Friend control as GameControl
-        Friend [next] As QueueObject
-        Friend HasRun as Boolean 
-        Public Property IsFinished As Boolean
 
-        Public Sub New(time As Integer, control As GameControl, Optional [next] as QueueObject = Nothing)
-            Me.time = time
-            Me.control = control
-            Me.[next] = [next]
-            HasRun = False
-        End Sub
-
-        Public Overridable Sub Setup()
-
-        End Sub
-
-        Public Overridable Sub Tick()
-
-        End Sub
-
-
-        Public Sub UpdateTick()
-            If Not hasRun
-                HasRun = True
-                Setup()
-            End If
-            if time = 0
-                TimerFinished()
-                IsFinished = True
-                if [next] IsNot nothing
-                    control.AddTimedEvent([next])
-                End If
-            Else
-                Tick()
-            End If
-            time -= 1
-        End Sub
-        Protected MustOverride Sub TimerFinished()
-    End Class
-
-    Private Sub AddTimedEvent(item As QueueObject)
+    
+  
+    Public Sub AddTimedEvent(item As QueueObject)
         ChangeQueue.Add(item)
     End Sub
 
-
-    Public Class PlayTransitionObject
-        Inherits QueueObject
-        Friend transition as TransitionObject
-
-        Sub New(transition As TransitionObject, time As Integer, control As GameControl, Optional [next] as QueueObject = Nothing)
-            MyBase.New(time, control, [next])
-            me.transition = transition
-        End Sub
-
-        Protected Overrides Sub TimerFinished()
-           control.GetCurrentScene().StartTransition(transition)
-        End Sub
-
-        Public Overrides Sub Setup()
-            MyBase.Setup()
-        End Sub
-    End Class
-
-    Private Function GetCurrentScene() As BaseScene
+    Public Function GetCurrentScene() As BaseScene
         return CurrentScene
     End Function
-
-    Public Class MapChangeObject
-        Inherits QueueObject
-        Friend map as MapEnum
-        Private insertion as point?
-        Private isNewStage as boolean
-        Private centerToplayer as boolean
-        Sub New(map As MapEnum, insertion As Point?, time As Integer, control As GameControl, Optional [next] as QueueObject = Nothing, Optional IsNewStage As Boolean=False, optional CenterToPlayer As boolean = True)
-            MyBase.New(time, control, [next])
-            Me.map = map
-            Me.insertion = insertion
-            Me.isNewStage = IsNewStage
-            Me.centerToplayer = CenterToPlayer
-        End Sub
-
-        Protected Overrides Sub TimerFinished()
-            control.RunScene(map, isNewStage, insertion)
-            If centerToplayer
-                Dim mapScene as MapScene = control.GetCurrentScene()
-                mapScene.CenterToPlayer()
-            End If
-        End Sub
-    End Class
-    
-    Public Class ChangeQueueWrapper
-        Friend queue As New HashSet(Of QueueObject)
-
-
-        Public Sub Add(item As QueueObject)
-            queue.Add(item)
-        End Sub
-
-        Public Sub Remove(item As QueueObject)
-            If Not queue.Remove(item)
-                Throw new Exception("cannot remove item")
-            End If
-        End Sub
-
-        Public Sub UpdateTick
-            For c=queue.Count -1 To 0 Step -1
-                Dim item = queue(c)
-                item.UpdateTick()
-                if item.IsFinished
-                    Remove(item)
-                End If
-            Next
-        End Sub
-
-        Public Readonly Property IsEmpty As Boolean
-            Get
-                Return queue.Count = 0
-            End Get
-        End Property
-    End Class
-
+   
     Public Property ChangeQueue As New ChangeQueueWrapper
 
     Friend Sub ReloadLevel(map As MapEnum)
@@ -381,10 +291,9 @@ Public Class GameControl
     Friend Function QueueMapChangeWithCircleAnimation(map As MapEnum, mapInsertion As Point?, centerToplayer As Boolean, Optional time As Integer = StandardPipeTime, optional animationLocation as Point? = nothing, optional before As QueueObject = Nothing) As QueueObject
         Dim firstTrans As New TransitionObject(TransitionType.Circle, TransitionDirection.Top, location := animationLocation)
 
-        Dim firstTransition As New PlayTransitionObject(firstTrans, StandardPipeTime, Me)
+        Dim firstTransition As New TransitionQueueObject(firstTrans, 0, Me)
         Dim mapChange As New MapChangeObject(map, mapInsertion, StandardTransitionTime, Me, CenterToPlayer := centerToplayer)
         
-
         firstTransition.next = mapChange
         If before IsNot nothing
             before.next = firstTransition
@@ -400,7 +309,7 @@ Public Class GameControl
         Dim firstTrans As New TransitionObject(TransitionType.StartScene, TransitionDirection.Bottom)
 
         ' play a startscene immediately (time = 0)
-        Dim firstTransition As New PlayTransitionObject(firstTrans, 0, Me)
+        Dim firstTransition As New TransitionQueueObject(firstTrans, 0, Me)
         Dim mapChange As New MapChangeObject(map, mapInsertion,  StandardTransitionTime, Me,CenterToPlayer := False)
 
         firstTransition.next = mapChange
@@ -414,47 +323,21 @@ Public Class GameControl
     End Function
 
 
-    Public Class MarioPipeAnimationObject
-        Inherits QueueObject
-        public player as EntPlayer
-        public direction as PipeType
-        public goingin as boolean
-        Sub New(player As EntPlayer, direction As PipeType, goingIn as Boolean, control As GameControl, Optional [next] as QueueObject = Nothing, Optional time As integer = standardPipeTime)
-            MyBase.New(time, control, [next])
-            Me.player = player
-            Me.direction = direction
-            me.goingin = goingIn
-            
-        End Sub
-
-        Public Overrides Sub Setup()
-            Select Case direction
-                Case PipeType.Vertical
-                    player.BeginVerticalPipe(goingIn, time)
-                Case PipeType.Horizontal
-                    player.BeginHorizontalPipe(goingIn, time)
-                case Else
-                    throw new Exception()
-                
-                  
-            End Select
-            
-        End Sub
-
-        Protected Overrides Sub TimerFinished()
-
-        End Sub
-    End Class
 End Class
+
 Public Enum PipeType
     Vertical
     Horizontal
 End Enum
+
 Public Class KeyHandler
     Public Shared MoveRight As Boolean
     Public Shared MoveLeft As Boolean
     Public Shared MoveUp As Boolean
     Public Shared MoveDown As Boolean
+    Public Shared Escape as boolean
+    Public Shared keysPressed As New Dictionary(Of Keys, Boolean)
+
     Private Sub KeyHelp(key As Keys, vset As Boolean)
         If key = Keys.Right Or key = Keys.D Then
             MoveRight = vset
@@ -471,7 +354,10 @@ Public Class KeyHandler
         If key = Keys.Down Or key = Keys.S Then
             MoveDown = vset
         End If
-
+        if key = Keys.Escape
+            Escape = vset
+        End If
+        keysPressed(key) = vset
     End Sub
 
     Public Sub KeyDown(key As Keys)

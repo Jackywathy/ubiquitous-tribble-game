@@ -10,7 +10,7 @@
     Public Overrides Property moveSpeed As Velocity = New Velocity(1, 0)
     Public Overrides Property maxVeloc As Velocity = New Velocity(2, -15)
 
-    Public Sub New(location As Point, mapScene As MapScene)
+    Public Sub New(location As Point,theme as RenderTheme,  mapScene As MapScene)
         MyBase.New(32, 32, location, Sprites.goomba, mapScene)
     End Sub
 
@@ -21,8 +21,8 @@
     ''' </summary>
     ''' <param name="params"></param>
     ''' <param name="mapScene"></param>
-    Public Sub New(params As Object(), mapScene As MapScene)
-        Me.New(New Point(params(0)*32, params(1)*32), mapScene)
+    Public Sub New(params As Object(), theme as RenderTheme, mapScene As MapScene)
+        Me.New(New Point(params(0)*32, params(1)*32),theme, mapScene)
     End Sub
 
     Public Overrides Sub Animate()

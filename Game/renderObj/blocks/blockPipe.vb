@@ -5,12 +5,12 @@
     Private pipeBottom As BlockPipeBottom
 
     ' how many pixels on each side that is offset
-    Public Const PipeBottomOffset = 4
+    Public Const PipeBottomOffset = 2
     Public Const Width = GameImage.StandardWidth * 2
 
 
 
-    Public Sub New(height As Integer, location As Point, mapScene As MapScene)
+    Public Sub New(height As Integer, location As Point, theme as RenderTheme,  mapScene As MapScene)
         If height < 64
             Throw New Exception("Height must be >= 64 for pipes")
         End If
@@ -38,9 +38,9 @@
     ''' </summary>
     ''' <param name="params"></param>
     ''' <param name="mapScene"></param>
-    Public Sub New(params As Object(), mapScene As MapScene)
+    Public Sub New(params As Object(),theme as RenderTheme, mapScene As MapScene)
 
-        Me.New(params(2) * 32, New Point(params(0) * 32, params(1) * 32), mapScene)
+        Me.New(params(2) * 32, New Point(params(0) * 32, params(1) * 32), theme, mapScene)
         Dim action As PipeContents = Helper.StrToEnum(Of PipeContents)(params(3))
         Select Case params.Length
             Case 4
@@ -89,8 +89,8 @@
             If Helper.IsPlayer(sender) And KeyHandler.MoveDown Then
                 Dim player As EntPlayer = sender
 
-                If Not player.IsInPipe and Action = PipeContents.Map And Not MyScene.IsTransitioning  Then
-                    player.EnterVerticalPipe(Me.Map, Me.MapLocation)
+                If Not player.IsInPipe And player.isGrounded and Action = PipeContents.Map And Not MyScene.IsTransitioning  Then
+                    player.EnterVerticalPipeExitNone(Me.Map, Me.MapLocation, Me.Location)
                 End If
             End If
         End Sub
