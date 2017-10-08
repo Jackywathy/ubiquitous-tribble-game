@@ -28,8 +28,11 @@ Public NotInheritable Class MusicPlayer
     ''' A wrapper allowing sound to be player 
     ''' </summary>
     ''' <param name="name">Resource name of mp3 file</param>
-    Public Sub New(name As String, Optional volume As Single = 1.0F)
+    Public Sub New(name As String, Optional volume As Single = 1.0F, optional repeat as Boolean=False)
         Me.New(New MemoryStream(CType(My.Resources.ResourceManager.GetObject(name), Byte())), volume)
+        if repeat
+            enableLoop
+        End If
     End Sub
 
 
@@ -38,7 +41,8 @@ Public NotInheritable Class MusicPlayer
     ''' </summary>
     ''' <param name="enable"></param>
     Public Sub EnableLoop(Optional enable As Boolean = True)
-        AddHandler player.PlaybackStopped, AddressOf Repeat_audio
+        
+            AddHandler player.PlaybackStopped, AddressOf Repeat_audio
     End Sub
 
     Public Sub New(stream As Stream, Optional volume As Single = 1.0F)
@@ -61,15 +65,18 @@ Public NotInheritable Class MusicPlayer
             ' go to beginning
             '
             player.Play()
+        userStopped = false
     End Sub
 
     ''' <summary>
     ''' Stops playback - [stop] = stop cuz stop is a keyword in vb.Net for some reason
     ''' </summary>
     Public Sub [Stop]()
-            player.Stop()
+        player.Stop()
+        userStopped = True
     End Sub
-
+    
+    Private userStopped As boolean = False
 
     Public Sub PlayBackground()
         if BackgroundPlayer Isnot me
@@ -80,6 +87,8 @@ Public NotInheritable Class MusicPlayer
             backgroundPlayer.Play()
         End if
     End Sub
+
+   
 
 
     ''' <summary>
@@ -103,7 +112,9 @@ Public NotInheritable Class MusicPlayer
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub Repeat_audio(sender As Object, e As EventArgs)
-        Me.Play()
+        if not userStopped
+            Me.Play()
+        End if
     End Sub
 
     Public Property basevolume As double
@@ -117,13 +128,15 @@ Public NotInheritable Class MusicPlayer
 End Class
 
 Public NotInheritable Class Sounds
-    Public Shared Property Jump As New MusicPlayer("jump", 0.6)
-    Public Shared Property CoinPickup As New MusicPlayer("coin_pickup", 10)
-    Public Shared Property MushroomPickup As New MusicPlayer("mushroom_pickup")
-    Public Shared Property BrickSmash As New MusicPlayer("brick_smash", 10)
-    Public Shared Property PlayerDead As New MusicPlayer("player_dead")
-    Public Shared Property Warp As New MusicPlayer("warp")
+    Public Shared Property Jump As New MusicPlayer("jump", 0.1)
+    Public Shared Property CoinPickup As New MusicPlayer("coin_pickup", 1)
+    Public Shared Property MushroomPickup As New MusicPlayer("mushroom_pickup", 0.2)
+    Public Shared Property BrickSmash As New MusicPlayer("brick_smash", 1.5)
+    Public Shared Property PlayerDead As New MusicPlayer("player_dead", 0.5)
+    Public Shared Property Warp As New MusicPlayer("warp", 0.8)
     Public Shared Property _1_Up As New MusicPlayer("_1_up")
+    Public Shared Property Bump As new MusicPlayer("bump")
+    Public Shared Property PowerupAppear As new MusicPlayer("appear")
     Private Sub New
     End Sub
 
@@ -148,9 +161,9 @@ End Class
 ''' Each will return a new instance of a musicplayer
 ''' </summary>
 Public NotInheritable Class BackgroundMusic
-    Public Shared ReadOnly Property GroundTheme As New MusicPlayer("ground_theme")
+    Public Shared ReadOnly Property GroundTheme As New MusicPlayer("ground_theme", 0.2, true)
 
-    Public Shared ReadOnly Property UnderGroundTheme As New MusicPlayer("cave_theme")
+    Public Shared ReadOnly Property UnderGroundTheme As New MusicPlayer("cave_theme", 0.5, true)
 
     Public Shared Sub SetVolume(multipler as double)
         Sounds.SetVolume(multipler)

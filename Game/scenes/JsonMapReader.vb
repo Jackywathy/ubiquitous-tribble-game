@@ -69,6 +69,7 @@ Public NotInheritable Class JsonMapReader
         Select Case mapObject.Theme
             Case RenderTheme.Overworld
                 outScene.BackgroundMusic = BackgroundMusic.GroundTheme
+                GenerateOverworldDecoration(outScene)
             Case RenderTheme.Underground
                 outScene.BackgroundMusic = BackgroundMusic.UndergroundTheme
             Case Else
@@ -79,6 +80,24 @@ Public NotInheritable Class JsonMapReader
         Return outScene
 
     End Function
+
+    Public Shared Sub GenerateOverworldDecoration(outScene as MapScene)
+        ' generate 1 cloud per 10 blocks
+        ' start 1/3 down
+        Dim nBlocks as integer = outScene.width / 32 
+
+        Dim rLength = outScene.width / 10
+        dim nClouds = nBlocks / 10
+
+        for i=0 to nClouds
+            dim start = rLength * i
+            dim _end = rLength * (i+1)
+            Dim decoration = StaticDecoration.GetRandomCloud(New Point(Helper.Random(start, _end), Helper.Random(ScreenGridHeight/3*2, ScreenGridHeight)), outScene)
+            decoration.AddSelfToScene()
+        Next
+
+
+    End Sub
 
 
     Public Class InvalidJsonException
@@ -201,7 +220,11 @@ Public NotInheritable Class JsonMapReader
             Case RenderTypes.BlockInvisCoin
                 AssertLength("BlockInvisCoin", 2, params)
                 out = New BlockInvisCoin(params,theme, scene)
-           
+            
+
+            Case RenderTypes.EntCoin
+                AssertLength("EntCoin", 2, params)
+                out = New EntCoin(params, theme, scene)
             Case Else
 
                 Throw New Exception(String.Format("No object with name {0}", name))

@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{40DC8744-2CB8-4E68-8F32-4CC57BFEE5E5}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <StartupObject>WinGame.TitleScreen</StartupObject>
+    <StartupObject>Sub Main</StartupObject>
     <RootNamespace>WinGame</RootNamespace>
     <AssemblyName>MarioGame</AssemblyName>
     <FileAlignment>512</FileAlignment>
@@ -142,7 +142,6 @@
     <Compile Include="renderObj\entities\EntStar.vb" />
     <Compile Include="fonts\FontController.vb" />
     <Compile Include="renderObj\static\StaticHud.vb" />
-    <Compile Include="renderObj\static\StaticOverlay.vb" />
     <Compile Include="scenes\ISceneAddable.vb" />
     <Compile Include="scenes\JsonMapReader.vb" />
     <Compile Include="sounds\MusicPlayer.vb" />
@@ -341,7 +340,9 @@
     <None Include="Resources\icon.ico" />
     <Content Include="sounds\background_music\cave_theme.mp3" />
     <Content Include="sounds\sfx\1_up.mp3" />
+    <Content Include="sounds\sfx\appear.mp3" />
     <Content Include="sounds\sfx\brick_smash.mp3" />
+    <Content Include="sounds\sfx\bump.mp3" />
     <Content Include="sounds\sfx\mushroom_pickup.mp3" />
     <Content Include="sounds\sfx\player_dead.mp3" />
     <Content Include="sounds\sfx\warp.mp3" />

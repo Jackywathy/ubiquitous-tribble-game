@@ -3,17 +3,30 @@
 ''' GameControl, handles updating and rendering the screen
 ''' </summary>
 <ComponentModel.DesignerCategory("")>
-Public Class FormBootStrap
+Public Class GameForm
     Inherits Form
 
-    Public WithEvents game As New GameControl
+    Public WithEvents game As GameControl
 
-    Sub New
-        InitalizeComponent()
+    
+    Public Sub EnableTimer
+        game.GameLoop.Enabled = true
     End Sub
 
-    Public Sub InitalizeComponent()
+    Public Sub DisableTimer
+        game.GameLoop.Enabled = false
+    End Sub
+
+    Sub New(Optional enabled As boolean = True)
+        InitalizeComponent(enabled)
+    End Sub
+
+    
+
+    Public Sub InitalizeComponent(Optional enabled As Boolean = True)
         ' default DPI
+        Me.SuspendLayout()
+
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
@@ -27,26 +40,37 @@ Public Class FormBootStrap
 
         Me.Text = "Mario123"
 
+        game = New GameControl(enabled)
         ' set the gamecontrol
         game.Location = New Point(0,0)
         UpdateGameSize()
         Me.Controls.Add(game)
+        Me.ResumeLayout()
     End Sub
 
     ''' <summary>
     ''' Updates the game size, taking into account the size of the X thing in the top
     ''' </summary>
     Private Sub UpdateGameSize()
-        If me.FormBorderStyle = FormBorderStyle.None
-            game.Height = height
-        Else
-            game.Height = height-30
-        End If
+        if game isnot nothing
+            If me.FormBorderStyle = FormBorderStyle.None
+                game.Height = height
+            Else
+                game.Height = height-30
+            End If
             
-        game.Width = width
+            game.Width = width
+        End if
     End Sub
 
     Private Sub FormBootStrap_StyleChanged(sender As Object, e As EventArgs) Handles Me.SizeChanged
         UpdateGameSize()
+    End Sub
+
+    Private Sub GameForm_Closed(sender As Object, e As EventArgs) Handles Me.Closed
+        if musicplayer.BackgroundPlayer IsNot nothing
+            MusicPlayer.BackgroundPlayer.Stop()
+        End if
+        DisableTimer()
     End Sub
 End Class

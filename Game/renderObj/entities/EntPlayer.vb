@@ -172,7 +172,7 @@ Public Class EntPlayer
         point.Y = BottomToTop(point.Y)
         Dim enterPipe as New MarioGoinDownPipeAnimationQueue(Me, PipeType.Horizontal,True, MyScene.Parent)
 
-        Dim exitPipe As New MarioGoinDownPipeAnimationQueue(Me, PipeType.Vertical, False,  MyScene.Parent)
+        Dim exitPipe As New MarioGoinDownPipeAnimationQueue(Me, PipeType.Vertical, False,  MyScene.Parent, stopmusic := False)
 
         Dim mapChange = MyScene.Parent.QueueMapChangeWithCircleAnimation(map, insertion, centerToplayer := True,animationLocation:=point, before := enterPipe)
         mapChange.next = exitPipe
@@ -191,6 +191,7 @@ Public Class EntPlayer
         Dim enterPipe as New MarioGoinDownPipeAnimationQueue(Me, PipeType.Vertical, True, MyScene.Parent)
 
         Dim mapChange = MyScene.Parent.QueueMapChangeWithCircleAnimation(map, insertion, centerToplayer := False, animationLocation:=point, before := enterPipe)
+        
     End Sub
 
     Friend Sub BeginHorizontalPipe(goingIn As Boolean, Optional time As Integer = StandardPipeTime)

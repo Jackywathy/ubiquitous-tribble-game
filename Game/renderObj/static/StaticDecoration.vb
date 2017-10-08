@@ -5,6 +5,10 @@
         MyBase.New(width, height, location, image, scene)
     End Sub
 
+    Public Sub New(location as point, image as image, scene as mapscene)
+        Me.New(image.width, image.height, location, image, scene)
+    End Sub
+
     ' images
     Shared ReadOnly Property CloudSmall As Image = My.Resources.cloud_small
     Shared ReadOnly Property CloudBig As Image = My.Resources.cloud_big
@@ -16,8 +20,24 @@
     Shared ReadOnly Property FireFlower As Image = My.Resources.f_flower_1
 
 
+    Friend Shared Function GetRandomCloud(point As Point, scene as mapscene) As StaticDecoration
+        Dim image as image
+        Select Case Helper.Random(0, 1)
+            Case 0
+                image = CloudSmall
+            Case 1
+                image = CloudBig
+            Case Else
+                throw new exception()
+        End Select
+        Return new StaticDecoration(point, image, scene)
+    End Function
+
+
     Public Overrides Sub AddSelfToScene()
         MyScene.AddStatic()
         ' oWo whats this?
     End Sub
+
+    
 End Class

@@ -43,7 +43,7 @@ Public Class GameControl
         MyBase.OnPaint(e)
         Dim g = e.Graphics
         g.InterpolationMode = InterpolationMode.NearestNeighbor
-
+        
         CurrentScene.RenderScene(g)
 
 
@@ -71,28 +71,32 @@ Public Class GameControl
     End Sub
 
 
+
     ''' <summary>
     ''' Constructor for <see cref="GameControl"/>
     ''' </summary>
-    Sub New()
+    Sub New(Optional enabled As boolean = True)
         InitalizeComponent()
         ' enable double buffering and custom paint
+        
         Randomize()
 
         allMapScenes = LoadScenes()
-        RunScene(PlayerStartScreen, True)
-        QueueMapChangeWithStartScene(PlayerStartScreen, Nothing)
+
+        RunScene(MapEnum.None, True)
+        
 
 
         ' only start loop after init has finished
-        GameLoop.Enabled = True
+        GameLoop.Enabled = enabled
     End Sub
+
 
     ''' <summary>
     ''' Holds the currently loaded scene
     ''' </summary>
     ''' <returns></returns>
-    Private Property CurrentScene As BaseScene
+    Private Property CurrentScene As BaseScene 
 
     ''' <summary>
     ''' Debug buffer - this is written to top right of mapScene each tick, only if IsDebug is set to False in Helper.vb
@@ -221,7 +225,11 @@ Public Class GameControl
             str = str.ToLower()
             Dim val = Helper.StrToEnum(Of MapEnum)(str)
 
-            If val = MapEnum.None Or val = MapEnum.StartScene
+            If val = MapEnum.None 
+                scenes.Add(MapEnum.None, MapScene.GetEmptyScene(Me))
+                Continue For
+            End If
+            If val = MapEnum.StartScene
                 Continue For
             End If
 
@@ -254,7 +262,9 @@ Public Class GameControl
                 ' center scene
                 mapScene.Center()
             End If
-            mapScene.BackgroundMusic.PlayBackground()
+            if mapScene.Background IsNot nothing
+                mapScene.BackgroundMusic.PlayBackground()
+            End if
         End If
         If isNewStage
             MapTimeCounter = 0
@@ -387,13 +397,7 @@ Public Class KeyHandler
 End Class
 
 
-Public Module MainProgram
-    Public Sub Main()
-        Application.EnableVisualStyles()
-        Application.SetCompatibleTextRenderingDefault(False)
-        Application.Run(New FormBootStrap)
-    End Sub
-End Module
+
 
 Public Enum MapEnum
     None

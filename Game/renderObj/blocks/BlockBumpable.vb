@@ -21,9 +21,11 @@
         MyBase.New(width, height, location, spriteSet, mapScene)
     End Sub
 
-
-    Friend Sub StartBump()
+    Friend Sub StartBump(Optional playsound As boolean = False)
         IsMoving = True
+        if playsound
+            Sounds.Bump.play()
+        End if
     End Sub
 
     Public Overridable Sub ResetBump()

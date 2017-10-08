@@ -56,8 +56,11 @@
             Me.IsSpawning = False
         End If
         MyScene.PrepareAdd(Me)
-
+        appear.play()
+        
     End Sub
+
+    Public Overridable Property appear as MusicPlayer = Sounds.PowerupAppear
 
     Sub New(width As Integer, height As Integer, location As Point, spriteSet As SpriteSet, mapScene As MapScene)
         MyBase.New(width, height, location, spriteSet, mapScene)
