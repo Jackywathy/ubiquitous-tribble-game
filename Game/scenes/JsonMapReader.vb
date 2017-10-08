@@ -61,10 +61,8 @@ Public NotInheritable Class JsonMapReader
         'outScene.SetPlayer(MapScene.PlayerId.Player1, player1)
         'player1.AddSelfToScene()
 
-
-
 #If DEBUG
-        DebugMapHook(outScene)
+        DebugJsonMap(outScene)
 #End If
 
         'TODO REPLACE with actual backgroundMusic reader

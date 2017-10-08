@@ -41,6 +41,39 @@ Public Class MapChangeObject
     End Sub
 End Class
 
+
+Public Class MarioGoinDownPipeAnimationQueue
+    Inherits QueueObject
+    public player as EntPlayer
+    public direction as PipeType
+    public goingin as boolean
+    Sub New(player As EntPlayer, direction As PipeType, goingIn as Boolean, control As GameControl, Optional [next] as QueueObject = Nothing, Optional time As integer = standardPipeTime)
+        MyBase.New(time, control, [next])
+        Me.player = player
+        Me.direction = direction
+        me.goingin = goingIn
+            
+    End Sub
+
+    Public Overrides Sub Setup()
+        Select Case direction
+            Case PipeType.Vertical
+                player.BeginVerticalPipe(goingIn, time)
+            Case PipeType.Horizontal
+                player.BeginHorizontalPipe(goingIn, time)
+            case Else
+                throw new Exception()
+                
+                  
+        End Select
+            
+    End Sub
+
+    Protected Overrides Sub TimerFinished()
+
+    End Sub
+End Class
+
 Public MustInherit Class QueueObject
     Friend time As integer
     Friend control as GameControl

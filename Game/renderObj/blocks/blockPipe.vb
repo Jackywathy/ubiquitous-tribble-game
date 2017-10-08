@@ -5,12 +5,12 @@
     Private pipeBottom As BlockPipeBottom
 
     ' how many pixels on each side that is offset
-    Public Const PipeBottomOffset = 4
+    Public Const PipeBottomOffset = 2
     Public Const Width = GameImage.StandardWidth * 2
 
 
 
-    Public Sub New(height As Integer, location As Point,theme as RenderTheme,  mapScene As MapScene)
+    Public Sub New(height As Integer, location As Point, theme as RenderTheme,  mapScene As MapScene)
         If height < 64
             Throw New Exception("Height must be >= 64 for pipes")
         End If

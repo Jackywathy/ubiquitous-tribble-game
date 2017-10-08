@@ -321,10 +321,29 @@ Public Class MapScene
         MapTime = time
     End Sub
 
+    Private escPressed as Boolean = False
+
     ''' <summary>
     ''' Handles/ticks input from the user
     ''' </summary>
     Public Overrides Sub HandleInput()
+        
+        ' if escape is pressed and this is the first press
+        If KeyHandler.Escape and not escPressed and not IsTransitioning 
+            escPressed = True
+            If not parent.OverlayActive
+                Parent.showOverlay
+            Else 
+                parent.hideoverlay
+            End If
+        End If
+
+        ' reset escPressed if key is no longer held
+        if escPressed
+            if Not Keyhandler.Escape
+                escPressed = False
+            End If
+        End If
 
         ' handle mouse evenst
         HandleMouse()
@@ -335,7 +354,10 @@ Public Class MapScene
     ''' </summary>
     Public Overrides Sub UpdateTick(ticksElapsed As Integer)
         ' Animate and update position of each entity
-        If exclusiveTime <> 0
+        if parent.OverlayActive
+            ' overlay is active, pause game
+            return
+        ElseIf exclusiveTime <> 0
             exclusiveItem.UpdateVeloc()
             exclusiveItem.UpdateLocation()
             exclusiveItem.Animate()
@@ -449,6 +471,11 @@ Public Class MapScene
             item.Render(g)
         Next
         GlobalFrameCount += 1
+
+        If parent.OverlayActive
+            ' add a shade of gray
+            g.FillRectangle(New SolidBrush(Color.FromArgb(192, 0,0,0)), 0, 0, ScreenGridWidth, ScreenGridHeight)
+        End If
     End Sub
 
    

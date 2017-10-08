@@ -170,9 +170,9 @@ Public Class EntPlayer
         InvinicibilityTimer = StandardPipeTime
         Dim point = MyScene.GetScreenLocation(Me)
         point.Y = BottomToTop(point.Y)
-        Dim enterPipe as New GameControl.MarioGoinDownPipeAnimationQueue(Me, PipeType.Horizontal,True, MyScene.Parent)
+        Dim enterPipe as New MarioGoinDownPipeAnimationQueue(Me, PipeType.Horizontal,True, MyScene.Parent)
 
-        Dim exitPipe As New GameControl.MarioGoinDownPipeAnimationQueue(Me, PipeType.Vertical, False,  MyScene.Parent)
+        Dim exitPipe As New MarioGoinDownPipeAnimationQueue(Me, PipeType.Vertical, False,  MyScene.Parent)
 
         Dim mapChange = MyScene.Parent.QueueMapChangeWithCircleAnimation(map, insertion, centerToplayer := True,animationLocation:=point, before := enterPipe)
         mapChange.next = exitPipe
@@ -188,7 +188,7 @@ Public Class EntPlayer
 
         Dim point = MyScene.GetScreenLocation(Me)
         point.Y = BottomToTop(point.Y)
-        Dim enterPipe as New GameControl.MarioGoinDownPipeAnimationQueue(Me, PipeType.Vertical, True, MyScene.Parent)
+        Dim enterPipe as New MarioGoinDownPipeAnimationQueue(Me, PipeType.Vertical, True, MyScene.Parent)
 
         Dim mapChange = MyScene.Parent.QueueMapChangeWithCircleAnimation(map, insertion, centerToplayer := False, animationLocation:=point, before := enterPipe)
     End Sub
@@ -345,7 +345,7 @@ Public Class EntPlayer
         Me.currentGroundObjects.Clear()
         Me.Width = StandardWidth
         Select Case state
-            Case PlayerStates.Big, PlayerStates.Fire, PlayerStates.Ice, 
+            Case PlayerStates.Big, PlayerStates.Fire, PlayerStates.Ice
                  Me.Height = StandardHeight * 2
             Case Else
                  Me.Height = StandardHeight

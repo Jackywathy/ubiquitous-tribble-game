@@ -25,8 +25,10 @@ Public Class GameControl
     Private Sub GameLoop_Tick(sender As Object, e As EventArgs) Handles GameLoop.Tick
         CurrentScene.HandleInput()
         CurrentScene.UpdateTick(MapTimeCounter)
-        ChangeQueue.UpdateTick()
-        MapTimeCounter += 1
+        if not OverlayActive
+            ChangeQueue.UpdateTick()
+            MapTimeCounter += 1
+        End if
 
         Me.Refresh()
     End Sub
@@ -50,7 +52,19 @@ Public Class GameControl
 
         DrawStringBuffer(g)
 #End If
+        
+    End Sub
 
+    Friend OverlayActive As Boolean = False
+
+    Public Sub ShowOverlay
+        OverlayActive = True
+        overlay.Show()
+    End Sub
+
+    Public Sub HideOverlay
+        OverlayActive = False
+        overlay.Hide()
     End Sub
 
 
@@ -92,6 +106,7 @@ Public Class GameControl
     ''' </summary>
     Private ReadOnly Property allMapScenes As Dictionary(Of MapEnum, MapScene)
 
+    Private overlay as MenuControl
     ''' <summary>
     ''' Initalize components inside
     ''' </summary>
@@ -101,6 +116,11 @@ Public Class GameControl
         SetStyle(ControlStyles.UserPaint, True)
         SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
         SetStyle(ControlStyles.AllPaintingInWmPaint, True)
+
+
+        overlay = new MenuControl(Me)
+        HideOverlay()
+        Me.Controls.Add(overlay)
     End Sub
 
     Public Sub DrawDebugStrings()
@@ -180,6 +200,7 @@ Public Class GameControl
 
     Private Sub MainGame_Resize(sender As Object, e As EventArgs) Handles MyBase.Resize
         keyControl.Reset()
+        overlay.ScaleToParent(Me.size)
     End Sub
 
     Private Sub MainGame_KeyDown(sender As Object, e As KeyEventArgs) Handles MyBase.KeyDown
@@ -239,7 +260,10 @@ Public Class GameControl
     Private Sub GameControl_SizeChanged(sender As Object, e As EventArgs) Handles Me.SizeChanged
         ScreenGridWidth = Width
         ScreenGridHeight = Height
+        overlay.ScaleToParent(me.Size)
     End Sub
+
+    
 
     
   
@@ -299,47 +323,21 @@ Public Class GameControl
     End Function
 
 
-    Public Class MarioGoinDownPipeAnimationQueue
-        Inherits QueueObject
-        public player as EntPlayer
-        public direction as PipeType
-        public goingin as boolean
-        Sub New(player As EntPlayer, direction As PipeType, goingIn as Boolean, control As GameControl, Optional [next] as QueueObject = Nothing, Optional time As integer = standardPipeTime)
-            MyBase.New(time, control, [next])
-            Me.player = player
-            Me.direction = direction
-            me.goingin = goingIn
-            
-        End Sub
-
-        Public Overrides Sub Setup()
-            Select Case direction
-                Case PipeType.Vertical
-                    player.BeginVerticalPipe(goingIn, time)
-                Case PipeType.Horizontal
-                    player.BeginHorizontalPipe(goingIn, time)
-                case Else
-                    throw new Exception()
-                
-                  
-            End Select
-            
-        End Sub
-
-        Protected Overrides Sub TimerFinished()
-
-        End Sub
-    End Class
 End Class
+
 Public Enum PipeType
     Vertical
     Horizontal
 End Enum
+
 Public Class KeyHandler
     Public Shared MoveRight As Boolean
     Public Shared MoveLeft As Boolean
     Public Shared MoveUp As Boolean
     Public Shared MoveDown As Boolean
+    Public Shared Escape as boolean
+    Public Shared keysPressed As New Dictionary(Of Keys, Boolean)
+
     Private Sub KeyHelp(key As Keys, vset As Boolean)
         If key = Keys.Right Or key = Keys.D Then
             MoveRight = vset
@@ -356,7 +354,10 @@ Public Class KeyHandler
         If key = Keys.Down Or key = Keys.S Then
             MoveDown = vset
         End If
-
+        if key = Keys.Escape
+            Escape = vset
+        End If
+        keysPressed(key) = vset
     End Sub
 
     Public Sub KeyDown(key As Keys)
