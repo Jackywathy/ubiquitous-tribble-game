@@ -116,6 +116,12 @@
     <Compile Include="main\MenuControl.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="main\StartMenu.Designer.vb">
+      <DependentUpon>StartMenu.vb</DependentUpon>
+    </Compile>
+    <Compile Include="main\StartMenu.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="main\TitleScreen.Designer.vb">
       <DependentUpon>TitleScreen.vb</DependentUpon>
     </Compile>
@@ -202,6 +208,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="main\MenuControl.resx">
       <DependentUpon>MenuControl.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="main\StartMenu.resx">
+      <DependentUpon>StartMenu.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="main\TitleScreen.resx">
       <DependentUpon>TitleScreen.vb</DependentUpon>
