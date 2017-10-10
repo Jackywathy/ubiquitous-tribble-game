@@ -19,6 +19,19 @@
     Shared ReadOnly Property Mushroom As Image = My.Resources.mushroom
     Shared ReadOnly Property FireFlower As Image = My.Resources.f_flower_1
 
+    Friend Shared Function GetRandomBrush(point As Point, scene As MapScene) As StaticDecoration
+        Dim image As Image
+        Select Case Helper.Random(0, 1)
+            Case 0
+                image = HillSmall
+            Case 1
+                image = HillBig
+            Case Else
+                Throw New Exception()
+        End Select
+        Return New StaticDecoration(point, image, scene)
+    End Function
+
 
     Friend Shared Function GetRandomCloud(point As Point, scene as mapscene) As StaticDecoration
         Dim image as image

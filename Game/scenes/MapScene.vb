@@ -1,5 +1,4 @@
-﻿Imports WinGame
-''' <summary>
+﻿''' <summary>
 ''' Scene that represents a map, (probably loaded from json using <see cref="JsonMapReader.ReadMapFromResource"/>
 ''' </summary>
 Public Class MapScene
@@ -172,10 +171,13 @@ Public Class MapScene
             AllHitboxItems.Add(item)
         Next
     End Sub
+    Public IsFinished as boolean
 
     Friend Sub LevelFinished()
-        Parent.QueueMapChangeWithCircleAnimation(NextLevel, Nothing, False,30)
+        IsFinished = True
+        Parent.QueueFlagLevelChange(Me.NextLevel, Nothing, Player1, time:=StandardTransitionTime)
     End Sub
+
 
     Sub AddScrollingImage(ByVal ParamArray args() As ScrollAlongImage)
         For Each item As ScrollAlongImage In args
@@ -430,8 +432,9 @@ Public Class MapScene
             Dim map = Helper.StrToEnum(Of MapEnum)(Me.mapName)
             Parent.ReloadLevel(map)
             Parent.QueueMapChangeWithStartScene(map, Nothing)
-            player1.ResetPlayer()
-            player1.Location = new Point(0, 128)
+
+            Player1.ResetPlayer()
+            Player1.Location = new Point(0, 128)
         End If
     End Sub
 

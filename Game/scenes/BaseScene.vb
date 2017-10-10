@@ -258,7 +258,7 @@ Public Class TransitionObject
     Public color As Brush
     Public location As Point
 
-    Sub New(ttype As TransitionType, tdir As TransitionDirection, Optional time As Integer = StandardTransitionTime, Optional fillColor As Brush = Nothing, Optional location As Point? = Nothing)
+    Sub New(ttype As TransitionType, tdir As TransitionDirection, Optional time As Integer = StandardTransitionTime, Optional fillColor As Brush = Nothing, ByRef Optional location As Point? = Nothing)
         Me.ttype = ttype
         Me.tdir = tdir
         Me.time = time

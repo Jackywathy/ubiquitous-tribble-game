@@ -13,6 +13,7 @@ Public Class EntPlayer
     Inherits Entity
     Implements ISceneAddable
 
+    Public isfrozen As Boolean
 
     ''' <summary>
     ''' Time invulnerable in ticks (60 ticks / second)
@@ -315,25 +316,25 @@ Public Class EntPlayer
     Protected Class HorizontalAnimator
         Inherits MarioAnimator
 
-       
+
         Public Sub New(renderImage As Image, goingIn As Boolean, startLocation As point)
             MyBase.New(renderImage, goingIn, startLocation)
         End Sub
 
         Public Overrides Function GetSlice(percent As Double) As ImageSlice
-            If percent > 1 Or percent < 0
+            If percent > 1 Or percent < 0 Then
                 Throw New Exception(String.Format("Percent, {0} out of bounds", percent))
             End If
 
-            If goingIn
-                percent = 1- percent
+            If goingIn Then
+                percent = 1 - percent
             End If
 
             Dim width = percent * image.width
             Dim bottomLeft = New Point(0, 0)
-            
-            If width > 0
-                location.X = startLocation.X + StandardWidth * (1-percent)
+
+            If width > 0 Then
+                location.X = startLocation.X + StandardWidth * (1 - percent)
                 Return New ImageSlice(Crop(Me.image, bottomLeft, width, image.Height), location)
             Else
                 Return New ImageSlice(Nothing, location, False)
@@ -341,18 +342,27 @@ Public Class EntPlayer
         End Function
     End Class
 
+    ' called when goto new level without dying
     Friend Sub RefreshPlayerVars()
         Me.isGrounded = False
         Me.currentGroundObjects.Clear()
         Me.Width = StandardWidth
         Me.OnFlag = False
-        Select Case state
+        Select Case State
             Case PlayerStates.Big, PlayerStates.Fire, PlayerStates.Ice
-                 Me.Height = StandardHeight * 2
+                Me.Height = StandardHeight * 2
             Case Else
-                 Me.Height = StandardHeight
-
+                Me.Height = StandardHeight
         End Select
+    End Sub
+
+    ' called to completely reset the player
+    Friend Sub ResetPlayer()
+        Me.State = PlayerStates.Small
+        Me.isDead = False
+        Me.OnFlag = False
+        Me.isfrozen = False
+        RefreshPlayerVars()
     End Sub
 
     Public NumFireballs As Integer = 0
@@ -430,11 +440,7 @@ Public Class EntPlayer
         Score += PlayerPoints.Coin
     End Sub
 
-    Friend Sub ResetPlayer()
-        Me.State = PlayerStates.Small
-        Me.isDead = false
-        Me.OnFlag = False
-    End Sub
+
 
     ''' <summary>
     ''' DO NOT USE - Instead set player.state to Dead

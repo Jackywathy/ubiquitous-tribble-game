@@ -89,11 +89,19 @@ Public NotInheritable Class JsonMapReader
         Dim rLength = outScene.width / 10
         dim nClouds = nBlocks / 10
 
-        for i=0 to nClouds
-            dim start = rLength * i
-            dim _end = rLength * (i+1)
-            Dim decoration = StaticDecoration.GetRandomCloud(New Point(Helper.Random(start, _end), Helper.Random(ScreenGridHeight/3*2, ScreenGridHeight)), outScene)
+        For i = 0 To nClouds
+            Dim start = rLength * i
+            Dim _end = rLength * (i + 1)
+            Dim decoration = StaticDecoration.GetRandomCloud(New Point(Helper.Random(start, _end), Helper.Random(ScreenGridHeight / 3 * 2, ScreenGridHeight)), outScene)
             decoration.AddSelfToScene()
+        Next
+
+        For Each item In outScene.AllHitboxItems
+            If item.GetType() = GetType(GroundPlatform) Then
+                Dim ground As GroundPlatform = item
+                Dim decoration = StaticDecoration.GetRandomBrush(New Point(Helper.Random(item.X, item.X + item.Width), item.Y + item.Height), outScene)
+                decoration.AddSelfToscene()
+            End If
         Next
 
 

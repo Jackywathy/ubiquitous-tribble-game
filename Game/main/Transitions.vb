@@ -2,12 +2,12 @@
      Inherits QueueObject
      Friend transition as TransitionObject
 
-     Sub New(transition As TransitionObject, time As Integer, control As GameControl, Optional [next] as QueueObject = Nothing)
-         MyBase.New(time, control, [next])
-         me.transition = transition
-     End Sub
+    Sub New(transition As TransitionObject, time As Integer, control As GameControl, Optional [next] As QueueObject = Nothing)
+        MyBase.New(time, control, [next])
+        Me.transition = transition
+    End Sub
 
-     Protected Overrides Sub TimerFinished()
+    Protected Overrides Sub TimerFinished()
          control.GetCurrentScene().StartTransition(transition)
      End Sub
 
@@ -20,24 +20,29 @@ Public Class MapChangeObject
     Inherits QueueObject
     Friend map as MapEnum
     Private insertion as point?
-    Private isNewStage as boolean
-    Private centerToplayer as boolean
-    Sub New(map As MapEnum, insertion As Point?, time As Integer, control As GameControl, Optional [next] as QueueObject = Nothing, Optional IsNewStage As Boolean=False, optional CenterToPlayer As boolean = True)
+    Private isNewStage as Boolean
+    Private centerToplayer As Boolean
+    Private reset As Boolean
+    Sub New(map As MapEnum, insertion As Point?, time As Integer, control As GameControl, Optional [next] As QueueObject = Nothing, Optional IsNewStage As Boolean = False, Optional CenterToPlayer As Boolean = True, Optional reset As Boolean = False)
         MyBase.New(time, control, [next])
         Me.map = map
         Me.insertion = insertion
         Me.isNewStage = IsNewStage
         Me.centerToplayer = CenterToPlayer
+        Me.reset = reset
     End Sub
 
     Protected Overrides Sub TimerFinished()
-        control.RunScene(map, isNewStage, insertion)
-        If centerToplayer
-            Dim mapScene as MapScene = control.GetCurrentScene()
-            mapScene.CenterToPlayer()
-               
+        If reset Then
+            control.ReloadLevel(Helper.StrToEnum(Of MapEnum)(control.GetCurrentScene().mapName))
         End If
-          
+        control.RunScene(map, isNewStage, insertion)
+        If centerToplayer Then
+            Dim mapScene As MapScene = control.GetCurrentScene()
+            mapScene.CenterToPlayer()
+        End If
+
+
     End Sub
 End Class
 
@@ -131,24 +136,44 @@ Public Class ChangeQueueWrapper
     End Sub
 
     Public Sub Remove(item As QueueObject)
-        If Not queue.Remove(item)
-            Throw new Exception("cannot remove item")
+        If Not queue.Remove(item) Then
+            Throw New Exception("cannot remove item")
         End If
     End Sub
 
-    Public Sub UpdateTick
-        For c=queue.Count -1 To 0 Step -1
+    Public Sub UpdateTick()
+        For c = queue.Count - 1 To 0 Step -1
             Dim item = queue(c)
             item.UpdateTick()
-            if item.IsFinished
+            If item.IsFinished Then
                 Remove(item)
             End If
         Next
     End Sub
 
-    Public Readonly Property IsEmpty As Boolean
+    Public ReadOnly Property IsEmpty As Boolean
         Get
             Return queue.Count = 0
         End Get
     End Property
+End Class
+
+
+
+Public Class WaitQueue
+    Inherits QueueObject
+    Private player As EntPlayer
+    Sub New(player As EntPlayer, control As GameControl, Optional [next] As QueueObject = Nothing, Optional time As Integer = StandardPipeTime)
+        MyBase.New(time, control, [next])
+        Me.player = player
+    End Sub
+
+    Public Overrides Sub Setup()
+
+    End Sub
+
+    Protected Overrides Sub TimerFinished()
+        player.IsFrozen = True
+    End Sub
+
 End Class
