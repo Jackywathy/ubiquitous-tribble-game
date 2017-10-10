@@ -10,7 +10,7 @@
         levelSelect.Show()
     End Sub
 
-    Private levelSelect as New LevelSelect
+    Private levelSelect as  LevelSelect
 
 
     Private Sub TitleScreen_WillClose(sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
@@ -18,12 +18,14 @@
             e.Cancel = True
         End If
     End Sub
+    
+    Public Sub StartGame(map As MapEnum)
+        Game.StartGame(map)
+        Game.ShowDialog()
+    End Sub
 
     Private Sub StartButton_Click(sender As Object, e As EventArgs) Handles StartButton.Click
-        Game.StartGame(MapEnum.map1_1above)
-        
-        Game.ShowDialog()
-        
+        StartGame(MapEnum.map1_1above)
     End Sub
 
 
@@ -34,7 +36,7 @@
 
         ' Add any initialization after the InitializeComponent() call.
         game = New GameForm(False)
-        levelSelect = New LevelSelect(me.Width, me.Height)
+        levelSelect = New LevelSelect(Me)
         Me.Controls.Add(levelSelect)
         levelSelect.BringToFront()
         levelSelect.Hide()

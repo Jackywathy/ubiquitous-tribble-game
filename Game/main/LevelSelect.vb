@@ -7,10 +7,13 @@
     Public Sub RefreshBox
         MapList.Items.Clear()
        For each item in LoadableMaps
-            MapList.Items.Add(item.Key)
+            MapList.Items.Add(New MapDescriptor(item.value, item.key))
        Next
     End Sub
-    Sub New(optional width as Integer? = Nothing, Optional height As integer? = Nothing)
+
+    Private form as TitleScreen
+
+    Sub New(parent As TitleScreen)
         ' This call is required by the designer.
         InitializeComponent()
 
@@ -19,15 +22,26 @@
 
         ' Add any initialization after the InitializeComponent() call.
         RefreshBox()
+        MapList.Font = New Font(NES, 10, FontStyle.Bold)
+        MapList.SelectedIndex = 0
+        form = parent
     End Sub
     Private Sub LevelSelect_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
     End Sub
+
+    Private Sub ReturnButton_Click(sender As Object, e As EventArgs) Handles ReturnButton.Click
+        Me.Hide()
+    End Sub
+
+    Private Sub StartButton_Click(sender As Object, e As EventArgs) Handles StartButton.Click
+        form.StartGame(MapList.selectedItem.map)
+    End Sub
 End Class
 
 Class MapDescriptor
-    Private name as String
-    Private map As mapEnum
+    Public Property name as String
+    Public Property map As mapEnum
     Sub New(map As MapEnum, name As String)
         me.map = map
         Me.name = name
@@ -36,4 +50,6 @@ Class MapDescriptor
     Public Overrides Function ToString() As String
         Return name
     End Function
+
+    
 End Class
