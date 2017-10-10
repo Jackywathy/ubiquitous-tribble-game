@@ -83,7 +83,7 @@ Public Class GameForm
 
     Private Sub GameForm_willclose(sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
         if askQuit
-            
+            game.ShowOverlay()
             If MessageBox.Show("Are you sure you want to exit this level?", "Confirm exit", MessageBoxButtons.YesNo) <> DialogResult.Yes Then
                 e.Cancel = True
             End If

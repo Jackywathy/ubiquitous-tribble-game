@@ -111,6 +111,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="helper\RenderOBjectHolder.vb" />
     <Compile Include="main\GameControl.vb" />
     <Compile Include="main\GameForm.vb" />
     <Compile Include="main\MenuControl.vb">
@@ -148,6 +149,7 @@
     <Compile Include="renderObj\entities\EntStar.vb" />
     <Compile Include="fonts\FontController.vb" />
     <Compile Include="renderObj\static\StaticHud.vb" />
+    <Compile Include="scenes\IScene.vb" />
     <Compile Include="scenes\ISceneAddable.vb" />
     <Compile Include="scenes\JsonMapReader.vb" />
     <Compile Include="sounds\MusicPlayer.vb" />
@@ -229,6 +231,8 @@
     <Resource Include="maps\map1_1under.json" />
     <Resource Include="maps\map_startmap.json" />
     <Resource Include="maps\map1_1above.json" />
+    <None Include="maps\map1_2above.json" />
+    <None Include="maps\map1_2below.json" />
     <None Include="My Project\app.manifest">
       <SubType>Designer</SubType>
     </None>

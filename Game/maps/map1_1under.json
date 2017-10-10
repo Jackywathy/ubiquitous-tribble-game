@@ -221,14 +221,14 @@
 
     ] 
   },
-  "background": "#000000",
-  "default_entry": [
+  "BackgroundColor": "#000000",
+  "DefaultEntry": [
     64,
     384
   ],
-  "width": 420,
-  "height": 544,
+  "width": 28,
+  "height": 17,
   "MapTime": 300,
   "theme": "underground",
-  "NextLevel" :  "None" 
+  "NextLevel": "None"
 }

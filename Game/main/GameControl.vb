@@ -1,5 +1,4 @@
 ﻿Imports System.Drawing.Drawing2D
-Imports WinGame
 
 ''' <summary>
 ''' This control has the entire game in it!
@@ -26,12 +25,12 @@ Public Class GameControl
     ''' <param name="e"></param>
     Private Sub GameLoop_Tick(sender As Object, e As EventArgs) Handles GameLoop.Tick
         CurrentScene.HandleInput()
-        CurrentScene.UpdateTick(MapTimeCounter)
+       CurrentScene.UpdateTick(MapTimeCounter)  
         If Not OverlayActive
             ChangeQueue.UpdateTick()
-            MapTimeCounter += 1
+            MapTimeCounter += 1     
         End If
-
+        BaseScene.GlobalFrameCount += 1
         Me.Refresh()
     End Sub
 
@@ -78,8 +77,6 @@ Public Class GameControl
     Sub New(Optional enabled As Boolean = True)
         InitalizeComponent()
         ' enable double buffering and custom paint
-
-        Randomize()
 
         allMapScenes = LoadScenes()
 
@@ -158,8 +155,8 @@ Public Class GameControl
                     Case GetType(TransitionQueueObject)
                         Dim transition As TransitionQueueObject = item
                         AddStringBuffer(String.Format("TransitionType: {0}, time: {1}", transition.transition.ttype.ToString, transition.time))
-                    Case GetType(MapChangeObject)
-                        Dim change As MapChangeObject = item
+                    Case GetType(MapChangeQueueObject)
+                        Dim change As MapChangeQueueObject = item
                         AddStringBuffer(String.Format("Changing map: {0}, time: {1}", change.map.ToString, change.time))
                 End Select
             Next
@@ -215,7 +212,7 @@ Public Class GameControl
         numFrames += 1
     End Sub
 
-    Friend Function GetMap(map As MapEnum) As BaseScene
+    Friend Function GetMap(map As MapEnum) As MapScene
         Try
             Return Me.allMapScenes(map)
         Catch ex As KeyNotFoundException
@@ -243,29 +240,45 @@ Public Class GameControl
     Private Function LoadScenes() As Dictionary(Of MapEnum, MapScene)
         Dim scenes As New Dictionary(Of MapEnum, MapScene)
 
-        For Each str As String In [Enum].GetNames(GetType(MapEnum))
-            str = str.ToLower()
-            Dim val = Helper.StrToEnum(Of MapEnum)(str)
-
-            If val = MapEnum.None
-                scenes.Add(MapEnum.None, MapScene.GetEmptyScene(Me))
-                Continue For
-            End If
-            If val = MapEnum.StartScene
-                Continue For
-            End If
-
-            scenes.Add(Helper.StrToEnum(Of MapEnum)(str), JsonMapReader.ReadMapFromResource(str, Me))
+        For Each map As MapEnum in [Enum].GetValues(GetType(MapEnum))
+            scenes.Add(map, GetScene(map))
         Next
         Return scenes
     End Function
 
-    Public Function ChangePlayerScene(scene As MapScene) As EntPlayer
-        player1.MyScene = scene
-        Return player1
+    Friend Sub ReloadLevel(map As MapEnum)
+        allMapScenes(map) = GetScene(map)
+    End Sub
+
+    Private Function GetScene(map As MapEnum) As MapScene
+        Dim str As String = map.ToString
+
+        If map = MapEnum.None
+            Return MapScene.GetEmptyScene(Me)
+        End If
+        If map = MapEnum.StartScene
+            return nothing
+        End If
+        return JsonMapReader.ReadMapFromResource(str, map, Me)
     End Function
 
+    Public Function GetPlayer(player As PlayerId) As EntPlayer
+        Select Case player
+            Case PlayerId.Player1
+                Return Player1
+            Case PlayerId.Player2
+                Return Player2
+            Case Else
+                Throw New Exception("has to be player1 or 2")
+        End Select
+    End Function
+
+    
+
     Public player1 As New EntPlayer(32, 32, New Point(0, 0), Nothing)
+    Friend player2 As EntPlayer
+
+
 
     ''' <summary>s
     ''' Runs a scene from mapEnum
@@ -275,20 +288,18 @@ Public Class GameControl
     Public Sub RunScene(map As MapEnum, isNewStage As Boolean, Optional insertion As Point? = Nothing)
         CurrentScene = allMapScenes(map)
 
-        If CurrentScene.GetType() = GetType(MapScene)
-            Dim mapScene As MapScene = CurrentScene
-            Dim start As Point = If(insertion, mapScene.DefaultLocation)
-            mapScene.SetPlayer(MapScene.PlayerId.Player1, player1, start)
+        Dim start As Point = If(insertion, CurrentScene.DefaultPlayerLocation)
 
-            If mapScene.Width < ScreenGridWidth
-                ' center scene
-                mapScene.Center()
-            End If
-            If mapScene.Background IsNot Nothing
-                mapScene.BackgroundMusic.PlayBackground()
-            End If
+        CurrentScene.SetPlayer(PlayerId.Player1, player1, start)
+
+        If CurrentScene.Width < ScreenGridWidth Then
+            ' center scene, if width is too small
+            CurrentScene.Center()
         End If
-        If isNewStage
+        If CurrentScene.BackgroundMusic IsNot Nothing Then
+            CurrentScene.BackgroundMusic.PlayBackground()
+        End If
+        If isNewStage Then
             MapTimeCounter = 0
         End If
     End Sub
@@ -309,9 +320,7 @@ Public Class GameControl
 
     Public Property ChangeQueue As New ChangeQueueWrapper
 
-    Friend Sub ReloadLevel(map As MapEnum)
-        allMapScenes(map) = JsonMapReader.ReadMapFromResource(map.ToString.ToLower(), Me)
-    End Sub
+    
 
     Friend Function GetVolumeMultipler() As Double
         Return volume
@@ -322,11 +331,11 @@ Public Class GameControl
         ' wait time, stop mario
         ' play circle transition on mario location
 
-        Dim wait As New WaitQueue(player1, Me, time:=time)
+        Dim wait As New WaitQueueObject(player1, Me, time:=time)
         Dim firstTrans As New TransitionObject(TransitionType.Circle, TransitionDirection.Top, location:=player1.Location)
 
         Dim firstTransition As New TransitionQueueObject(firstTrans, 0, Me)
-        Dim mapChange As New MapChangeObject(map, mapInsertion, StandardTransitionTime, Me, Reset:=True)
+        Dim mapChange As New MapChangeQueueObject(map, mapInsertion, StandardTransitionTime, Me, Reset:=True)
 
         wait.next = firstTransition
         firstTransition.next = mapChange
@@ -345,7 +354,7 @@ Public Class GameControl
         Dim firstTrans As New TransitionObject(TransitionType.Circle, TransitionDirection.Top, location:=animationLocation)
 
         Dim firstTransition As New TransitionQueueObject(firstTrans, 0, Me)
-        Dim mapChange As New MapChangeObject(map, mapInsertion, StandardTransitionTime, Me, CenterToPlayer:=centerToplayer)
+        Dim mapChange As New MapChangeQueueObject(map, mapInsertion, StandardTransitionTime, Me, CenterToPlayer:=centerToplayer)
 
         firstTransition.next = mapChange
         If before IsNot Nothing
@@ -359,11 +368,11 @@ Public Class GameControl
     End Function
 
     Friend Function QueueMapChangeWithStartScene(map As MapEnum, mapInsertion As Point?, Optional time As Integer = StandardStartScreenTime, Optional before As QueueObject = Nothing) As QueueObject
-        Dim firstTrans As New TransitionObject(TransitionType.StartScene, TransitionDirection.Bottom)
+        Dim firstTrans As New TransitionObject(TransitionType.StartScene)
 
         ' play a startscene immediately (time = 0)
         Dim firstTransition As New TransitionQueueObject(firstTrans, 0, Me)
-        Dim mapChange As New MapChangeObject(map, mapInsertion, StandardTransitionTime, Me, CenterToPlayer:=False)
+        Dim mapChange As New MapChangeQueueObject(map, mapInsertion, StandardTransitionTime, Me, CenterToPlayer:=False)
 
         firstTransition.next = mapChange
         If before IsNot Nothing
@@ -437,7 +446,7 @@ End Class
 
 
 Public Enum MapEnum
-    None
+    none
     StartScene
     map1_1above
     map1_1under

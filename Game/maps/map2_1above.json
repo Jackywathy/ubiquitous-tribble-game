@@ -800,13 +800,13 @@
       ]
     ]
   },
-  "background": "#5c94fc",
-  "default_entry": [
+  "BackgroundColor": "#5c94fc",
+  "DefaultEntry": [
     0,
     64
   ],
-  "width": 7168,
-  "height": 960,
+  "width": 448,
+  "height": 60,
   "MapTime": 300,
   "theme": "overworld",
   "NextLevel" :  "None" 

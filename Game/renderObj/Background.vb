@@ -1,5 +1,5 @@
 ﻿''' <summary>
-''' This class represents the Background image (just decoration)
+''' This class represents the BackgroundColor image (just decoration)
 ''' NO Bricks, players, items, enemies etc, are drawn on (just backgroundBrush)
 ''' </summary>
 Public Class BackgroundRender

@@ -23,6 +23,7 @@
 
         ' Add any initialization after the InitializeComponent() call.
         game = New GameForm(False)
+        Randomize()
 
     End Sub
     Private game As GameForm

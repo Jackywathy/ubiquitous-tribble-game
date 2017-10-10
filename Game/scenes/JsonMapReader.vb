@@ -6,7 +6,7 @@ Public NotInheritable Class JsonMapReader
     ''' </summary>
     ''' <param name="jsonName"></param>
     ''' <returns></returns>
-    Public Shared Function ReadMapFromResource(jsonName As String, parent As Control) As MapScene
+    Public Shared Function ReadMapFromResource(jsonName As String, map As MapEnum, parent As Control) As MapScene
         Dim byteArray = CType(My.Resources.ResourceManager.GetObject(jsonName), Byte())
 
         if byteArray Is Nothing
@@ -26,16 +26,17 @@ Public NotInheritable Class JsonMapReader
         Try
              mapObject = JsonConvert.DeserializeObject(Of JsonMapObject)(str)
         Catch e As JsonException
+            Throw 
             Throw New Exception(String.Format("Json invalid, name={0}", jsonname), e)
         End Try
 
-        Dim outScene As New MapScene(parent, mapObject.width, mapObject.Height, jsonName)
+        Dim outScene As New MapScene(parent, mapObject.width, mapObject.Height, 
+                                     map, 
+                                     mapObject.BackgroundColor, mapObject.MapTime,
+                                     )
 
-        ' Set maptime
-        outScene.SetMapTime(mapObject.MapTime)
 
-        ' add the Background
-        outScene.SetBackground(mapObject.Background, mapObject.Width, mapObject.Height)
+        ' add the BackgroundColor
 
         ' add all blocks
         For Each pair As KeyValuePair(Of String, IList(Of Object())) In mapObject.Blocks
@@ -52,8 +53,8 @@ Public NotInheritable Class JsonMapReader
             Next
         Next
 
-        Dim defaultEntry As New Point(mapObject.Default_Entry(0), mapObject.Default_Entry(1))
-        outScene.DefaultLocation = defaultEntry
+        Dim defaultEntry As New Point(mapObject.DefaultEntry(0), mapObject.DefaultEntry(1))
+        outScene.DefaultPlayerLocation = defaultEntry
         outScene.NextLevel = mapObject.nextLevel
         ' add all Entities
         'Dim player1 = New EntPlayer(32, 32, defaultEntry, outScene)
@@ -92,16 +93,22 @@ Public NotInheritable Class JsonMapReader
         For i = 0 To nClouds
             Dim start = rLength * i
             Dim _end = rLength * (i + 1)
-            Dim decoration = StaticDecoration.GetRandomCloud(New Point(Helper.Random(start, _end), Helper.Random(ScreenGridHeight / 3 * 2, ScreenGridHeight)), outScene)
+            Dim decoration = StaticDecoration.GetRandomCloud(New Point(Helper.Random(start, _end), 
+                                                                       Helper.Random(ScreenGridHeight / 3 * 2, ScreenGridHeight / 4 * 3)), outScene)
             decoration.AddSelfToScene()
         Next
 
-        For Each item In outScene.AllHitboxItems
-            If item.GetType() = GetType(GroundPlatform) Then
-                Dim ground As GroundPlatform = item
-                Dim decoration = StaticDecoration.GetRandomBrush(New Point(Helper.Random(item.X, item.X + item.Width), item.Y + item.Height), outScene)
-                decoration.AddSelfToscene()
-            End If
+        For Each item In outScene.GetAllGround()
+            ' generate 1 per 8-12 blocks
+            Dim nBush as Integer = (item.Width / 32) / Helper.Random(15, 20)
+            if nBush > 0
+                Dim sectionWidth as integer = item.Width / nBush
+                For i = 0 to nBush-1 step 1
+                    Dim x = i * sectionWidth + Helper.Random(0, sectionWidth-StaticDecoration.HillBig.Width) + item.X
+                    Dim decoration = StaticDecoration.GetRandomBrush(New Point(x, item.Y + item.Height), outScene)
+                    decoration.AddSelfToscene()
+                Next
+            End if
         Next
 
 
@@ -273,11 +280,11 @@ Public Class JsonMapObject
     Public Property MapName As String
     Public Property Blocks As Dictionary(Of String, IList(Of Object()))
     Public Property Entities As Dictionary(Of String, IList(Of Object()))
-    Public Property Background As String
+    Public Property BackgroundColor As String
     Public Property Theme As RenderTheme
     Public Property Width as integer
     Public Property Height As integer
     Public Property MapTime As Integer
-    Public Property Default_Entry As Integer()
+    Public Property DefaultEntry As Integer()
     Public Property NextLevel As MapEnum
 End Class

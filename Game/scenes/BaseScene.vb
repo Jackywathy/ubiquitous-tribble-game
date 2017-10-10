@@ -1,5 +1,4 @@
 ﻿Imports System.Drawing.Drawing2D
-Imports WinGame
 
 ''' <summary>
 ''' Base scene:
@@ -228,21 +227,6 @@ Public MustInherit Class BaseScene
     ' Hitbox - stuff that has a hitbox
     ' Entity - stuff that ALWAYS moves
 
-    ''' <summary>
-    ''' List of staticitems. Items will be rendered in order inserted
-    ''' </summary>
-    Public ReadOnly Property AllStaticItems As New List(Of GameItem)
-    Public Property DefaultLocation As Point
-
-    ''' <summary>
-    ''' Adds a static object
-    ''' </summary>
-    ''' <param name="args"></param>
-    Public Overridable Sub AddStatic(ByVal ParamArray args() As GameItem)
-        For Each item As GameItem In args
-            AllStaticItems.Add(item)
-        Next
-    End Sub
 
     Public Overridable Sub DrawDebugStrings(form As GameControl)
 
@@ -258,7 +242,7 @@ Public Class TransitionObject
     Public color As Brush
     Public location As Point
 
-    Sub New(ttype As TransitionType, tdir As TransitionDirection, Optional time As Integer = StandardTransitionTime, Optional fillColor As Brush = Nothing, ByRef Optional location As Point? = Nothing)
+    Sub New(ttype As TransitionType, Optional tdir As TransitionDirection = TransitionDirection.Bottom, Optional time As Integer = StandardTransitionTime, Optional fillColor As Brush = Nothing, ByRef Optional location As Point? = Nothing)
         Me.ttype = ttype
         Me.tdir = tdir
         Me.time = time

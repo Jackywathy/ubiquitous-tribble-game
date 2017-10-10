@@ -351,8 +351,8 @@ Public MustInherit Class Entity
             isFacingForward = True
         End If
 
-        ' check collision of all Entities with all existing RenderObj, including other Entities
-        For Each other As HitboxItem In MyScene.AllHitboxItems
+        ' check collision of all objects with all existing RenderObj, including other Entities
+        For Each other As HitboxItem In MyScene.GetAllHitboxAndEntities
             ' Don't check collisions using the same obj
             If Me <> other And other.CollisionActive Then
                 Me.CheckPotentialCollision(other)

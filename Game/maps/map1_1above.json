@@ -504,8 +504,7 @@
         28,
         2,
         2,
-        "map",
-        "map1_1under"
+        "none"
       ],
       [
         38,
@@ -523,7 +522,8 @@
         57,
         2,
         4,
-        "none"
+        "map",
+        "map1_1under"
       ],
       [
         163,
@@ -668,13 +668,13 @@
       ]
     ]
   },
-  "background": "#5c94fc",
-  "default_entry": [
+  "BackgroundColor": "#5c94fc",
+  "DefaultEntry": [
     0,
     64
   ],
-  "width": 7168,
-  "height": 480,
+  "width": 224,
+  "height": 15,
   "MapTime": 300,
   "theme": "overworld",
   "NextLevel" :  "map2_1above" 
