@@ -450,5 +450,7 @@ Public Enum MapEnum
     StartScene
     map1_1above
     map1_1under
+    map1_2above
+    map1_2under
     map2_1above
 End Enum

@@ -13,7 +13,7 @@
 
     End Sub
 
-    Private Shared Function GetSpriteSet(theme as RenderTheme) As SpriteSet
+    Public Shared Function GetSpriteSet(theme as RenderTheme) As SpriteSet
         Select Case theme
             Case RenderTheme.Overworld
                 Return Sprites.brickBlock

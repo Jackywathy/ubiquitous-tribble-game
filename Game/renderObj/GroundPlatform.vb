@@ -21,8 +21,7 @@ Public Class GroundPlatform
 
 
     Public OVerrides Sub Render(g As Graphics)
-        texture.TranslateTransform(previousX -myscene.screenlocation.x, 0)
-        previousX = myscene.screenlocation.x
+        RefreshTransform()
         g.FillRectangle(texture, GetRenderRect())
     End Sub
         
@@ -39,8 +38,13 @@ Public Class GroundPlatform
         End Select
 
         texture = New TextureBrush(tile, WrapMode.Tile)
-        texture.TranslateTransform(0, 16)
+        
         previousX = 0
+    End Sub
+
+    Public Sub RefreshTransform
+        texture.ResetTransform()
+        texture.TranslateTransform(-MyScene.ScreenLocation.X, ScreenGridHeight Mod 32)
     End Sub
 
     ''' <summary>

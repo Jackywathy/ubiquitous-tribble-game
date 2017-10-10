@@ -40,6 +40,10 @@ Public Class FontController
     Public Function GetFontFamily() As FontFamily
         Return myFonts.Families(0)
     End Function
+    
+    Public Shared Narrowing Operator CType(ByVal b As FontController) As FontFamily
+        Return b.GetFontFamily()
+    End Operator
 End Class
 
 Public Module CustomFontFamily

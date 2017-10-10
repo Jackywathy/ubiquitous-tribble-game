@@ -28,8 +28,10 @@
     
 
     Public Sub New(location As Point, theme as RenderTheme, mapScene As MapScene)
-        MyBase.New(StandardWidth, StandardHeight, location, Sprites.brickBlock, mapScene)
+        MyBase.New(StandardWidth, StandardHeight, location, BlockBreakableBrick.GetSpriteSet(theme), mapScene)
     End Sub
+
+
 
     ''' <summary>
     ''' 0 : x

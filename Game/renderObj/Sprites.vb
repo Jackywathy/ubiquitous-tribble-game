@@ -382,7 +382,12 @@ Public MustInherit Class Sprites
                                               64,
                                               32, Nothing, True
                                               )
-
+    Public Shared blockCloud As New SpriteSet("cloudSprite", New Dictionary(Of SpriteState,List(Of Image)) From {
+                                                {SpriteState.Constant, New List(Of Image) From {My.Resources.blockCloud}}
+                                              },
+                                              32,
+                                              32
+                                              )
     Private Sub New()
         ' make this class un-intializable
     End Sub

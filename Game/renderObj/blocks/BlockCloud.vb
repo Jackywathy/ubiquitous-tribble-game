@@ -2,7 +2,7 @@
     Inherits Block
 
     Sub New(location As Point,theme as RenderTheme,  mapScene As MapScene)
-        MyBase.New(StandardWidth, StandardHeight, location, sprites.blockMetal, mapScene)
+        MyBase.New(StandardWidth, StandardHeight, location, sprites.blockCloud, mapScene)
     End Sub
 
     Sub New(params As Object(),theme as RenderTheme,  mapScene As MapScene)

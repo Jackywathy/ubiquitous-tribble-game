@@ -57,9 +57,10 @@ Public Class MenuControl
         Me.ContinueButton.ForeColor = System.Drawing.Color.White
         Me.ContinueButton.Location = New System.Drawing.Point(0, 0)
         Me.ContinueButton.Name = "ContinueButton"
-        Me.ContinueButton.Size = New System.Drawing.Size(63, 13)
+        Me.ContinueButton.Size = New System.Drawing.Size(63, 17)
         Me.ContinueButton.TabIndex = 0
         Me.ContinueButton.Text = "CONTINUE"
+        Me.ContinueButton.UseCompatibleTextRendering = true
         '
         'ExitButton
         '
@@ -67,9 +68,10 @@ Public Class MenuControl
         Me.ExitButton.ForeColor = System.Drawing.Color.White
         Me.ExitButton.Location = New System.Drawing.Point(0, 0)
         Me.ExitButton.Name = "ExitButton"
-        Me.ExitButton.Size = New System.Drawing.Size(67, 13)
+        Me.ExitButton.Size = New System.Drawing.Size(68, 17)
         Me.ExitButton.TabIndex = 0
         Me.ExitButton.Text = "EXIT LEVEL"
+        Me.ExitButton.UseCompatibleTextRendering = true
         '
         'ControlButton
         '
@@ -77,9 +79,10 @@ Public Class MenuControl
         Me.ControlButton.ForeColor = System.Drawing.Color.White
         Me.ControlButton.Location = New System.Drawing.Point(0, 0)
         Me.ControlButton.Name = "ControlButton"
-        Me.ControlButton.Size = New System.Drawing.Size(99, 13)
+        Me.ControlButton.Size = New System.Drawing.Size(100, 17)
         Me.ControlButton.TabIndex = 0
         Me.ControlButton.Text = "CONTROLS/HELP"
+        Me.ControlButton.UseCompatibleTextRendering = true
         '
         'ArrowIcon
         '
@@ -96,27 +99,30 @@ Public Class MenuControl
         Me.PauseLabel.AutoSize = true
         Me.PauseLabel.Location = New System.Drawing.Point(0, 0)
         Me.PauseLabel.Name = "PauseLabel"
-        Me.PauseLabel.Size = New System.Drawing.Size(43, 13)
+        Me.PauseLabel.Size = New System.Drawing.Size(43, 17)
         Me.PauseLabel.TabIndex = 0
         Me.PauseLabel.Text = "PAUSE"
+        Me.PauseLabel.UseCompatibleTextRendering = true
         '
         'WorldLabel
         '
         Me.WorldLabel.AutoSize = true
         Me.WorldLabel.Location = New System.Drawing.Point(0, 0)
         Me.WorldLabel.Name = "WorldLabel"
-        Me.WorldLabel.Size = New System.Drawing.Size(48, 13)
+        Me.WorldLabel.Size = New System.Drawing.Size(46, 17)
         Me.WorldLabel.TabIndex = 0
         Me.WorldLabel.Text = "WORLD"
+        Me.WorldLabel.UseCompatibleTextRendering = true
         '
         'WorldNumLabel
         '
         Me.WorldNumLabel.AutoSize = true
         Me.WorldNumLabel.Location = New System.Drawing.Point(0, 0)
         Me.WorldNumLabel.Name = "WorldNumLabel"
-        Me.WorldNumLabel.Size = New System.Drawing.Size(39, 13)
+        Me.WorldNumLabel.Size = New System.Drawing.Size(38, 17)
         Me.WorldNumLabel.TabIndex = 0
         Me.WorldNumLabel.Text = "Label1"
+        Me.WorldNumLabel.UseCompatibleTextRendering = true
         '
         'MenuControl
         '
@@ -149,10 +155,10 @@ End Sub
         For each label in buttons
             label.font = buttonFont
         Next
+
         DoubleBuffered = True
 
-        PauseLabel.Font = New Font(Nes.GetFontFamily(), 20, FontStyle.Bold)
-        WorldLabel.Font = buttonFont
+        
         WorldNumLabel.Font = buttonFont
 
     

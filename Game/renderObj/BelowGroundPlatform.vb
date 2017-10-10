@@ -16,7 +16,6 @@ Public Class BelowGroundPlatform
         MyBase.New(width, height, location, GetFloor(width, height, theme), mapScene)
     End Sub
         
-
     Private Shared Function GetFloor(width As Integer, height as Integer, theme As RenderTheme) As Image
         Dim image = New Bitmap(width, height)
         Using brush=New TextureBrush(My.Resources.blockBelowGround, WrapMode.Tile)

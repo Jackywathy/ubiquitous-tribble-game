@@ -220,14 +220,14 @@
         ]
     },
     "entities": {},
-    "background": "#5c94fc",
-    "default_entry": [
+    "BackgroundColor": "#5c94fc",
+    "DefaultEntry": [
         0,
         64
     ],
     "width": 192,
     "height": 15,
     "MapTime": 300,
-  "theme": "overworld",
-  "NextLevel": "map2_1above" 
+    "theme": "overworld",
+    "NextLevel": "map2_1above" 
 }

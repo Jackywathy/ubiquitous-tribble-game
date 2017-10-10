@@ -14,7 +14,7 @@
     End Sub
 
     Public Sub New(location As Point,theme as RenderTheme,  mapScene As MapScene)
-        MyBase.New(StandardWidth, StandardHeight, location, Sprites.brickBlock, mapScene)
+        MyBase.New(StandardWidth, StandardHeight, location, BlockBreakableBrick.GetSpriteSet(theme), mapScene)
     End Sub
 
     Private Sub SpawnPowerup(player As EntPlayer)

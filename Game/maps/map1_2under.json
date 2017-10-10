@@ -1975,13 +1975,14 @@
             ]
         ]
     },
-    "background": "#000000",
-    "default_entry": [
-        0,
-        64
+    "BackgroundColor": "#000000",
+    "DefaultEntry": [
+        96,
+      416
     ],
     "width": 6144,
     "height": 480,
-    "MapTime": 300,
-    "theme": "underground"
+  "MapTime": 300,
+  "theme": "underground",
+   "NextLevel": "None" 
 }
