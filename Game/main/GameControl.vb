@@ -62,6 +62,7 @@ Public Class GameControl
 
     Public Sub ShowOverlay
         OverlayActive = True
+        overlay.UpdateTExt()
         overlay.Show()
     End Sub
 
@@ -126,7 +127,7 @@ Public Class GameControl
     ''' </summary>
     Private ReadOnly Property allMapScenes As Dictionary(Of MapEnum, MapScene)
 
-    Private overlay As MenuControl
+    Private overlay As PauseMenu
     ''' <summary>
     ''' Initalize components inside
     ''' </summary>
@@ -138,7 +139,8 @@ Public Class GameControl
         SetStyle(ControlStyles.AllPaintingInWmPaint, True)
 
 
-        overlay = New MenuControl(Me)
+        overlay = New PauseMenu(Me)
+       
         HideOverlay()
         Me.Controls.Add(overlay)
     End Sub

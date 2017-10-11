@@ -32,9 +32,12 @@ Partial Class PauseMenu
         Me.PauseLabel = New System.Windows.Forms.Label()
         Me.WorldLabel = New System.Windows.Forms.Label()
         Me.WorldNumLabel = New System.Windows.Forms.Label()
+        Me.MarioImage = New System.Windows.Forms.PictureBox()
+        Me.LivesText = New System.Windows.Forms.Label()
         CType(Me.SoundTrackbar,System.ComponentModel.ISupportInitialize).BeginInit
         CType(Me.SpeakerIcon,System.ComponentModel.ISupportInitialize).BeginInit
         CType(Me.ArrowIcon,System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.MarioImage,System.ComponentModel.ISupportInitialize).BeginInit
         Me.SuspendLayout
         '
         'SoundTrackbar
@@ -42,7 +45,7 @@ Partial Class PauseMenu
         Me.SoundTrackbar.BackColor = System.Drawing.Color.Black
         Me.SoundTrackbar.Location = New System.Drawing.Point(90, 630)
         Me.SoundTrackbar.Name = "SoundTrackbar"
-        Me.SoundTrackbar.Size = New System.Drawing.Size(480, 90)
+        Me.SoundTrackbar.Size = New System.Drawing.Size(480, 45)
         Me.SoundTrackbar.TabIndex = 0
         '
         'SpeakerIcon
@@ -61,7 +64,7 @@ Partial Class PauseMenu
         Me.ContinueButton.ForeColor = System.Drawing.Color.White
         Me.ContinueButton.Location = New System.Drawing.Point(320, 372)
         Me.ContinueButton.Name = "ContinueButton"
-        Me.ContinueButton.Size = New System.Drawing.Size(640, 68)
+        Me.ContinueButton.Size = New System.Drawing.Size(63, 17)
         Me.ContinueButton.TabIndex = 0
         Me.ContinueButton.Text = "CONTINUE"
         Me.ContinueButton.UseCompatibleTextRendering = true
@@ -72,7 +75,7 @@ Partial Class PauseMenu
         Me.ExitButton.ForeColor = System.Drawing.Color.White
         Me.ExitButton.Location = New System.Drawing.Point(320, 462)
         Me.ExitButton.Name = "ExitButton"
-        Me.ExitButton.Size = New System.Drawing.Size(640, 68)
+        Me.ExitButton.Size = New System.Drawing.Size(68, 17)
         Me.ExitButton.TabIndex = 0
         Me.ExitButton.Text = "EXIT LEVEL"
         Me.ExitButton.UseCompatibleTextRendering = true
@@ -83,7 +86,7 @@ Partial Class PauseMenu
         Me.ControlButton.ForeColor = System.Drawing.Color.White
         Me.ControlButton.Location = New System.Drawing.Point(320, 552)
         Me.ControlButton.Name = "ControlButton"
-        Me.ControlButton.Size = New System.Drawing.Size(640, 68)
+        Me.ControlButton.Size = New System.Drawing.Size(100, 17)
         Me.ControlButton.TabIndex = 0
         Me.ControlButton.Text = "CONTROLS/HELP"
         Me.ControlButton.UseCompatibleTextRendering = true
@@ -91,7 +94,7 @@ Partial Class PauseMenu
         'ArrowIcon
         '
         Me.ArrowIcon.Image = CType(resources.GetObject("ArrowIcon.Image"),System.Drawing.Image)
-        Me.ArrowIcon.Location =  New System.Drawing.Point(220, 372)
+        Me.ArrowIcon.Location = New System.Drawing.Point(220, 372)
         Me.ArrowIcon.Name = "ArrowIcon"
         Me.ArrowIcon.Size = New System.Drawing.Size(68, 68)
         Me.ArrowIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
@@ -104,7 +107,7 @@ Partial Class PauseMenu
         Me.PauseLabel.ForeColor = System.Drawing.Color.White
         Me.PauseLabel.Location = New System.Drawing.Point(320, 23)
         Me.PauseLabel.Name = "PauseLabel"
-        Me.PauseLabel.Size = New System.Drawing.Size(960, 135)
+        Me.PauseLabel.Size = New System.Drawing.Size(43, 17)
         Me.PauseLabel.TabIndex = 0
         Me.PauseLabel.Text = "PAUSE"
         Me.PauseLabel.UseCompatibleTextRendering = true
@@ -115,7 +118,7 @@ Partial Class PauseMenu
         Me.WorldLabel.ForeColor = System.Drawing.Color.White
         Me.WorldLabel.Location = New System.Drawing.Point(320, 180)
         Me.WorldLabel.Name = "WorldLabel"
-        Me.WorldLabel.Size = New System.Drawing.Size(960, 45)
+        Me.WorldLabel.Size = New System.Drawing.Size(46, 17)
         Me.WorldLabel.TabIndex = 0
         Me.WorldLabel.Text = "WORLD"
         Me.WorldLabel.UseCompatibleTextRendering = true
@@ -126,16 +129,38 @@ Partial Class PauseMenu
         Me.WorldNumLabel.ForeColor = System.Drawing.Color.White
         Me.WorldNumLabel.Location = New System.Drawing.Point(320, 225)
         Me.WorldNumLabel.Name = "WorldNumLabel"
-        Me.WorldNumLabel.Size = New System.Drawing.Size(960, 45)
+        Me.WorldNumLabel.Size = New System.Drawing.Size(38, 17)
         Me.WorldNumLabel.TabIndex = 0
         Me.WorldNumLabel.Text = "Label1"
         Me.WorldNumLabel.UseCompatibleTextRendering = true
+        '
+        'MarioImage
+        '
+        Me.MarioImage.Image = Global.WinGame.My.Resources.Resources.mario_small_1
+        Me.MarioImage.Location = New System.Drawing.Point(128, 173)
+        Me.MarioImage.Name = "MarioImage"
+        Me.MarioImage.Size = New System.Drawing.Size(32, 32)
+        Me.MarioImage.TabIndex = 1
+        Me.MarioImage.TabStop = false
+        '
+        'LivesText
+        '
+        Me.LivesText.AutoSize = true
+        Me.LivesText.ForeColor = System.Drawing.Color.White
+        Me.LivesText.Location = New System.Drawing.Point(178, 173)
+        Me.LivesText.Name = "LivesText"
+        Me.LivesText.Size = New System.Drawing.Size(24, 13)
+        Me.LivesText.TabIndex = 2
+        Me.LivesText.Text = "x -1"
+        Me.LivesText.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         '
         'PauseMenu
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.Black
+        Me.Controls.Add(Me.LivesText)
+        Me.Controls.Add(Me.MarioImage)
         Me.Controls.Add(Me.ContinueButton)
         Me.Controls.Add(Me.ExitButton)
         Me.Controls.Add(Me.ControlButton)
@@ -150,6 +175,7 @@ Partial Class PauseMenu
         CType(Me.SoundTrackbar,System.ComponentModel.ISupportInitialize).EndInit
         CType(Me.SpeakerIcon,System.ComponentModel.ISupportInitialize).EndInit
         CType(Me.ArrowIcon,System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.MarioImage,System.ComponentModel.ISupportInitialize).EndInit
         Me.ResumeLayout(false)
         Me.PerformLayout
 
@@ -164,4 +190,6 @@ End Sub
     Friend WithEvents PauseLabel As Label
     Friend WithEvents WorldLabel As Label
     Friend WithEvents WorldNumLabel As Label
+    Friend WithEvents MarioImage As PictureBox
+    Friend WithEvents LivesText As Label
 End Class
