@@ -1,4 +1,5 @@
-﻿''' <summary>
+﻿Imports WinGame
+''' <summary>
 ''' Scene that represents a map, (probably loaded from json using <see cref="JsonMapReader.ReadMapFromResource"/>
 ''' </summary>
 Public Class MapScene
@@ -8,20 +9,20 @@ Public Class MapScene
 #Region "Variables"
     Public HudElements As StaticHud
 
-    Public LinkedLevel as MapEnum = MapEnum.None
-    Private _onDead as MapEnum = MapEnum.None
+    Public LinkedLevel As MapEnum = MapEnum.none
+    Private _onDead As MapEnum = MapEnum.none
 
     Public MapName As MapEnum
     Public NextLevel As MapEnum
 
-    Public Property OnDead As MapEnum 
+    Public Property OnDead As MapEnum
         Get
             Return _onDead
         End Get
         Set(value As MapEnum)
-            if value = MapEnum.None
-                _onDead = mapName
-            ELse
+            If value = MapEnum.none
+                _onDead = MapName
+            Else
                 _onDead = value
             End If
         End Set
@@ -108,7 +109,7 @@ Public Class MapScene
     ''' Contains all Entities
     ''' </summary> 
     Private ReadOnly Property allEntities As New List(Of Entity)
-    
+
     ''' <summary>
     ''' All images that scroll with player, e.g. decorations, clouds
     ''' </summary>
@@ -133,7 +134,7 @@ Public Class MapScene
     Public IsFinished As Boolean
     Private escPressed As Boolean = False
 
-    
+
 
 #End Region
 
@@ -141,24 +142,29 @@ Public Class MapScene
     ''' Level was finished flag touched
     ''' </summary>
     Friend Sub LevelFinished()
-        If me.MapName = FinalMap
-            WinScreen.Show()
-            Parent.ReturnToMainMenu()
-        End If
+        If Me.MapName = FinalMap
+            Dim wait As New WaitQueueObject(Player1, Me.Parent)
+            Dim win As new WinQueue(0, Me.parent)
+            wait.next = win
+            Parent.AddTimedEvent(wait)
+            
+        else 
+            Parent.RegisterScore(EntPlayer.Score)
+            Parent.QueueFlagLevelChange(Me.NextLevel, Nothing, Player1, time:=StandardTransitionTime * 3)
+        End if
         IsFinished = True
-        Parent.RegisterScore(EntPlayer.Score)
-        Parent.QueueFlagLevelChange(Me.NextLevel, Nothing, Player1, time:=StandardTransitionTime*3)
+        
     End Sub
 
     Friend Shared Function GetEmptyScene(control As GameControl) As MapScene
-        Dim scene = New MapScene(control, ScreenGridWidth, ScreenGridHeight, MapEnum.None, "#ffffff", -1, False)
+        Dim scene = New MapScene(control, ScreenGridWidth, ScreenGridHeight, MapEnum.none, "#ffffff", -1, False)
 
         scene.AddHitbox(New GroundPlatform(ScreenGridWidth, 64, New Point(0, 0), RenderTheme.Overworld, scene))
         scene.DefaultPlayerLocation = New Point(ScreenGridWidth / 2 - 16, 64)
         Return scene
     End Function
 
-   
+
 
 #Region "Debug"
     Public Overrides Sub DrawDebugStrings(form As GameControl)
@@ -188,8 +194,8 @@ Public Class MapScene
     ''' </summary>
     ''' <returns></returns>
     Private Function MouseOverBox As Boolean
-        if Me.HudElements Is Nothing
-            Return false
+        If Me.HudElements Is Nothing
+            Return False
         End If
         Dim point = GetMouseRelativeLocation()
         Return Me.HudElements.PowerupHolder.GetRect().Contains(point)
@@ -203,7 +209,7 @@ Public Class MapScene
             Return
         End If
         If HudElements Is Nothing
-            return
+            Return
         End If
         ' make sure there is a powerup
         If Me.HudElements.PowerupHolder.powerupImage IsNot Nothing
@@ -276,7 +282,7 @@ Public Class MapScene
         MyBase.New(parent)
         Me.Width = mapWidth * 32
         Me.Height = mapHeight * 32
-        Me.mapName = mapName
+        Me.MapName = mapName
         HudElements = parent.SharedHud
         Me.Player1 = parent.player1
         Me.Player2 = parent.player2
@@ -305,8 +311,8 @@ Public Class MapScene
         Next
     End Function
 
-     Public Iterator Function GetAllGround() As IEnumerable(Of GroundPlatform)
-        For each item as HitboxItem In allHitboxItems
+    Public Iterator Function GetAllGround() As IEnumerable(Of GroundPlatform)
+        For Each item As HitboxItem In allHitboxItems
             If item.GetType() = GetType(GroundPlatform) Then
                 Yield item
             End If
@@ -371,11 +377,11 @@ Public Class MapScene
     ''' <param name="args"></param>
     Public Sub AddEntity(ByVal ParamArray args() As Entity)
         For Each item As Entity In args
-            AllEntities.Add(item)
+            allEntities.Add(item)
             allHitboxItems.Add(item)
         Next
     End Sub
-#End region
+#End Region
 
 
     ''' <summary>
@@ -404,7 +410,7 @@ Public Class MapScene
     Sub RemoveAllDeleted()
         For Each item As HitboxItem In toRemoveObjects
             If item.GetType.IsSubclassOf(GetType(Entity))
-                AllEntities.Remove(item)
+                allEntities.Remove(item)
                 allHitboxItems.Remove(item)
             Else
                 allHitboxItems.Remove(item)
@@ -419,7 +425,7 @@ Public Class MapScene
     Sub AddAllAdded()
         For Each item As HitboxItem In toAddObjects
             If item.GetType.IsSubclassOf(GetType(Entity))
-                AllEntities.Add(item)
+                allEntities.Add(item)
                 allHitboxItems.Add(item)
             Else
                 allHitboxItems.Add(item)
@@ -450,8 +456,8 @@ Public Class MapScene
     End Function
 
     Friend Iterator Function GetAllHitboxAndEntities() As IEnumerable(Of HitboxItem)
-        For each item as HitboxItem in allHitboxItems
-            yield item
+        For Each item As HitboxItem In allHitboxItems
+            Yield item
         Next
     End Function
 
@@ -465,7 +471,7 @@ Public Class MapScene
         End If
         player.MyScene = Me
         player.Location = location
-        If Not AllEntities.Contains(player)
+        If Not allEntities.Contains(player)
             player.AddSelfToScene()
         End If
         player.RefreshPlayerVars()
@@ -494,10 +500,10 @@ Public Class MapScene
 
         ElseIf AllPlayersDead
             FailLevel()
-        
+
 
         Else
-            For Each item As HitboxItem In inSceneHitboxItems
+            For Each item As HitboxItem In AllHitboxItems
                 item.UpdateVeloc()
                 item.UpdateLocation()
                 item.Animate()
@@ -523,7 +529,7 @@ Public Class MapScene
 
     Private Sub RefreshSceneItems()
         RefreshHitboxInScene
-        
+
     End Sub
 
     Friend Sub RegisterDeath(entPlayer As EntPlayer)
@@ -535,22 +541,40 @@ Public Class MapScene
         End If
     End Sub
 
+    Protected Class WinQueue
+        Inherits QueueObject
+
+        Public Sub New(time As Integer, control As GameControl, Optional [next] As QueueObject = Nothing)
+            MyBase.New(time, control, [next])
+        End Sub
+
+        Protected Overrides Sub TimerFinished()
+            WinScreen.Show()
+            control.ReturnToMainMenu()
+            
+        End Sub
+    End Class
+
+    
+
     Friend Sub FailLevel()
         If EntPlayer.Lives = 0
             Dim credits As New LostScreen()
-            Credits.Show()
+            credits.Show()
             Parent.ReturnToMainMenu()
-        End If
-        If Not IsTransitioning
+            Parent.Reset()
+           
+
+        ElseIf Not IsTransitioning
             ReloadMap()
-            player1.ResetPlayer()
+            Player1.ResetPlayer()
             ' TODO fix player2
-            If player2 IsNot nothing
+            If Player2 IsNot Nothing
                 Player2.ResetPlayer
             End If
             Parent.QueueMapChangeWithStartScene(OnDead, Nothing, IsNewStage:=True)
             EntPlayer.Score = Parent.backupScore
-            
+
         End If
     End Sub
 
@@ -558,11 +582,11 @@ Public Class MapScene
     ''' Reloads and reset this map + any attached maps
     ''' </summary>
     Public Sub ReloadMap()
-        If LinkedLevel <> MapEnum.None
+        If LinkedLevel <> MapEnum.none
             Parent.ReloadLevel(LinkedLevel)
         End If
-        Parent.ReloadLevel(mapName)
-        
+        Parent.ReloadLevel(MapName)
+
 
 
     End Sub
@@ -589,8 +613,8 @@ Public Class MapScene
 
     Private Sub HandleTime(ticksElapsed As Integer)
         ' Skip if infinite time
-        if TotalMapTime = -1
-            Return 
+        If TotalMapTime = -1
+            Return
         End If
 
         Dim timeRemaining = ticksElapsed / TicksPerSecond
@@ -634,7 +658,7 @@ Public Class MapScene
         Next
 
         ' render Entities
-        For Each item As Entity In AllEntities
+        For Each item As Entity In allEntities
             item.Render(g)
         Next
 

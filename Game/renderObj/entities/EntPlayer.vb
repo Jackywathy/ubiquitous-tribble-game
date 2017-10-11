@@ -33,7 +33,7 @@ Public Class EntPlayer
 
 
 
-    Private Shared _lives As Integer = 5
+    Private Shared _lives As Integer = TotalLives
     Private Shared _coins As Integer = 0
 
     Private Shared _score As Integer = 0

@@ -98,6 +98,7 @@ Public Class GameControl
         HideOverlay()
         ChangeQueue.queue.Clear()
         backupScore = 0
+        SharedHud.SetPowerup(PowerupType.Mushroom)
         
     End Sub
 
