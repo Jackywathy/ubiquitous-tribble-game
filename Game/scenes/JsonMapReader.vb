@@ -56,6 +56,8 @@ Public NotInheritable Class JsonMapReader
         Dim defaultEntry As New Point(mapObject.DefaultEntry(0), mapObject.DefaultEntry(1))
         outScene.DefaultPlayerLocation = defaultEntry
         outScene.NextLevel = mapObject.nextLevel
+        outScene.LinkedLevel = mapObject.LinkedLevel
+        outScene.OnDead = mapObject.OnDead
         ' add all Entities
         'Dim player1 = New EntPlayer(32, 32, defaultEntry, outScene)
 
@@ -287,4 +289,6 @@ Public Class JsonMapObject
     Public Property MapTime As Integer
     Public Property DefaultEntry As Integer()
     Public Property NextLevel As MapEnum
+    Public Property LinkedLevel As MapEnum
+    Public Property OnDead As Mapenum
 End Class

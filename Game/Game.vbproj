@@ -123,6 +123,12 @@
     <Compile Include="main\MenuControl.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="main\PauseMenu.Designer.vb">
+      <DependentUpon>PauseMenu.vb</DependentUpon>
+    </Compile>
+    <Compile Include="main\PauseMenu.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="main\TitleScreen.Designer.vb">
       <DependentUpon>TitleScreen.vb</DependentUpon>
     </Compile>
@@ -214,6 +220,9 @@
     <EmbeddedResource Include="main\MenuControl.resx">
       <DependentUpon>MenuControl.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="main\PauseMenu.resx">
+      <DependentUpon>PauseMenu.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="main\TitleScreen.resx">
       <DependentUpon>TitleScreen.vb</DependentUpon>
     </EmbeddedResource>
@@ -231,6 +240,7 @@
     <Resource Include="maps\map1_1under.json" />
     <Resource Include="maps\map_startmap.json" />
     <Resource Include="maps\map1_1above.json" />
+    <None Include="maps\map2_1under.json" />
     <None Include="maps\map1_2above.json" />
     <None Include="maps\map1_2under.json" />
     <None Include="My Project\app.manifest">
@@ -418,7 +428,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="renderObj\other\" />
-    <Folder Include="Resources\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <Import Project="..\packages\Fody.2.0.0\build\dotnet\Fody.targets" Condition="Exists('..\packages\Fody.2.0.0\build\dotnet\Fody.targets')" />

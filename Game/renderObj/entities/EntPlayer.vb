@@ -158,10 +158,7 @@ Public Class EntPlayer
     
 
 
-    Private Sub SetXToMiddle(x As integer)
-        ' sets me.x to x + 1/2 of standard width
-        me.X = x + StandardWidth/2
-    End Sub
+
 
     Friend Sub EnterHorizontalPipeExitVertical(map As MapEnum, insertion As Point?, pipeOnOtherSide As Boolean, pipeLocation As Point)
         me.Y = pipeLocation.Y
@@ -169,18 +166,18 @@ Public Class EntPlayer
         me.veloc.y = 0
 
         InvinicibilityTimer = StandardPipeTime
-        Dim point = MyScene.GetScreenLocation(Me)
-        point.X += 16
+
+        
         
         Dim enterPipe as New MarioPipeAnimationQueueObject(Me, PipeType.Horizontal,True, MyScene.Parent)
 
         Dim exitPipe As New MarioPipeAnimationQueueObject(Me, PipeType.Vertical, False,  MyScene.Parent, stopmusic := False)
 
-        Dim mapChange = MyScene.Parent.QueueMapChangeWithCircleAnimation(map, insertion, 
-                                                                         centerToplayer := True, animationLocation:=point,
-                                                                         before := enterPipe)
+        Dim point = MyScene.GetScreenLocation(Me)
+        Dim mapChange = MyScene.Parent.QueueMapChangeWithCircleAnimation(map, 
+                                                                         centerToplayer := True, mapInsertion := insertion, time := StandardPipeTime,
+                                                                         animationLocation:=point, before := enterPipe)
         mapChange.next = exitPipe
-
     End Sub
 
     Public Sub EnterVerticalPipeExitNone(map As MapEnum, insertion As Point?, pipeLocation As Point)
@@ -190,11 +187,14 @@ Public Class EntPlayer
 
         InvinicibilityTimer = StandardPipeTime
 
-        Dim point = MyScene.GetScreenLocation(Me)
-        point.Y = BottomToTop(point.Y)
         Dim enterPipe as New MarioPipeAnimationQueueObject(Me, PipeType.Vertical, True, MyScene.Parent)
 
-        Dim mapChange = MyScene.Parent.QueueMapChangeWithCircleAnimation(map, insertion, centerToplayer := False, animationLocation:=point, before := enterPipe)
+        Dim point = MyScene.GetScreenLocation(Me)
+        'point.X -= 16
+        'point.Y += 32
+        Dim mapChange = MyScene.Parent.QueueMapChangeWithCircleAnimation(map, centerToplayer := False, 
+                                                                         mapInsertion := insertion, time := StandardPipeTime, 
+                                                                         animationLocation:=point, before := enterPipe)
         
     End Sub
 
@@ -360,11 +360,12 @@ Public Class EntPlayer
     End Sub
 
     ' called to completely reset the player
-    Friend Sub ResetPlayer()
+    Friend Sub ResetPlayer(Optional insertion As Point?=Nothing)
         Me.State = PlayerStates.Small
         Me.isDead = False
         Me.OnFlag = False
         Me.isfrozen = False
+        Me.Location = If(insertion, MyScene.DefaultPlayerLOcation)
         RefreshPlayerVars()
     End Sub
 

@@ -212,16 +212,16 @@ End Sub
 
         ' bottom 1/2
         sectionOffset += sectionheight
-        sectionHeight = 1/2 * height
+        sectionHeight = 1/2 * height ' 360
         
-        Dim rows as Integer = buttons.Count + 1
-        Dim rowHeight as integer = sectionHeight / rows
-        Dim rowSpace as Integer = rowHeight / 8
+        Dim rows as Integer = buttons.Count + 1 ' 4
+        Dim rowHeight as integer = sectionHeight / rows ' 90
+        Dim rowSpace as Integer = rowHeight / 8 ' 12
 
-        Dim buttonX as Integer = Me.width / 4
-        Dim bWidth as integer = buttonX * 2
+        Dim buttonX as Integer = Me.width / 4 ' 320
+        Dim bWidth as integer = buttonX * 2 ' 640
 
-        Dim bHeight As Integer = rowHeight * 3 / 4
+        Dim bHeight As Integer = rowHeight * 3 / 4 ' 68
         
         For i=0 to buttons.Count - 1
             dim button = buttons(i)
@@ -233,7 +233,7 @@ End Sub
         RefreshArrow()
 
         ' add the mute button
-        SpeakerIcon.Location = new Point(0, buttons.Count*rowHeight+sectionOffset)
+        SpeakerIcon.Location = new Point(0, buttons.Count*rowHeight+sectionOffset) ' 0, 630
         SpeakerIcon.Width = bHeight /4*3
         SpeakerIcon.Height = SpeakerIcon.Width
 

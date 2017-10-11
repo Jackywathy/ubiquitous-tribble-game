@@ -66,6 +66,8 @@ Public Class MapChangeQueueObject
     Private isNewStage as Boolean
     Private centerToplayer As Boolean
     Private reset As Boolean
+
+
     Sub New(map As MapEnum, insertion As Point?, time As Integer, control As GameControl, Optional [next] As QueueObject = Nothing, Optional IsNewStage As Boolean = False, Optional CenterToPlayer As Boolean = True, Optional reset As Boolean = False)
         MyBase.New(time, control, [next])
         Me.map = map
@@ -77,7 +79,7 @@ Public Class MapChangeQueueObject
 
     Protected Overrides Sub TimerFinished()
         If reset Then
-            control.ReloadLevel(Helper.StrToEnum(Of MapEnum)(control.GetCurrentScene().mapName))
+            control.GetCurrentScene().ReloadMap()
         End If
         control.RunScene(map, isNewStage, insertion)
         If centerToplayer Then
