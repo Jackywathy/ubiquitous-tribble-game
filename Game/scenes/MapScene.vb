@@ -135,13 +135,7 @@ Public Class MapScene
         Return scene
     End Function
 
-    Public Iterator Function GetAllGround() As IEnumerable(Of GroundPlatform)
-        For each item as HitboxItem In allHitboxItems
-            If item.GetType() = GetType(GroundPlatform) Then
-                Yield item
-            End If
-        Next
-    End Function
+   
 
 #Region "Debug"
     Public Overrides Sub DrawDebugStrings(form As GameControl)
@@ -280,6 +274,14 @@ Public Class MapScene
     Private Iterator Function GetScrollableInScene() As IEnumerable(Of ScrollAlongImage)
         For Each item As ScrollAlongImage In allScrollingItems
             If item.InScene() Then
+                Yield item
+            End If
+        Next
+    End Function
+
+     Public Iterator Function GetAllGround() As IEnumerable(Of GroundPlatform)
+        For each item as HitboxItem In allHitboxItems
+            If item.GetType() = GetType(GroundPlatform) Then
                 Yield item
             End If
         Next

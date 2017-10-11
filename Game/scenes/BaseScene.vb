@@ -249,7 +249,6 @@ Public Class TransitionObject
         Me.color = fillColor
         Me.location = If(location, New Point(0, 0))
     End Sub
-
 End Class
 
 Public Enum TransitionDirection

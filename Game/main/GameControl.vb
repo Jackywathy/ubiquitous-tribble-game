@@ -351,7 +351,16 @@ Public Class GameControl
     ''' <param name="mapInsertion"></param>
     ''' <param name="time"></param>
     Friend Function QueueMapChangeWithCircleAnimation(map As MapEnum, mapInsertion As Point?, centerToplayer As Boolean, Optional time As Integer = StandardPipeTime, Optional animationLocation As Point? = Nothing, Optional before As QueueObject = Nothing) As QueueObject
+        
+        ' convert Bottom based point to Top Based point
+        if animationLocation isnot nothing
+            Dim loc as Point = animationLocation
+            loc.Y = ScreenGridHeight - loc.Y
+            animationLocation = loc
+        End if
+
         Dim firstTrans As New TransitionObject(TransitionType.Circle, TransitionDirection.Top, location:=animationLocation)
+
 
         Dim firstTransition As New TransitionQueueObject(firstTrans, 0, Me)
         Dim mapChange As New MapChangeQueueObject(map, mapInsertion, StandardTransitionTime, Me, CenterToPlayer:=centerToplayer)

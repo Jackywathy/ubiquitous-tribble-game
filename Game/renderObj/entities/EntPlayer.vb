@@ -170,12 +170,15 @@ Public Class EntPlayer
 
         InvinicibilityTimer = StandardPipeTime
         Dim point = MyScene.GetScreenLocation(Me)
-        point.Y = BottomToTop(point.Y)
+        point.X += 16
+        
         Dim enterPipe as New MarioPipeAnimationQueueObject(Me, PipeType.Horizontal,True, MyScene.Parent)
 
         Dim exitPipe As New MarioPipeAnimationQueueObject(Me, PipeType.Vertical, False,  MyScene.Parent, stopmusic := False)
 
-        Dim mapChange = MyScene.Parent.QueueMapChangeWithCircleAnimation(map, insertion, centerToplayer := True,animationLocation:=point, before := enterPipe)
+        Dim mapChange = MyScene.Parent.QueueMapChangeWithCircleAnimation(map, insertion, 
+                                                                         centerToplayer := True, animationLocation:=point,
+                                                                         before := enterPipe)
         mapChange.next = exitPipe
 
     End Sub
