@@ -121,7 +121,7 @@
     ''' </summary>
     ''' <param name="sender"></param>
     Public Overrides Sub CollisionTop(sender As Entity)
-        If sender.GetType() = GetType(EntPlayer) Then
+        If sender.GetType() = GetType(EntPlayer) And sender.veloc.y < 0 Then
             If Me.inShell Then
                 If Me.veloc.x = 0 Then
                     Me.Kick(1)
@@ -138,6 +138,7 @@
                 'player.veloc = New Distance(player.veloc.x, 0)
                 'player.AccelerateY(player.moveSpeed.y * 0.75, True)
             End If
+            sender.veloc.y = 0
         ElseIf sender.killsOnContact Then
             willDie = True
             CollisionActive = False

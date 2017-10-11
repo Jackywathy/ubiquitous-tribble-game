@@ -67,7 +67,7 @@
             If Not Me.willDie Then
                 HurtPlayer(sender)
             End If
-        ElseIf sender.killsOnContact Then
+        ElseIf sender.killsOnContact And Me.willdie = False Then
             willDie = True
             squashed = False
             Me.defaultY = Me.Location.Y
@@ -87,9 +87,9 @@
             End If
             willDie = True
             squashed = True
-        ' fireballs
-        ElseIf sender.killsOnContact Then
-            dim fireball = DirectCast(sender, EntFireball)
+            ' fireballs
+        ElseIf sender.killsOnContact And Me.willdie = False Then
+            Dim fireball = DirectCast(sender, EntFireball)
             fireball.owner.Score += PlayerPoints.Goomba
             fireball.PrepareForDestroy()
             willDie = True
