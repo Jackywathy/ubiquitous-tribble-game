@@ -805,10 +805,11 @@
     0,
     64
   ],
-  "width": 448,
-  "height": 60,
+  "width": 224,
+  "height": 30,
   "MapTime": 300,
-  "theme": "overworld",
-  "NextLevel": "None" 
-  
+  "NextLevel": "None",
+  "LinkedLevel": "map2_1under",
+  "OnDead": "None",
+  "theme": "overworld"
 }

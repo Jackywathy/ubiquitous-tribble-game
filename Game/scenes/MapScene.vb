@@ -1,5 +1,4 @@
-﻿Imports WinGame
-''' <summary>
+﻿''' <summary>
 ''' Scene that represents a map, (probably loaded from json using <see cref="JsonMapReader.ReadMapFromResource"/>
 ''' </summary>
 Public Class MapScene
@@ -7,7 +6,27 @@ Public Class MapScene
     Implements IScene
 
 #Region "Variables"
-    Public HudElements As StaticHud = Parent.SharedHud
+    Public HudElements As StaticHud
+
+    Public LinkedLevel as MapEnum = MapEnum.None
+    Private _onDead as MapEnum = MapEnum.None
+
+    Public MapName As MapEnum
+    Public NextLevel As MapEnum
+
+    Public Property OnDead As MapEnum 
+        Get
+            Return _onDead
+        End Get
+        Set(value As MapEnum)
+            if value = MapEnum.None
+                _onDead = mapName
+            ELse
+                _onDead = value
+            End If
+        End Set
+    End Property
+
     Private _screenLocation As New Point
     ''' <summary>
     ''' Location that the scene is rendered at - default = 0, 0
@@ -89,7 +108,7 @@ Public Class MapScene
     ''' Contains all Entities
     ''' </summary> 
     Private ReadOnly Property allEntities As New List(Of Entity)
-
+    
     ''' <summary>
     ''' All images that scroll with player, e.g. decorations, clouds
     ''' </summary>
@@ -114,8 +133,7 @@ Public Class MapScene
     Public IsFinished As Boolean
     Private escPressed As Boolean = False
 
-    Public mapName As MapEnum
-    Public NextLevel As MapEnum
+    
 
 #End Region
 
@@ -124,7 +142,7 @@ Public Class MapScene
     ''' </summary>
     Friend Sub LevelFinished()
         IsFinished = True
-        Parent.QueueFlagLevelChange(Me.NextLevel, Nothing, Player1, time:=StandardTransitionTime)
+        Parent.QueueFlagLevelChange(Me.NextLevel, Nothing, Player1, time:=StandardTransitionTime*3)
     End Sub
 
     Friend Shared Function GetEmptyScene(control As GameControl) As MapScene
@@ -135,13 +153,7 @@ Public Class MapScene
         Return scene
     End Function
 
-    Public Iterator Function GetAllGround() As IEnumerable(Of GroundPlatform)
-        For each item as HitboxItem In allHitboxItems
-            If item.GetType() = GetType(GroundPlatform) Then
-                Yield item
-            End If
-        Next
-    End Function
+   
 
 #Region "Debug"
     Public Overrides Sub DrawDebugStrings(form As GameControl)
@@ -171,6 +183,9 @@ Public Class MapScene
     ''' </summary>
     ''' <returns></returns>
     Private Function MouseOverBox As Boolean
+        if Me.HudElements Is Nothing
+            Return false
+        End If
         Dim point = GetMouseRelativeLocation()
         Return Me.HudElements.PowerupHolder.GetRect().Contains(point)
     End Function
@@ -182,7 +197,9 @@ Public Class MapScene
         If IsTransitioning
             Return
         End If
-
+        If HudElements Is Nothing
+            return
+        End If
         ' make sure there is a powerup
         If Me.HudElements.PowerupHolder.powerupImage IsNot Nothing
             Dim cursorLocation = GetMouseRelativeLocation()
@@ -255,9 +272,7 @@ Public Class MapScene
         Me.Width = mapWidth * 32
         Me.Height = mapHeight * 32
         Me.mapName = mapName
-        If includeHud
-            HudElements = parent.SharedHud
-        End If
+        HudElements = parent.SharedHud
         Me.Player1 = parent.player1
         Me.Player2 = parent.player2
         Me.TotalMapTime = totalMapTime
@@ -280,6 +295,14 @@ Public Class MapScene
     Private Iterator Function GetScrollableInScene() As IEnumerable(Of ScrollAlongImage)
         For Each item As ScrollAlongImage In allScrollingItems
             If item.InScene() Then
+                Yield item
+            End If
+        Next
+    End Function
+
+     Public Iterator Function GetAllGround() As IEnumerable(Of GroundPlatform)
+        For each item as HitboxItem In allHitboxItems
+            If item.GetType() = GetType(GroundPlatform) Then
                 Yield item
             End If
         Next
@@ -512,13 +535,28 @@ Public Class MapScene
 
     Friend Sub FailLevel()
         If Not IsTransitioning
-            Dim map = Helper.StrToEnum(Of MapEnum)(Me.mapName)
-            Parent.ReloadLevel(map)
-            Parent.QueueMapChangeWithStartScene(map, Nothing)
+            ReloadMap()
 
-            Player1.ResetPlayer()
-            Player1.Location = New Point(0, 128)
+            Parent.QueueMapChangeWithStartScene(OnDead, Nothing)
+
         End If
+    End Sub
+
+    ''' <summary>
+    ''' Reloads and reset this map + any attached maps
+    ''' </summary>
+    Public Sub ReloadMap()
+        If LinkedLevel <> MapEnum.None
+            Parent.ReloadLevel(LinkedLevel)
+        End If
+        Parent.ReloadLevel(mapName)
+        player1.ResetPlayer()
+        ' TODO fix player2
+        If player2 IsNot nothing
+            Player2.ResetPlayer
+        End If
+
+
     End Sub
 
     Private Function AllPlayersDead() As Boolean
@@ -619,11 +657,5 @@ Public Enum RenderTheme
     Overworld
     Underground
     Castle
-End Enum
-
-Public Enum Maps
-    Map_StartScene
-    Map1_1Above
-    Map1_1Below
 End Enum
 

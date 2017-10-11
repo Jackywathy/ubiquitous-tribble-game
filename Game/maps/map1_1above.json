@@ -677,5 +677,8 @@
   "height": 15,
   "MapTime": 300,
   "theme": "overworld",
-  "NextLevel" :  "map1_2above" 
+  "NextLevel": "map1_2above",
+
+  "LinkedLevel": "map1_1under",
+  "OnDead" :  "None" 
 }

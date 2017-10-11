@@ -36,14 +36,14 @@ Public MustInherit Class BaseScene
 
     Protected MustInherit Class TransitionDrawer
         Protected MustOverride Sub DrawTransition(g As Graphics)
-        Public tranitionObject As TransitionObject
+        Public transitionObject As TransitionObject
         Public TransitionLength As Integer
         Public TransitionTicksElapsed As Integer
         Public IsFinished As Boolean = False
 
 
         Sub New(transitionObject As TransitionObject)
-            Me.tranitionObject = tranitionObject
+            Me.transitionObject = transitionObject
             TransitionLength = transitionObject.time
             TransitionTicksElapsed = 0
         End Sub
@@ -66,7 +66,7 @@ Public MustInherit Class BaseScene
         Protected Overrides Sub DrawTransition(g As Graphics)
             Dim progress As Double = TransitionTicksElapsed / TransitionLength
             Dim drawnRect As Rectangle
-            Select Case Me.tranitionObject.tdir
+            Select Case Me.transitionObject.tdir
                 Case TransitionDirection.Right
                     ' top left of rectangle = length of form - progress
                     drawnRect.X = ScreenGridWidth - progress
@@ -111,7 +111,7 @@ Public MustInherit Class BaseScene
         End Sub
 
         Public Sub Refresh
-            worldMiddle = New StaticText(New Rectangle(ScreenGridWidth / 3, ScreenGridHeight / 3 * 2, ScreenGridWidth / 3, 100), "WORLD " + scene.HudElements.worldNumText.text,
+            worldMiddle = New StaticText(New Rectangle(ScreenGridWidth / 3, ScreenGridHeight / 3 * 2, ScreenGridWidth / 3, 100), "WORLD " + Me.TransitionObject.tstring,
                                          NES.GetFontFamily(), scene.HudElements.fontSize, DrawingPrimitives.WhiteBrush, horAlignment := StringAlignment.Center, vertAlignment := StringAlignment.Center)
 
         End Sub
@@ -240,16 +240,19 @@ Public Class TransitionObject
     Public tdir As TransitionDirection
     Public time As Integer
     Public color As Brush
+    Public tstring As String
     Public location As Point
 
-    Sub New(ttype As TransitionType, Optional tdir As TransitionDirection = TransitionDirection.Bottom, Optional time As Integer = StandardTransitionTime, Optional fillColor As Brush = Nothing, ByRef Optional location As Point? = Nothing)
+    Sub New(ttype As TransitionType, Optional tdir As TransitionDirection = TransitionDirection.Bottom, Optional time As Integer = StandardTransitionTime, Optional fillColor As Brush = Nothing,
+            ByRef Optional location As Point? = Nothing,
+            Optional tstring as string="")
         Me.ttype = ttype
         Me.tdir = tdir
         Me.time = time
         Me.color = fillColor
+        Me.tstring = tstring
         Me.location = If(location, New Point(0, 0))
     End Sub
-
 End Class
 
 Public Enum TransitionDirection

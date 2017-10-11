@@ -1984,5 +1984,8 @@
     "height": 480,
   "MapTime": 300,
   "theme": "underground",
-   "NextLevel": "None" 
+  "NextLevel": "None",
+
+    "LinkedLevel": "map1_2above",
+    "OnDead" :  "map1_2above" 
 }

@@ -34,6 +34,8 @@ Public Class GameControl
         Me.Refresh()
     End Sub
 
+    
+
     ''' <summary>
     ''' Paints to the screen using a graphics object
     ''' </summary>
@@ -60,6 +62,7 @@ Public Class GameControl
 
     Public Sub ShowOverlay
         OverlayActive = True
+        overlay.UpdateTExt()
         overlay.Show()
     End Sub
 
@@ -82,23 +85,18 @@ Public Class GameControl
 
         RunScene(MapEnum.None, True)
 
-
-
         ' only start loop after init has finished
         GameLoop.Enabled = enabled
     End Sub
 
+
+    ''' <summary>
+    ''' Resets the map, state in GameControl and overlay
+    ''' </summary>
     Friend Sub Reset()
-        Dim scene As MapScene = GetCurrentScene()
-        ReloadLevel(Helper.StrToEnum(Of MapEnum)(scene.mapName))
-        scene.IsTransitioning = False
-            scene.IsAtStartScreen = False
-            scene.IsFrozen = False
-        player1.ResetPlayer()
+        CurrentScene.ReloadMap()
         HideOverlay()
         ChangeQueue.queue.Clear()
-
-
     End Sub
 
     Friend Sub ReturnToMainMenu()
@@ -129,7 +127,7 @@ Public Class GameControl
     ''' </summary>
     Private ReadOnly Property allMapScenes As Dictionary(Of MapEnum, MapScene)
 
-    Private overlay As MenuControl
+    Private overlay As PauseMenu
     ''' <summary>
     ''' Initalize components inside
     ''' </summary>
@@ -141,7 +139,8 @@ Public Class GameControl
         SetStyle(ControlStyles.AllPaintingInWmPaint, True)
 
 
-        overlay = New MenuControl(Me)
+        overlay = New PauseMenu(Me)
+       
         HideOverlay()
         Me.Controls.Add(overlay)
     End Sub
@@ -250,7 +249,7 @@ Public Class GameControl
         allMapScenes(map) = GetScene(map)
     End Sub
 
-    Private Function GetScene(map As MapEnum) As MapScene
+    Public Function GetScene(map As MapEnum) As MapScene
         Dim str As String = map.ToString
 
         If map = MapEnum.None
@@ -287,6 +286,7 @@ Public Class GameControl
     ''' <param name="isNewStage">Whether or not it resets the timer</param>
     Public Sub RunScene(map As MapEnum, isNewStage As Boolean, Optional insertion As Point? = Nothing)
         CurrentScene = allMapScenes(map)
+        SharedHud.WorldNumText.Text = GetProperMapName(map)
 
         Dim start As Point = If(insertion, CurrentScene.DefaultPlayerLocation)
 
@@ -320,11 +320,10 @@ Public Class GameControl
 
     Public Property ChangeQueue As New ChangeQueueWrapper
 
-    
-
     Friend Function GetVolumeMultipler() As Double
         Return volume
     End Function
+
 
 
     Friend Sub QueueFlagLevelChange(map As MapEnum, mapInsertion As Point?, player1 As EntPlayer, time As Integer)
@@ -332,13 +331,22 @@ Public Class GameControl
         ' play circle transition on mario location
 
         Dim wait As New WaitQueueObject(player1, Me, time:=time)
-        Dim firstTrans As New TransitionObject(TransitionType.Circle, TransitionDirection.Top, location:=player1.Location)
+
+        Dim firstTrans As New TransitionObject(TransitionType.Circle, TransitionDirection.Top,
+                                               location:=player1.MyScene.GetScreenLocation(player1)
+                                               )
+
+        Dim secondTrans as New TransitionObject(TransitionType.StartScene, TransitionDirection.Bottom,
+                                                tstring := GetProperMapName(map))
 
         Dim firstTransition As New TransitionQueueObject(firstTrans, 0, Me)
-        Dim mapChange As New MapChangeQueueObject(map, mapInsertion, StandardTransitionTime, Me, Reset:=True)
+        Dim secondTransition As New TransitionQueueObject(secondTrans, StandardTransitionTime, Me)
+
+        Dim mapChange As New MapChangeQueueObject(map, mapInsertion, StandardTransitionTime, Me, Reset:=True, CenterToPlayer := False)
 
         wait.next = firstTransition
-        firstTransition.next = mapChange
+        firstTransition.next = secondTransition
+        secondTransition.next = mapChange
 
         AddTimedEvent(wait)
     End Sub
@@ -350,8 +358,15 @@ Public Class GameControl
     ''' <param name="map"></param>
     ''' <param name="mapInsertion"></param>
     ''' <param name="time"></param>
-    Friend Function QueueMapChangeWithCircleAnimation(map As MapEnum, mapInsertion As Point?, centerToplayer As Boolean, Optional time As Integer = StandardPipeTime, Optional animationLocation As Point? = Nothing, Optional before As QueueObject = Nothing) As QueueObject
+    Friend Function QueueMapChangeWithCircleAnimation(map As MapEnum, animationLocation As Point,
+                                                      mapInsertion As Point?, Optional time As Integer = StandardPipeTime, Optional before As QueueObject = Nothing, Optional centerToplayer As Boolean = True) As QueueObject
+        
+        ' convert Bottom based point to Top Based point
+        animationLocation.Y = ScreenGridHeight - animationLocation.Y
+       
+
         Dim firstTrans As New TransitionObject(TransitionType.Circle, TransitionDirection.Top, location:=animationLocation)
+
 
         Dim firstTransition As New TransitionQueueObject(firstTrans, 0, Me)
         Dim mapChange As New MapChangeQueueObject(map, mapInsertion, StandardTransitionTime, Me, CenterToPlayer:=centerToplayer)
@@ -368,8 +383,8 @@ Public Class GameControl
     End Function
 
     Friend Function QueueMapChangeWithStartScene(map As MapEnum, mapInsertion As Point?, Optional time As Integer = StandardStartScreenTime, Optional before As QueueObject = Nothing) As QueueObject
-        Dim firstTrans As New TransitionObject(TransitionType.StartScene)
-
+        Dim firstTrans As New TransitionObject(TransitionType.StartScene, tstring := GetProperMapName(map))
+        
         ' play a startscene immediately (time = 0)
         Dim firstTransition As New TransitionQueueObject(firstTrans, 0, Me)
         Dim mapChange As New MapChangeQueueObject(map, mapInsertion, StandardTransitionTime, Me, CenterToPlayer:=False)
@@ -387,7 +402,6 @@ Public Class GameControl
     Private Sub InitializeComponent()
         Me.SuspendLayout
         Me.ResumeLayout(False)
-
     End Sub
 End Class
 
@@ -453,4 +467,6 @@ Public Enum MapEnum
     map1_2above
     map1_2under
     map2_1above
+    map2_1under
+
 End Enum

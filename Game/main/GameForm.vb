@@ -74,7 +74,7 @@ Public Class GameForm
         if musicplayer.BackgroundPlayer IsNot nothing
             MusicPlayer.BackgroundPlayer.Stop()
         End if
-        game.Reset
+        game.Reset()
         
         DisableTimer()
     End Sub
