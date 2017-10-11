@@ -60,7 +60,9 @@ Public Class EntPlayer
             Else
                 _coins += 1
             End If
-            CoinCallback.Text = _coins.ToString()
+            If CoinCallback Isnot nothing
+                CoinCallback.Text = "x" +  _coins.ToString()
+            End if
         End Set
     End Property
     ''' <summary>

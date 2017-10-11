@@ -32,6 +32,7 @@
         dim sf = New StringFormat()
         sf.Alignment = hor
         sf.LineAlignment = vert
+       
         Return sf
     End Function
 

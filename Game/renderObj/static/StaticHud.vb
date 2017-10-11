@@ -1,4 +1,6 @@
 ﻿
+Imports Microsoft.Win32
+
 Public Class StaticHud
     Inherits GameItem
 
@@ -29,7 +31,6 @@ Public Class StaticHud
     Private ReadOnly ScoreText As StaticText
 
     Private ReadOnly CoinImage As StaticCoin
-    Private ReadOnly CrossImage As StaticCross
     Private ReadOnly CoinText As StaticText
 
     Public ReadOnly PowerupHolder As StaticHudPowerup
@@ -78,20 +79,22 @@ Public Class StaticHud
         ' Coin 
         ' 0 x 56
         ' each letter/symbol is 5% of the screen wide
-        Dim coinLocation = New Point(coinsLocation * width, Helper.TopToBottom(halfWayHeight, halfWayHeight))
-        CoinImage = New StaticCoin(width * 0.05, halfWayHeight, coinLocation)
 
-        Dim xLocation = New Point((coinsLocation + 0.05) * width, Helper.TopToBottom(halfWayHeight, halfWayHeight))
-        CrossImage = New StaticCross(width * 0.05, halfWayHeight, xLocation)
+        
+        Dim cPercent = 0.02
+        Dim cOffset = (coinsPercent - cPercent * 7) / 2
 
-        ' 2 characters, 5% each
-        Dim coinTextRect As New Rectangle((coinsLocation + 0.1) * width, Helper.TopToBottom(halfWayHeight, halfWayHeight), ' X, Y
-                                          width * 0.1, halfWayHeight ' width ,height
+        Dim coinLocation = New Point((coinsLocation+cOffset) * width, Helper.TopToBottom(halfWayHeight, halfWayHeight))
+        CoinImage = New StaticCoin(width * (cPercent*2), halfWayHeight, coinLocation)
+        
+        ' 4 characters 0.02 each
+        Dim coinTextRect As New Rectangle((coinsLocation + cPercent*2+cOffset) * width, Helper.TopToBottom(halfWayHeight, halfWayHeight), ' X, Y
+                                          width * cPercent*5, halfWayHeight ' width ,height
                                           )
 
-        CoinText = New StaticText(coinTextRect, "0",
+        CoinText = New StaticText(coinTextRect, "x0",
                                   CustomFontFamily.NES.GetFontFamily(), fontSize, DrawingPrimitives.WhiteBrush,
-                                  horAlignment:=StringAlignment.Center, vertAlignment:=StringAlignment.Center
+                                  horAlignment:=StringAlignment.Near, vertAlignment:=StringAlignment.Center
                                   )
 
         EntPlayer.CoinCallback = CoinText
@@ -110,12 +113,12 @@ Public Class StaticHud
 
         ' ideally, only render this when an item is present in the powerup box
         ' pls fix location
-
+        
         Dim dragPromptRect = New Rectangle((powerupLocation - 0.02) * width, Helper.TopToBottom(2 * halfWayHeight, halfWayHeight),
                                       width * 0.1, halfWayHeight)
 
         ' text: "Drag me!"
-        DragText = New StaticText(dragPromptRect, "pls fix",
+        DragText = New StaticText(dragPromptRect, "Drag Me!",
                                   CustomFontFamily.NES.GetFontFamily(), 12, DrawingPrimitives.WhiteBrush,
                                   horAlignment:=StringAlignment.Center, vertAlignment:=StringAlignment.Center
                                   )
@@ -175,11 +178,12 @@ Public Class StaticHud
         ScoreText.Render(g)
 
         CoinImage.Render(g)
-        CrossImage.Render(g)
         CoinText.Render(g)
 
         PowerupHolder.Render(g)
-        DragText.Render(g)
+        If powerupHolder.StoredPowerup <> PowerupType.None
+            DragText.Render(g)
+        End if
 
         WorldText.Render(g)
         WorldNumText.Render(g)

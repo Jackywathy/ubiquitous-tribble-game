@@ -23,9 +23,14 @@
     End Sub
 
     Private Sub Collect(sender As EntPlayer)
-        sender.PickupCoin()
-        Me.Destroy()
+        If Not isUsed
+            sender.PickupCoin()
+            Me.Destroy()
+            iSused = True
+        End if
     End Sub
+
+    Private isUsed As Boolean = False
 
 
     Public Overrides Sub CollisionBottom(sender As Entity)

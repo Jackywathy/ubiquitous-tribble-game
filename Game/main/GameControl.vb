@@ -137,7 +137,7 @@ Public Class GameControl
         SetStyle(ControlStyles.UserPaint, True)
         SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
         SetStyle(ControlStyles.AllPaintingInWmPaint, True)
-
+       
 
         overlay = New PauseMenu(Me)
        

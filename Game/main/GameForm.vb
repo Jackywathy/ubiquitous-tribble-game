@@ -37,7 +37,7 @@ Public Class GameForm
         Me.ClientSize = New System.Drawing.Size(1264, 681)
         Me.KeyPreview = True
 
-        Me.MaximumSize = New System.Drawing.Size(0, 0)
+        Me.MaximumSize = New System.Drawing.Size(1280, 30+720)
         Me.MinimumSize = New System.Drawing.Size(1280, 30+720)
         Me.Size = New Size(1280, 30+720)
 
@@ -48,7 +48,9 @@ Public Class GameForm
         game.Location = New Point(0,0)
         UpdateGameSize()
         Me.Controls.Add(game)
+
         Me.ResumeLayout()
+        
     End Sub
 
     ''' <summary>

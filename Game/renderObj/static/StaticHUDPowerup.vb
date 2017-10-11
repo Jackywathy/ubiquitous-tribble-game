@@ -3,13 +3,14 @@
 
     Public powerupImage As StaticImage
     
+    Public Property StoredPowerup As PowerupType = PowerupType.None
 
     Public Sub New(width As integer, height As integer, location As Point)
         MyBase.New(width, height, location, Resize(My.Resources.HUDitemBox, width, height))
     End Sub
 
     Public Function HasPowerup As Boolean
-        Return me.storedpowerup <> PowerupType.Empty
+        Return me.storedpowerup <> PowerupType.None
     End Function
 
     Public Sub ResetLocation()
@@ -36,7 +37,7 @@
         powerup.Spawn(True)
 
         ' delet powerup
-        SetPowerupItem(PowerupType.Empty)
+        SetPowerupItem(PowerupType.None)
     End Sub
 
     Public Sub ChangeLocation(dx As Integer, dy As Integer)
@@ -87,7 +88,7 @@
         Return New Point(location.X + Width/4, location.Y + Height/4)
     End Function
 
-    Private Property StoredPowerup As PowerupType
+    
 
     ''' <summary>
     ''' 
@@ -99,7 +100,7 @@
                 powerupImage = New StaticFireFlower(GetPowerLocationPoint)
             Case PowerupType.Mushroom
                 powerupImage = New StaticMushroom(GetPowerLocationPoint)
-            Case PowerupType.Empty
+            Case PowerupType.None
                 powerupImage = Nothing
             Case Else
                 Throw New Exception()
@@ -107,16 +108,13 @@
         StoredPowerup = item
     End Sub
 
-    Public Sub GetDr()
 
-    End Sub
-    
 End Class
 
 Public Enum PowerupType
+    None
     Fireflower
     Mushroom
     OneUp
-    Empty
 End Enum
 
