@@ -262,8 +262,10 @@ Public MustInherit Class Entity
             Me.veloc.y += magnitude
             isJumping = True
             didJumpAndNotFall = True
-            If Not forceAccelerate Then
-                Sounds.Jump.Play(fromStart:=True)
+            If Me.GetType = GetType(EntPlayer) And Not forceAccelerate Then
+                If Not CType(Me, EntPlayer).IsBouncingOffEntity Then
+                    Sounds.Jump.Play(fromStart:=True)
+                End If
             End If
 
         ElseIf magnitude < 0 Then

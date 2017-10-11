@@ -250,20 +250,26 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="images\blocks\above\blockGround.png" />
+    <Content Include="images\blocks\axe.png" />
     <Content Include="images\blocks\below\blockBelowGround.png" />
     <None Include="images\blocks\below\blockBrickUnder.png" />
     <None Include="images\blocks\below\blockMetalUnder.png" />
     <Content Include="images\blocks\blockInvis.png" />
     <Content Include="images\blocks\blockCloud.png" />
+    <Content Include="images\blocks\bridge.png" />
+    <Content Include="images\blocks\castle_brick.png" />
     <Content Include="images\blocks\pipe\pipe_bottom.png" />
     <Content Include="images\blocks\pipe\pipe_left.png" />
     <Content Include="images\blocks\pipe\pipe_right.png" />
     <Content Include="images\blocks\pipe\pipe_top.png" />
     <Content Include="images\decoration\castle.png" />
+    <Content Include="images\blocks\chain.png" />
     <Content Include="images\decoration\cloud_big.png" />
     <Content Include="images\decoration\cloud_small.png" />
     <Content Include="images\decoration\hill_big.png" />
     <Content Include="images\decoration\hill_small.png" />
+    <Content Include="images\enemy\bowser\bowser.png" />
+    <Content Include="images\enemy\bowser\bowser_r.png" />
     <Content Include="images\enemy\goomba\goomba_1.png" />
     <Content Include="images\enemy\goomba\goomba_2.png" />
     <Content Include="images\enemy\goomba\goomba_d.png" />
@@ -352,6 +358,7 @@
     <Content Include="images\powerups\star\star_s7.png" />
     <Content Include="images\other\smbTitle.png" />
     <None Include="images\icons\icon.ico" />
+    <None Include="Resources\arrow_right.png" />
     <Content Include="sounds\background_music\cave_theme.mp3" />
     <Content Include="sounds\sfx\1_up.mp3" />
     <Content Include="sounds\sfx\appear.mp3" />
@@ -418,7 +425,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="renderObj\other\" />
-    <Folder Include="Resources\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <Import Project="..\packages\Fody.2.0.0\build\dotnet\Fody.targets" Condition="Exists('..\packages\Fody.2.0.0\build\dotnet\Fody.targets')" />

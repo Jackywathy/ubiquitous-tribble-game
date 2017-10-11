@@ -36,7 +36,7 @@ Partial Class LevelSelect
         Me.MapList.FormattingEnabled = true
         Me.MapList.Location = New System.Drawing.Point(395, 12)
         Me.MapList.Name = "MapList"
-        Me.MapList.Size = New System.Drawing.Size(222, 277)
+        Me.MapList.Size = New System.Drawing.Size(222, 264)
         Me.MapList.TabIndex = 0
         '
         'PictureBox1

@@ -33,6 +33,7 @@ Public Class StaticHud
     Private ReadOnly CoinText As StaticText
 
     Public ReadOnly PowerupHolder As StaticHudPowerup
+    Private ReadOnly DragText As StaticText
 
     Private ReadOnly WorldText As StaticText
     Public ReadOnly WorldNumText As StaticText
@@ -40,7 +41,7 @@ Public Class StaticHud
     Private ReadOnly TimeText As StaticText
     Private ReadOnly TimeNumText As StaticText
 
-    Public fontSize As Integer = 18
+    Public fontSize As Integer = 24
 
     Private Sub Reshuffle()
 
@@ -101,6 +102,24 @@ Public Class StaticHud
         PowerupHolder = New StaticHudPowerup(widthOrHeight, widthOrHeight, powerupPoint)
         'PowerupHolder.SetPowerupItem(PowerupType.Mushroom)
 
+        ' Drag me!
+
+        '    |
+        '    |
+        '   \|/
+
+        ' ideally, only render this when an item is present in the powerup box
+        ' pls fix location
+
+        Dim dragPromptRect = New Rectangle((powerupLocation - 0.02) * width, Helper.TopToBottom(2 * halfWayHeight, halfWayHeight),
+                                      width * 0.1, halfWayHeight)
+
+        ' text: "Drag me!"
+        DragText = New StaticText(dragPromptRect, "pls fix",
+                                  CustomFontFamily.NES.GetFontFamily(), 12, DrawingPrimitives.WhiteBrush,
+                                  horAlignment:=StringAlignment.Center, vertAlignment:=StringAlignment.Center
+                                  )
+
         ' World 
         Dim worldTextRect = New Rectangle(worldLocation * width, Helper.TopToBottom(0, halfWayHeight),
                                       width * worldPercent, halfWayHeight)
@@ -160,6 +179,7 @@ Public Class StaticHud
         CoinText.Render(g)
 
         PowerupHolder.Render(g)
+        DragText.Render(g)
 
         WorldText.Render(g)
         WorldNumText.Render(g)

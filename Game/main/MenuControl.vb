@@ -89,7 +89,7 @@ Public Class MenuControl
         Me.ArrowIcon.Image = CType(resources.GetObject("ArrowIcon.Image"),System.Drawing.Image)
         Me.ArrowIcon.Location = New System.Drawing.Point(0, 0)
         Me.ArrowIcon.Name = "ArrowIcon"
-        Me.ArrowIcon.Size = New System.Drawing.Size(100, 50)
+        Me.ArrowIcon.Size = New System.Drawing.Size(32, 32)
         Me.ArrowIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.ArrowIcon.TabIndex = 0
         Me.ArrowIcon.TabStop = false

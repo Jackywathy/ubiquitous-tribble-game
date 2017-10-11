@@ -24,6 +24,8 @@
         RefreshBox()
         MapList.Font = New Font(NES, 10, FontStyle.Bold)
         MapList.SelectedIndex = 0
+        StartButton.Font = New Font(CustomFontFamily.NES, 12)
+        ReturnButton.Font = New Font(CustomFontFamily.NES, 12)
         form = parent
     End Sub
     Private Sub LevelSelect_Load(sender As Object, e As EventArgs) Handles MyBase.Load

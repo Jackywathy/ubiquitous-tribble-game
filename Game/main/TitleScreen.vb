@@ -2,7 +2,7 @@
     
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles HelpButton.Click
-        Dim helpTxt = "Super Mario Bros. HD 720p™ is a faithful recreation of the classic 1985 NES game. Use WASD to move, Space to shoot fireballs, and Esc to pause the game."
+        Dim helpTxt = "Super Mario Bros. HD 720p™ is a faithful recreation of the classic 1985 NES game. In Super Mario Bros., run and jump around the level, collecting coins and squashing bad guys. Your goal - to reach the end of each level." + vbNewLine + vbNewLine + "Controls:" + vbNewLine + vbNewLine + "Move and jump: W A S D" + vbNewLine + "Shoot fireballs: Space" + vbNewLine + "Pause game: Esc"
         MsgBox(helpTxt, MsgBoxStyle.Information, "Help")
     End Sub
 
@@ -10,7 +10,7 @@
         levelSelect.Show()
     End Sub
 
-    Private levelSelect as  LevelSelect
+    Private levelSelect As LevelSelect
 
 
     Private Sub TitleScreen_WillClose(sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
