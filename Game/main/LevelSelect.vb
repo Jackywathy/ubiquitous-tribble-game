@@ -22,7 +22,7 @@
 
         ' Add any initialization after the InitializeComponent() call.
         RefreshBox()
-        MapList.Font = New Font(NES, 10, FontStyle.Bold)
+        MapList.Font = New Font(NES, 24, FontStyle.Bold)
         MapList.SelectedIndex = 0
         StartButton.Font = New Font(CustomFontFamily.NES, 12)
         ReturnButton.Font = New Font(CustomFontFamily.NES, 12)
@@ -38,6 +38,10 @@
 
     Private Sub StartButton_Click(sender As Object, e As EventArgs) Handles StartButton.Click
         form.StartGame(MapList.selectedItem.map)
+    End Sub
+
+    Private Sub MapList_SelectedIndexChanged(sender As Object, e As EventArgs) Handles MapList.SelectedIndexChanged
+
     End Sub
 End Class
 
