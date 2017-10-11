@@ -1,7 +1,8 @@
 ﻿Public Class LevelSelect
     Public ReadOnly LoadableMaps as New Dictionary(Of String, MapEnum) From {
         {"1-1", MapEnum.map1_1above},
-        {"1-2", MapEnum.map1_2above}
+        {"1-2", MapEnum.map1_2above},
+        {"1-3", MapEnum.map1_3above}
     }
 
     Public Sub RefreshBox

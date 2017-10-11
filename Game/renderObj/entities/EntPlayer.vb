@@ -36,15 +36,10 @@ Public Class EntPlayer
     Private Shared _lives As Integer = 5
     Private Shared _coins As Integer = 0
 
-    Private _score As Integer = 0
+    Private Shared _score As Integer = 0
     
 
 
-    ''' <summary>
-    ''' Total score accumated by all players. Shared!
-    ''' </summary>
-    ''' <returns></returns>
-    Public Shared Property TotalScore As Integer
     ''' <summary>
     ''' Coins are shared between all players
     ''' </summary>
@@ -58,7 +53,7 @@ Public Class EntPlayer
                 _coins = value - CoinsToLives
                 _lives += 1
             Else
-                _coins += 1
+                _coins = value
             End If
             If CoinCallback Isnot nothing
                 CoinCallback.Text = "x" +  _coins.ToString()
@@ -85,17 +80,15 @@ Public Class EntPlayer
     ''' Score is not shared, but totalScore is
     ''' </summary>
     ''' <returns></returns>
-    Public Property Score As Integer
+    Public Shared Property Score As Integer
         Get
             Return _score
         End Get
         Set(value As Integer)
-            TotalScore += (value - Score)
-
             _score = value
 
             If ScoreCallback IsNot Nothing
-                ScoreCallback.Text = TotalScore.ToString()
+                ScoreCallback.Text = Score.ToString()
             End If
         End Set
     End Property
@@ -654,10 +647,10 @@ Public Class EntPlayer
             Me.OnCrouch(False)
         End If
 
-        If Me.State = PlayerStates.Fire And KeyHandler.MoveDown And Me.AllowShoot Then
+        If Me.State = PlayerStates.Fire And KeyHandler.Space And Me.AllowShoot Then
             Me.TryShootFireball()
             Me.AllowShoot = False
-        ElseIf Not KeyHandler.MoveDown Then
+        ElseIf Not KeyHandler.Space Then
             Me.AllowShoot = True
         End If
 
@@ -723,6 +716,12 @@ Public Class EntPlayer
         End If
         If Me.Location.Y < 0 And Not isDead Then
             Me.State = PlayerStates.Dead
+        End If
+        If Me.currentGroundObjects.Count = 1 
+            Dim ob as HitboxItem = currentGroundObjects(0)
+            if ob.GetType() = GetType(BlockPlatform)
+                me.Y = ob.y+ob.height
+            End If
         End If
     End Sub
 

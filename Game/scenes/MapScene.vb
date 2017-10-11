@@ -141,7 +141,12 @@ Public Class MapScene
     ''' Level was finished flag touched
     ''' </summary>
     Friend Sub LevelFinished()
+        If me.MapName = FinalMap
+            WinScreen.Show()
+            Parent.ReturnToMainMenu()
+        End If
         IsFinished = True
+        Parent.RegisterScore(EntPlayer.Score)
         Parent.QueueFlagLevelChange(Me.NextLevel, Nothing, Player1, time:=StandardTransitionTime*3)
     End Sub
 
@@ -448,9 +453,6 @@ Public Class MapScene
         For each item as HitboxItem in allHitboxItems
             yield item
         Next
-        For each item as Entity in AllEntities
-            yield item
-        Next
     End Function
 
     Public Overridable Sub SetPlayer(id As PlayerId, player As EntPlayer, location As Point)
@@ -495,7 +497,7 @@ Public Class MapScene
         
 
         Else
-            For Each item As HitboxItem In allHitboxItems
+            For Each item As HitboxItem In inSceneHitboxItems
                 item.UpdateVeloc()
                 item.UpdateLocation()
                 item.Animate()
@@ -534,11 +536,21 @@ Public Class MapScene
     End Sub
 
     Friend Sub FailLevel()
+        If EntPlayer.Lives = 0
+            Dim credits As New LostScreen()
+            Credits.Show()
+            Parent.ReturnToMainMenu()
+        End If
         If Not IsTransitioning
             ReloadMap()
-
-            Parent.QueueMapChangeWithStartScene(OnDead, Nothing)
-
+            player1.ResetPlayer()
+            ' TODO fix player2
+            If player2 IsNot nothing
+                Player2.ResetPlayer
+            End If
+            Parent.QueueMapChangeWithStartScene(OnDead, Nothing, IsNewStage:=True)
+            EntPlayer.Score = Parent.backupScore
+            
         End If
     End Sub
 
@@ -550,11 +562,7 @@ Public Class MapScene
             Parent.ReloadLevel(LinkedLevel)
         End If
         Parent.ReloadLevel(mapName)
-        player1.ResetPlayer()
-        ' TODO fix player2
-        If player2 IsNot nothing
-            Player2.ResetPlayer
-        End If
+        
 
 
     End Sub
@@ -593,12 +601,6 @@ Public Class MapScene
     End Sub
 
 
-
-    Public IsAtStartScreen As Boolean
-
-    Public Sub RunStartScreen
-        IsAtStartScreen = True
-    End Sub
 
     ''' <summary>
     ''' Renders scene onto g

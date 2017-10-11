@@ -83,8 +83,7 @@ Public Class MapChangeQueueObject
         End If
         control.RunScene(map, isNewStage, insertion)
         If centerToplayer Then
-            Dim mapScene As MapScene = control.GetCurrentScene()
-            mapScene.CenterToPlayer()
+            control.GetCurrentScene().CenterToPlayer()
         End If
 
 

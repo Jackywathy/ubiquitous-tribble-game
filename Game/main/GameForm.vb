@@ -23,6 +23,9 @@ Public Class GameForm
 
     Friend Sub StartGame(map As MapEnum)
         EnableTimer()
+        EntPlayer.Coins = 0
+        EntPlayer.Score = 0
+        game.player1.ResetPlayer()
         Game.QueueMapChangeWithStartScene(map, Nothing)
     End Sub
 

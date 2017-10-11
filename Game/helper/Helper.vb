@@ -15,7 +15,8 @@ Public Module Dimensions
     Public Const StandardPipeTime = 60
     Public Const StandardDeathTime = 240
     Public Const StandardTransitionTime = 60
-    Public Const StandardStartScreenTime = 360
+    Public Const StandardStartScreenTime = 120
+    Public Const FinalMap = MapEnum.map1_3above
 
     Public Function GetProperMapName(map As MapEnum) As String
         Select Case map
@@ -25,8 +26,8 @@ Public Module Dimensions
                 Return "1-2"
 
 
-            Case MapEnum.map2_1above, MapEnum.map2_1under
-                Return "2-1"
+            Case MapEnum.map1_3under, MapEnum.map1_3above
+                Return "1-3"
             Case Else
                 Return "None"
         End Select

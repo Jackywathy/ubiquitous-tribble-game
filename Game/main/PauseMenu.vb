@@ -189,4 +189,10 @@ Public Class PauseMenu
     Private Sub SoundTrackbar_Scroll(sender As Object, e As EventArgs) Handles SoundTrackbar.Scroll
         Me.Select()
     End Sub
+
+    Private Sub ControlButton_Click(sender As Object, e As EventArgs) Handles ControlButton.Click
+        Dim x as new InstructionForm
+        x.ShowDialog()
+        
+    End Sub
 End Class

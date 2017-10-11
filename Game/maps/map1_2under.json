@@ -1846,49 +1846,61 @@
                 "Coin"
             ]
         ],
-        "blockPipe": [
-            [
-                103,
-                2,
-                3,
-                "plant"
-            ],
-            [
-                109,
-                2,
-                4,
-                "plant"
-            ],
-            [
-                115,
-                2,
-                2,
-                "plant"
-            ],
-            [
-                168,
-                5,
-                8,
-                "none"
-            ],
-            [
-                178,
-                2,
-                3,
-                "none"
-            ],
-            [
-                182,
-                2,
-                3,
-                "none"
-            ],
-            [
-                186,
-                2,
-                3,
-                "none"
-            ]
+      "blockPipe": [
+        [
+          103,
+          2,
+          3,
+          "plant"
+        ],
+        [
+          109,
+          2,
+          4,
+          "plant"
+        ],
+        [
+          115,
+          2,
+          2,
+          "plant"
+        ],
+        [
+          168,
+          5,
+          8,
+          "none"
+        ],
+        [
+          178,
+          2,
+          3,
+          "none"
+        ],
+        [
+          182,
+          2,
+          3,
+          "none"
+        ],
+        [
+          186,
+          2,
+          3,
+          "none"
+        ]
+      ],
+        "BlockPipeRotate": [
+          [
+            166,
+            6,
+            2,
+            "map",
+            "map1_2above",
+            153,
+            4
+            
+          ]
         ],
         "blockBrickCoin": [
             [
@@ -1910,12 +1922,18 @@
                 6
             ]
         ],
-        "blockBrickStar": [
-            [
-                46,
-                7
-            ]
+      "blockBrickStar": [
+        [
+          46,
+          7
         ]
+      ],
+      "blockPlatform": [
+        [ 140, 2 ],
+        [ 140, 8 ],
+        [ 155, 2 ],
+        [ 155, 8 ]
+      ] 
     },
     "entities": {
         "entGoomba": [
@@ -1980,8 +1998,8 @@
         96,
       416
     ],
-    "width": 6144,
-    "height": 480,
+    "width": 192,
+    "height": 15,
   "MapTime": 300,
   "theme": "underground",
   "NextLevel": "None",

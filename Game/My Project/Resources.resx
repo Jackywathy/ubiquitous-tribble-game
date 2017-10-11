@@ -517,8 +517,8 @@
   <data name="map1_1above" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\maps\map1_1above.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="map2_1above" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\maps\map2_1above.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="map1_3above" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\maps\map1_3above.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="platform" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\other\platform\platform.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -583,8 +583,8 @@
   <data name="icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\icons\icon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="map2_1under" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\maps\map2_1under.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="map1_3under" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\maps\map1_3under.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="axe" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\blocks\axe.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -598,10 +598,28 @@
   <data name="bridge" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\blocks\bridge.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="castle_brick" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\images\blocks\castle_brick.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="chain" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\blocks\chain.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="blockPlatform" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\blocks\blockplatform.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="castle_brick" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\blocks\castle\castle_brick.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="wasd" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\wasd.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="castle_theme" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\sounds\background_music\castle_theme.mp3;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="jack" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\jack.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="pkbeam" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\pkbeam.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="trophy" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\trophy.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

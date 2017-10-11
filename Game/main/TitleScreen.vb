@@ -2,6 +2,7 @@
     
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles HelpButton.Click
+        instructions.Show()
         Dim helpTxt = "Super Mario Bros. HD 720p™ is a faithful recreation of the classic 1985 NES game. In Super Mario Bros., run and jump around the level, collecting coins and squashing bad guys. Your goal - to reach the end of each level." + vbNewLine + vbNewLine + "Controls:" + vbNewLine + vbNewLine + "Move and jump: W A S D" + vbNewLine + "Shoot fireballs: Space" + vbNewLine + "Pause game: Esc"
         MsgBox(helpTxt, MsgBoxStyle.Information, "Help")
     End Sub
@@ -28,6 +29,7 @@
         StartGame(MapEnum.map1_1above)
     End Sub
 
+    Private instructions as Instruction
 
 
     Sub New()
@@ -36,10 +38,18 @@
 
         ' Add any initialization after the InitializeComponent() call.
         game = New GameForm(False)
+        instructions = New Instruction()
+        
         levelSelect = New LevelSelect(Me)
+
         Me.Controls.Add(levelSelect)
+        Me.Controls.Add(instructions)
+
         levelSelect.BringToFront()
         levelSelect.Hide()
+
+        instructions.BringToFront()
+        instructions.Hide
 
         HelpButton.Font = buttonFont
         StartButton.Font = buttonFont
@@ -50,8 +60,10 @@
     End Sub
     Private game As GameForm
     Private buttonFont as New Font(CustomFontFamily.NES, 12)
+    
+    Private Sub TitleScreen_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
-
+    End Sub
 End Class
 
 

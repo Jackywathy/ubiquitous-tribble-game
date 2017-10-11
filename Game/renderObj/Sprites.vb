@@ -388,6 +388,14 @@ Public MustInherit Class Sprites
                                               32,
                                               32
                                               )
+    Public Shared Property blockPlatform As New SpriteSet("blockPlatform", New Dictionary(Of SpriteState,List(Of Image)) From {
+                                                             {SpriteState.Constant, New List(Of Image) From {My.Resources.blockPlatform}}
+                                                             },
+                                                          96,
+                                                          16
+                                                          )
+                                                          
+    
     Private Sub New()
         ' make this class un-intializable
     End Sub

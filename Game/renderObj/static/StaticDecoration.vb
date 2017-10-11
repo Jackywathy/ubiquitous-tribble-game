@@ -19,6 +19,8 @@
     Shared ReadOnly Property Mushroom As Image = My.Resources.mushroom
     Shared ReadOnly Property FireFlower As Image = My.Resources.f_flower_1
 
+    Public Shared Property Mario As Image = My.Resources.mario_small_1
+
     Friend Shared Function GetRandomBrush(point As Point, scene As MapScene) As StaticDecoration
         Dim image As Image
         Select Case Helper.Random(0, 1)

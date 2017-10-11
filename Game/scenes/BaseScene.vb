@@ -95,6 +95,8 @@ Public MustInherit Class BaseScene
         Inherits TransitionDrawer
         Private scene As mapscene
         Private worldMiddle as StaticText
+        Private mario as StaticMario
+        Private livesText As StaticText
 
         Protected Overrides Sub DrawTransition(g As Graphics)
             g.FillRectangle(DrawingPrimitives.BlackBrush, 0, 0, ScreenGridWidth, ScreenGridHeight)
@@ -102,18 +104,27 @@ Public MustInherit Class BaseScene
             scene.HudElements.Render(g)
             scene.HudElements.EnableTime()
             worldMiddle.Render(g)
+            mario.Render(g)
+            livesText.Render(g)
         End Sub
 
         Sub New(transitionObject As TransitionObject, scene As MapScene)
             MyBase.New(transitionObject)
             Me.scene = scene
-            Refresh
+            RefreshSize
+            RefreshLives
         End Sub
 
-        Public Sub Refresh
+        Public Sub RefreshSize
             worldMiddle = New StaticText(New Rectangle(ScreenGridWidth / 3, ScreenGridHeight / 3 * 2, ScreenGridWidth / 3, 100), "WORLD " + Me.TransitionObject.tstring,
                                          NES.GetFontFamily(), scene.HudElements.fontSize, DrawingPrimitives.WhiteBrush, horAlignment := StringAlignment.Center, vertAlignment := StringAlignment.Center)
+            mario = New StaticMario(New Point(ScreenGridWidth / 4, ScreenGridHeight/2))
+            livesText = New StaticText(New Rectangle(ScreenGridWidth/4+mario.Width, ScreenGridHeight/2, ScreenGridWidth/2, mario.height), "x -1", 
+                                       Nes, scene.HudElements.fontSize, DrawingPrimitives.WhiteBrush)
+        End Sub
 
+        Public Sub RefreshLives
+            livesText.TExt = "x " + EntPlayer.Lives.ToString()
         End Sub
     End Class
 

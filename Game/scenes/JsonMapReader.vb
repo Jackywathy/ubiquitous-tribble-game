@@ -158,6 +158,7 @@ Public NotInheritable Class JsonMapReader
         EntGoomba
         EntKoopa
         EntCoin
+        BlockPlatform
 
         Flag
     End Enum
@@ -242,6 +243,10 @@ Public NotInheritable Class JsonMapReader
             Case RenderTypes.EntCoin
                 AssertLength("EntCoin", 2, params)
                 out = New EntCoin(params, theme, scene)
+            Case RenderTypes.BlockPlatform
+                AssertLength("blockplatform", 2, params)
+                out = new BlockPlatform(params, scene)
+
             Case Else
 
                 Throw New Exception(String.Format("No object with name {0}", name))

@@ -97,6 +97,8 @@ Public Class GameControl
         CurrentScene.ReloadMap()
         HideOverlay()
         ChangeQueue.queue.Clear()
+        backupScore = 0
+        
     End Sub
 
     Friend Sub ReturnToMainMenu()
@@ -128,6 +130,8 @@ Public Class GameControl
     Private ReadOnly Property allMapScenes As Dictionary(Of MapEnum, MapScene)
 
     Private overlay As PauseMenu
+
+    Public backupScore as integer
     ''' <summary>
     ''' Initalize components inside
     ''' </summary>
@@ -143,6 +147,10 @@ Public Class GameControl
        
         HideOverlay()
         Me.Controls.Add(overlay)
+    End Sub
+
+    Friend Sub RegisterScore(totalScore As Integer)
+        backupScore = totalScore
     End Sub
 
     Public Sub DrawDebugStrings()
@@ -301,6 +309,7 @@ Public Class GameControl
         End If
         If isNewStage Then
             MapTimeCounter = 0
+            backupScore = 0
         End If
     End Sub
 
@@ -331,9 +340,11 @@ Public Class GameControl
         ' play circle transition on mario location
 
         Dim wait As New WaitQueueObject(player1, Me, time:=time)
-
+        Dim point = player1.MyScene.GetScreenLocation(player1)
+        point.Y = ScreenGridHeight - point.y
+        point.X += 300
         Dim firstTrans As New TransitionObject(TransitionType.Circle, TransitionDirection.Top,
-                                               location:=player1.MyScene.GetScreenLocation(player1)
+                                               location:=point
                                                )
 
         Dim secondTrans as New TransitionObject(TransitionType.StartScene, TransitionDirection.Bottom,
@@ -382,12 +393,13 @@ Public Class GameControl
         Return mapChange
     End Function
 
-    Friend Function QueueMapChangeWithStartScene(map As MapEnum, mapInsertion As Point?, Optional time As Integer = StandardStartScreenTime, Optional before As QueueObject = Nothing) As QueueObject
-        Dim firstTrans As New TransitionObject(TransitionType.StartScene, tstring := GetProperMapName(map))
+    Friend Function QueueMapChangeWithStartScene(map As MapEnum, mapInsertion As Point?, Optional time As Integer = StandardStartScreenTime, Optional IsNewStage As Boolean = False,
+                                                 Optional before As QueueObject = Nothing) As QueueObject
+        Dim firstTrans As New TransitionObject(TransitionType.StartScene, tstring := GetProperMapName(map), time:=StandardStartScreenTime)
         
         ' play a startscene immediately (time = 0)
         Dim firstTransition As New TransitionQueueObject(firstTrans, 0, Me)
-        Dim mapChange As New MapChangeQueueObject(map, mapInsertion, StandardTransitionTime, Me, CenterToPlayer:=False)
+        Dim mapChange As New MapChangeQueueObject(map, mapInsertion, StandardStartScreenTime, Me, CenterToPlayer:=False, IsNewStage := IsNewStage)
 
         firstTransition.next = mapChange
         If before IsNot Nothing
@@ -403,6 +415,7 @@ Public Class GameControl
         Me.SuspendLayout
         Me.ResumeLayout(False)
     End Sub
+
 End Class
 
 Public Enum PipeType
@@ -417,6 +430,8 @@ Public Class KeyHandler
     Public Shared MoveDown As Boolean
     Public Shared Escape As Boolean
     Public Shared keysPressed As New Dictionary(Of Keys, Boolean)
+
+    Public Shared Property Space As Boolean
 
     Private Sub KeyHelp(key As Keys, vset As Boolean)
         If key = Keys.Right Or key = Keys.D Then
@@ -436,6 +451,9 @@ Public Class KeyHandler
         End If
         If key = Keys.Escape
             Escape = vset
+        End If
+        If key = Keys.Space
+            Space = vset
         End If
         keysPressed(key) = vset
     End Sub
@@ -466,7 +484,7 @@ Public Enum MapEnum
     map1_1under
     map1_2above
     map1_2under
-    map2_1above
-    map2_1under
+    map1_3above
+    map1_3under
 
 End Enum
