@@ -25,15 +25,17 @@
         Dim spawnPoint = New Point(powerupImage.x+scene.ScreenLocation.X, powerupImage.y+scene.ScreenLocation.Y)
         Select Case StoredPowerup
             Case PowerupType.Fireflower
-                powerup = New EntFireFlower(spawnPoint, scene)
+                powerup = New EntFireFlower(spawnPoint, scene, True)
             Case PowerupType.Mushroom
-                powerup = New EntMushroom(spawnPoint, scene)
+                powerup = New EntMushroom(spawnPoint, scene, True)
             Case Else
                 Throw New Exception()
         End Select
         powerup.isGrounded = False
         powerup.fromHud = True
         powerup.Spawn(True)
+
+        ' delet powerup
         SetPowerupItem(PowerupType.Empty)
     End Sub
 

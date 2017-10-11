@@ -9,11 +9,16 @@
     Public Overrides Property PickupSound As MusicPlayer = Sounds.MushroomPickup
     Private directionMoving As Integer = 1
 
-    Sub New(location As Point, mapScene As MapScene)
+    Sub New(location As Point, mapScene As MapScene, Optional immediateSpawn As Boolean = False)
         MyBase.New(StandardWidth, StandardHeight, location, Sprites.mushroom, mapScene)
-        Me.RenderImage = Me.SpriteSet(SpriteState.Spawn)(0)
+        If immediateSpawn Then
+            Me.RenderImage = Me.SpriteSet(SpriteState.Constant)(0)
+        Else
+            Me.RenderImage = Me.SpriteSet(SpriteState.Spawn)(0)
+        End If
     End Sub
 
+    ' this may be redundant
     Public Overrides Sub Animate()
         If Not IsSpawning Then
             Me.RenderImage = Me.SpriteSet(SpriteState.Constant)(0)

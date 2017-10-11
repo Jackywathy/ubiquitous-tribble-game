@@ -10,11 +10,15 @@
     ' TODO REPLACE WITH FIRE_FIRE SOUND
     Public Overrides Property PickupSound As MusicPlayer = Sounds.MushroomPickup
 
-   
 
-    Sub New(location As Point, mapScene As MapScene)
+
+    Sub New(location As Point, mapScene As MapScene, Optional immediateSpawn As Boolean = False)
         MyBase.New(StandardWidth, StandardHeight, location, Sprites.f_flower, mapScene)
-        Me.RenderImage = Me.SpriteSet(SpriteState.Spawn)(0)
+        If immediateSpawn Then
+            Me.RenderImage = Me.SpriteSet(SpriteState.Constant)(0)
+        Else
+            Me.RenderImage = Me.SpriteSet(SpriteState.Spawn)(0)
+        End If
     End Sub
 
     Public Overrides Sub Animate()
