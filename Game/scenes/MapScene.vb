@@ -1,5 +1,4 @@
-﻿Imports WinGame
-''' <summary>
+﻿''' <summary>
 ''' Scene that represents a map, (probably loaded from json using <see cref="JsonMapReader.ReadMapFromResource"/>
 ''' </summary>
 Public Class MapScene
