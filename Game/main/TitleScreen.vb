@@ -3,8 +3,8 @@
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles HelpButton.Click
         instructions.Show()
-        Dim helpTxt = "Super Mario Bros. HD 720p™ is a faithful recreation of the classic 1985 NES game. In Super Mario Bros., run and jump around the level, collecting coins and squashing bad guys. Your goal - to reach the end of each level." + vbNewLine + vbNewLine + "Controls:" + vbNewLine + vbNewLine + "Move and jump: W A S D" + vbNewLine + "Shoot fireballs: Space" + vbNewLine + "Pause game: Esc"
-        MsgBox(helpTxt, MsgBoxStyle.Information, "Help")
+        'Dim helpTxt = "Super Mario Bros. HD 720p™ is a faithful recreation of the classic 1985 NES game. In Super Mario Bros., run and jump around the level, collecting coins and squashing bad guys. Your goal - to reach the end of each level." + vbNewLine + vbNewLine + "Controls:" + vbNewLine + vbNewLine + "Move and jump: W A S D" + vbNewLine + "Shoot fireballs: Space" + vbNewLine + "Pause game: Esc"
+        'MsgBox(helpTxt, MsgBoxStyle.Information, "Help")
     End Sub
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles LevelSelectButton.Click
@@ -71,6 +71,10 @@
         Else
             TotalLives = 5
         End If
+    End Sub
+
+    Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles PictureBox1.Click
+
     End Sub
 End Class
 

@@ -52,133 +52,133 @@ Partial Class TitleScreen
         Me.HelpButton.BackColor = System.Drawing.Color.FromArgb(CType(CType(192,Byte),Integer), CType(CType(74,Byte),Integer), CType(CType(0,Byte),Integer))
         Me.HelpButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.HelpButton.ForeColor = System.Drawing.Color.FromArgb(CType(CType(255,Byte),Integer), CType(CType(224,Byte),Integer), CType(CType(192,Byte),Integer))
-        Me.HelpButton.Location = New System.Drawing.Point(537, 386)
-        Me.HelpButton.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.HelpButton.Location = New System.Drawing.Point(739, 580)
+        Me.HelpButton.Margin = New System.Windows.Forms.Padding(6, 6, 6, 6)
         Me.HelpButton.Name = "HelpButton"
-        Me.HelpButton.Size = New System.Drawing.Size(263, 70)
+        Me.HelpButton.Size = New System.Drawing.Size(361, 105)
         Me.HelpButton.TabIndex = 2
         Me.HelpButton.Text = "Help"
-        Me.HelpButton.UseCompatibleTextRendering = true
-        Me.HelpButton.UseVisualStyleBackColor = false
+        Me.HelpButton.UseCompatibleTextRendering = True
+        Me.HelpButton.UseVisualStyleBackColor = False
         '
         'LevelSelectButton
         '
-        Me.LevelSelectButton.BackColor = System.Drawing.Color.FromArgb(CType(CType(192,Byte),Integer), CType(CType(74,Byte),Integer), CType(CType(0,Byte),Integer))
-        Me.LevelSelectButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.LevelSelectButton.ForeColor = System.Drawing.Color.FromArgb(CType(CType(255,Byte),Integer), CType(CType(224,Byte),Integer), CType(CType(192,Byte),Integer))
-        Me.LevelSelectButton.Location = New System.Drawing.Point(537, 297)
-        Me.LevelSelectButton.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.LevelSelectButton.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(74, Byte), Integer), CType(CType(0, Byte), Integer))
+        Me.LevelSelectButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LevelSelectButton.ForeColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(192, Byte), Integer))
+        Me.LevelSelectButton.Location = New System.Drawing.Point(739, 445)
+        Me.LevelSelectButton.Margin = New System.Windows.Forms.Padding(6, 6, 6, 6)
         Me.LevelSelectButton.Name = "LevelSelectButton"
-        Me.LevelSelectButton.Size = New System.Drawing.Size(263, 70)
+        Me.LevelSelectButton.Size = New System.Drawing.Size(361, 105)
         Me.LevelSelectButton.TabIndex = 1
         Me.LevelSelectButton.Text = "Level Select"
-        Me.LevelSelectButton.UseCompatibleTextRendering = true
-        Me.LevelSelectButton.UseVisualStyleBackColor = false
+        Me.LevelSelectButton.UseCompatibleTextRendering = True
+        Me.LevelSelectButton.UseVisualStyleBackColor = False
         '
         'StartButton
         '
-        Me.StartButton.BackColor = System.Drawing.Color.FromArgb(CType(CType(192,Byte),Integer), CType(CType(74,Byte),Integer), CType(CType(0,Byte),Integer))
-        Me.StartButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.StartButton.ForeColor = System.Drawing.Color.FromArgb(CType(CType(255,Byte),Integer), CType(CType(224,Byte),Integer), CType(CType(192,Byte),Integer))
-        Me.StartButton.Location = New System.Drawing.Point(537, 206)
-        Me.StartButton.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.StartButton.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(74, Byte), Integer), CType(CType(0, Byte), Integer))
+        Me.StartButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.StartButton.ForeColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(192, Byte), Integer))
+        Me.StartButton.Location = New System.Drawing.Point(739, 308)
+        Me.StartButton.Margin = New System.Windows.Forms.Padding(6, 6, 6, 6)
         Me.StartButton.Name = "StartButton"
-        Me.StartButton.Size = New System.Drawing.Size(263, 70)
+        Me.StartButton.Size = New System.Drawing.Size(361, 105)
         Me.StartButton.TabIndex = 0
         Me.StartButton.Text = "Start Game"
-        Me.StartButton.UseCompatibleTextRendering = true
-        Me.StartButton.UseVisualStyleBackColor = false
+        Me.StartButton.UseCompatibleTextRendering = True
+        Me.StartButton.UseVisualStyleBackColor = False
         '
         'PictureBox9
         '
         Me.PictureBox9.Image = Global.WinGame.My.Resources.Resources.cloud_small
-        Me.PictureBox9.Location = New System.Drawing.Point(699, 98)
-        Me.PictureBox9.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.PictureBox9.Location = New System.Drawing.Point(961, 148)
+        Me.PictureBox9.Margin = New System.Windows.Forms.Padding(6, 6, 6, 6)
         Me.PictureBox9.Name = "PictureBox9"
-        Me.PictureBox9.Size = New System.Drawing.Size(101, 79)
+        Me.PictureBox9.Size = New System.Drawing.Size(139, 118)
         Me.PictureBox9.TabIndex = 15
-        Me.PictureBox9.TabStop = false
+        Me.PictureBox9.TabStop = False
         '
         'PictureBox8
         '
         Me.PictureBox8.Image = Global.WinGame.My.Resources.Resources.cloud_big
-        Me.PictureBox8.Location = New System.Drawing.Point(537, 34)
-        Me.PictureBox8.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.PictureBox8.Location = New System.Drawing.Point(739, 52)
+        Me.PictureBox8.Margin = New System.Windows.Forms.Padding(6, 6, 6, 6)
         Me.PictureBox8.Name = "PictureBox8"
-        Me.PictureBox8.Size = New System.Drawing.Size(143, 79)
+        Me.PictureBox8.Size = New System.Drawing.Size(196, 118)
         Me.PictureBox8.TabIndex = 14
-        Me.PictureBox8.TabStop = false
+        Me.PictureBox8.TabStop = False
         '
         'PictureBox7
         '
         Me.PictureBox7.Image = Global.WinGame.My.Resources.Resources.pipe_top
-        Me.PictureBox7.Location = New System.Drawing.Point(391, 415)
-        Me.PictureBox7.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.PictureBox7.Location = New System.Drawing.Point(537, 622)
+        Me.PictureBox7.Margin = New System.Windows.Forms.Padding(6, 6, 6, 6)
         Me.PictureBox7.Name = "PictureBox7"
-        Me.PictureBox7.Size = New System.Drawing.Size(95, 39)
+        Me.PictureBox7.Size = New System.Drawing.Size(130, 59)
         Me.PictureBox7.TabIndex = 13
-        Me.PictureBox7.TabStop = false
+        Me.PictureBox7.TabStop = False
         '
         'PictureBox6
         '
         Me.PictureBox6.Image = Global.WinGame.My.Resources.Resources.pipe_bottom
-        Me.PictureBox6.Location = New System.Drawing.Point(391, 453)
-        Me.PictureBox6.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.PictureBox6.Location = New System.Drawing.Point(537, 679)
+        Me.PictureBox6.Margin = New System.Windows.Forms.Padding(6, 6, 6, 6)
         Me.PictureBox6.Name = "PictureBox6"
-        Me.PictureBox6.Size = New System.Drawing.Size(95, 39)
+        Me.PictureBox6.Size = New System.Drawing.Size(130, 59)
         Me.PictureBox6.TabIndex = 12
-        Me.PictureBox6.TabStop = false
+        Me.PictureBox6.TabStop = False
         '
         'PictureBox5
         '
         Me.PictureBox5.Image = Global.WinGame.My.Resources.Resources.goomba_1
-        Me.PictureBox5.Location = New System.Drawing.Point(265, 453)
-        Me.PictureBox5.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.PictureBox5.Location = New System.Drawing.Point(365, 679)
+        Me.PictureBox5.Margin = New System.Windows.Forms.Padding(6, 6, 6, 6)
         Me.PictureBox5.Name = "PictureBox5"
-        Me.PictureBox5.Size = New System.Drawing.Size(43, 39)
+        Me.PictureBox5.Size = New System.Drawing.Size(59, 59)
         Me.PictureBox5.TabIndex = 11
-        Me.PictureBox5.TabStop = false
+        Me.PictureBox5.TabStop = False
         '
         'PictureBox4
         '
         Me.PictureBox4.BackgroundImage = Global.WinGame.My.Resources.Resources.blockGround
-        Me.PictureBox4.Location = New System.Drawing.Point(-43, 491)
-        Me.PictureBox4.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.PictureBox4.Location = New System.Drawing.Point(-59, 737)
+        Me.PictureBox4.Margin = New System.Windows.Forms.Padding(6, 6, 6, 6)
         Me.PictureBox4.Name = "PictureBox4"
-        Me.PictureBox4.Size = New System.Drawing.Size(952, 62)
+        Me.PictureBox4.Size = New System.Drawing.Size(1309, 92)
         Me.PictureBox4.TabIndex = 10
-        Me.PictureBox4.TabStop = false
+        Me.PictureBox4.TabStop = False
         '
         'PictureBox3
         '
         Me.PictureBox3.Image = Global.WinGame.My.Resources.Resources.blockQuestion1
-        Me.PictureBox3.Location = New System.Drawing.Point(132, 354)
-        Me.PictureBox3.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.PictureBox3.Location = New System.Drawing.Point(182, 532)
+        Me.PictureBox3.Margin = New System.Windows.Forms.Padding(6, 6, 6, 6)
         Me.PictureBox3.Name = "PictureBox3"
-        Me.PictureBox3.Size = New System.Drawing.Size(43, 39)
+        Me.PictureBox3.Size = New System.Drawing.Size(59, 59)
         Me.PictureBox3.TabIndex = 9
-        Me.PictureBox3.TabStop = false
+        Me.PictureBox3.TabStop = False
         '
         'PictureBox2
         '
         Me.PictureBox2.Image = Global.WinGame.My.Resources.Resources.mario_big_jump
-        Me.PictureBox2.Location = New System.Drawing.Point(109, 398)
-        Me.PictureBox2.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.PictureBox2.Location = New System.Drawing.Point(150, 596)
+        Me.PictureBox2.Margin = New System.Windows.Forms.Padding(6, 6, 6, 6)
         Me.PictureBox2.Name = "PictureBox2"
-        Me.PictureBox2.Size = New System.Drawing.Size(43, 79)
+        Me.PictureBox2.Size = New System.Drawing.Size(59, 118)
         Me.PictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.PictureBox2.TabIndex = 8
-        Me.PictureBox2.TabStop = false
+        Me.PictureBox2.TabStop = False
         '
         'PictureBox1
         '
         Me.PictureBox1.Image = Global.WinGame.My.Resources.Resources.smbTitle
-        Me.PictureBox1.Location = New System.Drawing.Point(16, 15)
-        Me.PictureBox1.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.PictureBox1.Location = New System.Drawing.Point(22, 22)
+        Me.PictureBox1.Margin = New System.Windows.Forms.Padding(6, 6, 6, 6)
         Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(483, 315)
+        Me.PictureBox1.Size = New System.Drawing.Size(664, 473)
         Me.PictureBox1.TabIndex = 0
-        Me.PictureBox1.TabStop = false
+        Me.PictureBox1.TabStop = False
         '
         'CheckBox1
         '
@@ -192,11 +192,10 @@ Partial Class TitleScreen
         '
         'TitleScreen
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(8!, 16!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(11.0!, 24.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.LightSkyBlue
-        Me.ClientSize = New System.Drawing.Size(828, 532)
-        Me.Controls.Add(Me.CheckBox1)
+        Me.ClientSize = New System.Drawing.Size(1128, 766)
         Me.Controls.Add(Me.PictureBox9)
         Me.Controls.Add(Me.PictureBox8)
         Me.Controls.Add(Me.PictureBox7)
@@ -209,10 +208,10 @@ Partial Class TitleScreen
         Me.Controls.Add(Me.LevelSelectButton)
         Me.Controls.Add(Me.HelpButton)
         Me.Controls.Add(Me.PictureBox1)
-        Me.Icon = CType(resources.GetObject("$this.Icon"),System.Drawing.Icon)
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
-        Me.MaximumSize = New System.Drawing.Size(846, 579)
-        Me.MinimumSize = New System.Drawing.Size(846, 579)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
+        Me.Margin = New System.Windows.Forms.Padding(6, 6, 6, 6)
+        Me.MaximumSize = New System.Drawing.Size(1152, 830)
+        Me.MinimumSize = New System.Drawing.Size(1152, 830)
         Me.Name = "TitleScreen"
         Me.Text = "Super Mario Bros. HD 720p"
         CType(Me.PictureBox9,System.ComponentModel.ISupportInitialize).EndInit
