@@ -10,7 +10,7 @@
     Public gettingKicked = False
 
     Public Overrides Property moveSpeed As Velocity = New Velocity(1, 0)
-    Public Overrides Property maxVeloc As Velocity = New Velocity(1.8, -15)
+    Public Overrides Property maxVeloc As Velocity = New Velocity(1.8, Forces.terminalVeloc)
 
     Public Sub New(location As Point,theme as RenderTheme,  mapScene As MapScene)
         MyBase.New(32, 64, location, Sprites.koopaGreen, mapScene)
@@ -32,14 +32,13 @@
         Me.veloc.x = 0
         Me.moveSpeed = New Velocity(0, 0)
         Me.RenderImage = Me.SpriteSet(SpriteState.Destroy)(1)
-
         Me.Height = 32
 
     End Sub
 
     Public Sub Kick(direction As Integer)
         Me.moveSpeed = New Velocity(8, 0)
-        Me.maxVeloc = New Velocity(8, 0)
+        Me.maxVeloc = New Velocity(8, Forces.terminalVeloc)
         Me.directionMoving = direction
         Me.gettingKicked = True
     End Sub
@@ -86,6 +85,7 @@
         If Me.isDead Then
             Me.Destroy()
         End If
+
 
         Me.AccelerateX(directionMoving * Me.moveSpeed.x)
 

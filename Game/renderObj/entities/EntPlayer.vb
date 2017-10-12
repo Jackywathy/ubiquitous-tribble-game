@@ -367,7 +367,7 @@ Public Class EntPlayer
     Public NumFireballs As Integer = 0
     Private invulnerableTime As Integer = 0
 
-    Public Overrides Property moveSpeed As Velocity = New Velocity(0.6, 12)
+    Public Overrides Property moveSpeed As Velocity = New Velocity(0.7, 12)
     Public Overrides Property maxVeloc As Velocity = New Velocity(5, -15)
     ''' <summary>
     ''' Creates a new player
