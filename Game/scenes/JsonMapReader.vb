@@ -75,6 +75,8 @@ Public NotInheritable Class JsonMapReader
                 GenerateOverworldDecoration(outScene)
             Case RenderTheme.Underground
                 outScene.BackgroundMusic = BackgroundMusic.UndergroundTheme
+            Case RenderTheme.Castle
+                outScene.BackgroundMusic = BackgroundMusic.CastleTheme
             Case Else
                 Throw New Exception()
         End Select
@@ -157,6 +159,9 @@ Public NotInheritable Class JsonMapReader
 
         EntGoomba
         EntKoopa
+        EntBowser
+        MetalPlatform
+        Axe
         EntCoin
         BlockPlatform
 

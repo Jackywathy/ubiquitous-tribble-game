@@ -154,9 +154,8 @@ Public Class ChangeQueueWrapper
     End Sub
 
     Public Sub Remove(item As QueueObject)
-        If Not queue.Remove(item) Then
-            Throw New Exception("cannot remove item")
-        End If
+        queue.Remove(item)
+
     End Sub
 
     Public Sub UpdateTick()

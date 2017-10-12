@@ -399,5 +399,13 @@ Public MustInherit Class Sprites
     Private Sub New()
         ' make this class un-intializable
     End Sub
+
+    Public Shared Property bowser As New SpriteSet("bowser", New Dictionary(Of SpriteState,List(Of Image)) From {
+                                                             {SpriteState.ConstantLeft, New List(Of Image) From {My.Resources.bowser}},
+                                                             {SpriteState.ConstantRight, New List(Of Image) From {My.Resources.bowser_r}}
+                                                             },
+                                                          96,
+                                                          16
+                                                          )
 End Class
 

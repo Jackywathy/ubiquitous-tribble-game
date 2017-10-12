@@ -170,6 +170,7 @@
     <Compile Include="renderObj\blocks\BlockInvisCoin.vb" />
     <Compile Include="renderObj\blocks\BlockPipeRotate.vb" />
     <Compile Include="renderObj\blocks\BlockPlatform.vb" />
+    <Compile Include="renderObj\entities\EntBowser.vb" />
     <Compile Include="renderObj\entities\EntOneUp.vb" />
     <Compile Include="renderObj\entities\EntLifeShroom.vb" />
     <Compile Include="renderObj\Flag.vb" />
@@ -271,6 +272,7 @@
     <Resource Include="maps\map1_1under.json" />
     <Resource Include="maps\map_startmap.json" />
     <Resource Include="maps\map1_1above.json" />
+    <None Include="maps\1-4above.json" />
     <None Include="maps\map1_3under.json" />
     <None Include="maps\map1_2above.json" />
     <None Include="maps\map1_2under.json" />

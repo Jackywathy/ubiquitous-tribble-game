@@ -1,18 +1,19 @@
 ﻿Imports System.IO
 Imports NAudio.Wave
+Imports WinGame
 
 ''' <summary>
 ''' 
 ''' </summary>
 Public NotInheritable Class MusicPlayer
     Implements IDisposable
-    Public  Shared Property BackgroundPlayer As MusicPlayer
+    Public Shared Property BackgroundPlayer As MusicPlayer
 
     Public ReadOnly Property volume As Double
         Get
             Return basevolume * multipler
         End Get
-        
+
     End Property
 
     Private Sub refreshVolume
@@ -28,10 +29,10 @@ Public NotInheritable Class MusicPlayer
     ''' A wrapper allowing sound to be player 
     ''' </summary>
     ''' <param name="name">Resource name of mp3 file</param>
-    Public Sub New(name As String, Optional volume As Single = 1.0F, optional repeat as Boolean=False)
+    Public Sub New(name As String, Optional volume As Single = 1.0F, Optional repeat As Boolean = False)
         Me.New(New MemoryStream(CType(My.Resources.ResourceManager.GetObject(name), Byte())), volume)
-        if repeat
-            enableLoop
+        If repeat
+            EnableLoop
         End If
     End Sub
 
@@ -41,8 +42,8 @@ Public NotInheritable Class MusicPlayer
     ''' </summary>
     ''' <param name="enable"></param>
     Public Sub EnableLoop(Optional enable As Boolean = True)
-        
-            AddHandler player.PlaybackStopped, AddressOf Repeat_audio
+
+        AddHandler player.PlaybackStopped, AddressOf Repeat_audio
     End Sub
 
     Public Sub New(stream As Stream, Optional volume As Single = 1.0F)
@@ -56,16 +57,16 @@ Public NotInheritable Class MusicPlayer
         player.Init(channel)
     End Sub
 
-    
+
 
     Public Sub Play(Optional fromStart As Boolean = True)
-            If fromStart Then
-                reader.CurrentTime = TimeSpan.Zero
-            End If
-            ' go to beginning
-            '
-            player.Play()
-        userStopped = false
+        If fromStart Then
+            reader.CurrentTime = TimeSpan.Zero
+        End If
+        ' go to beginning
+        '
+        player.Play()
+        userStopped = False
     End Sub
 
     ''' <summary>
@@ -75,22 +76,22 @@ Public NotInheritable Class MusicPlayer
         player.Stop()
         userStopped = True
     End Sub
-    
-    Private userStopped As boolean = False
+
+    Private userStopped As Boolean = False
 
     Public Sub PlayBackground()
-        if BackgroundPlayer Isnot me
-            If backgroundPlayer IsNot Nothing Then
-                backgroundPlayer.Stop()
+        If BackgroundPlayer IsNot Me
+            If BackgroundPlayer IsNot Nothing Then
+                BackgroundPlayer.Stop()
             End If
-            backgroundPlayer = Me
-            
-        
-        End if
-        backgroundPlayer.Play()
+            BackgroundPlayer = Me
+
+
+        End If
+        BackgroundPlayer.Play()
     End Sub
 
-   
+
 
 
     ''' <summary>
@@ -114,17 +115,17 @@ Public NotInheritable Class MusicPlayer
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub Repeat_audio(sender As Object, e As EventArgs)
-        if not userStopped
+        If Not userStopped
             Me.Play()
-        End if
+        End If
     End Sub
 
-    Public Property basevolume As double
+    Public Property basevolume As Double
 
-    Private multipler as double
+    Private multipler As Double
 
     Friend Sub SetMultiplier(multipler As Double)
-        me.multipler = multipler
+        Me.multipler = multipler
         refreshVolume
     End Sub
 End Class
@@ -137,23 +138,23 @@ Public NotInheritable Class Sounds
     Public Shared Property PlayerDead As New MusicPlayer("player_dead", 0.5)
     Public Shared Property Warp As New MusicPlayer("warp", 0.8)
     Public Shared Property _1_Up As New MusicPlayer("_1_up")
-    Public Shared Property Bump As new MusicPlayer("bump")
-    Public Shared Property PowerupAppear As new MusicPlayer("appear")
+    Public Shared Property Bump As New MusicPlayer("bump")
+    Public Shared Property PowerupAppear As New MusicPlayer("appear")
     Private Sub New
     End Sub
 
-    Public Shared Sub SetVolume(multipler as double)
-        if multipler > 1 Or multipler  < 0
-            Throw new Exception()
-        End if
+    Public Shared Sub SetVolume(multipler As Double)
+        If multipler > 1 Or multipler < 0
+            Throw New Exception()
+        End If
 
-        for each prop in GetType(Sounds).GetProperties()
-             dim music = DirectCast(prop.GetValue(Nothing, Nothing), MusicPlayer)
+        For Each prop In GetType(Sounds).GetProperties()
+            Dim music = DirectCast(prop.GetValue(Nothing, Nothing), MusicPlayer)
             music.SetMultiplier(multipler)
         Next
 
-        for each prop in GetType(BackgroundMusic).GetProperties()
-            dim music = DirectCast(prop.GetValue(Nothing, Nothing), MusicPlayer)
+        For Each prop In GetType(BackgroundMusic).GetProperties()
+            Dim music = DirectCast(prop.GetValue(Nothing, Nothing), MusicPlayer)
             music.SetMultiplier(multipler)
         Next
     End Sub
@@ -163,11 +164,12 @@ End Class
 ''' Each will return a new instance of a musicplayer
 ''' </summary>
 Public NotInheritable Class BackgroundMusic
-    Public Shared ReadOnly Property GroundTheme As New MusicPlayer("ground_theme", 0.2, true)
+    Public Shared Readonly Property CastleTheme As New MusicPlayer("castle_theme", 0.2, True)
+    Public Shared ReadOnly Property GroundTheme As New MusicPlayer("ground_theme", 0.2, True)
 
-    Public Shared ReadOnly Property UnderGroundTheme As New MusicPlayer("cave_theme", 0.5, true)
+    Public Shared ReadOnly Property UnderGroundTheme As New MusicPlayer("cave_theme", 0.5, True)
 
-    Public Shared Sub SetVolume(multipler as double)
+    Public Shared Sub SetVolume(multipler As Double)
         Sounds.SetVolume(multipler)
     End Sub
 End Class

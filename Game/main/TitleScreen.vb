@@ -64,6 +64,14 @@
     Private Sub TitleScreen_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
     End Sub
+
+    Private Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox1.CheckedChanged
+        If CheckBox1.checked
+            TotalLives = 1
+        Else
+            TotalLives = 5
+        End If
+    End Sub
 End Class
 
 

@@ -141,6 +141,7 @@ Public Class MapScene
     ''' Level was finished flag touched
     ''' </summary>
     Friend Sub LevelFinished()
+        EntPlayer.Score += FinishLevelScore
         If Me.MapName = FinalMap
             Dim wait As New WaitQueueObject(Player1, Me.Parent)
             Dim win As new WinQueue(0, Me.parent)

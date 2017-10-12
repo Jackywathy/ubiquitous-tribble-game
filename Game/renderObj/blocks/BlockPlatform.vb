@@ -9,10 +9,14 @@
         Me.New(New Point(params(0) * 32, params(1)* 32), scene)
     End Sub
 
+    Const IsStationary as Boolean = False
+
     Public OVerrides Sub UpdateLocation
-        me.Y += 1
-        if Me.Y > MyScene.Height
-            Me.Y = 0
-        End If
+        If IsStationary
+            me.Y -= 1
+            if Me.Y < 0
+                Me.Y = MyScene.Height
+            End If
+        End if
     End Sub
 End Class

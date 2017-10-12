@@ -17,7 +17,8 @@ Public Module Dimensions
     Public Const StandardTransitionTime = 60
     Public Const StandardStartScreenTime = 120
     Public Const FinalMap = MapEnum.map1_3above
-    Public COnst TotalLives = 2
+    Public TotalLives = 5
+    Public COnst FinishLevelScore = 10000
 
     Public Function GetProperMapName(map As MapEnum) As String
         Select Case map
